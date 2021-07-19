@@ -1,0 +1,206 @@
+.THIS .IE_ALL_FORM {
+    left: 0;
+    margin:80px;
+        }
+
+.THIS .input{
+    vertical-align: bottom;
+}
+.THIS .displ_reg_addr {
+    background: #fff;
+    /* border: 1px solid #d9d9d9; */
+    padding: 15px;
+    position: relative;
+    display: table;
+    width: 95%;
+    margin-left: 30px;
+    padding-left: 34px;
+}
+.THIS .upload_file{
+    border: 1px solid;
+    border-color: #3d86ca;
+    height: auto;
+    width: 220px;
+    float: right;
+    right: 0%;
+    position: relative;
+    padding: 3px;
+    margin-top: -28px;
+    margin-right: -107px;
+    text-align: left;
+    white-space: normal;
+   /* overflow: hidden;
+    text-overflow: ellipsis;*/
+}
+.THIS .photo_id_attach{
+	position: relative;
+    float: right;
+    right: 31%;
+    background: #3d86ca;
+    width: auto;
+    padding: 0 15px;
+    color: #FFF;
+    display: inline-flex;
+    margin-top:-28px;
+}
+.THIS .photo_id_attach img{
+    display: none;
+}
+.THIS .file-input-box{
+	display: table-row-group;
+}
+.THIS .section_header{
+    position: relative;
+    width: 95%;
+    float: left;
+    margin: 0px 30px;
+    padding: 30px;
+    display: table !important;
+}
+.THIS .add_btn {
+    padding: 13px;
+    float: right;
+    margin: 0 4% 0 0;
+    word-break: break-word;
+    width: 25%;
+    height: 46px;
+    min-width: 100px;
+}
+.THIS .det_upload{
+    display: inline-block;
+    margin: 5% 5% 5% 0;
+    float: right;
+    top: 0;
+    left: 0;
+    width: 90%;
+}
+.THIS .uiButton .label {
+    display: block;
+    margin-top: -5px !important;
+}
+/*Mobile Portrait*/
+@media only screen
+    and (max-device-width: 500px) and (min-device-width: 100px) {
+    .THIS .input{
+       /* padding: 0px;*/
+    }
+    .THIS .det_btn{
+        max-width: 90%;
+    	left: 80px;
+    }
+    .THIS .add_btn{
+        width: 100%;
+        margin: 5% 6%;
+        float: none;
+    }
+    .THIS .file-input-box{
+        width:80%;
+    }
+    .THIS .upload_file{
+        border: 1px solid;
+        border-color: #3d86ca;
+        height: auto;
+        width: 55%;
+        float: left;
+        right: 0%;
+        position: relative;
+        padding: 5px;
+        margin: 5% 2% 0 10%;
+        text-align: center;
+        white-space: normal;
+       /* overflow: hidden;
+        text-overflow: ellipsis;*/
+    }
+    .THIS .photo_id_attach{
+        position: relative;
+        float: left;
+        right: 0;
+        background: #3d86ca;
+        width: 15%;
+        padding: 5%;
+        color: #fff;
+        display: inline-flex;
+        margin: 2% 0 1% 0;
+    }
+    .THIS .photo_id_attach img{
+    	display: block;
+}
+}
+@media only screen
+    and (max-device-width: 750px) and (min-device-width: 501px) {
+    .THIS .input{
+        padding: 0px;
+    }
+    .THIS .det_btn{
+        max-width: 90%;
+    	left: 80px;
+    }
+    .THIS .add_btn{
+        width: 70%;
+        margin: 5% 20%;
+        float: none;
+    }
+    .THIS .file-input-box{
+        width:80%;
+    }
+    .THIS .upload_file{
+        border: 1px solid;
+        border-color: #3d86ca;
+        height: auto;
+        width: 55%;
+        float: left;
+        right: 0%;
+        position: relative;
+        padding: 5px;
+        margin: 5% 2% 0 10%;
+        text-align: center;
+        white-space: normal;
+       /* overflow: hidden;
+        text-overflow: ellipsis;*/
+    }
+    .THIS .photo_id_attach{
+        position: relative;
+        float: left;
+        right: 0;
+        background: #3d86ca;
+        width: 15%;
+        padding: 5%;
+        color: #fff;
+        display: inline-flex;
+        margin: 2% 0 1% 0;
+    }
+    .THIS .photo_id_attach img{
+    	display: block;
+}
+}
+@media only screen
+    and (max-device-width: 1200px) and (min-device-width: 751px) {
+    .THIS .file-input-box{
+            width: 80%;
+    }
+    .THIS .photo_id_attach{
+        position: relative;
+        float: left;
+        right: 0;
+        background: transparent;
+        width: 20%;
+        padding: 3% 0 3% 0;
+        display: inline-flex;
+        margin: 1% auto;
+    }
+    .THIS .upload_file{
+        border: 1px solid;
+        border-color: #3d86ca;
+        height: auto;
+        width: 45%;
+        float: left;
+        right: 0%;
+        position: relative;
+        padding: 12px;
+        margin: 4.5% 2% 0 10%;
+        text-align: center;
+        white-space: normal;
+        /*overflow: hidden;
+        text-overflow: ellipsis;*/
+    }
+}

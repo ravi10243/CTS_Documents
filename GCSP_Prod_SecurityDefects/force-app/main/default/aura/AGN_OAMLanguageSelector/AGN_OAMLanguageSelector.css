@@ -1,0 +1,54 @@
+.THIS .lang_select_container{
+    display: inline-block;
+    width: 100%;
+    position: absolute;
+    right: 0;
+}
+.THIS .lang_select_1{
+    width: 100%;
+    margin: 20px 0 0 8px;
+    padding: 0;
+    text-align: right;
+}
+.THIS .slds-select_container::before{
+    border-bottom: 0;
+}
+.THIS .lang_select_box{
+    color: #2c5599;
+}
+.THIS .active_lang{
+    font-weight: bold;
+    opacity: 1 !important;
+}
+@media only screen 
+    and (min-device-width : 300px) 
+    and (max-device-width : 767px) { 
+    .THIS .lang_select_container {
+        display: inline-block;
+        width: 100%;
+        position: absolute;
+        right: 0;
+    }
+    .THIS .lang_select_1{
+        width: 100%;
+        margin: 20px 0 0 0;
+        padding: 0;
+        text-align: right;
+    }
+}
+@media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) 
+    and (orientation : portrait){
+    .THIS .lang_select_box{
+        left: 35% !important;
+    }
+}
+@media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) 
+    and (orientation : landscape) { 
+    .THIS .lang_select_box{
+        left: 51% !important;
+    }
+}

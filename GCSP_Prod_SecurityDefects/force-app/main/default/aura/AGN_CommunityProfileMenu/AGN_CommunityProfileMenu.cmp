@@ -1,0 +1,25 @@
+<aura:component implements="forceCommunity:profileMenuInterface" controller="AGN_CustomerAccountDetailController" access="global">
+    <aura:attribute name="options" type="String[]" default="Logout"/>
+    <aura:attribute name="userDetail" type="User"/>
+    <!-- ICL Attributes -->
+    <aura:attribute name="customerAcc" type="Account"/>
+    <aura:attribute name="isICLEnabled" type="Boolean" default="false"/>
+    <aura:attribute name="isClinic" type="Boolean" default="false"/>
+    <aura:attribute name="isICLEnabledInAccount" type="Boolean" default="false"/>
+    <aura:attribute name="isICLMenuEnabled" type="Boolean" default="false"/>
+    <ltng:require scripts="{!$Resource.AGN_CustomerPortalJQuery}" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <div class="dropdown closed">
+        <span class="profile_img" ><img src="{!v.userDetail.SmallPhotoUrl}"/></span>
+        <div class="title">{!$Label.c.AGN_OAM_Header_Greeting} &nbsp;<span>{!v.userDetail.Name} </span></div>
+        <ul>
+            
+           <!-- <li>About</li> -->
+            <li><ui:button label="{!$Label.c.AGN_OAM_Profile_Home}" class="button" press="{!c.gotoHome}"/></li>
+            <aura:if isTrue="{!and(and(v.isICLMenuEnabled,v.isICLEnabled),and(v.isClinic,v.isICLEnabledInAccount))}">
+                <li><ui:button label="{!$Label.c.AGN_ICL_Brazil_Menu}" class="button" press="{!c.gotoICLPage}"/></li>
+            </aura:if>
+            <li><ui:button label="{!$Label.c.AGN_OAM_Profile_Logout}" class="button" press="{!c.logout}"/></li>           
+        </ul>
+    </div>
+</aura:component>

@@ -1,0 +1,61 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    <!--Attributes-->
+    <aura:attribute name="listPageFormSteps" type="Object"/>
+    <aura:attribute name="currentStepId" type="String"/>
+    <aura:attribute name="hasValidationErrors" type="Boolean" default="false"/>
+    
+    <aura:attribute name="currentLongName" type="String" />
+    <aura:attribute name="currentDescription" type="String" default="" />
+    
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    
+    <!-- ACCESSIBILITY CSS ATTRIBUTES -->
+    <aura:attribute name="tableStyle" type="String"/>
+    <aura:attribute name="headingStyle" type="String"/>
+    <aura:attribute name="progressIndicatorStyle" type="String" />
+    <aura:attribute name="descriptionStyle" type="String"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+	<aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+    
+    <!-- Body -->
+    <aura:if isTrue="{!v.listPageFormSteps != null &amp;&amp; v.listPageFormSteps.length > 2}">
+       
+        <div class="">            
+            <div>
+                <div class="slds-p-around_medium" style="{!v.progressIndicatorStyle}">
+                    <lightning:progressIndicator currentStep="{!v.currentStepId}" type="path" variant = "path" hasError="{!v.hasValidationErrors}" >
+                        <aura:iteration items="{!v.listPageFormSteps}" var="pageFormStep" indexVar="index">
+                            <aura:if isTrue="{!pageFormStep.StepType != 'Success'}">
+                                <lightning:progressStep label="{!pageFormStep.ShortName}" value="{!pageFormStep.PageFormStepId}"/>
+                            </aura:if>    
+                        </aura:iteration>    
+                    </lightning:progressIndicator>
+                </div>
+                <div class="slds-p-around_medium" style="{!v.tableStyle}">
+                    <table>
+                        <colgroup>
+                            <col width="40px"/>
+                            <col width="100%"/>
+                        </colgroup>
+                        <tr>
+                            <td style="padding: 2em; padding-top: 0px; vertical-align: top;">
+                                <lightning:icon iconName="custom:custom16" alternativeText="Nothing" size="large"/>
+                            </td>
+                            <td>
+                                <div>
+                                    <div style="{!v.headingStyle}">{!v.currentLongName}</div>
+                                    <div style="{!v.descriptionStyle}">
+                                        {!v.currentDescription}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </aura:if>    
+</aura:component>

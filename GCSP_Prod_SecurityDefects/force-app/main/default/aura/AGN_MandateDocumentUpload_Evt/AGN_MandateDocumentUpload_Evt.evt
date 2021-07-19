@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="Mandate Document Upload  Notification">    
+    <aura:attribute name="isMandateDoc" type="boolean"/>     
+</aura:event>

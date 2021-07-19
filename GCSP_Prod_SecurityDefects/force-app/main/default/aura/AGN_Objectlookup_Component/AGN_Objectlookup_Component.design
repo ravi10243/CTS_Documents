@@ -1,0 +1,5 @@
+<design:component>
+    <design:attribute name="AssetselectedRecordId" label="Owner"/>
+    <design:attribute name="AssetselectedName" label="Owner Name"/>
+    <design:attribute name="getObject" label="ObjectName"/>
+</design:component>

@@ -1,0 +1,68 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 01-13-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   01-13-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <div class="outer_wrapper managePassword">
+        <div class="slds-align_absolute-center content_center">                      
+              <template if:true={renderContent}>
+                    <div class="heading">
+                        {label.AGN_OAM_BODY_CHANGE_RECOVERY_QUESTION_PASSWORD_AGN}
+                        <!-- <template if:true={renderPW}>
+                            {label.AGN_OAM_BODY_CHANGEPASSWORD}
+                        </template>
+                        <template if:false={renderPW}>
+                            {label.AGN_OAM_BODY_CHANGE_RECOVERY_QUESTION_PASSWORD_AGN}
+                        </template> -->
+                    </div> 
+                    <div class="RecoveryPage">
+                    <template if:true={securityQuestionSelectOption}>
+                            <lightning-combobox label={label.AGN_OAM_RECOVERY_QUESTION} value=""
+                                options={securityQuestionSelectOption} required name="cmbRecoveryQuestions" onchange={handleFormInputChange} >
+                            </lightning-combobox>
+                        </template>
+                        <lightning-input type="text" label={label.AGN_OAM_RECOVERY_ANSWER} required name="cmbRecoveryAnswer"
+                            onchange={handleFormInputChange}>
+                        </lightning-input>
+                        <template if:true={renderPW}>
+                            <div class="labelInputNewPassword">
+                                <label class="slds-form-element__label"><abbr class="slds-required"
+                                        title="required">*</abbr>{label.AGN_OAM_NEW_PASSWORD}</label>
+                                <lightning-helptext content={label.AGN_OAM_OKTA_PASSWORD_POLICY}>
+                                </lightning-helptext>
+                                <lightning-input type="password" value={oktaPasswordString} required name="txtNewPassword"
+                                onchange={handleFormInputChange} class="inputNewPassword" variant="label-hidden">
+                                </lightning-input>
+                            </div>
+                            
+                            <lightning-input type="password" label={label.AGN_OAM_CONFIRM_PASSWORD} required
+                                name="txtNewConfirmPassword" onchange={handleFormInputChange}
+                                class="inputNewConfirmPassword">
+                            </lightning-input>
+                        </template>
+                    </div>
+                    <div class="btn_container">
+                        <lightning-button label={label.AGN_OAM_SAVE} onclick={handlePwdRecovery} class="gradient_btn">
+                        </lightning-button>
+                    </div>
+             </template>
+             <!--<template if:true={settingPWD}>
+                <div class="RecoveryPage">
+                    <span>
+
+                    </span>
+                </div>
+             </template>-->
+        </div>
+    </div>
+    <div if:true={showSpinner}>
+        <lightning-spinner style="position: fixed;" alternative-text="Loading..."></lightning-spinner>
+        <div style="position: fixed;" class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</template>

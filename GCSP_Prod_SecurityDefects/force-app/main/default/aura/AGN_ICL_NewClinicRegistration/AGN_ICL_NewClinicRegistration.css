@@ -1,0 +1,447 @@
+.THIS.registration_wrapper {
+    background-color: #f5f5f5;
+}  
+.THIS.section-text{
+    text-align: center;
+}
+.THIS .header {
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px 10px;
+}
+.THIS .header-right {
+    float: right;
+}
+.THIS .container {
+    margin: 150px auto;
+}
+.THIS div[data-acc-content] {
+    display: none;
+}
+.THIS div[data-acc-step]:not(.open) {
+    background: #f2f2f2;
+    visibility: hidden;
+}
+.THIS div[data-acc-step]:not(.open) h5 {
+    color: #777;
+}
+.THIS div[data-acc-step]:not(.open) .badge-primary {
+    background: #ccc;
+}
+.THIS  -webkit-input-container:not( .webkit-input-has-value) input:not(:focus) {
+    color: transparent;
+}
+.THIS .col-md-3{
+    min-height: 95px !important;
+}
+.THIS .time-field{
+    margin: 0;
+}
+.THIS .cAGN_ICL_NewRegistrationInputFields select{
+    min-height: 34px !important;    
+}
+.THIS .time-field .slds-input{
+    border: 0;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+    background-color: transparent;
+    z-index: 1;
+    position: absolute;
+}
+.THIS .time-field .slds-input > label {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 9px;
+    color: #fff;
+    transition: 0.3s;
+    z-index: 0;
+    letter-spacing: 0.5px;
+    padding-left: 10%;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.THIS .time-field .slds-input:focus > label,
+.THIS .time-field .slds-input > label {
+    top: -8px;
+    font-size: 12px;
+    color: #fff;
+    transition: 0.3s;
+}
+.THIS .time-field .slds-input:empty{}
+.THIS .time-field .slds-input:focus {box-shadow: none;}
+.THIS input[type="text"]:disabled, .THIS input[type="url"]:disabled {opacity: 0.6;}
+.THIS .has-content.effect-16 ~ label {
+    top: -8px;
+    font-size: 12px;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.THIS .cAGN_ICL_NewRegistrationInputFields .col-md-3 {
+    min-height: 100px!important;
+}
+.THIS .timelabeldisplay {
+    display : none;
+}
+.THIS.spinnerLoad{
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+.THIS .terms_wrapper{
+    border: 1px solid #ddd;
+    padding: 20px 8px;
+    text-align: left;
+    position: absolute;
+    width: 85%;
+}
+.THIS .terms_check{
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 7px;
+    transform: translateY(50%) translateX(50%);
+    display: block;
+    width: 2rem;
+    height: 2rem;
+}
+.THIS input[type=checkbox].terms_check::-ms-check {
+    border-color:#d3d3d3;
+    border-radius: 2px;
+}
+.THIS .terms_wrapper .uiLabel{
+    font-weight: normal;
+    float: right;
+    position: relative;
+    padding-left: 35px;
+    width: 100%;
+}
+.THIS .uiInput--input.input:focus, .THIS .uiInput--input.input:active, .THIS .uiInputSelect:focus{
+    background: transparent;
+    outline: none!important;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+.THIS .slds-form-element__control .slds-checkbox{float: left;}
+.THIS .slds-form-element__legend{    
+    border-bottom: none;
+    font-size: 15px;
+    color: #2c5596;
+    font-weight: normal;}
+.THIS lightning-checkbox-group fieldset{   
+    margin-left: 0;
+    margin-top: 0;
+}
+.THIS lightning-checkbox-group font{
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+.THIS .slds-form-element__label{
+    font-size: 14px !important;
+    font-weight: 300;
+    color: #2c5596;
+    letter-spacing: 0.5px;
+}
+.THIS .slds-checkbox__label{
+    margin-top: 7px;
+}
+.THIS .g-recaptcha{
+    float:right;
+}
+.THIS fieldset::before {
+/* content: "* ";
+    float: left;
+    padding-right: 2px;
+    color: red;
+    font-weight: 700;
+    position: relative;
+    top: 2.5px; */
+}
+.THIS .slds-form-element__legend{    
+    display: inline-block;
+    width: auto;
+}
+.THIS .slds-form-element__legend::after{
+    position: absolute;
+    content: "*";
+    color: red;
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 1px;
+    margin-left: 2px;
+}
+.THIS .slds-modal__container {
+    max-width: 100%;
+}
+.THIS .slds-assistive-text,
+.THIS label.slds-form-element__label{
+	display: none;
+}
+.THIS .slds-modal__container .slds-modal__content p{
+    font-size: 1.25rem;
+    line-height: 1.50;
+}
+.THIS .slds-modal__container .slds-modal__footer button{
+    font-weight: 600;
+    color: #fff;
+    background: #43af2a;
+    font-size: 14px;
+    text-shadow: none;
+    padding: 7px;
+    margin-right: 1%; 
+    width: auto;
+    border: none;
+    border-radius: 0;
+}
+.THIS .g-recaptcha{
+    margin-left: 70%;
+}
+.THIS .weekday .form-group{
+	margin: 0;
+}
+.THIS .weekday .col-md-6 .col-md-2 label:nth-child(1) {
+    width: 100%;
+}
+.THIS .container .form-group-cta{
+    display:flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+}
+.THIS .container .form-group-cta .reg-submit{
+	width:auto;
+}
+.THIS .container .form-group-cta.btn-center{
+    justify-content: center;
+}
+.THIS .container .form-group-cta.btn-left{
+    justify-content: flex-start;
+}
+.THIS .container .newreg-back, .THIS .container .cancel{
+    width: auto !important;
+    position: relative;
+    margin:0 5px;
+}
+.THIS .container .btn_hide{
+  visibility: hidden;  
+}
+.THIS .container .newreg-back span{
+    padding:0 ;
+}
+.THIS .container .slds-input__icon-group_right{
+    margin:0;
+}
+.THIS .section-timing {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+}
+.THIS .section-timing .weekday {
+    margin: 15px 0;
+}
+.THIS .section-timing .weekday .col-md-6, 
+.THIS .section-timing .weekday .col-sm-6 {
+    padding: 0 10px;
+}
+.THIS .section-timing .weekday .col-md-6 .col-md-2 {
+    padding: 0!important;
+}
+.THIS .slds-button--neutral, 
+.THIS .slds-button_neutral{
+    font-weight: 600;
+    color: #fff;
+    background: #43af2a;
+    font-size: 14px;
+    text-shadow: none;
+    border: none;
+    border-radius: 0;
+    padding: 10px;
+}
+.THIS .hint-blk p{
+    margin-top: 5px; 
+    position: relative; 
+    font-size: 10px; 
+    margin-left: 10px;
+}
+.THIS .slds-dueling-list__column{
+    margin: 10px 5px;
+}
+.THIS .slds-dueling-list__column.slds-dueling-list__column_responsive{
+    margin: 0px;
+}
+.THIS .slds-dueling-list__column.slds-dueling-list__column_responsive .slds-form-element__label{
+    font-size: 12px !important;
+}
+.THIS .slds-listbox--vertical .slds-listbox__option--plain, 
+.THIS .slds-listbox--vertical .slds-listbox__option_plain, 
+.THIS .slds-listbox_vertical .slds-listbox__option--plain, 
+.THIS .slds-listbox_vertical .slds-listbox__option_plain{
+    font-size: 12px;
+}
+.THIS .slds-dueling-list__column .slds-button{
+    border: 1px solid #dddbda;
+}
+.THIS .slds-dueling-list__column .slds-button:first-of-type{
+    margin-top: 5px;
+}
+.THIS .form-group-multiselect{
+    padding: 0 10px;
+}
+.THIS .slds-dueling-list__column{
+    justify-content: center;
+}
+.THIS .slds-dueling-list__column_responsive .slds-dueling-list__options{
+    height: 100px;
+}
+.THIS .slds-dueling-list__column .slds-button{
+    border: 1px solid #dddbda;
+}
+.THIS .slds-dueling-list__column .slds-button:first-of-type{
+    margin-top: 5px;
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+        .THIS .weekday .col-md-6 .col-md-2 label:nth-child(1) {
+                        width: auto;
+        }
+}
+@media only screen and (min-device-width : 300px) and (max-device-width : 900px) {  
+    .THIS .mobileview{
+        min-height: 40px!important;
+        padding-left: 30px!important;
+    }
+   
+}
+/*
+.THIS .gcap-submit{
+top: -499px;
+left: -31px;
+}
+*/
+
+/* Media Queries */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {  
+    .cAGN_ICL_NewClinicRegistration .col-md-3 {
+        min-height: 94px!important;
+    }
+    .cAGN_ICL_NewClinicRegistration .terms_wrapper label{
+        font-size: 10px;
+    }
+    .THIS .terms_wrapper{
+        width: 96%;
+    }
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {  
+    .cAGN_ICL_NewClinicRegistration .weekday .col-sm-12 .form-group {
+        margin-top: 15px;
+        margin-bottom: 0;
+    }
+    .THIS .container .reg-submit{
+        width: auto !important;
+    }
+    .THIS .terms_wrapper{
+        width: 35%;
+        left:50%;
+        transform: translateX(-50%);
+    }
+    .THIS .iframe_wrapper{
+        left:50%;
+    }
+    .THIS .terms_wrapper .uiLabel{
+        font-size: 12px;
+    }
+    .THIS .time-field .slds-input{
+        position: relative;
+    }
+}
+@media only screen and (max-device-width: 500px) and (min-device-width: 100px) and (orientation: portrait){
+    .THIS .container .list-group-item {
+        padding: 10px 30px !important;
+    }
+    .THIS .col-md-3 { 
+        min-height: 68px!important;
+    }
+    .THIS .container .reg-submit{
+            width: auto;
+    }
+    .THIS .allergan-logo {
+        width: 135px;
+        background-size: contain;
+    }
+    .THIS .logo-txt{
+        font-size: 13px;
+        margin: 0px 16px;
+    }
+	.THIS .weekday {
+		margin: 0 !important;
+	}
+    .THIS .weekday .form-group {
+        margin-bottom: 0 !important;
+    }
+    .THIS .weekday .col-xs-12 .form-group{
+        padding: 0;
+		margin: 0;
+    }
+    .THIS .iframe_wrapper{
+        padding: 12%;
+    }
+     .THIS label {
+        margin-bottom: 0px; 
+    }
+     .THIS  .mob_label{
+    	margin-top: 0;
+	}
+    /*.THIS .time-field .slds-input {
+    	position: unset;
+	}
+ 	.THIS .open {
+        
+    }*/
+	.THIS .time-field .slds-input{
+		position: relative;
+		margin-left: -10px;
+	}
+    .THIS .time-field label.slds-form-element__label.slds-no-flex{
+        display: none;
+    }
+    .THIS .time-field label.open,
+    .THIS .time-field label.open.timelabeldisplay{
+        margin: 0 0 0 -10px;
+        display: inline-block;
+    }
+	.THIS .terms_wrapper{
+		position: relative;
+		width: 80%;
+		margin: 30px auto;
+        padding:20px 8px 5px 8px;
+	}
+	.THIS .terms_wrapper .uiInputCheckbox{
+		display: flex;
+		flex-flow: row-reverse nowrap;
+		justify-content: center;
+		align-items: center;
+		align-content: flex-start;
+	}
+     .THIS .mobileview{        
+        padding-left: 20px!important;
+    }
+    .THIS .logo-txt-tcl span:nth-child(2) {
+       top:0px;        
+     }
+    
+    .THIS .terms_wrapper .uiLabel {
+        bottom:10px;
+    }
+   .THIS .slds-dueling-list__column.slds-dueling-list__column_responsive .slds-form-element__label{
+    font-size: 10px !important;
+   }
+    .THIS .check-input-wrap label{
+      font-size: 10px !important;
+    }
+   .THIS .slds-form-element__label {
+    font-size: 10px!important;  
+   }
+
+}

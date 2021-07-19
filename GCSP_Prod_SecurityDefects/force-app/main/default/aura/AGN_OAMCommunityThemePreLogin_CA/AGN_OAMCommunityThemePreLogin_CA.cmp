@@ -1,0 +1,51 @@
+<aura:component implements="forceCommunity:themeLayout" access="global" description="Allergan Customer Community" controller="AGN_CommunityPortal_FooterController"> 
+    
+    <link rel="shortcut icon" href="{!$Resource.AGN_CustomerPortalFavicon}"/> 
+    <ltng:require styles="{!$Resource.AGN_CustomerPortal_Ltng + '/css/style.css'}"/>
+    <!--<ltng:require styles="{!$Resource.AGN_CustomerAccount + '/css/acc_det.css'}"/>-->
+    <ltng:require styles="{!$Resource.AGN_CustomerPortal_Ltng + '/css/footer.css'}" scripts="{!$Resource.AGN_CustomerPortalJQuery}" afterScriptsLoaded="{!c.scriptsLoaded}"/>   
+    
+    <aura:handler name="init" action="{!c.init}" value="{!this}" />
+    <aura:attribute name="today" type="Date" />
+    <aura:attribute name="footerConsentsList" type="Allergan_Consent_Footer_Info__c[]" />
+    <aura:attribute name="profileMenu" type="Aura.Component[]" required="false"/>
+    
+    <div class="header" style="height: 90px;">		
+        <div class="container">
+            <div class="allergan_logo"></div>
+            <div class="logo_text"><span></span><span>{!$Label.c.AGN_OAM_Header_CustomerPortal}</span></div>
+           
+            <div class="toll_free_text"><span>{!$Label.c.AGN_OAM_Header_TollFreeNumber}:</span><span> {!$Label.c.AGN_Customer_Portal_Toll_Free_Number}</span></div>
+            <div><a href="{!'tel:' + $Label.c.AGN_Customer_Portal_Toll_Free_Number}" class="toll_free_phone"></a></div> 
+             {!v.profileMenu}
+        </div>
+    </div>
+    
+    <div class="container">       
+        {!v.body}                 
+    </div> 
+    <div style="height: 216px;clear: both;"></div>
+    <div class="footer" style="bottom: 0;">
+        {!$Label.c.OnlineConsent_FooterText}<br/><br/>
+        {!$Label.c.OnlineConsent_FooterTxtAddr_AGN}<br/><br/>
+        {!$Label.c.OnlineConsent_FooterCopyright}&nbsp;{!v.today}&nbsp;{!$Label.c.OnlineConsent_FooterAInc} | <span class="privacy-statement" style="font-weight: bold; color: #2c5596;">{!$Label.c.OnlineConsent_FooterPrivacy}</span> |  <span class="condition-use" style="font-weight: bold; color: #2c5596;">{!$Label.c.OnlineConsent_FooterConditionUse}</span>
+        <div class="footer_popup">
+            <aura:iteration items="{!v.footerConsentsList}" var="footer">
+                <aura:if isTrue="{!footer.Name == 'Privacy Statement'}">
+                    <div class="footer_popup_in privacy-text">
+                        <div class="footer_popup_text">
+                            <lightning:formattedRichText value ="{!footer.Footer_RichText_c__c}" />
+                        </div>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!footer.Name == 'Terms of Use'}">
+                    <div class="footer_popup_in condition-text">
+                        <div class="footer_popup_text">
+                            <lightning:formattedRichText value ="{!footer.Footer_RichText_c__c}" />
+                        </div>
+                    </div>
+                </aura:if>
+            </aura:iteration>
+        </div>
+    </div>    
+</aura:component>

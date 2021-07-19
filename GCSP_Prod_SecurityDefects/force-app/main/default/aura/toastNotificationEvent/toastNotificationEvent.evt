@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION">
+    <aura:attribute name="type" type="String" />
+    <aura:attribute name="notificationDetails" type="String[]" />
+</aura:event>

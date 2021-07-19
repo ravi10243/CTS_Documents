@@ -1,0 +1,45 @@
+.outer_wrapper {
+    width: 100%;
+    max-width: 1366px;
+    margin: auto;
+}
+.RecoveryPage{        
+    width: fit-content;  /* added for responsive */
+    margin: 0 auto; 
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+}
+.btn_container {   
+    display: flex;
+    padding: 3% 0 5%;
+    justify-content: center;
+    width: 75%;
+    margin: 0 auto;
+}
+.content_center{
+    align-items: unset;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+}
+.heading {
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: Arial,sans-serif;
+    padding: 0;
+    width: 100%;
+    color: #565656;
+    margin: 1% auto 1%;
+    text-align: center;
+}
+.labelInputNewPassword{
+    width:min-content;
+}
+.slds-form-element__label {
+    color: #2c5596;
+    font-size: 1rem;    
+    width: auto;
+    display:inline;
+}

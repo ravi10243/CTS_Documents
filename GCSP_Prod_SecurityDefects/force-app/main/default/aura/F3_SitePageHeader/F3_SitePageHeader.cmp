@@ -1,0 +1,101 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global">
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+    <aura:attribute name="formId" type="String" />
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="currentSitePage" type="Object"/>
+    <!--*Added by Gunwant to have dynamic color and branding starts-->
+    <aura:attribute name="headerJson" type="Object" />
+    <aura:attribute name="headerStyle" type="string" default = "background-color:#006400"/>
+    <aura:attribute name="portalStyle" type="string" default = "color:white"/>
+    <aura:attribute name="descriptionStyle" type="string" default = "color:#fff"/>
+    
+    
+    <aura:if isTrue = "{!v.renderMode == 'COMMUNITY'}">
+        <div class="content-header content-header-type-trail slds-p-around_small" style="{!v.headerStyle}">
+            <div class="slds-container_x-large slds-container_center slds-p-top_large slds-p-horizontal_large slds-grid slds-is-relative">
+                <!--<div class="slds-show_medium slds-p-right_large">
+                    <div class="slds-is-relative">
+                        <img alt="page icon" 
+                             src="{!v.currentSitePage.FormHeaderImage}" style = "width:50px;">
+                        </img>
+                    </div>
+                </div>-->
+                <div class="slds-grow th-color--white">
+                    <div class="slds-grid slds-grid_vertical">
+                        <div class="slds-col">
+                            <span>
+                                <div style="{!v.portalStyle}" class="content-title">
+                                    {!v.currentSitePage.FormPortalLabel}
+                                </div>                                     
+                            </span>
+                        </div>
+                        <div class="slds-col">
+                            <span>
+                                <div class="content-description" style="{!v.descriptionStyle}">
+                                    <lightning:formattedText linkify="true" value="{!v.currentSitePage.FormPortalDescription}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-grid_align-spread slds-m-vertical_large slds-wrap slds-grid_vertical-align-center">
+                        <div class="slds-grid slds-grid_vertical-align-end slds-grid_align-end slds-grow">
+                            
+                            <div class="content-tags">
+                                <a style="{!v.portalStyle + ';font-size: 14px'}" onclick="{!c.showHelp}" class="tag" href="JavaScript:Void(0);">
+                                    <lightning:icon iconName="action:question_post_action" alternativeText="help" size="small" variant="inverse"/>
+                                </a>                         
+                            </div>
+                        </div>
+                    </div>   
+                </div>     
+            </div>    
+        </div>
+    </aura:if>
+    <aura:if isTrue = "{!v.renderMode == 'DESIGNER'}">
+        <div class="content-header content-header-type-trail slds-p-around_small" style="{!v.headerStyle}">
+            <div class="slds-container_x-large slds-container_center slds-p-top_large slds-p-horizontal_large slds-grid slds-is-relative">
+                <div class="slds-show_medium slds-p-right_large">
+                    <div class="slds-is-relative">
+                        <img alt="page icon" 
+                             src="{!v.currentSitePage.FormHeaderImage}" style = "width:50px;">
+                        </img>
+                    </div>
+                </div>
+                <div class="slds-grow th-color--white">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-grid slds-grid_verical">
+                            <div class="slds-col">
+                                <span>
+                                    <div style="{!v.portalStyle}">
+                                        {!v.currentSitePage.FormPortalLabel}
+                                    </div>      
+                                </span>
+                            </div>
+                            <div class="slds-col">
+                                <span>
+                                    <div class="content-description" style="{!v.descriptionStyle}">{!v.currentSitePage.FormPortalDescription}</div>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-grid_align-spread slds-m-vertical_large slds-wrap slds-grid_vertical-align-center">
+                        </div>                        
+                        <div class="slds-grid slds-grid_vertical-align-end slds-grid_align-end slds-grow">
+                            
+                            <div class="content-tags">
+                                <a class="tag" href="/trails#level=level-intermediate">
+                                    Helps
+                                </a>
+                                <a class="tag" href="/trails#role=role-admin">
+                                    Admins
+                                </a>                            
+                            </div>
+                        </div>
+                    </div>    
+                </div>     
+            </div>    
+        </div>
+    </aura:if>
+    <div aura:id="helpModal" ></div> 
+</aura:component>

@@ -1,0 +1,52 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="AGN_GDPR_Case_Create_Community_User" >
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--Attributes added by Rahil for Access and Task Completed check -->
+    <aura:attribute name="render"  type="boolean" default="true"/>
+    <aura:attribute name="isViewPickList" type="boolean" default="false"/>
+    <aura:attribute name="isPartialTaskCompleted" type="boolean" default="false"/>
+    <aura:attribute name="isFullTaskCompleted" type="boolean" default="false"/>
+    <aura:attribute name="buttonstate" type="boolean" default="true"/>
+    <aura:attribute name="textt" type="String" default=""/>
+    
+    
+    <aura:if isTrue="{!v.render}">
+        <aura:html tag="style">
+            .slds-backdrop {
+            background: rgba(43, 40, 38, 0) !important;  
+            }
+            .slds-fade-in-open {
+            display:none !important;
+            }
+        </aura:html>
+    </aura:if>
+    <div class="slds-modal__header" >
+        <h2 id="header43" class="slds-text-heading--medium">
+            <h1 class="title slds-text-heading--medium" >{!$Label.c.AGN_CCPA_Create_Community_User}</h1>
+        </h2>
+    </div>
+        <br/>
+    <div>
+        <div class="slds-picklist">
+            <div class="slds-picklist-display">
+                <h1 class=".slds-page-header_vertical">{!$Label.c.AGN_CCPA_Picklist_Header}</h1>
+                <ui:inputSelect class="single" aura:id="InputSelectSingle" change="{!c.populateEmailBodyForInformationType}">
+                    <ui:inputSelectOption text="Select an option"/>
+                    <ui:inputSelectOption text="{!$Label.c.AGN_ACCESS_COMPLETE_INSTRUCTIONS}"/>
+                    <ui:inputSelectOption text="{!$Label.c.AGN_ACCESS_PARTIALLY_COMPLETE_AND_EXPLANATION}"/>
+                </ui:inputSelect>
+            </div>  
+        </div>
+        <br/>
+        <div>
+            <h1 class=".slds-page-header_vertical">{!$Label.c.AGN_CCPA_Input_Text_Header}</h1>
+            <lightning:inputRichText aura:id="message" class="textclass" value="{!v.textt}"/>
+        </div>
+        <div class="Center">
+            <div class="slds-docked-form">
+                <button type="button" class="slds-button slds-button--neutral" onclick="{!c.submit}" disabled="{!v.buttonstate}">Submit</button>
+                <button type="button" class="slds-button slds-button--brand"  onclick="{!c.cancel}" >Cancel</button>
+            </div>
+        </div>
+    </div>
+</aura:component>

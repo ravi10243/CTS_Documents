@@ -1,0 +1,3 @@
+<design:component >
+	<design:attribute name="showBillTo" label="Show Bill To Section"/>
+</design:component>

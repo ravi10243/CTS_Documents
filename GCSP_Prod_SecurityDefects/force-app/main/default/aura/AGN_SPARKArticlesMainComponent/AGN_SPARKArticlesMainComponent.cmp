@@ -1,0 +1,987 @@
+<aura:component controller="AGN_SPARKArticleManagementClass" implements="forceCommunity:availableForAllPageTypes,lightning:isUrlAddressable" access="global" >
+    <!--<ltng:require styles="{!join(',', 
+                          $Resource.AGN_SPARK_Theme + '/css/known_hub.css',
+                          $Resource.AGN_SPARK_Theme + '/css/open_article.css',
+                          $Resource.AGN_SPARK_Rebrand_KnowHub + '/css/Knowledge_hub_Business.css'
+                          )}"  /> -->
+    <ltng:require styles="{!join(',', 
+                         
+                          $Resource.AGN_SPARK_Rebrand_KnowHub + '/css/Knowledge_hub_Business.css'
+                          )}"  />
+    
+    <aura:method name="selectArticle" action="{!c.selectArticleTab}">
+        <aura:attribute name="categoryType" type="string" default=""/>
+    </aura:method>
+    <aura:attribute name="firstload" type="Boolean" default="false"/>
+    <aura:attribute name="articleId" type="string" default=""/>
+    <aura:attribute name="categoryGroupName" type="string" default="Getting_Started"/>
+    
+    
+    <aura:attribute name="articleDataList" type="Object" default=""/>
+    <aura:attribute name="pageNumber" type="integer" default='1'/><!--Pagenumbers in page pageNumber ,pageNumber+1...etc-->
+    <aura:attribute name="pageCurrentNumber" type="integer" default='1'/><!--selected current page number-->
+    <aura:attribute name="articleCount" type="integer" default='0'/><!-- count number of records-->
+    <aura:attribute name="totalPages" type="integer" default='0'/>
+    <!--<aura:attribute name="articleCategoeryType" type="string" default='All'/>--><!-- default  value is all and the the categories depending on the main button-->
+    <aura:attribute name="articleCategoeryType" type="string" default='Getting_Started_Clinical'/>
+    <aura:attribute name="mainCategory" type="Object[]"/>
+    <aura:attribute name="mainrealCategory" type="Object[]"/>
+    <aura:attribute name="mainCategoryName" type="string" default=""/>
+    <aura:attribute name="pageId" type="integer" default="1"/>
+    <aura:attribute name="showNoResultComponent" type="boolean" default="false"/>
+    <aura:attribute name="selectedMainCategory" type="Object"/>
+    <aura:attribute name="mainSearch" type="string" default=""/>
+    <aura:attribute name="showListPage" type="boolean" default="true"/>
+    <aura:attribute name="mainCategoeryType" type="object" default=""/>
+    <aura:attribute name="subSearch" type="string" default=""/>
+    <aura:attribute name="articleType" type="string" default=""/>
+    <aura:attribute name="articleSubType" type="List" default="[]"/>
+    <aura:attribute name="articleSubTypeSelected" type="string" default=""/>
+    <aura:attribute name="articleStartNumber" type="integer" default="0"/>
+    <aura:attribute name="pageLimit" type="integer" default="0"/>
+    <aura:attribute name="booleanShowPop" type="Boolean" default="false"/>
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <aura:handler name="passSelectedCategoryToMain" event="c:AGN_SPARKPassSelectedCategoryFromPopUp" action="{!c.setMainCategoryFromPopUp}"/>
+	<!--<aura:handler event="c:AGN_SPARK_NavigateToArticle" action="{!c.handleArticleCategorySelection}"/>-->
+
+    
+    
+    <aura:attribute name="backGroundImageURLs" type="object" default=""/>
+    <aura:attribute name="backGroundImageURLArticleBanner" type="object" default="{!v.backGroundImageURLs.SparkArticleBanner}"/>
+    
+    <aura:html tag="style">
+        
+
+/* --------------------- Banner Section Starts ------------------------------------------ */
+    
+    
+   #bannerImage111 {
+    width: 100%;
+    background: url(../images/AllerganAesthetics_Photography_28.jpg) no-repeat;
+    background-size: 100% 100%;
+    padding: 0px;
+}
+    #Group_88 {
+        top: 44% !important;
+    }
+    #Icon_awesome-twitter,#Icon_awesome-facebook,#Icon_awesome-instagram {
+        fill: #ffffff !important;
+    }
+   #bannerContent {
+        background-color: #faf6f5;
+        padding: 390px 0px 0px 122px;
+    }
+    .higlightSec{
+        color: #a7756e;
+    }
+        #FilterBySection{
+        margin-bottom:30px;
+        }
+    #title {
+        white-space: pre-line;
+        text-align: left;
+        font-weight: 400;
+        font-size: 50px;
+        color: #000000;
+        line-height: initial;
+        font-family: 'Beatrice-light';
+        }
+    #clearFloat{
+        clear: both;
+    }
+    #filterButtonContainer {
+	width: 90%;
+    margin: 0 auto;
+    height: 100%;
+}
+        .featuredBtnFilter:last-child {
+            margin-right: 0px;
+        }
+        .clear{
+        clear:both;
+        }
+   .featuredBtnFilter {
+    font-size: 20px;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    color: #000000;
+    padding: 16px;
+    width: 29.2%;
+    background-color: #ffffff;
+    border: 1px solid black;
+    float: left;
+        outline:none;
+    margin-right: 36px;
+    margin-bottom:10px;
+}
+    
+    /* ---------------------- Banner Section Ends ---------------------------- */
+    
+        .articleDesc iframe{
+        width:100%;
+        }
+    /* ---------------------- Content Section Starts ------------------------- */
+    body{
+        overflow-x: hidden;
+    }
+    #Home{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    hr {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid black;
+        margin: 1em 0;
+        width: 905px;
+        padding: 0;
+    }
+    #bulletContainer{
+        margin-bottom: 105px;
+    }
+    #filterSection{
+        border-bottom: 1px solid black;
+    }
+    ::placeholder{
+        font-size: 20px;
+        color:#000000 !important;
+        font-style:normal !important;
+    }
+    input[type=text] {
+        width: 86%;
+        padding: 22px 26px;
+        margin: 0px;
+        box-sizing: border-box;
+        font-family: 'Neue_Haas_Unica_Pro-light';
+        border: 1px solid black;
+        border-radius: 4px;
+        position: relative;
+        font-size: 18px;
+        font-style: normal !important;
+        }
+    button:focus{
+        outline: none;
+    }
+        
+        img.thumbnail_img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+    
+    .questionIcon{
+        right: 10%;
+    }
+    .searchIcon{
+        right: 20%;
+    }
+    #question{
+        margin: 80px 0px 40px 101px;
+    }
+     #filterText {
+        font-weight: 400;
+        color: #000000;
+        padding-top: 10px;
+        padding-left: 120px;
+        line-height: initial;
+        font-family: 'Beatrice-light';
+        font-size: 30px;
+    }
+    #browseText {
+    font-weight: normal;
+    color: #000000;
+    padding: 50px 0px 0px 0px;
+    line-height: 40px;
+    font-size: 30px;
+    text-align: center;
+    font-family: 'Beatrice-light';
+}
+    #marketing,#industry{
+        padding: 20px 115px;
+        box-sizing: border-box;
+        border: 1px solid black;
+        border-radius: 4px;
+        font-size: 22px;
+        font-weight: bolder;
+        background-color: white;
+    }
+    #marketing{
+        margin:0px 135px 50px 0px;
+    }
+    #browseArticle{
+        background-color: #faf6f5;
+    }
+    #Clinical, #Business, #Product, #Video, #loadMore {
+    background-color: black;
+    color: white;
+    font-size: 27px;
+    letter-spacing: 2px;
+    font-family: Helvetica;
+    font-weight: bold;
+    padding: 12px 0px;
+        border: 1px solid black;
+        width:350px;
+        text-align:center;
+}
+    #browseButtonContainer {
+    margin: 0 auto;
+    margin-bottom: 80px;
+    margin-top: 44px;
+    width: 1531px;
+}
+    #Business,#Product,#Video{
+        margin-left: 40px;
+    }
+    .featuredBtn.active {
+        background-color: #FAF6F5 !important;
+        color: #a7756e !important;
+        border-color: #a7756e !important;
+      }
+        .featuredBtnFilter.active {
+        background-color: #000000 !important;
+        color: #ffffff!important;
+        border-color: #000000 !important;
+    }
+    .blank{
+        height: 400px;
+        border: 1px solid black;
+    }
+   .articleTitle {
+        color: #989595;
+        font-size: 26px;
+        margin-top: 10px;
+        font-family: 'Beatrice-light';
+   }
+    .articleDesc {
+        margin-top: 8px;
+        line-height: 20px;
+        font-size: 18px;
+        font-family: 'Neue_Haas_Unica_Pro-light';
+        margin-bottom: 12px;
+    }
+    .articleDetails{
+        padding-right: 25px;
+    }
+    .articleDetails a{
+        color: #bb9490 !important;
+        font-size: 18px;
+        font-family:'Beatrice-regular';
+        cursor: pointer;
+    }
+    .articleBlock{
+        width: 92%;
+    	margin: 0 auto !important;
+    }
+    .loadMore{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 70px 0px;
+    }
+    .imgResponsive{
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* ---------------------- Content Section ends ------------------------- */
+        .input-icons i {
+            position: absolute;
+            top: 85px;
+            right: 89px;
+            font-size: 47px;
+            padding-right: 23px;
+            padding-left: 10px;
+            color: #000000;
+            border: 0px;
+        }
+		.questionIcon{
+            right: 36px !important;
+        }
+        .searchIcon{
+            right: 95px !important;
+        }
+        .no_result_wrap{
+        background-size: 100% 100% !important;
+        }
+        .no_result_wrap .no_result {
+        font-family: SourceSansPro-SemiboldIt !important;
+        font-size: 29px !important;
+        font-weight: bold;
+        margin: 0% !important;
+        padding-top: 2.5%;
+        color:#fff !important;
+        }
+        .no_result_wrap .noresult_data {
+        font-family: SourceSansPro-It !important;
+        width: 38%;
+        font-size: 19px !important;
+        margin-left: 30% !important;
+        color:#fff !important
+        }
+        .edit_category {
+        float:left;
+        }
+        .known_thumboverlay p.thumb_content {
+        position: unset;
+        width: 100% !important;
+        padding-top:1vw;
+        font-weight:bolder;
+        
+        }
+        .knwasthetic_content .known_thumbnail p.thumb_content {
+        position: unset;
+        width: 100% !important;
+        padding-top:1vw;
+        font-weight:bolder;
+        }
+        .knwasthetic_content .known_thumbnail{
+        border:0;
+        }
+        .known_body_container .thumb_content {
+    		color: #fff;
+        }
+        .carousel .thumb_content {
+    		color: #fff;
+        }
+.top_clicnic {
+    background-color: #0865d2;
+}
+        img.thumbnail_img {
+           object-fit: cover;
+        }
+        .slds-form-element__control {
+            width: 100%;
+        }
+        .slds-form-element {
+            width: 91%;
+            margin: 0 auto;
+       		 margin-top:80px;
+        }
+   @media screen and (max-width: 1654px) and (min-width: 1621px) {
+        .featuredBtnFilter {
+    		font-size: 19px;
+        }
+   }
+   @media screen and (max-width: 1620px) and (min-width: 1280px) {
+        #bannerContent {
+            padding: 235px 0px 0px 49px;
+        }
+        #title {
+            font-size: 42px;
+        }
+        ::placeholder{
+        font-size: 17px;
+    	}
+        #question {
+            margin: 60px 0px 30px 43px;
+		}
+        .input-icons i {
+            top: 61px;
+        font-size: 37px;
+        }
+        .questionIcon {
+            right: 62px !important;
+        }
+        input[type=text] {
+            width: 86%;
+            padding: 16px 26px;
+            font-size: 16px;
+        }
+        .slds-form-element {
+            margin-top: 60px;
+        }
+        .searchIcon {
+            right: 71px !important;
+		}
+        #filterText {
+            padding-left: 59px;
+            font-size: 23px;
+        }
+        .featuredBtnFilter {
+            font-size: 16px;
+            padding: 11px;
+            width: 30.5%;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+        #filterButtonContainer {
+            margin: 0;
+            margin-left: 32px;
+        }
+        #Clinical, #Business, #Product, #Video, #loadMore {
+            background-color: black;
+            color: white;
+            font-size: 21px;
+            letter-spacing: 2px;
+            font-family: Helvetica;
+            font-weight: bold;
+            padding: 8px 0px;
+            width: 250px;
+            text-align: center;
+        }
+        #Business, #Product, #Video {
+            margin-left: 22px;
+        }
+        #browseButtonContainer {
+            margin-bottom: 60px;
+            margin-top: 23px;
+            width: 1077px;
+        }
+        #browseText {
+            padding: 40px 0px 0px 0px;
+            font-size: 21px;
+        }
+        .blank {
+            height: 275px;
+        }
+        .articleTitle {
+            font-size: 18px;
+       		 min-height: 52px;
+        }
+        .articleDesc {
+            margin-top: 5px;
+            font-size: 15px;
+		}
+        .articleDetails a {
+            font-size: 15px;
+        }
+        .loadMore {
+            margin: 49px 0px;
+        }
+        }
+        @media screen and (max-width: 1280px) and (min-width: 992px) {
+        #bannerContent {
+            padding: 239px 0px 0px 49px;
+        }
+        #title {
+            font-size: 35px;
+        }
+        ::placeholder{
+        font-size: 13px !important;
+    	}
+        #question {
+            margin: 60px 0px 30px 43px;
+		}
+        .input-icons i {
+            top: 60px;
+   		 font-size: 24px;
+        }
+        .questionIcon {
+            right: 35px !important;
+        }
+        input[type=text] {
+            width: 86%;
+            padding: 8px 21px;
+            font-size: 13px;
+        }
+        .slds-form-element {
+            margin-top: 60px;
+        }
+        .searchIcon {
+            right: 51px !important;
+		}
+        #filterText {
+            padding-left: 59px;
+            font-size: 18px;
+        }
+        .featuredBtnFilter {
+            font-size: 11px;
+            padding: 8px;
+            width: 27.2%;
+            margin-right: 32px;
+            margin-bottom: 6px;
+        }
+        #filterButtonContainer {
+            margin: 0 auto;
+        }
+       #Clinical, #Business, #Product, #Video, #loadMore {
+            font-size: 18px;
+            padding: 5px 0px;
+        width:196px;
+        }
+        #Business, #Product, #Video {
+            margin-left: 22px;
+        }
+        #browseButtonContainer {
+            margin-bottom: 60px;
+            margin-top: 23px;
+            width: 857px;
+        }
+       #browseText {
+            padding: 30px 0px 0px 0px;
+            font-size: 20px;
+        }
+        .blank {
+            height: 177px;
+        }
+        .articleTitle {
+            font-size: 15px;
+            min-height: 46px;
+        }
+        .articleDesc {
+            margin-top: 5px;
+            font-size: 12px;
+		}
+        .articleDetails a {
+            font-size: 12px;
+        }
+        .loadMore {
+            margin: 39px 0px;
+        }
+        }
+        
+         @media screen and (max-width: 600px) {
+         #bannerContent {
+            padding: 94px 0px 100px 36px;
+        	background-color: #EEEEEE;	
+        }
+        #title {
+            font-size: 35px;
+        }
+        ::placeholder{
+        font-size: 16px !important;
+    	}
+        #question {
+            margin: 32px auto 18px auto;
+		}
+        .input-icons i {
+            top: 31px;
+            font-size: 24px;
+        }
+        .questionIcon {
+            right: 10px !important;
+        }
+        input[type=text] {
+            width: 86%;
+            padding: 8px 24px;
+            font-size: 16px;
+        }
+        .slds-form-element {
+            width: 100%;
+            margin: 0 auto;
+        }  
+        .cAGN_SPARKArticlesMainComponent .slds-input {
+            width: 100% !important;
+        }
+        .searchIcon {
+            top: 1px !important;
+            right: 10px !important;
+        }
+        #filterText {
+            padding: 0px;
+            font-size: 18px;
+            color: #A7756E;
+            margin: 20px 0px;
+            text-align: center;
+        }
+        
+        .featuredBtnFilter:nth-child(even){
+        margin-right:0px !important;
+        }
+        .featuredBtnFilter {
+            font-size: 12px;
+            padding: 8px;
+            width: 140px;
+            margin-right: 12px;
+            margin-bottom: 6px;
+        }
+        #filterButtonContainer {
+            width: 293px;
+            margin: 0 auto;
+        }
+       #Clinical, #Business, #Product, #Video, #loadMore {
+            font-size: 14px;
+            padding: 5px 0px;
+            width: 145px;
+       		 margin-top: 11px;
+        }
+        #Business, #Video {
+            margin-left: 11px;
+        }
+        #Product{
+        margin-left:0px;
+        }
+        #browseButtonContainer {
+            margin: 0 auto;
+            margin-bottom: 27px;
+            margin-top: 8px;
+            width: 304px;
+        }
+ 
+       #browseText {
+            padding: 30px 0px 0px 0px;
+            font-size: 21px;
+        	line-height: 25px;
+        }
+        .blank {
+            height: 177px;
+        }
+        .articleTitle {
+            font-size: 18px;
+            min-height: 72px;
+        }
+        .articleDesc {
+            margin-top: 0px;
+            font-size: 16px;
+        }
+        .articleDetails a {
+            font-size: 16px;
+        }
+        .loadMore {
+            margin: 39px 0px;
+        }
+        .browseButtonContainerParent{
+        padding:0px;
+        }
+        }
+        @media screen and (max-width: 991px)and (min-width: 600px) {
+         #bannerContent {
+            padding: 94px 0px 100px 36px;
+        background-color: #EEEEEE;	
+        }
+        #title {
+            font-size: 35px;
+        }
+        ::placeholder{
+        font-size: 16px !important;
+    	}
+        #question {
+            margin: 32px auto 18px auto;
+		}
+        .input-icons i {
+            top: 31px;
+            font-size: 24px;
+        }
+        .questionIcon {
+            right: 12% !important;
+        }
+        input[type=text] {
+            width: 86%;
+            padding: 8px 24px;
+            font-size: 16px;
+        }
+        .slds-form-element {
+            width: 100%;
+            margin: 0 auto;
+        }  
+.cAGN_SPARKArticlesMainComponent .slds-input {
+    width: 77% !important;
+    display: block;
+    margin: 0 auto;
+}
+  
+        .searchIcon {
+            top: 1px !important;
+            right: 12% !important;
+        }
+        #filterText {
+            padding: 0px;
+            font-size: 18px;
+            color: #A7756E;
+            margin: 20px 0px;
+            text-align: center;
+        }
+        
+        .featuredBtnFilter:nth-child(even){
+        margin-right:0px !important;
+        }
+        .featuredBtnFilter {
+    font-size: 18px;
+    padding: 8px;
+    width: 197px;
+    margin-right: 12px;
+    margin-bottom: 6px;
+}
+        #filterButtonContainer {
+            width: 417px;
+            margin: 0 auto;
+        }
+       #Clinical, #Business, #Product, #Video, #loadMore {
+    font-size: 17px;
+    padding: 6px 0px;
+    width: 202px;
+    margin-top: 11px;
+}
+        #Business, #Video {
+            margin-left: 11px;
+        }
+        #Product{
+        margin-left:0px;
+        }
+        #browseButtonContainer {
+            margin: 0 auto;
+            margin-bottom: 27px;
+            margin-top: 8px;
+            width: 415px;
+        }
+ 
+       #browseText {
+    padding: 30px 0px 0px 0px;
+    font-size: 20px;
+}
+        .blank {
+            height: 177px;
+        }
+        .articleTitle {
+            font-size: 18px;
+            min-height: 72px;
+        }
+        .articleDesc {
+            margin-top: 0px;
+            font-size: 16px;
+        }
+        .articleDetails a {
+            font-size: 16px;
+        }
+        .loadMore {
+            margin: 39px 0px;
+        }
+        .browseButtonContainerParent{
+        padding:0px;
+        }
+        }
+    </aura:html>
+    
+    <div class="known-content ">
+        
+        <div id="banner" class="row">
+			<div id="bannerContent" class="col-sm-12 col-md-12 col-lg-5 col-xl-5" >
+
+				<div id="title"> <span class="higlightSec" id="span_cat_name">Clinical </span><br/>Knowledge Hub</div>
+			</div>
+			<div id="bannerImage111" class="col-sm-12 col-md-12 col-lg-7 col-xl-7">
+                <img id="clinical" src="{!$Resource.AGN_SPARK_Rebrand_KnowHub + '/images/AllerganAesthetics_Photography_37.jpg'}" class="imgResponsive" alt="KH_banner"/>
+                <img id="business" style="display:none;" src="{!$Resource.AGN_SPARK_Rebrand_KnowHub + '/images/AllerganAesthetics_Photography_28@2x.jpg'}" class="imgResponsive" alt="KH_banner"/>
+                <img id="product" style="display:none;" src="{!$Resource.AGN_SPARK_Rebrand_KnowHub + '/images/AllerganAesthetics_Photography_17.jpg'}" class="imgResponsive" alt="KH_banner"/>
+                <img id="video" style="display:none;" src="{!$Resource.AGN_SPARK_Rebrand_KnowHub + '/images/AllerganAesthetics_Photography_12.jpg'}" class="imgResponsive" alt="KH_banner"/>
+
+				<div id="Group_88">
+					<a aura:id="facebook" id = "facebook" class="facebook" target="_blank" href="https://www.facebook.com/AllerganSparkUK/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-facebook" viewBox="0.562 0.562 28.095 28.043">
+                          <path id="Icon_awesome-facebook" d="M 28.65703392028809 14.66943073272705 C 28.65703392028809 6.876489162445068 22.36974906921387 0.5624998807907104 14.60976696014404 0.5624998807907104 C 6.849785327911377 0.5624998807907104 0.5625001192092896 6.876489162445068 0.5625001192092896 14.66943073272705 C 0.5625001192092896 21.71038436889648 5.699381828308105 27.54655647277832 12.41488075256348 28.60571670532227 L 12.41488075256348 18.74736022949219 L 8.84642219543457 18.74736022949219 L 8.84642219543457 14.66943073272705 L 12.41488075256348 14.66943073272705 L 12.41488075256348 11.561354637146 C 12.41488075256348 8.026090621948242 14.51064205169678 6.073303699493408 17.72055625915527 6.073303699493408 C 19.25782585144043 6.073303699493408 20.86533164978027 6.348616123199463 20.86533164978027 6.348616123199463 L 20.86533164978027 9.818466186523438 L 19.09356498718262 9.818466186523438 C 17.34898567199707 9.818466186523438 16.80465126037598 10.90606498718262 16.80465126037598 12.02153778076172 L 16.80465126037598 14.66943073272705 L 20.70050430297852 14.66943073272705 L 20.07743835449219 18.74736022949219 L 16.80465126037598 18.74736022949219 L 16.80465126037598 28.60571670532227 C 23.52015495300293 27.54655647277832 28.65703392028809 21.71038436889648 28.65703392028809 14.66943073272705 Z">
+                          </path>
+                         </svg>
+                      ]]>
+                    </a>
+                    <a aura:id="instagram" id ="instagram" class="instagram" target="_blank" href="https://www.instagram.com/allergansparkuk/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-instagram" viewBox="-0.005 2.238 27.89 27.888">
+                          <path id="Icon_awesome-instagram" d="M 13.94292449951172 9.031681060791016 C 9.985723495483398 9.031681060791016 6.793830394744873 12.22409343719482 6.793830394744873 16.18193817138672 C 6.793830394744873 20.1397819519043 9.985723495483398 23.33219528198242 13.94292449951172 23.33219528198242 C 17.90012359619141 23.33219528198242 21.09201431274414 20.13977813720703 21.09201431274414 16.18193817138672 C 21.09201431274414 12.22409439086914 17.90012359619141 9.031681060791016 13.94292449951172 9.031681060791016 Z M 13.94292449951172 20.83053588867188 C 11.38567733764648 20.83053588867188 9.295080184936523 18.74582290649414 9.295080184936523 16.18193626403809 C 9.295080184936523 13.6180477142334 11.37945556640625 11.5333366394043 13.94292449951172 11.5333366394043 C 16.50639343261719 11.5333366394043 18.59076690673828 13.6180477142334 18.59076690673828 16.18193626403809 C 18.59076690673828 18.74582290649414 16.50017356872559 20.83053588867188 13.94292449951172 20.83053588867188 Z M 23.05195045471191 8.739198684692383 C 23.05195045471191 9.666430473327637 22.30530548095703 10.40697002410889 21.38445091247559 10.40697002410889 C 20.45736885070801 10.40697002410889 19.71695327758789 9.66020679473877 19.71695327758789 8.739198684692383 C 19.71695327758789 7.818192481994629 20.46359443664551 7.071429252624512 21.38445091247559 7.071429252624512 C 22.30530548095703 7.071429252624512 23.05195045471191 7.818192481994629 23.05195045471191 8.739198684692383 Z M 27.78690147399902 10.43186283111572 C 27.68112754821777 8.197796821594238 27.17092132568359 6.218875408172607 25.5345344543457 4.588443279266357 C 23.90436363220215 2.958010911941528 21.9257640838623 2.447722434997559 19.69206237792969 2.335709095001221 C 17.38991928100586 2.205025196075439 10.48970603942871 2.205025196075439 8.187561988830566 2.335709095001221 C 5.960081100463867 2.441499948501587 3.981481075286865 2.951788425445557 2.345092296600342 4.582220077514648 C 0.708703339099884 6.212652206420898 0.2047198414802551 8.191572189331055 0.09272374957799911 10.42563819885254 C -0.03793852031230927 12.72815704345703 -0.03793852031230927 19.62948989868164 0.09272374957799911 21.93201065063477 C 0.1984979659318924 24.16607666015625 0.7087030410766602 26.14500045776367 2.345092296600342 27.77542877197266 C 3.981481075286865 29.40586090087891 5.953859329223633 29.9161491394043 8.187561988830566 30.02816009521484 C 10.48970603942871 30.15884399414062 17.38991928100586 30.15884399414062 19.69206237792969 30.02816009521484 C 21.92576599121094 29.92237091064453 23.90436553955078 29.41208267211914 25.5345344543457 27.77542877197266 C 27.16470146179199 26.14499282836914 27.67490577697754 24.16607284545898 27.78690147399902 21.93201065063477 C 27.91756439208984 19.62948989868164 27.91756439208984 12.73437881469727 27.78690147399902 10.43186092376709 Z M 24.81277847290039 24.40254974365234 C 24.32746124267578 25.62226486206055 23.38793563842773 26.56193923950195 22.16220092773438 27.05355834960938 C 20.32670974731445 27.78165435791016 15.97130012512207 27.61362838745117 13.94292449951172 27.61362838745117 C 11.91454792022705 27.61362838745117 7.552917003631592 27.77542877197266 5.723643779754639 27.05355834960938 C 4.504129886627197 26.56816101074219 3.564606189727783 25.62848663330078 3.073067426681519 24.40254974365234 C 2.345091819763184 22.5667610168457 2.513086318969727 18.21064376831055 2.513086318969727 16.18193817138672 C 2.513086318969727 14.15323162078857 2.351313829421997 9.790890693664551 3.073067426681519 7.961321353912354 C 3.55838418006897 6.741610050201416 4.497908115386963 5.801933765411377 5.723643779754639 5.310314178466797 C 7.55913782119751 4.582221031188965 11.91454792022705 4.750241756439209 13.94292449951172 4.750241756439209 C 15.97130012512207 4.750241756439209 20.33293151855469 4.588443279266357 22.16220092773438 5.310314178466797 C 23.38171577453613 5.795710563659668 24.32123947143555 6.735385894775391 24.81277847290039 7.961321353912354 C 25.54075241088867 9.797114372253418 25.37276077270508 14.15323066711426 25.37276077270508 16.18193817138672 C 25.37276077270508 18.21064376831055 25.54075241088867 22.57298278808594 24.81277847290039 24.40254974365234 Z">
+                          </path>
+                         </svg>
+                     ]]>
+                    </a>
+				</div>
+			</div>
+		</div>
+        
+        <aura:if isTrue="{!v.firstload}">
+            <!--PMO-2709 Remove Getting started, building
+              Experience and becoming established appearing as a popup
+              -->
+            <!--<c:AGN_SPARKMainCategoryPopUp/>-->
+        </aura:if>
+        <aura:if isTrue="{!v.showListPage}">
+        <div class="row" id="kh_search_box" >
+					<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 input-icons" onkeypress="{!c.keyCheckMain}">
+                        
+                        <lightning:input id="question" value="{!v.mainSearch}" type="text" name="question" placeholder="{!$Label.c.AGN_SPARK_Knowledge_Main_Type_a_Question}"  onchange="{!c.checkForNull}"/>
+
+						<i class="fa fa-angle-right questionIcon" onclick="{!c.articleMainSearch}"></i>
+					</div>
+					<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 input-icons" onkeypress="{!c.keyCheckSidebar}">
+                        <!--<input type="text" id="search" name="search" placeholder="Search" />-->
+                        <lightning:input class="input_search" type="text" name="searchroleName"  placeholder="Search" value="{!v.subSearch}" onchange="{!c.checkForNull}"/>
+						<i class="fa fa-angle-right searchIcon" onclick="{!c.articleSideSearch}"></i>
+					</div>
+			</div>
+			<div class="row" id="kh_filter_box" >
+				<div class="FilterBySectionParent col-sm-12">
+					<div id="FilterBySection" class="row">
+						<div id="filterText" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">Filter by:</div>
+						<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div id="filterButtonContainer" aura:id="catagoryOptions">
+							<aura:iteration items="{!v.articleSubType}" var="subData">
+                                <!--<div class="{!if(v.articleSubTypeSelected== subData.name,'featuredBtn active','featuredBtn')}" 
+                                     onclick="{!c.getArticlesSubCategory}" 
+                                     data-value="{!subData.label}" 
+                                     data-id="{!subData.name}">
+                                    
+                                    {!subData.label}
+                                </div> -->
+                                <!--{! v.articleSubTypeSelected}
+                                {! subData.label}-->
+                               <button align="center" id="{!subData.label}" class="{!if(v.articleSubTypeSelected== subData.name,'featuredBtnFilter active','featuredBtnFilter')}" data-id="{!subData.name}" data-value="{!subData.label}" onclick="{!c.getArticlesSubCategory}">{!subData.label} </button>
+                            </aura:iteration>
+                            </div>
+                            <div class="clear" ></div>
+						</div>
+					</div>
+				</div>
+			</div>
+        </aura:if>
+        <div id="browseArticle" class="row">
+        <div class="loaderHolder">
+            <div aura:id="siteSpinner" class="hideEl siteforceSpinnerManager siteforcePanelsContainer"  data-aura-class="siteforceSpinnerManager siteforcePanelsContainer">
+                <div class="mask" ></div>
+                <div class="loadingCon global siteforceLoadingBalls"  data-aura-class="siteforceLoadingBalls">
+                    <span class="loadingBall first" ></span>
+                    <span class="loadingBall second" ></span>
+                    <span class="loadingBall third" ></span>
+                    <span class="assistiveText" >Loading</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+					<div id="browseText">
+						Browse Articles in:
+					</div>
+		</div>
+		<div class="browseButtonContainerParent col-12">
+                    <div id="browseButtonContainer" aura:id="catagoryOptions">
+                        <!--<aura:iteration items="{!v.mainrealCategory}" var="category">
+                            <button align="center" id="{!category.label}" class="{!if(v.mainCategoryName == category.name,'featuredBtn active','featuredBtn')}" data-id="{!category.name}" data-value="{!category.label}"   onclick="{!c.getCatArticlesMobile}">{!category.label}</button>
+                        </aura:iteration>-->
+                        <button align="center" id="Clinical" class="{!if(v.mainCategoryName == 'Getting_Started_Clinical','featuredBtn active','featuredBtn')}" data-id="Getting_Started_Clinical" data-value="Clinical"   onclick="{!c.getCatArticlesMobile}">Clinical</button>
+                        <button align="center" id="Business" class="{!if(v.mainCategoryName == 'Getting_Started_Business','featuredBtn active','featuredBtn')}" data-id="Getting_Started_Business" data-value="Business"   onclick="{!c.getCatArticlesMobile}">Business</button>
+                        <button align="center" id="Product" class="{!if(v.mainCategoryName == 'Getting_Started_Product','featuredBtn active','featuredBtn')}" data-id="Getting_Started_Product" data-value="Product"   onclick="{!c.getCatArticlesMobile}">Product</button>
+                        <button align="center" id="Video" class="{!if(v.mainCategoryName == 'Getting_Started_Video','featuredBtn active','featuredBtn')}" data-id="Getting_Started_Video" data-value="Video"   onclick="{!c.getCatArticlesMobile}">Video</button>
+                        
+                    </div>
+		</div>
+        <!--<div class="mobile-wrapper" aura:id="showMobile">-->
+        <div aura:id="showMobile" style="width:100%;">    
+            
+            
+           <!-- <div class="edit_choode">
+                <aura:iteration items="{!v.mainrealCategory}" var="category">
+                    <div align="center" class="{!if(v.mainCategoryName == category.name,'doctor edit_category','patient edit_category')}" data-id="{!category.name}" data-value="{!category.label}"   onclick="{!c.getCatArticles}">{!category.label}</div>
+                    <div align="center" class="line"></div>
+                </aura:iteration>
+                <div align="center" class="clear" ></div> 
+            </div>-->
+            
+           <!-- <div class="select_category_block">
+                <div class="edit_query ">
+                    <div class="edit_asthtic_querybx editquery_select" onclick="{!c.showHideCatagoryPanelForMobile}">
+                        <span class="chose_txt">{!$Label.c.AGN_SPARK_Knowledge_Select_Category}</span> 
+                        <i aura:id="catagoryBtnIcon" class="glyphicon glyphicon-plus plus"></i>
+                    </div>
+                    <div class="edit_asthtic_dropbx" aura:id="catagoryOptions">
+                        <aura:iteration items="{!v.mainrealCategory}" var="category">
+                            <div align="center" class="{!if(v.mainCategoryName == category.name,'doctor edit_category','patient edit_category')}" data-id="{!category.name}" data-value="{!category.label}"   onclick="{!c.getCatArticlesMobile}">{!category.label}</div>
+                            <div align="center" class="line"></div>
+                        </aura:iteration>                    
+                    </div>
+                </div>
+                <aura:if isTrue="{!!empty(v.articleSubType)}">
+                    <div class="edit_query">
+                        <div class="edit_asthtic_querybx edit_query_topic" onclick="{!c.showHideHotTopicForMobile}">
+                            <span class="chose_txt">{!$Label.c.AGN_SPARK_Knowledge_Hot_Topics}</span>
+                            <i aura:id="hotTopicBtnIcon" class="glyphicon glyphicon-plus plus"></i>
+                        </div>
+                        <div class="edit_asthtic_dropbx" aura:id="hotTopicOptions">
+                            <aura:iteration items="{!v.articleSubType}" var="subData">
+                                <div class="{!if(v.articleSubTypeSelected== subData.name,'single_item active_singleitem','single_item')}" onclick="{!c.getArticlesSubCategoryMobile}" data-value="{!subData.label}" data-id="{!subData.name}">
+                                    {!subData.label}
+                                </div>  
+                            </aura:iteration>
+                        </div>
+                    </div>
+                </aura:if>
+            </div>
+            -->
+            
+            <div class="known_body">
+                <div class="known_body_content">
+                    <!--working--><aura:if isTrue="{!v.showListPage}">
+                    <div class="row articleBlock">
+                        <!--<div class="known_body_container">-->
+                            <aura:if isTrue="{!!empty(v.articleDataList)}"> 
+                                <aura:iteration items="{!v.articleDataList.articleResult}" var="datas" >
+                                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                    <div class="blank" data-Id ="{!datas.Id}" onclick="{!c.imgArticle}">
+                                        <a href="#browseText">
+                                        <img src="{!if(datas.Summary_URL_AGN__c==null,$Resource.AGN_SPARK_TrainingPageThumb+ '/TrainingPagethumb/thumb2.png',datas.Summary_URL_AGN__c)}" class="thumbnail_img" />
+                                        </a>
+                                    </div>
+                                    <div class="articleDetails">
+                                        <div class="articleTitle"><p  >{!datas.Title}</p></div>
+                                        <div class="articleDesc"><aura:unescapedHtml value="{!datas.Body_AGN__c}"/>
+                                        </div>
+                                   
+                                        <div>
+                                            <a data-Id ="{!datas.Id}" onclick="{!c.imgArticle}" href="#browseText">Read more ></a>
+                                        </div>
+									</div>
+                                    </div>
+                                </aura:iteration>
+                            </aura:if>
+                            
+                            <div class="clear" ></div>
+                           <!-- <div class="button_block"> 
+                                <div class="load_more" aura:id="mobileMore" onclick="{!c.fetchMoreListMobile}"> {!$Label.c.AGN_SPARK_Knowledge_Load_More}<img src="{!$Resource.AGN_SPARK_Theme +'/images/knowledge_hub/down_arrow.png'}" alt="{!$Label.c.AGN_SPARK_Knowledge_Load_More}" class="down_arrow"/></div>
+                                <div class="load_less slds-hide" aura:id="mobileLess" onclick="{!c.showLessListMobile}"> {!$Label.c.AGN_SPARK_Knowledge_Load_Less}<img src="{!$Resource.AGN_SPARK_Theme +'/images/knowledge_hub/down_arrow.png'}" alt="{!$Label.c.AGN_SPARK_Knowledge_Load_Less}"  class="down_arrow less_down"/></div>
+                                <div class="clear" ></div>
+                            </div>-->
+                        <!--</div>-->
+                    </div>
+                    <aura:set attribute="else">
+                        <c:AGN_SPARKArticlesContent searchIdValue="{!v.articleId}" parent="{!this}"/>
+                    </aura:set>
+                    </aura:if>
+                    <!--<div class="known_body_content_right">
+                        <div class="inputsearch-placeholder">
+                            <div onkeypress="{!c.keyCheckSidebar}">
+                                <lightning:input class="input_search" type="text" name="searchroleName"  placeholder="Search" value="{!v.subSearch}" onchange="{!c.checkForNull}"/>
+                                <span class="fa fa-search"  onclick="{!c.articleSideSearch}"></span>
+                            </div>
+                        </div>
+                        <div class="knw_categorysectn">
+                            <aura:iteration items="{!v.articleSubType}" var="subData">
+                                <div class="{!if(v.articleSubTypeSelected== subData.name,'single_item active_singleitem','single_item')}" onclick="{!c.getArticlesSubCategory}" data-value="{!subData.label}" data-id="{!subData.name}">
+                                    {!subData.label}
+                                </div>  
+                            </aura:iteration>
+                            <div class="clear" ></div>
+                        </div>
+                    </div>-->
+                    
+                    
+                    <div class="clear" ></div>
+                    
+                </div>
+                
+            </div>
+            <aura:if isTrue="{!v.showListPage}">
+                <!--PMO-2709 Remove Getting started, building
+                    Experience and becoming established appearing below the articles section
+              -->
+                <!--<c:AGN_SPARKMainCategoryPopUp isPopUp="false"/>-->
+                <!--<p>{! v.mainCategoryName}</p>-->
+                <aura:set attribute="else">
+                    <aura:if isTrue="{!!empty(v.mainCategoryName)}">
+                        <c:AGN_SPARK_ArticleCorousel KnowledgeArticlesType="{!v.mainCategoryName}"/>
+                    </aura:if>            
+                </aura:set>
+            </aura:if> 
+        </div>
+    </div>
+    <aura:if isTrue="{!v.showListPage}">
+        <aura:if isTrue="{!!empty(v.mainCategoryName)}">
+            <div aura:id = 'zincCode'>
+            	 <c:AGN_SPARK_ZincCode pageName="{!'Knowledge_'+v.mainCategoryName}"/>
+            </div>
+        </aura:if>                                                                    
+    </aura:if>
+    </div>
+    <aura:if isTrue="{!v.showListPage}">
+    <div class="loadMore">
+				<button id="loadMore" class="featuredBtn" onclick="{!c.fetchMoreListMobile}">Load More</button>
+                <!--<div class="load_more" aura:id="mobileMore" onclick="{!c.fetchMoreListMobile}"> {!$Label.c.AGN_SPARK_Knowledge_Load_More}<img src="{!$Resource.AGN_SPARK_Theme +'/images/knowledge_hub/down_arrow.png'}" alt="{!$Label.c.AGN_SPARK_Knowledge_Load_More}" class="down_arrow"/></div>-->
+			</div>
+    </aura:if>
+</aura:component>

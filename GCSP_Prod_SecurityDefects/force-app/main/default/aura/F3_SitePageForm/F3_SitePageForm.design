@@ -1,0 +1,4 @@
+<design:component>
+	<!-- <design:attribute name="URL Key" label="BTTest" description="Name of the person you want to greet" />
+    <design:attribute name="greeting" label="Greeting" /> -->
+</design:component>

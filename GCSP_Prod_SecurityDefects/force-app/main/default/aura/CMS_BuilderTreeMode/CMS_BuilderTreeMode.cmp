@@ -1,0 +1,103 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="MDFormBuilderController">
+    <!-- Attributes -->
+    <aura:attribute name="mdFormWrapper" type="Object" />
+    <aura:attribute name="currentStepId" type="String" />
+    <aura:attribute name="updatedComponentId" type="String" />
+    
+    <!-- Lightning Custom Event Handler -->
+    <aura:handler event="c:CMS_FormStepChangeEvent" action="{!c.onFormStepChangeEventHandler}"/>
+    <aura:handler event="c:CMS_BuilderRefreshEvent" action="{!c.builderRefreshEventHandler}"/>
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Component Body -->
+    <aura:if isTrue="{!v.recordId}">
+        <aura:if isTrue="{!v.mdFormWrapper}">
+            <div class="slds-p-around_medium">
+                <div >
+                    <!-- Form -->
+                    <div  id="{!v.mdFormWrapper.FormId +'~'+v.mdFormWrapper.DeveloperName}" draggable="true" aura:id="treenode" class="treenode"
+                         ondragstart="{!c.dragForm}" ondragend="{!c.dragendForm}">
+                        <c:CMS_TreeNodeBox>
+                            <aura:set attribute="box">
+                                <lightning:icon variant="inverse" size="small" iconName="standard:customer_portal_users"/>
+                            </aura:set>
+                            <aura:set attribute="boxtitle">
+                                {!v.mdFormWrapper.DeveloperName}
+                            </aura:set>
+                            <aura:set attribute="boxaction">
+                                <lightning:buttonMenu aura:id="menuForm" iconName="utility:settings" alternativeText="Show menu" onselect="{!c.onFormMenuClick}">
+                                    <lightning:menuItem aura:id="menuItemsComponent" label="Wizard" value="{!'WIZARD~' + v.recordId}" iconName="utility:table"/>
+                                    <!--<lightning:menuItem aura:id="menuItemsComponent" label="Details" value="formdetails" iconName="utility:table"/>
+                                    <lightning:menuItem aura:id="menuItemsComponent" label="Object" value="formobject" iconName="utility:kanban"/>
+                                    <lightning:menuItem aura:id="menuItemsComponent" label="Properties" value="formproperties" iconName="utility:table"/>
+                                    <lightning:menuItem aura:id="menuItemsComponent" label="Languages" value="formlanguages" iconName="utility:table"/>
+                                    <lightning:menuItem aura:id="menuItemsComponent" label="Branding" value="formbranding" iconName="utility:table"/>-->
+                                    <lightning:menuItem aura:id="menuItemsComponent" label="Add Form Step" value="{!'ADDFORMSTEP~' + v.recordId}" iconName="utility:kanban"/>
+                                </lightning:buttonMenu>
+                            </aura:set>
+                        </c:CMS_TreeNodeBox>
+                    </div>
+                    <!-- Form Steps -->
+                    <div class="slds-p-left_xx-large slds-border_left">
+                        <aura:iteration items="{!v.mdFormWrapper.ListSteps}" var="step">
+                            <div>
+                                <div id="{!step.StepId +'~'+step.DeveloperName}" draggable="true" aura:id="treenode" class="treenode"
+                                     ondragstart="{!c.dragFormStep}" ondragend="{!c.dragendFormStep}">
+                                    <c:CMS_TreeNodeBox>
+                                        <aura:set attribute="isCurrentStep" value="{!step.StepId==v.currentStepId ? true : false}">
+                                        </aura:set>
+                                        <aura:set attribute="box">
+                                            <lightning:icon variant="inverse" size="small" iconName="standard:stage"/>
+                                        </aura:set>
+                                        <aura:set attribute="boxtitle">
+                                            {!step.DeveloperName}
+                                        </aura:set>
+                                        <aura:set attribute="boxaction">
+                                            <lightning:buttonMenu aura:id="menuFormStep" iconName="utility:settings" alternativeText="Show menu" onselect="{!c.onStepMenuClick}">
+                                                <lightning:menuItem aura:id="menuItemsFormStep" label="Wizard" value="{!'WIZARD~' + step.StepId}" iconName="utility:table"/>
+                                                <!--<lightning:menuItem aura:id="menuItemsFormStep" label="Details" value="formstepdetails" iconName="utility:table"/>
+                                                <lightning:menuItem aura:id="menuItemsFormStep" label="Languages" value="formsteplanguages" iconName="utility:kanban"/>
+                                                <lightning:menuItem aura:id="menuItemsFormStep" label="Add Component" value="formstepaddcomponent" iconName="utility:kanban"/>-->
+                                            </lightning:buttonMenu>
+                                        </aura:set>
+                                    </c:CMS_TreeNodeBox>
+                                </div>
+                                <!-- Components in each Step -->
+                                <div class="slds-p-left_xx-large slds-border_left">
+                                    <aura:iteration items="{!step.ListComponent}" var="component">
+                                        <div>
+                                            <div id="{!component.ComponentType + '~' + component.ComponentId + '~' + component.DeveloperName + '~' + component.ComponentTypeIcon}" 
+                                                 draggable="true" ondragstart="{!c.dragComponent}" aura:id="treenode" onclick="{!c.onClickComponent}" ondragend="{!c.dragendComponent}">
+                                                <c:CMS_TreeNodeBox>
+                                                    <aura:set attribute="box">
+                                                        <lightning:icon variant="inverse" size="small" iconName="{!component.ComponentTypeIcon}"/>
+                                                    </aura:set>
+                                                    <aura:set attribute="boxtitle">
+                                                        {!component.DeveloperName}
+                                                    </aura:set>
+                                                    <aura:set attribute="boxaction">
+                                                        <lightning:buttonMenu aura:id="menuComponent" iconName="utility:settings" alternativeText="Show menu" onselect="{!c.onComponentMenuClick}">
+                                                            <lightning:menuItem aura:id="menuItemsComponent" label="Wizard" value="{!'WIZARD~' + component.ComponentType + '~'+ component.ComponentId}" iconName="utility:table"/>
+                                                            <!--<lightning:menuItem aura:id="menuItemsComponent" label="Details" value="componentdetails" iconName="utility:table"/>
+                                                            <lightning:menuItem aura:id="menuItemsComponent" label="Languages" value="componentlanguages" iconName="utility:kanban"/>
+                                                            <lightning:menuItem aura:id="menuItemsComponent" label="Branding" value="componentbranding" iconName="utility:side_list"/>-->
+                                                        </lightning:buttonMenu>
+                                                    </aura:set>
+                                                </c:CMS_TreeNodeBox>
+                                            </div>
+                                        </div>    
+                                    </aura:iteration>   
+                                </div>    
+                            </div>    
+                        </aura:iteration>    
+                    </div>    
+                </div>    
+            </div>
+        </aura:if>    
+    </aura:if>
+    <div aura:id="showChildModal" ></div>     
+</aura:component>

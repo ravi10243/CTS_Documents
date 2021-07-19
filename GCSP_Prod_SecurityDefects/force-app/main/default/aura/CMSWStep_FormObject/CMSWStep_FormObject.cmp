@@ -1,0 +1,127 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global"
+                controller="MDFormBuilderController">
+    
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="render" value="{!this}" action="{!c.doneRendering}"/>
+    
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <aura:attribute name="validationFailed" type="Boolean" />
+    
+    <aura:attribute name="listSObject" type="Object" />
+    <aura:attribute name = "renderMode" type = "String"/>
+    
+    <aura:attribute name="selectedObject" type="String" />
+    <aura:attribute name = "saveButtonLabel" type="String" />
+    <aura:attribute name = "saveAndNextButtonLabel" type="String" />
+    <aura:attribute name = "saveAndPreviousButtonLabel" type="String" />
+    
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    
+    <lightning:select aura:id="objectSelect" label="Select object" onchange="{!c.onObjectChange}">
+        <option value="">Choose Object....</option>
+        <aura:iteration items="{!v.listSObject}" var="object">
+            <option value="{!object}">{!object}</option>
+        </aura:iteration>
+    </lightning:select>
+    
+    <lightning:recordEditForm aura:id="editformobject"
+                              
+                              onsuccess="{!c.onFormSuccess}"
+                              onerror="{!c.onError}"
+                              recordId="{!v.recordId}"
+                              objectApiName="MDForm__c">
+        
+        <aura:if isTrue="{!v.selectedObject}">
+            <div>
+                <lightning:inputField fieldName="SaveButtonLabel__c" aura:id="saveButtonLabelField"/>
+                <lightning:inputField fieldName="SaveAndNextButtonLabe__c" aura:id="saveAndNextButtonLabelField"/>
+                <lightning:inputField fieldName="SaveAndPreviousButtonLabe__c" aura:id="saveAndPreviousButtonLabelField"/>
+            </div>
+        </aura:if>
+        
+        <div >
+            <lightning:inputField fieldName="ObjectAPIName__c" aura:id = "objectNameField" />
+        </div>
+    </lightning:recordEditForm>
+    
+    
+    
+    <aura:if isTrue="{!v.renderMode=='DETAIL'}">
+        <button class="slds-button slds-button_brand" onclick="{!c.doSaveFormObjectInfo}">Save</button>
+    </aura:if>
+    
+    <!-- Attributes 
+    <aura:attribute name="formAPIName" type="String" />
+    <aura:attribute name="selectedObject" type="String" />
+    <aura:attribute name = "renderMode" type = "String"/>
+    <aura:attribute name = "recordId" type = "String"/>
+    <aura:attribute name="listSObject" type="Object" />
+    <aura:attribute name = "saveBtnLabel" type = "string" default = "Save"/>
+    <aura:attribute name = "saveBtnVariant" type = "string" default = "brand"/>
+    <aura:attribute name = "saveBtnTitle" type = "string" default = "Save Object details"/>
+    
+    <!- InputField attributes 
+    <aura:attribute name = "saveButtonLabel" type="String" />
+    <aura:attribute name = "saveAndNextButtonLabel" type="String" />
+    <aura:attribute name = "saveAndPreviousButtonLabel" type="String" />
+    
+    <aura:attribute name="validationFailed" type="Boolean" />
+    
+    <!- Handlers 
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!- Aura Method 
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    <lightning:card iconName="utility:sobject" title="Choose object..">
+        <aura:set attribute="actions">
+            <aura:if isTrue="{!v.renderMode=='DETAIL'}">
+                <lightning:button variant = "{!v.saveBtnVariant}" label = "{!v.saveBtnLabel}" title = "{!v.saveBtnTitle}" onclick="{!c.doSaveFormObjectInfo}" />
+            </aura:if>
+        </aura:set>
+        <p class="slds-p-around_small">
+            <lightning:recordEditForm aura:id="editform"
+                                      onload="{!c.onFormLoad}"
+                                      onsuccess="{!c.onFormSuccess}"
+                                      recordId="{!v.recordId}"
+                                      objectApiName="MDForm__c">
+                <lightning:select aura:id="objectSelect" label="Select object" required="true" onchange="{!c.onObjectChange}">
+                 <option value="">Choose Object..</option>
+                    <aura:iteration items="{!v.listSObject}" var="object">
+                     <option value="{!object}">{!object}</option>
+                    </aura:iteration>
+                </lightning:select>
+                <!-
+                <lightning:select label="Select Object" value="{!v.formAPIName}" >
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.listSObject}" var="sobjectapi">
+                        <aura:if isTrue="{!v.formAPIName==sobjectapi}">
+                            <option selected="true" value="{!sobjectapi}">{!sobjectapi}</option>
+                            <aura:set attribute="else">
+                                <option value="{!sobjectapi}">{!sobjectapi}</option>
+                            </aura:set>
+                        </aura:if>    
+                    </aura:iteration>
+                </lightning:select>
+                <!- Form title and form descripton 
+                <aura:if isTrue="{!v.selectedObject}">
+                    <div>
+                        <lightning:inputField fieldName="SaveButtonLabel__c" value="{!v.saveButtonLabel}" aura:id="saveButtonLabelField"/>
+                        <lightning:inputField fieldName="SaveAndNextButtonLabe__c" value="{!v.saveAndNextButtonLabel}" aura:id="saveAndNextButtonLabelField"/>
+                        <lightning:inputField fieldName="SaveAndPreviousButtonLabe__c" value="{!v.saveAndPreviousButtonLabel}" aura:id="saveAndPreviousButtonLabelField"/>
+                    </div>
+                </aura:if>
+                
+                <div >
+                    <lightning:inputField fieldName="ObjectAPIName__c" aura:id = "objectNameField" />
+                </div>
+            </lightning:recordEditForm>
+            <lightning:notificationsLibrary aura:id="notifLib"/>
+        </p>        
+    </lightning:card> -->
+</aura:component>

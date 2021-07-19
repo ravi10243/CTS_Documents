@@ -1,0 +1,21 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 05-17-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   05-17-2021   Ravi Sirigiri   Initial Version
+-->
+<template>  
+    <template if:true={showDepUpload}>
+        <template for:each={DepAttachmentList} for:item='depattachment'>            
+                     <c-agn_gcsp_file-upload key={depattachment.file} onattachmentupload={onupload} parentid={registrationId}
+                    attachment={depattachment} source={source}
+                    sobjectname={sobjectname} 
+					fieldname={fieldname} 
+					creteria-value={creteriaValue} class="upload_sec" isdepdoc={depDoc}></c-agn_gcsp_file-upload>
+        </template>
+   </template>
+</template>

@@ -1,0 +1,6 @@
+<aura:component >
+    <aura:attribute name="sectionHeaderLabel" type="String" />
+    <aura:attribute name="sectionHeader" type="String" />
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    {!v.sectionHeader}
+</aura:component>

@@ -1,0 +1,166 @@
+<aura:component controller="MDFormController" implements="flexipage:availableForAllPageTypes">
+    <!-- Initialiser -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!-- Data -->
+    <aura:attribute name="mdFormsData" type="MDForm__c[]"/>
+    <aura:attribute name="filteredForms" type="MDForm__c[]" />
+    <aura:attribute name="filterQuery" type="String" default="" />
+    
+    <!-- Pagination attributes -->
+    <aura:attribute name="currentPage" type="Integer" default="1" />
+    <aura:attribute name="finalPage" type="Boolean" />
+    <aura:attribute name="recordsPerPage" type="Integer" default="8" />
+    <aura:attribute name="currentBatch" type="MDForm__c[]" />
+    
+    <!-- Other attributes -->
+    <aura:attribute name="isNameSorted" type="Boolean" default="true" />
+    <aura:attribute name="isNameAscending" type="Boolean" default="true" />
+    
+    <!-- New Form Buttons -->
+    <div class="slds-p-bottom_large">
+        <ul style="float:right;" class="slds-buttin-group-list">
+            <div class="slds-button-group-row">
+                <li class="slds-button-group-item" >
+                    <lightning:button onclick="{!c.showCreateNewFormModal}" class="slds-button slds-button_neutral" label = "New Unauthenticated Form" name = "Unauthenticated"/>
+                </li>
+            </div>
+            <div class="slds-button-group-row">
+                <li class="slds-button-group-item" >
+                    <lightning:button onclick="{!c.showCreateNewFormModal}" class="slds-button slds-button_neutral" label = "New Authenticated Form" name = "Authenticated"/>
+                </li>
+            </div>
+        </ul>
+    </div>
+    
+    <!-- Filter Input 
+    <div style="background: rgb(250, 250, 249); padding: 1em; margin-top: 1.4em;" class="slds-p-bottom_small">
+        <div class="slds-form-element">
+            <div style="width: 78%">
+             <lightning:input onkeyup="{!c.filterForms}" name="filter" value="{!v.filterQuery}" placeholder="Filter by Name..." label="Filter"/>
+            </div>
+            
+            <button style="width: 19%" class="slds-button slds-button_brand">Refresh</button>
+        </div>
+    </div>
+ -->
+    
+    <div style="background: rgb(250, 250, 249); padding: 1em; margin-top: 1.4em; border-top-left-radius: 5px; border-top-right-radius: 5px;" class="slds-p-bottom_small">
+        <div class="slds-form-element">
+            <table>
+                <colgroup>
+                    <col width="80%"/>
+                    <col width="120px"/>
+                </colgroup>  
+                <tr style="vertical-align: bottom;">
+                    <td style="padding-right: 1em">
+                        <lightning:input  type = "search" onkeyup="{!c.filterForms}" name="filter" value="{!v.filterQuery}" placeholder="Filter by Name..." label="Filter"/>
+                    </td>
+                    <td> 
+                        <div>
+                            <lightning:button label="Refresh" onclick="{!c.refreshData}" iconName="utility:refresh" iconPosition="left" class="slds-m-right_x-small slds-button_stretch" />
+                        </div>
+                        
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <!-- MD Forms Table -->
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout" role="grid">
+        <colgroup>
+            <col width="45%"/>
+            <col width="45%"/>
+            <col width="105px"/>
+             <col width="105px"/>
+        </colgroup>  
+        <!-- HEADER -->
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="slds-is-sortable" scope="col">
+                    <a class="slds-th__action slds-text-link_reset" onclick="{!c.toggleNameSort}" href="javascript:void(0);">
+                        Name
+                        <aura:if isTrue="{!(v.isNameSorted &amp;&amp; v.isNameAscending)}">
+                            <span class="slds-icon_container slds-icon-utility-arrowup">
+                                <lightning:icon class="slds-icon slds-icon-text-default slds-is-sortable__icon" iconName="utility:arrowup" size="x-small"/>
+                            </span>
+                        </aura:if>
+                        <aura:if isTrue="{!(v.isNameSorted &amp;&amp; !v.isNameAscending)}">
+                            <span class="slds-icon_container slds-icon-utility-arrowdown">
+                                <lightning:icon class="slds-icon slds-icon-text-default slds-is-sortable__icon" iconName="utility:arrowdown" size="x-small"/>
+                            </span>
+                        </aura:if>
+                    </a>
+                </th>
+                <th class="col">
+                    <div title="Status">Status</div>
+                </th>
+                <th class="col">
+                    <div title="Action"></div>
+                </th>
+                <th class="col">
+                    <div title="Design"></div>
+                </th>
+            </tr>
+        </thead>
+        <!-- BODY -->
+        <tbody>
+            <aura:iteration items="{!v.currentBatch}" var="row">
+                <tr class="slds-hint-parent">
+                    <th data-label="Name" scope="row">
+                        <div class="slds-truncate" title="Name">{!row.Name}</div>
+                    </th>
+                    <td data-label="Status">
+                        <div class="slds-truncate" title="Status">{! (row.Status__c.length > 0 ? row.Status__c : 'N/A') }</div>
+                    </td>
+                    <td data-label="Action">
+                        <div title="Action">
+                            <button style="width: 100%" class="slds-button slds-button_neutral" id="{!row.Id}" 
+                                    onclick="{!c.navigateToDesigner}" >Design</button>
+                        </div>
+                    </td>
+                    <td data-label="Design">
+                        <div title="Design">
+                            <a role="button" class="slds-button slds-button_neutral" 
+                               href="{!'https://forms360.lightning.force.com/lightning/n/Designer_360?c__formId=' + row.Id}">Design</a>
+                        </div>
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+    
+    <!-- Pagination -->
+    <div style="background: rgb(250, 250, 249);  padding: 1em; width: 100%; display: flex; justify-content: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" class="slds-grid slds-wrap">
+        <ul style="text-align: center" class="slds-buttin-group-list">
+            <div class="slds-button-group-row">
+                <li class="slds-button-group-item" >
+                    <button style="width: 8em" disabled="{!v.currentPage == 1}" onclick="{!c.previousPageEvent}" class="slds-button slds-button_brand">Previous</button>
+                </li>
+            </div>
+            <div style="margin-left: 1em; margin-right: 1em;" class="slds-button-group-row">
+                <li class="slds-button-group-item" >
+                    <button class="slds-button slds-button_neutral">{!v.currentPage}</button>
+                </li>
+            </div>            
+            <div class="slds-button-group-row">
+                <li class="slds-button-group-item" >
+                    <button style="width: 8em" disabled="{!v.finalPage}" onclick="{!c.nextPageEvent}" class="slds-button slds-button_brand">Next</button>
+                </li>
+            </div>
+        </ul>
+        <!--
+     <div class="slds-col slds-size_4-of-12">
+         <span><button style="float: right; width: 40%;" disabled="{!v.currentPage == 1}" onclick="{!c.previousPageEvent}" class="slds-button slds-button_brand">Previous</button></span>
+        </div>
+     <div style="text-align: center;" class="slds-col slds-size_4-of-12">
+         <span style="vertical-align: middle;" >Page {!v.currentPage}</span>
+        </div>
+     <div class="slds-col slds-size_4-of-12">
+         <span><button style="width: 40%" disabled="{!v.finalPage}" onclick="{!c.nextPageEvent}" class="slds-button slds-button_brand">Next</button></span>
+        </div>-->
+    </div>
+    
+    <div aura:id="showChildModal" ></div> 
+</aura:component>

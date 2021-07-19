@@ -1,0 +1,27 @@
+<!--
+@FileName:          agnAccountHierarchy.html 
+@Version:           1.0
+@Author:            Ayush Basak (ayush.basak@cognizant.com)
+@Purpose:           This is the account hierarchy component, to be displayed on Account page layout.
+                    This components gets the top most parent node for a given account and creates the 
+                    account tree by the hierarchy node component 
+@ Change history:   04.01.2021 / Ayush Basak / Created the file.
+-->
+<template>
+    <!-- Spinner to display before server side data is recieved -->
+    <template if:false={rendered}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+
+    <!-- Once data is recieved, display the child component -->
+    <template if:true={rendered}>
+        <div>
+            <!-- Setting the top most node of the hierarchy -->
+            <c-agn-account-hierarchy-node account-id={topNodeId} 
+                                            record-id={record} 
+                                            hierarchy={hierarchy}
+                                            table-configs={tableConfigs}>
+            </c-agn-account-hierarchy-node>
+        </div>
+    </template>
+</template>

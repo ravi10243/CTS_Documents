@@ -1,0 +1,29 @@
+.THIS .lex-app-header{
+    background-color:#D3D3D3;
+    font-weight: 1000;
+    height: 35px;
+    
+}
+.THIS .lex-app-body{
+    font-weight: 500;
+    height: 54px;
+}
+.THIS .outer_div{
+    background:white;
+    font-family: Verdana, Geneva, sans-serif;
+    color: #3f3f3f;
+}
+
+.THIS .content_div{
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    background:white;
+}
+.THIS .section_font{
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+    color:black;
+    font-weight: 600;
+}

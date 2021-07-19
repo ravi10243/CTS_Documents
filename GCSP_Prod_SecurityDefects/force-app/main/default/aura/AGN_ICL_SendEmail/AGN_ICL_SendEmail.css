@@ -1,0 +1,218 @@
+.THIS.registration_wrapper {
+    background-color: #f5f5f5;
+}      
+.THIS .header {
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px 10px;
+}
+.THIS .header-right {
+    float: right;
+}
+.THIS .container {
+    margin: 150px auto;
+}
+.THIS div[data-acc-content] {
+    display: none;
+}
+.THIS div[data-acc-step]:not(.open) {
+    background: #f2f2f2;
+    visibility: hidden;
+}
+.THIS div[data-acc-step]:not(.open) h5 {
+    color: #777;
+}
+.THIS div[data-acc-step]:not(.open) .badge-primary {
+    background: #ccc;
+}
+.THIS  -webkit-input-container:not( .webkit-input-has-value) input:not(:focus) {
+    color: transparent;
+}
+.THIS .col-md-3{
+    min-height: 57px !important;
+}
+.THIS .time-field{
+    
+    margin-top: 0;
+}
+.THIS .cAGN_ICLAllInputFields select{
+    min-height: 37px !important;    
+}
+.THIS lightning-timepicker .slds-input{
+    border: 0;
+    padding: 4px 0;
+	border-bottom: 1px solid #ccc;
+	background-color: transparent;
+	z-index: 1;
+	position: absolute;
+}
+.THIS lightning-timepicker .slds-input > label {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	top: 9px;
+	color: #fff;
+	transition: 0.3s;
+	z-index: 0;
+	letter-spacing: 0.5px;
+	padding-left: 10%;
+	font-weight: 300;
+	font-size: 15px;
+}
+
+.THIS lightning-timepicker .slds-input:focus > label,
+.THIS lightning-timepicker .slds-input > label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS lightning-timepicker .slds-input:empty{}
+.THIS lightning-timepicker .slds-input:focus {box-shadow: none;}
+.THIS .has-content.effect-16 ~ label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS .opt_out_instruction{
+    border: 1px solid #ddd;
+    margin-left: 0;
+    margin-right: 0;
+    min-height: 100px;
+    padding: 10px 30px 30px;
+    /*margin-bottom: 40px;*/
+    background-color: #fff;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+.THIS .opt_out_instruction .emailform{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.THIS .opt_out_instruction .emailform .emailformblk{
+	margin: 0 5px;
+	display: flex;
+    flex-flow: column nowrap;
+}
+.THIS .opt_out_instruction .emailform .emailformblk .form-group input{
+	position: relative;
+}
+.THIS .opt_out_instruction .emailform .emailformblk .helper_txt{
+	margin:5px 0 0;
+	float: none;
+}
+.THIS .opt_out_instruction .btnSubmit{
+    background-color: #43af2a;
+    float: right;
+    color: #fff;
+    font-weight: 600;
+    margin: 10% 3%;
+    border-radius: 6px;
+    width: 100%;
+    padding: 7px;
+	margin: 0 !important;
+}
+.THIS .opt_out_instruction .opt-email-label{
+    color: #2c5596;
+    font-weight: 300;
+    font-size: 14px;
+    float: right;
+    padding: 0;
+}
+.THIS .slds-input:focus {outline: none;box-shadow:none;}
+.THIS .input-effect{
+  float: left;
+  width: 100%;
+  margin: 5px 0%;
+  position: relative;
+} 
+.THIS .input-effect .slds-input{
+	border: 0;
+	padding: 4px 0;
+	border-bottom: 1px solid #ccc;
+	background-color: transparent;
+	z-index: 1;
+	position: absolute;
+}
+.THIS .input-effect .slds-input ~ label {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	top: 9px;
+	color: #fff;
+	transition: 0.3s;
+	z-index: 0;
+	letter-spacing: 0.5px;
+	padding-left: 10%;
+	font-weight: 300;
+	font-size: 15px;
+}
+.THIS .input-effect .slds-input:focus ~ label,
+.THIS .has-content.slds-input ~ label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS .input-effect .slds-input:empty{}
+.THIS .section-text{
+    margin-bottom: 10px;
+    color: #2c5596;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+}
+.THIS .helper_txt{
+    margin-top: 35px;
+    position: relative;
+    float: left;
+    font-size: 10px;
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {  
+    .THIS .opt_out_instruction .empty{
+            min-height: 20px!important;
+    }
+    .THIS .input-effect .slds-input {
+        padding: 18px 0;
+	}
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {  
+    .THIS .opt_out_instruction{
+        margin-left: 3%;
+    	margin-right: 3%;
+    }
+
+}
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+	.THIS .opt_out_instruction{
+		padding: 15px;
+	}
+	.THIS .opt_out_instruction .section-text{
+		padding:0;
+		margin:0 0 20px;
+	}
+	.THIS .opt_out_instruction .emailform{
+		flex-flow: column nowrap;
+		
+	}
+	.THIS .opt_out_instruction .emailform .emailformblk{
+		margin: 5px 0;
+		padding: 0;
+	}
+	.THIS .opt_out_instruction .opt-email-label{
+        float: left;
+        padding:0;
+        padding-top: 15px;
+	}
+    .THIS .empty{
+        display:none;
+    }
+    .THIS .opt_out_instruction .btnSubmit{
+        margin:0;
+    }
+}

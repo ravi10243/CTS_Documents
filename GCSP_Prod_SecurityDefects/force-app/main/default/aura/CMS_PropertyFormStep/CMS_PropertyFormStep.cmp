@@ -1,0 +1,26 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+   <!-- Handlers-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:attribute name="developerName" type="String" />    
+    <aura:if isTrue="{!v.recordId}">
+        <c:CMS_TreeNodeBox>
+            <aura:set attribute="box">
+                <lightning:icon variant="inverse" size="small" iconName="standard:stage"/>
+            </aura:set>
+            <aura:set attribute="boxtitle">
+               {!v.developerName}
+            </aura:set> 
+        </c:CMS_TreeNodeBox>
+        
+        <lightning:tabset selectedTabId="step">
+            <lightning:tab label="Details" id="step">
+                <c:CMSWStep_StepDetail aura:id="stepDetailChild" renderMode="BUILDER"
+                                       recordId = "{!v.recordId}"/> 
+            </lightning:tab>
+            <lightning:tab label="Languages" id="languages">
+                <c:CMSWStep_FormStepLanguages aura:id="formStepLangChild" renderMode="BUILDER"
+                                          recordId = "{!v.recordId}"/>
+            </lightning:tab>
+        </lightning:tabset> 
+    </aura:if>   
+</aura:component>

@@ -1,0 +1,201 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="AGN_SPARK_pageFooterController" >
+    	
+      	<aura:attribute name="currYear" type="String" default=""/>
+    	<aura:attribute name="fSettings" type="Map" />
+		<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	 	<!-- <div class="footer" id="pageFooterLogin" style="display:none;">
+              <div class="footer-content">
+                  <div class="footer_logo">
+                    <div>  <a href="{!v.fSettings.siteUrl}" ><img src="{!$Resource.AGN_SPARK_Theme +'/images/home/allerganfooter.png'}" alt="header"/></a></div>
+                  <aura:if isTrue="{!and(v.fSettings.userType != 'Guest', not(empty(v.fSettings.amiUrl)))}">
+                      <div class="footer_ami_logo">
+                              <a href="{!v.fSettings.amiUrl+'?croId='+v.fSettings.croId}" target="__blank">
+                                  <img src="{!$Resource.AGN_AMI_Portal_Image+'/images/Allergan_digital_world_WO.png'}" alt="AMI" class="digital_image"/>
+                              </a>
+                      </div>
+                      </aura:if>
+                  </div>
+                  
+                  <div class="footer_subcontent">
+                      <div class="footer_link">
+                             
+                          <span class="dot"></span>
+                        
+                      </div>
+                      <div class="footer_address">
+                            <div class="allergan_address">
+                                 <a class="contact_us" href="{!v.fSettings.siteUrl+'/contactus'}" >{!$Label.c.AGN_SPARK_Footer_Contact_Us}</a>   
+                              <p> {!$Label.c.AGN_SPARK_Footer_Allergan_Address} </p> 
+                            </div>
+                            <div class="terms_link">
+                                 <a class="my_account" href="{!v.fSettings.siteUrl+'/my-account-details'}">{!$Label.c.AGN_SPARK_Footer_My_Account}</a>
+                             	<p><a href="{!v.fSettings.siteUrl+'/terms-of-use'}" >{!$Label.c.AGN_SPARK_Footer_Terms_of_use}</a><br/><br/>
+                                <a href="{!v.fSettings.siteUrl+'/privacy-policy'}" >{!$Label.c.AGN_SPARK_Footer_Privacy_Policy}</a><br/><br/>
+                                  {!format($Label.c.AGN_SPARK_Footer_copyright, v.currYear)}</p> 
+                            </div>
+                             <div class="clear"></div>
+                      </div>
+                     
+                  </div>
+                 <div class="clear"></div>
+              </div>
+    </div>-->
+    <aura:html tag="style">
+        
+        #footerPages{
+            line-height: 38px;
+            text-align: left;
+            font-family: Helvetica;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 21px;
+            color: rgba(255,255,255,1);
+            letter-spacing: 0.6px;
+            padding-top: 80px;
+            padding-left: 112px;
+        }
+        .copyright {
+        	line-height: 38px;
+            text-align: left;
+            font-family: Helvetica;
+            font-style: normal;
+            font-weight: bolder;
+            font-size: 19px;
+            color: rgba(255,255,255,1);
+            letter-spacing: 0.6px;
+            padding-top: 0px;
+            padding-left: 0px;
+        	padding-bottom:10px;
+        }
+        
+         @media  screen and (max-width: 1620px) and (min-width: 1370px) {        
+        		.copyright {
+                    font-size: 15px;
+        			line-height: 28px;
+                }
+        		#footerPages{
+        			line-height: 28px;
+        			padding-left: 90px;
+        		}        		
+        }
+         @media  screen and (max-width: 1370px) and (min-width: 1121px) {
+        		.copyright {
+                    font-size: 13px;
+        			line-height: 22px;
+                }
+        		#footerPages{
+        			line-height: 22px;
+        			padding-left: 70px;
+        		}   
+        }
+        @media  screen and (max-width: 1120px) and (min-width: 992px) {
+        		.copyright {
+                    font-size: 11px;
+        			line-height: 20px;
+                }
+        		#footerPages{
+        			line-height: 20px;
+        			padding-left: 60px;
+        		}   
+        }
+        @media  screen and (max-width: 991px) and (min-width: 600px){        
+				.copyright {
+                    font-size: 24px;
+                    padding: 79px 0px;
+                    line-height: 41px;
+                    text-align: center;
+                }
+        		#footerPages{
+        			font-size: 32px;
+                    padding: 79px 0px;
+                    line-height: 41px;
+                    text-align: center;
+        		}        
+        }
+        @media  screen and (max-width: 600px){        
+				.copyright {
+                    font-size: 19px;
+                    padding: 79px 0px;
+                    line-height: 41px;
+                    text-align: center;
+                }
+        		#footerPages{
+        			font-size: 32px;
+                    padding: 79px 0px;
+                    line-height: 41px;
+                    text-align: center;
+        		}        
+        }
+
+    </aura:html>
+    <footer id="Footer" class="row">
+		<div id="footerLogo" class="col-sm-4">
+            <img src="{!$Resource.SPARK_Rebranding_PageLayout +'/images/FooterLogo-1.jpg'}" alt="FooterLogo" onclick="{!c.moveToAASite}"/>
+               
+		</div>
+		<div id="footerContact" class="col-sm-4">
+			<p class="FooterSectBold"><a class="FooterSectBold" href="{!v.fSettings.siteUrl+'/contactus'}" >{!$Label.c.AGN_SPARK_Footer_Contact_Us}</a></p>
+            <p class="FooterAddress">Spark UK <br/>
+            Allergan Aesthetics<br/>
+            Marlow International <br/>
+            The Parkway, Marlow, Buckinghamshire <br/>
+            SL7 1YL, UK</p>
+		</div>
+		<div id="footerPages" class="col-sm-4">
+			<p class="FooterSectBold"><a href="{!v.fSettings.siteUrl+'/my-account-details'}">{!$Label.c.AGN_SPARK_Footer_My_Account}</a></p>
+			<p class="FooterSectBold"><a href="{!v.fSettings.siteUrl+'/terms-of-use'}" >{!$Label.c.AGN_SPARK_Footer_Terms_of_use}</a></p>
+			<p class="FooterSectBold"><a href="{!v.fSettings.siteUrl+'/privacy-policy'}" >{!$Label.c.AGN_SPARK_Footer_Privacy_Policy}</a></p>
+			<p class="FooterSectBold copyright" style="cursor:auto;">© Copyright 2021 Allergan Aesthetics<br/> 
+        An AbbVie company</p>                           
+		</div>
+	</footer>
+    <footer id="FooterMobile" class="row">
+		<div id="footerPages" class="col-sm-12">
+			<p class="FooterSectBold"><a href="{!v.fSettings.siteUrl+'/my-account-details'}">{!$Label.c.AGN_SPARK_Footer_My_Account}</a></p>
+			<p class="FooterSectBold"><a href="{!v.fSettings.siteUrl+'/terms-of-use'}" >{!$Label.c.AGN_SPARK_Footer_Terms_of_use}</a></p>
+			<p class="FooterSectBold"><a href="{!v.fSettings.siteUrl+'/privacy-policy'}" >{!$Label.c.AGN_SPARK_Footer_Privacy_Policy}</a></p>
+		</div>
+		
+		<div id="footerContact" class="col-sm-12">
+			<p class="FooterSectBold"><a class="FooterSectBold" href="{!v.fSettings.siteUrl+'/contactus'}" >{!$Label.c.AGN_SPARK_Footer_Contact_Us}</a></p>
+            <p class="FooterAddress">Spark UK <br/>
+            Allergan Aesthetics<br/>
+            Marlow International <br/>
+            The Parkway, Marlow, Buckinghamshire <br/>
+            SL7 1YL, UK</p>
+		</div>
+		<div id="footerLogo" class="col-sm-12">
+            <!--<img src="images/FooterLogo-1.jpg" alt="FooterLogo"/>-->
+            <img src="{!$Resource.SPARK_Rebranding_PageLayout +'/images/FooterLogo-1.jpg'}" alt="FooterLogo" onclick="{!c.moveToAASite}"/>
+		</div>
+		 <div id="Group_88Mobile">
+                    <a aura:id="facebook_mobile" id = "facebook_mobile" class="facebook" target="_blank" href="https://www.facebook.com/AllerganSparkUK/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-facebook_mobile" viewBox="0.562 0.562 28.095 28.043">
+                          <path id="Icon_awesome-facebook" d="M 28.65703392028809 14.66943073272705 C 28.65703392028809 6.876489162445068 22.36974906921387 0.5624998807907104 14.60976696014404 0.5624998807907104 C 6.849785327911377 0.5624998807907104 0.5625001192092896 6.876489162445068 0.5625001192092896 14.66943073272705 C 0.5625001192092896 21.71038436889648 5.699381828308105 27.54655647277832 12.41488075256348 28.60571670532227 L 12.41488075256348 18.74736022949219 L 8.84642219543457 18.74736022949219 L 8.84642219543457 14.66943073272705 L 12.41488075256348 14.66943073272705 L 12.41488075256348 11.561354637146 C 12.41488075256348 8.026090621948242 14.51064205169678 6.073303699493408 17.72055625915527 6.073303699493408 C 19.25782585144043 6.073303699493408 20.86533164978027 6.348616123199463 20.86533164978027 6.348616123199463 L 20.86533164978027 9.818466186523438 L 19.09356498718262 9.818466186523438 C 17.34898567199707 9.818466186523438 16.80465126037598 10.90606498718262 16.80465126037598 12.02153778076172 L 16.80465126037598 14.66943073272705 L 20.70050430297852 14.66943073272705 L 20.07743835449219 18.74736022949219 L 16.80465126037598 18.74736022949219 L 16.80465126037598 28.60571670532227 C 23.52015495300293 27.54655647277832 28.65703392028809 21.71038436889648 28.65703392028809 14.66943073272705 Z">
+                          </path>
+                         </svg>
+                     	]]>
+                    </a>
+                   <!-- <a aura:id="twitter_mobile" id = "twitter_mobile" class="twitter">
+                        <![CDATA[
+                         <svg class="Icon_awesome-twitter_mobile" viewBox="0 3.381 34.496 27.948">
+                          <path id="Icon_awesome-twitter" d="M 30.94974136352539 10.34597492218018 C 30.97163772583008 10.65164279937744 30.97163772583008 10.9573802947998 30.97163772583008 11.2630500793457 C 30.97163772583008 20.58637237548828 23.85805320739746 31.32903099060059 10.85649394989014 31.32903099060059 C 6.850955963134766 31.32903099060059 3.130007743835449 30.17174911499023 -9.5367431640625e-07 28.16305351257324 C 0.5691098570823669 28.228515625 1.116256594657898 28.25035667419434 1.707264065742493 28.25035667419434 C 5.012311458587646 28.25035667419434 8.05479907989502 27.13682556152344 10.48438549041748 25.23721313476562 C 7.376272678375244 25.17168045043945 4.77158260345459 23.14108085632324 3.87415623664856 20.34623336791992 C 4.311954975128174 20.41169548034668 4.749685764312744 20.45537948608398 5.209380626678467 20.45537948608398 C 5.844114303588867 20.45537948608398 6.478915214538574 20.36800575256348 7.069854736328125 20.21524238586426 C 3.830430746078491 19.56014633178711 1.400778412818909 16.72168159484863 1.400778412818909 13.2936544418335 L 1.400778412818909 13.20635032653809 C 2.341930150985718 13.73038291931152 3.436425447463989 14.05789566040039 4.596409320831299 14.10151386260986 C 2.692142009735107 12.83508205413818 1.44457221031189 10.67348480224609 1.44457221031189 8.227993011474609 C 1.44457221031189 6.917941093444824 1.794716358184814 5.717039108276367 2.407620429992676 4.668971061706543 C 5.887839794158936 8.948548316955566 11.11911773681641 11.74332714080811 16.98506355285645 12.04906463623047 C 16.87565040588379 11.52503108978271 16.80995750427246 10.97922134399414 16.80995750427246 10.4333438873291 C 16.80995750427246 6.546741485595703 19.96186447143555 3.38076376914978 23.87981605529785 3.38076376914978 C 25.91539573669434 3.38076376914978 27.75397491455078 4.23231029510498 29.04540252685547 5.607890129089355 C 30.64318466186523 5.302221298217773 32.17534255981445 4.712657928466797 33.53246688842773 3.904798030853271 C 33.00708389282227 5.542428016662598 31.89082527160645 6.918008804321289 30.42435646057129 7.791332244873047 C 31.84709930419922 7.638564109802246 33.22604751586914 7.245454788208008 34.49551391601562 6.699644088745117 C 33.53260040283203 8.097002029418945 32.32868957519531 9.341523170471191 30.94974136352539 10.34597206115723 Z">
+                          </path>
+                         </svg>
+                    	]]>
+                    </a>-->
+                    <a aura:id="instagram_mobile" id ="instagram_mobile" class="instagram" target="_blank" href="https://www.instagram.com/allergansparkuk/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-instagram_mobile" viewBox="-0.005 2.238 27.89 27.888">
+                          <path id="Icon_awesome-instagram" d="M 13.94292449951172 9.031681060791016 C 9.985723495483398 9.031681060791016 6.793830394744873 12.22409343719482 6.793830394744873 16.18193817138672 C 6.793830394744873 20.1397819519043 9.985723495483398 23.33219528198242 13.94292449951172 23.33219528198242 C 17.90012359619141 23.33219528198242 21.09201431274414 20.13977813720703 21.09201431274414 16.18193817138672 C 21.09201431274414 12.22409439086914 17.90012359619141 9.031681060791016 13.94292449951172 9.031681060791016 Z M 13.94292449951172 20.83053588867188 C 11.38567733764648 20.83053588867188 9.295080184936523 18.74582290649414 9.295080184936523 16.18193626403809 C 9.295080184936523 13.6180477142334 11.37945556640625 11.5333366394043 13.94292449951172 11.5333366394043 C 16.50639343261719 11.5333366394043 18.59076690673828 13.6180477142334 18.59076690673828 16.18193626403809 C 18.59076690673828 18.74582290649414 16.50017356872559 20.83053588867188 13.94292449951172 20.83053588867188 Z M 23.05195045471191 8.739198684692383 C 23.05195045471191 9.666430473327637 22.30530548095703 10.40697002410889 21.38445091247559 10.40697002410889 C 20.45736885070801 10.40697002410889 19.71695327758789 9.66020679473877 19.71695327758789 8.739198684692383 C 19.71695327758789 7.818192481994629 20.46359443664551 7.071429252624512 21.38445091247559 7.071429252624512 C 22.30530548095703 7.071429252624512 23.05195045471191 7.818192481994629 23.05195045471191 8.739198684692383 Z M 27.78690147399902 10.43186283111572 C 27.68112754821777 8.197796821594238 27.17092132568359 6.218875408172607 25.5345344543457 4.588443279266357 C 23.90436363220215 2.958010911941528 21.9257640838623 2.447722434997559 19.69206237792969 2.335709095001221 C 17.38991928100586 2.205025196075439 10.48970603942871 2.205025196075439 8.187561988830566 2.335709095001221 C 5.960081100463867 2.441499948501587 3.981481075286865 2.951788425445557 2.345092296600342 4.582220077514648 C 0.708703339099884 6.212652206420898 0.2047198414802551 8.191572189331055 0.09272374957799911 10.42563819885254 C -0.03793852031230927 12.72815704345703 -0.03793852031230927 19.62948989868164 0.09272374957799911 21.93201065063477 C 0.1984979659318924 24.16607666015625 0.7087030410766602 26.14500045776367 2.345092296600342 27.77542877197266 C 3.981481075286865 29.40586090087891 5.953859329223633 29.9161491394043 8.187561988830566 30.02816009521484 C 10.48970603942871 30.15884399414062 17.38991928100586 30.15884399414062 19.69206237792969 30.02816009521484 C 21.92576599121094 29.92237091064453 23.90436553955078 29.41208267211914 25.5345344543457 27.77542877197266 C 27.16470146179199 26.14499282836914 27.67490577697754 24.16607284545898 27.78690147399902 21.93201065063477 C 27.91756439208984 19.62948989868164 27.91756439208984 12.73437881469727 27.78690147399902 10.43186092376709 Z M 24.81277847290039 24.40254974365234 C 24.32746124267578 25.62226486206055 23.38793563842773 26.56193923950195 22.16220092773438 27.05355834960938 C 20.32670974731445 27.78165435791016 15.97130012512207 27.61362838745117 13.94292449951172 27.61362838745117 C 11.91454792022705 27.61362838745117 7.552917003631592 27.77542877197266 5.723643779754639 27.05355834960938 C 4.504129886627197 26.56816101074219 3.564606189727783 25.62848663330078 3.073067426681519 24.40254974365234 C 2.345091819763184 22.5667610168457 2.513086318969727 18.21064376831055 2.513086318969727 16.18193817138672 C 2.513086318969727 14.15323162078857 2.351313829421997 9.790890693664551 3.073067426681519 7.961321353912354 C 3.55838418006897 6.741610050201416 4.497908115386963 5.801933765411377 5.723643779754639 5.310314178466797 C 7.55913782119751 4.582221031188965 11.91454792022705 4.750241756439209 13.94292449951172 4.750241756439209 C 15.97130012512207 4.750241756439209 20.33293151855469 4.588443279266357 22.16220092773438 5.310314178466797 C 23.38171577453613 5.795710563659668 24.32123947143555 6.735385894775391 24.81277847290039 7.961321353912354 C 25.54075241088867 9.797114372253418 25.37276077270508 14.15323066711426 25.37276077270508 16.18193817138672 C 25.37276077270508 18.21064376831055 25.54075241088867 22.57298278808594 24.81277847290039 24.40254974365234 Z">
+                          </path>
+                         </svg>
+                    	]]>
+                    </a> 
+        </div>
+		<div class="copyright col-sm-12" ><!--{!format($Label.c.AGN_SPARK_Footer_copyright, v.currYear)}-->© Copyright 2021 Allergan Aesthetics<br/> 
+        An AbbVie company</div>                          
+       
+	</footer>
+</aura:component>

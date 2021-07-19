@@ -1,0 +1,66 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="AGN_OAMPortalCustomerRegStep2Controller">
+    <!--<ltng:require scripts="{!$Resource.AGN_CustomerPortal + '/js/function.js'}"/>-->
+    <aura:attribute name="language" type="String" />
+    <aura:attribute name="countryCode" type="string"/>
+    <aura:attribute name="isCompleted" type="boolean" default="false"/>
+     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="formHeaderChange" action="{!c.onSelectListChange}" event="c:AGN_CustRegHdr_Evt"/>
+    <aura:handler name="messageStep1Completion" action="{!c.onStep1Completed}" event="c:AGN_CustRegOnStep1Completed_Evt"/>
+    
+    <!-- for canada Only  -->
+    <aura:handler name="formHeaderChangeCA" action="{!c.onSelectListChangeCA}" event="c:AGN_CustRegHdr_Evt"/>
+   
+    <div class="container">
+        <div class="hd">{!$Label.c.AGN_OAM_Header_CustomerRegistration}</div>
+        
+        <aura:if isTrue="{!and(!v.isCompleted, v.countryCode != '')}">            
+             <aura:if isTrue="{!v.countryCode == 'CA'}">
+                 <c:AGN_OAMCustomerRegCountryHeader_CA language="{!v.language}" />                
+             </aura:if>
+            <aura:if isTrue="{!and(v.countryCode != 'CA', v.countryCode != null)}">				
+               <c:AGN_OAMCustomerRegCountryHeader/> 
+             </aura:if> 
+        </aura:if>
+        <div class="basic_details">
+            <li class="basic_detail">
+                <aura:if isTrue="{!!v.isCompleted}">
+                    <div class="no_det active">
+                    	<span>1</span>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.isCompleted}">
+                    <div class="no_det active complete-step">
+                        <img  src="{!$Resource.AGN_CustomerPortal + '/images/tick.png'}" styleClass="tick"/>
+                    </div>
+                </aura:if>
+                
+                <span class="no_det_text">{!$Label.c.AGN_OAM_Body_BasicInformation}</span>
+                
+               <aura:if isTrue="{!v.countryCode == 'CA'}">
+                    <c:AGN_OAMCustomerRegStep1_CA aura:id="formStep1CA" language="{!v.language}" />                 
+                </aura:if>  
+                <aura:if isTrue="{!v.countryCode != 'CA'}">
+                 	<c:AGN_OAMCustomerRegStep1 aura:id="formStep1"/>
+                </aura:if> 
+               
+                
+                <aura:if isTrue="{!v.isCompleted}">
+                    <!--<div class="success_com com_fully"><span>{!$Label.c.AGN_OAM_Body_Confirm_Youhave} {!$Label.c.AGN_OAM_Body_Confirm_SuccessfullyCompleted} {!$Label.c.AGN_OAM_Body_Confirm_FirstStep}</span></div>-->
+                    <div class="com_fully"><span>{!$Label.c.AGN_OAM_Body_Confirm_Youhave}&nbsp;{!$Label.c.AGN_OAM_Body_Confirm_SuccessfullyCompleted}&nbsp;{!$Label.c.AGN_OAM_Body_Confirm_FirstStep}</span></div>
+               		<div class="divider"></div>
+                </aura:if>
+            </li>
+            <li>
+                <div class="no_det">2</div><span class="no_det_text">{!$Label.c.AGN_OAM_Body_AddressDetail}</span>
+                <div class="divider"></div>
+            </li>
+            <li>
+                <div class="no_det">3</div><span class="no_det_text">{!$Label.c.AGN_OAM_Body_UploadDocuments}</span>                
+                <div class="divider"></div>
+            </li>
+            <li>
+                <div class="no_det">4</div><span class="no_det_text">{!$Label.c.AGN_OAM_Body_Confirmation}</span>
+            </li>
+        </div>
+    </div>
+</aura:component>

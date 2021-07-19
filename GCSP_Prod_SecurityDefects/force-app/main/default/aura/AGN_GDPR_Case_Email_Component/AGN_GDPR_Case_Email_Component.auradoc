@@ -1,0 +1,7 @@
+<aura:documentation>
+	<aura:description>
+        GDPR Case Email Component is used by DPO/PO to send email to DS when required using prepoulatd text at different case Status.
+        The sent email will be tarcked in the External Email Communication Object which can be found in the Case Object's related list.
+    </aura:description>
+	
+</aura:documentation>

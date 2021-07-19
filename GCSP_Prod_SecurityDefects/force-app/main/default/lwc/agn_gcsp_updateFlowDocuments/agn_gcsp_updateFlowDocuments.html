@@ -1,0 +1,18 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 05-02-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   04-30-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+     <template if:true={showUploadHeader}> 
+        <template for:each={AttachmentList} for:item='attachment'>
+            <c-agn_gcsp_file-upload key={attachment.file} onattachmentuploadupdate={onupload} parentid={registrationId}
+                    attachment={attachment} source={source} class="upload_sec" is-update-doc={isUpdateDoc}></c-agn_gcsp_file-upload>
+        </template>
+   </template>
+</template>

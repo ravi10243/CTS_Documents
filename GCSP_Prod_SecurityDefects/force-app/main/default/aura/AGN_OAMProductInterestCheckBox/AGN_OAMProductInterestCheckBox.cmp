@@ -1,0 +1,13 @@
+<aura:component implements="force:appHostable"  >
+    <aura:attribute name="fieldValue" type="Object" access="public" />
+    <aura:attribute name="chkLabel" type="String" access="public" />
+    <aura:attribute name="chkVal" type="String" access="public" />
+    <span class="input input--nariko inputCheckboxValue input-identifier">
+	<ui:inputCheckbox aura:id="options" change="{!c.onChange}" name="{!chkLabel}"  class="uiInput--checkbox"/>
+    <label class="slds-checkbox_toggle slds-grid">
+        <span class="slds-form-element__label input__Checkboxlabel--nariko"> 
+            {!v.chkLabel}
+        </span>
+    </label>
+   </span>
+</aura:component>

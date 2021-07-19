@@ -1,0 +1,91 @@
+<aura:component controller="AGN_SPARK_TrainingProvidersController" implements="forceCommunity:availableForAllPageTypes,force:hasRecordId" access="global" >
+	<aura:attribute name="trainingProvidersArticles" type="AGN_SPARK_TrainingProvidersController.WrapperTrainingProviderDetails" />
+    <aura:attribute name="pageNumber" type="integer" default='1'/>
+    <aura:attribute name="pageCurrentNumber" type="integer" default='1'/>
+    <aura:attribute name="articleEndNumber" type="integer" default="3"/>
+    <aura:attribute name="selectedCatagory" type="string" default=""/>
+    <aura:attribute name="selectedCatagoryLabel" type="string" default=""/>
+    <aura:attribute name="totalPages" type="integer" default='0'/>
+    <aura:attribute name="articleCount" type="integer" default='0'/>
+    <aura:attribute name="pageMessage" type="String" default=""/>
+    <aura:attribute name="device" type="String" default=""/>
+    <aura:attribute name="searchId" type="String" default=""/> 
+    
+    <aura:handler value="{!this}" name="init" action="{! c.doInit}" />
+        <aura:handler name="change" value="{!v.selectedCatagory}" action="{!c.onChildAttributeChange}"/>
+    <div >
+            
+        <div class="loaderHolder">
+            <div aura:id="siteSpinner" class="hideEl siteforceSpinnerManager siteforcePanelsContainer"  data-aura-class="siteforceSpinnerManager siteforcePanelsContainer">
+                <div class="mask" ></div>
+                <div class="loadingCon global siteforceLoadingBalls"  data-aura-class="siteforceLoadingBalls">
+                    <span class="loadingBall first" ></span>
+                    <span class="loadingBall second" ></span>
+                    <span class="loadingBall third" ></span>
+                    <span class="assistiveText" >Loading</span>
+                </div>
+            </div>  
+        </div>
+        <aura:if isTrue="{!!empty(v.trainingProvidersArticles)}">
+            <div class="academy_list"  aura:id="list-top">                
+                <div class="providerSectionHead col-sm-12">
+                    <span>{!v.selectedCatagoryLabel}</span></div>
+                <div class="row">
+                    <aura:iteration items="{!v.trainingProvidersArticles}" var="item">
+                        <div id="digitalTrainingContainer" class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                          <img id="logo" src="{!item.Logo_URL_AGN__c}" alt="academy_logo1" class="" /> 
+                           
+                            <!--<h5>{!item.Title}</h5> -->
+                            <div id="companyName">
+                                {!item.Title}
+                            </div><br/><br/>
+                            <div id="companyName">
+                                {!item.Region_AGN__c}
+                            </div>
+                            <!--<p>{!item.Region_AGN__c}</p> -->
+                            <div id="viewSiteBtnContainer">
+                                <a target="blank" href="{!item.Web_URL_AGN__c}" >
+                                <button type="button" id="viewSiteBtn" class="viewSiteBtn" onclick="{!c.getClick}" data-id="{!item.Id}">{!$Label.c.AGN_SPARK_Training_Provider_Visit_Button}</button></a>
+                            </div>
+                        </div>                       
+                    </aura:iteration>                    
+                <div class="clear"></div>
+                </div>
+            <div class="pagination d-xs-none d-sm-none d-md-none d-lg-block d-xl-block">
+                <a class="{!if(v.pageCurrentNumber==1,'nav prev disabled','nav prev')}" data-next="false">
+                    <span onclick="{!c.pageNationBack}">←</span>  
+                </a>                 
+                <a class="{!if(v.pageNumber>v.totalPages,'page disabled',if(v.pageNumber==v.pageCurrentNumber,'page current','page'))}" data-page="{!v.pageNumber}" data-id="{!v.pageId}" onclick="{!c.pageValue}">{!v.pageNumber}</a>
+                <span class="pagespan">-</span>
+                <a class="{!if((v.pageNumber+1)>v.totalPages,'page disabled',if(v.pageCurrentNumber==v.pageNumber+1,'page current','page'))}" data-page="{!v.pageNumber+1}" data-id="{!v.pageId+1}" onclick="{!c.pageValue}">{!v.pageNumber+1}</a>
+                <span class="pagespan">-</span>
+                <a class="{!if((v.pageNumber+2)>v.totalPages,'page disabled',if(v.pageCurrentNumber==v.pageNumber+2,'page current','page'))}" data-page="{!v.pageNumber+2}" data-id="{!v.pageId+2}" onclick="{!c.pageValue}">
+                    {!v.pageNumber+2}
+                </a>
+                <span class="pagespan">-</span>
+                <a class="{!if((v.pageNumber+3)>v.totalPages,'page disabled',if(v.pageCurrentNumber==v.pageNumber+3,'page current','page'))}" data-page="{!v.pageNumber+3}" data-id="{!v.pageId+3}" onclick="{!c.pageValue}">{!v.pageNumber+3}</a>
+                <span class="pagespan">-</span>
+                <a class="{!if((v.pageNumber+4)>v.totalPages,'page disabled',if(v.pageCurrentNumber==v.pageNumber+4,'page current','page'))}" data-page="{!v.pageNumber+4}" data-id="{!v.pageId+4}" onclick="{!c.pageValue}">{!v.pageNumber+4}</a>
+                <span class="pagespan">-</span>
+                <a class="{!if((v.pageCurrentNumber) >= v.totalPages,'nav next  disabled','nav next ')}" data-next="true"><!--current-->
+                    <span onclick="{!c.pageNationFwrd}">→</span>
+                </a>
+            </div>
+            </div>
+            
+            <aura:if isTrue="{!v.totalPages > 1}">
+                <div class="button_block d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+                    <div class="load_more" aura:id="load_more" onclick="{! c.loadMore}"> {!$Label.c.AGN_SPARK_TrainingProviders_LoadMore_button}  <img src="{!$Resource.AGN_SPARK_TrainingProvidersPage +'/images/view_resources/down_arrow.png'}" alt="thumbnail" class="down_arrow" /></div>
+                    <div class="load_less" aura:id="load_less"  onclick="{! c.loadLess}">  {!$Label.c.AGN_SPARK_Training_Provider_Loadless_button}  <img src="{!$Resource.AGN_SPARK_TrainingProvidersPage +'/images/view_resources/down_arrow.png'}" alt="thumbnail" class="down_arrow" style="trasform:rotate(180deg);"/></div>
+                    <div class="clear" ></div>
+                </div>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!!empty(v.pageMessage)}">
+            <div class="noRecords">
+                <p>{!v.pageMessage}</p>
+            </div>
+        </aura:if>
+        
+    </div>      
+</aura:component>

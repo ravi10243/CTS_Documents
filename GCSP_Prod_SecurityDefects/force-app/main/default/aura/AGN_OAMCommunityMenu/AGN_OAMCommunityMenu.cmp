@@ -1,0 +1,26 @@
+<aura:component implements="forceCommunity:profileMenuInterface" controller="AGN_OAMAccountDetailController" access="global">
+    <aura:attribute name="options" type="String[]" default="Logout"/>
+    <aura:attribute name="userDetail" type="User"/>
+    <aura:attribute name="communityBaseURL" type="String"/>
+    <aura:attribute name="communitySuffix" type="String"/>
+    <aura:attribute name="isRegistrationCompleted" type="Boolean" default="false"/>
+    <aura:attribute name="adOktaSSOUrl" type="String"/>
+    
+    <ltng:require scripts="{!$Resource.AGN_CustomerPortalJQuery}" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <div class="dropdown closed">
+        <span class="profile_img" ><img src="{!v.userDetail.SmallPhotoUrl}"/></span>
+        <div class="title">{!$Label.c.AGN_OAM_Header_Greeting} &nbsp;<span>{!v.userDetail.Name} </span></div>
+        <ul style="width: 220px; font-size: 15px;">
+            
+            <!-- <li>About</li> -->
+            <aura:if isTrue="{!v.isRegistrationCompleted}">
+                <li><ui:button label="{!$Label.c.AGN_OAM_Profile_Home}" class="button" press="{!c.gotoHome}"/></li>
+                <aura:if isTrue="{!v.adOktaSSOUrl}">
+                    <li><ui:button label="{!$Label.c.AGN_OAM_Profile_AD_Home}" class="button" press="{!c.gotoAD}"/></li>
+                </aura:if>
+            </aura:if>
+            <li><ui:button label="{!$Label.c.AGN_OAM_Profile_Logout}" class="button" press="{!c.logout}"/></li>           
+        </ul>
+    </div>
+</aura:component>

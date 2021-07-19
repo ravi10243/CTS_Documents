@@ -1,0 +1,101 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="MDFormBuilderController">
+    
+    <!-- Attributes -->
+    <aura:attribute name = "renderMode" type = "String"/>
+    <aura:attribute name="formArea" type="Object" />
+    
+    <!-- Attributes to be updated -->
+    <aura:attribute name="Font" type="String"/>
+    <aura:attribute name="FontStyle" type="String"/>
+    <aura:attribute name="Color" type="String"/>
+    <aura:attribute name="FontSize" type="String"/>    
+    
+    <!-- Handlers-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Aura Method -->
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <aura:if isTrue ="{!v.formArea}" > 
+        <lightning:card iconName="standard:brand" title="Apply your own branding..">
+            <p class="slds-p-around_small">
+                <!--** Iteration for Element Name **-->
+                <aura:iteration items = "{!v.formArea.ListElement}" var="element">
+                    <!-- <lightning:layout multipleRows="true">
+                        <lightning:layoutItem padding="around-small" size="12">
+                            <div class="page-section page-header ">
+                                <h2><strong>{!element.ScreenLabel}</strong></h2>
+                            </div>
+                        </lightning:layoutItem> -->
+                    <div class="slds-grid slds-grid_vertical" >
+                        <div class="slds-col">
+                            <span><h2><strong>{!element.ScreenLabel}</strong></h2></span>
+                        </div>
+                        <div class="slds-col">
+                            
+                            
+                            <!--** Iteration for Attribute Name **-->
+                            <aura:iteration items="{!element.ListProperty}" var="prop">
+                                <!-- <lightning:layoutItem padding="around-x_small" size="4"> -->
+                                <div class="slds-grid slds-grid_vertical">
+                                    <aura:if isTrue="{!prop.PropertyType=='String' || prop.PropertyType=='Color'}">
+                                        <div class="slds-col">
+                                            <span>
+                                                <lightning:input type="color" label="{!prop.ScreenLabel}" name="color" value="{!prop.PropertyValue}"/>
+                                            </span>
+                                            
+                                        </div>
+                                        
+                                    </aura:if>
+                                    <aura:if isTrue="{!prop.PropertyType=='FontSize'}">
+                                        <div class="slds-col">
+                                            <span>
+                                                <lightning:slider label="Font Size" value="{!prop.PropertyValue}"/>
+                                            </span>
+                                            
+                                        </div>
+                                    </aura:if>
+                                    <!--
+                                    <aura:if isTrue="{!prop.PropertyType=='Font'}">
+                                        <lightning:select name="FontName" label="Font" value="{!prop.PropertyValue}">
+                                            <option value="Arial">Arial</option>
+                                            <option value="Verdana">Verdana</option>
+                                            <option value="Calibri">Calibri</option>
+                                        </lightning:select>
+                                    </aura:if>
+         -->
+                                    <aura:if isTrue="{!prop.PropertyType=='FontStyle'}">
+                                        <div  class="slds-col">
+                                            <span>
+                                                <lightning:select name="FontStyle" label="Font Style" value="{!prop.PropertyValue}">
+                                                    <option value="Normal">Normal</option>
+                                                    <option value="Italic">Italic</option>
+                                                    <option value="Bold">Bold</option>
+                                                    <option value="Underline">Underline</option>
+                                                </lightning:select>
+                                            </span>
+                                            
+                                        </div>
+                                        
+                                    </aura:if>    
+                                </div>
+                                <!--</lightning:layoutItem> -->
+                            </aura:iteration>
+                        </div>
+                    </div>
+                    <!-- </lightning:layout> -->
+                </aura:iteration>
+                
+            </p>
+            <aura:if isTrue="{!v.renderMode!='WIZARD'}">
+                <div class="slds-align_absolute-center slds-p-top_small">
+                    <lightning:button variant="brand" label="Save" title="Save Branding" onclick="{!c.doSaveComponentBranding}"/>
+                </div>     
+            </aura:if>
+        </lightning:card>
+    </aura:if>    
+</aura:component>

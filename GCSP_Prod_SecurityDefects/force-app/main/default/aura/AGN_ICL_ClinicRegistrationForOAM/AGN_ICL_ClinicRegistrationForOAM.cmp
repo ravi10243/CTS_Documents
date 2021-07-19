@@ -1,0 +1,333 @@
+<aura:component  controller="AGN_ICL_ClinicRegistrationForOAM" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <!--<ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}" />-->
+    <ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}" />
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:attribute name="Clinic_Admin_details" type="Account" default="{'SobjectType': 'Account',
+                                                                        'Salutation':'','FirstName':'','LastName':'','Email':''}"/>
+    <aura:attribute name="clinicID" type="Id"/>
+    <aura:attribute name="Clinic_details" type="Account" default="{'sobjectType':'Account'}"/>
+    <aura:attribute name="Address_details" type="Address_vod__c" default="{'sobjectType':'Address_vod__c'}"/>
+    <aura:attribute name="Locator_Listing" type="Locator_Listing_AGN__c" default="{'sobjectType':'Locator_Listing_AGN__c'}"/>
+    
+    <aura:attribute name="CountryWiseFieldsMap" type="Map" />
+    <aura:attribute name="DiffObjects" type="sObject" access="private" default="{'sobjectType': 'sObject'}"/>
+    
+    <aura:attribute name="termsandcondition" type="Boolean" default="false"/>
+    <aura:attribute name="temptermsandcondition" type="Boolean" default="false"/>
+    <aura:attribute name="termsandconditionpopup" type="Boolean" default="false"/>
+    <aura:attribute name="RegistrationComplete" type="Boolean" default="false"/>
+    <!--  <aura:attribute name="editBtn" type="boolean" default="true"/>  -->
+    <aura:attribute name="BrandValues1" type="String[]"/>
+    <aura:attribute name="selectedBrandvalues" type="List" default=""/>
+    
+    <aura:attribute name="btnLabel" type="String" default="Edit" />
+    <aura:attribute name="SelectedSalutation" type="String"/>
+    <aura:attribute name="CountryWiseFields" type="AGN_ICL_Layout_Field__mdt" />
+    <aura:attribute name="BrandValues" type="String[]"/>
+    <aura:attribute name="SalutationList" type="String[]" default=""/>
+    <aura:attribute name="Clinic_Next" type="Boolean" default="false"/>
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    <aura:attribute name="iclterms" type="List" />
+    
+    <aura:handler name="change" value="{!v.termsandcondition}" action="{!c.TermsAndCondition}"/>
+    <aura:handler name="SelectedBrandValues" event="c:AGN_ICL_MultiSelectChangeEventForOAM" action="{!c.getBrandSelectedValues}"/> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!--  <aura:attribute name="isCaptchaValid" type="Boolean" default="false"/>-->
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit1}" /> -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+    <link href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+    <!--<ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}"  />
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS+'/ICL/js/bootstrap.js'}"/>-->
+    
+    
+    <!--  <div class="adm-sign-up">-->
+    <div class="ICL_page_content registration_wrapper">
+        
+        <div class="container">
+            <form id="form">
+                <aura:if isTrue="{!v.spinner == true}">
+                    <div class="spinnerLoad">
+                        <lightning:spinner alternativeText="Loading" size="medium" />
+                    </div>
+                </aura:if>
+                <div class="list-group">
+                    <aura:if isTrue="{!!v.RegistrationComplete == true}"> 
+                        <div class = "list-group-item py-3 open">
+                            
+                            <div style="display: block;">
+                                <div class="my-3">
+                                    <h4 style="margin: 3% 0;" class="section-text">{!$Label.c.AGN_ICL_Clinic_Information}</h4>
+                                    <div class="row btn_navig" style="padding: 0;">
+                                        <div class="col-md-4 col-sm-4 col-xs-4"></div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4"> </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4"><ui:button class="reg-submit edit-det btnSubmit" aura:id="editBtnId" label="Back" press="{!c.backbutton}"/></div>
+                                    </div>
+                                    <aura:iteration items="{!v.CountryWiseFieldsMap}" var="fieldMap" indexVar="mapindex">
+                                        
+                                        <div style="width: 100%;margin-left: 0;" class="section-label"><c:AGN_ICL_SectionHeader SectionHeaderCustomLabel="{!fieldMap.key}"/></div>
+                                        
+                                        <!--<aura:if isTrue="{!mapindex == 1}">
+                                        <div style="padding: 0;" class="row height-adjust"></div>
+                                    </aura:if> -->
+                                        
+                                        <div style="width: 100%; margin-top:10px;"> 
+                                            <aura:if isTrue="{!mapindex == 0}">
+                                                
+                                                <lightning:checkboxGroup
+                                                                         aura:id="mygroup"
+                                                                         name="checkboxGroup"
+                                                                         label="Brand"
+                                                                         options="{!v.BrandValues1}"
+                                                                         value="{!v.selectedBrandvalues}"
+                                                                         onchange="{!c.handleBrandChange}" 
+                                                                         />
+                                            </aura:if>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            
+                                            <aura:iteration items="{!fieldMap.value}" var="fieldList"> 
+                                                <c:AGN_ICLInputFieldForOAM aura:id="fieldId" sobjectName="{!fieldList.Field_Sobject_API_Name_AGN__c}" fieldName="{!fieldList.Field_API_Name_AGN__c}" displayType="{!fieldList.Field_Type_AGN__c}" isPicklist="{!fieldList.IsPicklist_AGN__c}"
+                                                                           required="{!fieldList.Required_AGN__c}" fieldRegex="{!fieldList.Field_Regex_AGN__c}" customLabel="{!fieldList.Field_Label_AGN__c}"  TypeofAccount="{!fieldList.Field_for_AGN__c}" Clinic_details="{!v.Clinic_details}" Clinic_Admin_details="{!v.Clinic_Admin_details}" Locator_Listing="{!v.Locator_Listing}" Address_details="{!v.Address_details}"/>
+                                            </aura:iteration>
+                                        </div> 
+                                        
+                                    </aura:iteration> 
+                                    <br/>
+                                    <h5 class="section-label">{!$Label.c.AGN_ICL_Clinic_Timings}</h5>
+                                    <div class="row weekday">
+                                        <div class="col-md-6">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    <label>{!$Label.c.AGN_ICL_Monday}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="monstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Monday_Open_Hours_AGN__c}"/>
+                                                    <label aura:id="monstart" class="">{!$Label.c.AGN_ICL_Start_Time}</label> 
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="monend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Monday_Close_Hours_AGN__c}"/>
+                                                    <label aura:id="monend" class="">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    <label>{!$Label.c.AGN_ICL_Tuesday}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="tuestart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Tuesday_Open_Hours_AGN__c}"/>
+                                                    <label aura:id="tuestart" class="">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="tueend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Tuesday_Close_Hours_AGN__c}"/>
+                                                    <label aura:id="tueend" class="">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row weekday">
+                                        <div class="col-md-6">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    <label>{!$Label.c.AGN_ICL_Wednesday}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="wedstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Wednesday_Open_Hours_AGN__c}"/>
+                                                    <label aura:id="wedstart" class="">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="wedend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Wednesday_Close_Hours_AGN__c}"/>
+                                                    <label aura:id="wedend" class="">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    <label>{!$Label.c.AGN_ICL_Thursday}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="thusstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Thursday_Open_Hours_AGN__c}"/>
+                                                    <label aura:id="thusstart" class="">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="thusend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Thursday_Close_Hours_AGN__c}"/>
+                                                    <label aura:id="thusend" class="">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row weekday">
+                                        <div class="col-md-6">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    <label>{!$Label.c.AGN_ICL_Friday}&nbsp;&nbsp;</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="fristart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Friday_Open_Hours_AGN__c}"/>
+                                                    <label aura:id="fristart" class="">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="friend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Friday_Close_Hours_AGN__c}"/>
+                                                    <label aura:id="friend" class="">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    <label>{!$Label.c.AGN_ICL_Saturday}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="satstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Saturday_Open_Hours_AGN__c}"/>
+                                                    <label aura:id="satstart" class="">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="satend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Saturday_Close_Hours_AGN__c}"/>
+                                                    <label aura:id="satend" class="">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row weekday">
+                                        <div class="col-md-6">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    <label>{!$Label.c.AGN_ICL_Sunday}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="sunstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Sunday_Open_Hours_AGN__c}"/>
+                                                    <label aura:id="sunstart" class="">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group input-effect time-field">
+                                                    <lightning:input type="time" name="sunend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Sunday_Close_Hours_AGN__c}"/>
+                                                    <label aura:id="sunend" class="">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="terms_wrapper col-md-4"><ui:inputCheckbox value="{!v.termsandcondition}" label="{!$Label.c.AGN_ICL_Agree_to_TnC}" class="terms_check" /></div>
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <ui:button class="reg-submit btnSubmit" aura:id="btnNext" label="{!$Label.c.AGN_ICL_Submit}" press="{!c.ValidateAndSaveRecords}"/>
+                                                
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-md-4">	
+                                        <span style="color: #2c5596;">{!$Label.c.AGN_ICL_You_are_not_robot}</span>
+                                        <iframe aura:id="vfFrame" src="{!'https://gcldev-allergancommunitycore.cs84.force.com/gcldevallergan'+'/apex/AGN_ICLGoogleCaptchaPage'}" scrolling="no" frameborder="0" width="100%" height="100px" allowtransparency="true" /> 
+                                    </div>-->
+                                        
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">         
+                                            <aura:if isTrue="{!v.termsandconditionpopup == true}">
+                                                <div class="demo-only" style="height: 640px; width: 400px;">
+                                                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                                        <div class="slds-modal__container">
+                                                            <header class="slds-modal__header">
+                                                                <!--<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                                                               
+                                                                <span class="slds-assistive-text">Close</span>
+                                                            </button>-->
+                                                                <h4 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.AGN_ICL_Agree_to_TnC}</h4>
+                                                            </header>
+                                                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                                <form id="formId">
+                                                                    
+                                                                    <!--<p>{!$Label.c.AGN_ICL_Terms_And_Condition_Value}</p> -->
+                                                                    <aura:iteration items="{!v.iclterms}" var="termsofuse" >
+                                                                        <p>
+                                                                            <lightning:formattedRichText value="{!termsofuse.Footer_RichText_c__c}" />
+                                                                        </p> 
+                                                                    </aura:iteration>
+                                                                    
+                                                                </form>
+                                                                
+                                                            </div>
+                                                            <footer class="slds-modal__footer">
+                                                                <lightning:button class="slds-button slds-button_neutral" label="Cancel" onclick="{!c.cancelTermsCondition}"/>
+                                                                <lightning:button label="Save" onclick="{!c.saveTermCondition}"/>
+                                                            </footer>
+                                                        </div>
+                                                    </section>
+                                                    <div class="slds-backdrop slds-backdrop_open"></div>
+                                                </div>
+                                            </aura:if>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+                </div>
+                <aura:if isTrue="{!v.RegistrationComplete == true}">
+                    <div style="display: block;">
+                        <p>{!$Label.c.AGN_ICL_Registration_Congrts}</p>
+                        <p>{!$Label.c.AGN_ICL_Registration_Thank_You}</p>
+                    </div>
+                </aura:if>
+                
+                <!--  <c:AGN_ICL_Footer/> -->
+            </form>
+        </div>
+    </div> 
+    
+</aura:component>

@@ -1,0 +1,125 @@
+<aura:component implements="force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" controller="AGN_OAMPortalCustomerRegStep2Controller" access="global"> 
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="selectedCustRegID" type="String" description="Customer Registration Record Id" access="global"/>
+    
+    <aura:attribute name="objAGNCustAddr" type="Allergan_Customer_Address_AGN__c" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}" access="private" />
+    <aura:attribute name="objAGNCustReg" type="Allergan_Customer_Registration_AGN__c" default="{'sobjectType': 'Allergan_Customer_Registration_AGN__c'}" access="private" />
+    <aura:attribute name="objSpecialty" type="Specialty_Allergan_AGN__c" access="private" default="{'sobjectType': 'Specialty_Allergan_AGN__c'}"/>
+    <aura:attribute name="objMixType" type="sObject" access="private" default="{'sobjectType': 'sObject'}"/>
+    
+    <aura:attribute name="selectedSpecialty" type="String"/>
+    
+    <aura:attribute name="sectionHeaderMapDoc" type="Map" default="{}" access="global"/> 
+    <aura:attribute name="dropdownListMap" type="Map" default="{}" access="global" />
+    
+    <aura:attribute name="countryCode" type="String"/>
+    <aura:attribute name="customerType" type="String"/>
+    <aura:attribute name="customerSubType" type="String"/>
+    <aura:attribute name="customerGroup" type="String"/>
+    
+    <aura:registerEvent name="notifyRegStepChange" type="c:AGN_Reg_Step_Chg_Evt" />
+    <aura:method name="displayFormStep3" action="{!c.showForm}">
+        <aura:attribute name="custRegID" type="String"/>
+    </aura:method>
+    
+    <aura:attribute name="isMandate" type="boolean" default="true"/>
+    <aura:handler name="isManadteDocmant" action="{!c.ondocumentUploadMandate}" event="c:AGN_MandateDocumentUpload_Evt" />
+    
+    <!-- For Canada TaxExempting Document -->
+    <aura:attribute name="taxExempted" type="String"/>
+    <aura:attribute name="isMandateTaxExempting" type="boolean" default="true"/>
+    <aura:attribute name="selectedProvince" type="String"/>
+    
+    
+    <aura:handler name="isManadteTaxExemptingDocmant" action="{!c.onTaxExemptingDocmantUploadMandate}" event="c:AGN_MandateDocumentUpload_Evt" /> 
+    
+    
+    
+    <aura:if isTrue="{! not(empty(v.selectedCustRegID))}">
+        <div class="regi_add_1 reg_add">
+            
+            <aura:iteration items="{!v.sectionHeaderMapDoc}" var="set" indexVar="key">                 
+                <!-- <div class="slds-section-title__divider"><b>{!set.value[0].Section_Header_Label_AGN__c}</b><span></span></div> -->
+                <section class="content bgcolor-7">
+                    <aura:if isTrue="{!v.countryCode == 'DE'}">
+                        <c:auraIfContains_AGN items="{!set.value[0].Customer_Groups_AGN__c}"  element="GP,SP,DN,SG,R,CL">
+                            <span class="input input--nariko inputtextValue input-identifier required-identifier" data-inputFiedlValue="{!v.selectedSpecialty}">
+                                <!--  <div class="box">-->
+                                <ui:inputSelect aura:id="speciality" value="{!v.selectedSpecialty}" class="input__field input__field--nariko inputtextValue" change="{!c.onChangePaymentMethod}">                                        
+                                    <aura:if isTrue="{!not(empty(v.selectedSpecialty))}">
+                                        <option value="{!v.selectedSpecialty}" text="{!v.selectedSpecialty}"></option>
+                                        <option value="" text=""></option>
+                                        <aura:set attribute="else">
+                                            <option value="" text=""></option>
+                                        </aura:set>
+                                    </aura:if>                                        
+                                    
+                                    <aura:iteration items="{!v.objSpecialty}" var="sep">
+                                        <option value="{!sep.Translated_Value_AGN__c}" text="{!sep.Translated_Value_AGN__c}"></option>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                                <label class="input__label input__label--nariko" for="input-19">
+                                    <span class="input__label-content input__label-content--nariko inputHasValue">Fachrichtung<span class="upload_i"></span></span>
+                                </label>
+                                <!--  </div> -->
+                            </span>
+                        </c:auraIfContains_AGN>
+                    </aura:if>
+                    
+                    <aura:iteration items="{!set.value}" var="fieldValue">
+                            <span onchange="{!c.onChange}">
+                                <aura:renderIf isTrue="{!fieldValue.Field_Name_AGN__c == 'Consent_To_Alberta_AGN__c'}">
+                                   <aura:renderIf isTrue="{!v.selectedProvince == 'Alberta'}">
+                                        <c:AGN_CommunityInputFieldCmp 
+                                                              aura:id="fieldId_Doc" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!v.objMixType}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"
+                                                              />
+                                   </aura:renderIf>
+                                </aura:renderIf>
+                                <aura:renderIf isTrue="{!fieldValue.Field_Name_AGN__c != 'Consent_To_Alberta_AGN__c'}">
+                                        <c:AGN_CommunityInputFieldCmp 
+                                                              aura:id="fieldId_Doc" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!v.objMixType}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"
+                                                              />
+                                </aura:renderIf>
+                                
+                            </span>
+                    </aura:iteration> 
+                    
+                </section>
+            </aura:iteration> 
+        </div> 
+        
+        <c:AGN_CustRegStep2DocumentUploader aura:id="docId" custRegId="{!v.selectedCustRegID}" /> 
+        <!-- for Tax Exempting Reference Document  -->
+        
+        <aura:if isTrue="{!and(v.countryCode == 'CA',v.taxExempted =='0')}">
+            <c:AGN_OAMTaxExemptedDocumentUpload_CA aura:id="TaxExeId" taxExemptedVal="{!v.taxExempted}" customerRegId="{!v.selectedCustRegID}"/>          
+        </aura:if>  
+        <!-- For ShipTo License Number Reference Document -->
+        <aura:if isTrue="{!v.countryCode == 'CA'}"> 
+            <c:AGN_OAMShipToDocumentsUpload_CA customerRegId="{!v.selectedCustRegID}" aura:id="ShipTodocId"/>
+        </aura:if>  
+        
+    </aura:if> 
+    
+    <div class="det_upload">
+        <ui:button aura:id="buttonSave" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Save_Continue}" press="{!c.validateAndUpsert}" />
+        <ui:button aura:id="button" class="add_btn cancel_btn" label="{!$Label.c.AGN_OAM_Body_Cancel}" press="{!c.resetBlock}"/>
+    </div>
+</aura:component>

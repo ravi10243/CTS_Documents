@@ -1,0 +1,60 @@
+<aura:component implements="force:appHostable" controller="AGN_OAMMultiSelectController" >
+    
+    <aura:attribute name="options" type="List" />
+    
+    <aura:attribute name="sobjectName" type="String" required="true" default="" /> 
+    <aura:attribute name="fieldName" type="String" required="true" default="" />
+    <aura:attribute name="record" type="SObject" required="true" default="" />
+    <aura:attribute name="displayType" type="String" />
+    <aura:attribute name="picklistOptions" type="Object[]" />
+    <aura:attribute name="variant" type="String" default="form" description="Options: form (default) and bare" />
+    <aura:attribute name="render" type="Boolean" default="true"  />
+    <aura:attribute name="disabled" type="Boolean" />
+    <aura:attribute name="required" type="Boolean" default="false"/>
+    <aura:attribute name="addRequiredCSS" type="Boolean" default="false"/>
+    <aura:attribute name="fieldValueMissing" type="Boolean" default="false"/>
+    <aura:attribute name="currencyIsoCode" type="String" />
+    <aura:attribute name="customLabel" type="String" />
+    <aura:attribute name="isFormatValid" type="Boolean" default="true" />
+    <aura:attribute name="fieldRegex" type="String" />
+    <aura:attribute name="fieldMetadata" type="Object" access="private" />
+    <aura:attribute name="fieldValue" type="Object" access="public" />
+    <aura:attribute name="customLabelName" type="String" access="public"/>
+    <aura:attribute name="customCountryCode" type="String" access="public"/>
+    <aura:attribute name="cmpHelpText" type="String" access="public" default=''/>
+    <aura:attribute name="isDependantField" type="Boolean" access="public" default="false" />
+    <aura:attribute name="controllingField" type="String" access="public" default=''/>
+    
+    <aura:attribute name="customerTypeConfig" type="Customer_Type_Configuration_AGN__c[]"/>
+    <aura:attribute name="customerGroup" type="String"/>
+    
+    <aura:attribute name="customerType" type="String"/>
+    <aura:attribute name="customerSubType" type="String"/>
+    <aura:attribute name="productInterestOptions" type="Map" />
+	
+ <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    <aura:if isTrue="{!v.showSpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end-->       
+   
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <div class="slds-section-title--divider">        
+        <b>{!v.customLabelName} <span class="{!(v.required ? 'required-identifier' : '')}">{!v.required ? '*' : ''}</span></b>
+    </div>    	
+  	
+    <div class="slds-form-element">
+          <aura:iteration items="{!v.options}" var="opt" indexVar="index">               
+                <c:AGN_OAMProductInterestCheckBox fieldValue="{!v.fieldValue}" chkLabel="{!opt.label}" chkVal="{!opt.value}" /> 
+            </aura:iteration>       
+    </div>
+    
+</aura:component>

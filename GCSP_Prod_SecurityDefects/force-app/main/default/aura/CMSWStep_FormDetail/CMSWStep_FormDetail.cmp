@@ -1,0 +1,47 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" 
+                controller="MDFormController">
+    <aura:attribute name = "renderMode" type = "String"/>
+    <aura:attribute name = "recordId" type = "String"/>
+    <aura:attribute name = "mdFormRecordTypeName" type = "String"/>
+    <aura:attribute name = "mdFormRecordTypeId" type = "String"/>
+    <aura:attribute name = "typePicked" type="String"/>
+   
+    
+    <aura:handler name = "init" value = "{!this}" action = "{!c.doInit}"/>
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <lightning:card iconName="doctype:gform" title="Form Details">
+        <p class="slds-p-around_small">
+            <lightning:recordEditForm aura:id="editform"
+                                      onload="{!c.onFormLoad}"
+                                      onsuccess="{!c.onFormSuccess}"
+                                      onsubmit="{!c.handleSubmit}"
+                                      recordId="{!v.recordId}"
+                                      objectApiName="MDForm__c">
+                <lightning:messages />
+                <lightning:inputField fieldName="Name" label = "Developer Name" aura:id = "NameField"/>
+                <!--<lightning:inputField fieldName="Status__c" />-->
+                <lightning:inputField fieldName="URLKey__c" label = "URL" aura:id = "urlField"/>
+                <lightning:inputField fieldName="Type__c" value="{!v.typePicked}" aura:id="typeField"/>
+                <lightning:inputField fieldName="FormTitle__c" aura:id="formTitleField"/>
+                <lightning:inputField fieldName="FormDescription__c" aura:id="formDescriptionField"/>
+                <lightning:inputField fieldName="HelpText__c" aura:id="helpText"/>
+                <lightning:inputField fieldName="ObjectAPIName__c" aura:id="objectAPIName"/>
+                <lightning:inputField fieldName="SaveButtonLabel__c" aura:id="saveButtonLabelField"/>
+                <lightning:inputField fieldName="SaveAndNextButtonLabe__c" aura:id="saveAndNextButtonLabelField"/>
+                <lightning:inputField fieldName="SaveAndPreviousButtonLabe__c" aura:id="saveAndPreviousButtonLabelField"/>
+                <lightning:inputField fieldName="RecordTypeId" style = "display:none;" label = "record type" value = "{!v.mdFormRecordTypeId}"/>
+                <!--<lightning:inputField fieldName="CreatedById" />-->
+            </lightning:recordEditForm> 
+            <lightning:notificationsLibrary aura:id="notifLib"/>
+            <aura:if isTrue="{!v.renderMode == 'BUILDER'}"> 
+                <div class="slds-align_absolute-center slds-p-top_small">
+                    <!--  <lightning:button label="Cancel" title="Cancel" onclick="{!c.OnCloseProperty}" /> -->
+                    <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.doSaveDetails}" />
+                </div>
+            </aura:if>
+        </p>
+    </lightning:card>     
+</aura:component>

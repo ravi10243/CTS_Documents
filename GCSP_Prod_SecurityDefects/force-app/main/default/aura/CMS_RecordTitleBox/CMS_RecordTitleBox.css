@@ -1,0 +1,24 @@
+.THIS{
+    background: white; 
+    border: 1px solid #f1f1f1;
+}
+.THIS .box{
+    background: red;
+    font-size: 20px;
+    color: white;
+    width:25px;
+    height:25px;
+    padding-bottom:4px;
+}
+.THIS .boxtitle{
+    padding:10px;
+    height:25px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+    color:red;
+    font-weight: 100;
+}
+.THIS .boxaction{
+    height:25px;
+    padding:10px;
+}

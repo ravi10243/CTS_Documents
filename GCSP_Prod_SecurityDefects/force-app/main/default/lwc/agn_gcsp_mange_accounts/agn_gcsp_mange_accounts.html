@@ -1,0 +1,52 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 03-09-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   02-17-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <div class="manage_acc1"> 
+        <template for:each={layoutData} for:item="fieldvalue" for:index="index">
+            <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id} instancetype={instancetype}
+                objecttype='contact'
+                index={indx} sobjectname={fieldvalue.SObject_Name_AGN__c} 
+                fieldname={fieldvalue.Field_Name_AGN__c}
+                required={fieldvalue.Required_AGN__c} 
+                record={record} 
+                regex={fieldvalue.Field_Regex_AGN__c}
+                customlabel={fieldvalue.Field_Custom_Label_AGN__c} 
+                country={country}
+                picklist-option-values={fieldvalue.Picklist_Options_AGN__c} 
+                helptext={fieldvalue.Help_Text_AGN__c}
+                objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                rendered={fieldvalue.Default_Display_On_Load_AGN__c} 
+                oncontrollingfieldevent={handleControllingFieldEvent}
+                oncheckboxevent={handleEnableDirectAccess}
+                class="">
+            </c-a-g-n_-g-c-s-p_-common-input-field-component>
+        </template>
+    </div>
+    <div class="cheading cheadingboldnew2">{label.AGN_GCSP_ContactAddAffiliation} - {label.AGN_OAM_Contact_Affiliation}</div>  
+    <div class="manage_acc2">
+        <div class="cheading cheadingboldnew1">{label.AGN_GCSP_Affiliations}</div>      
+        <!--<template if:true={childexistingAddressList}>-->
+            <lightning-datatable data='{childexistingAddressList}' columns={addrcols} key-field="Id"
+                hide-checkbox-column="true"
+                onrowselection={handleAddressRowSelection}>
+            </lightning-datatable>
+        <!--</template>-->
+    </div> 
+    <template if:true={hasChildnewAddress}>
+        <div class="manage_acc3">
+            <div class="cheading cheadingboldnew1">{label.AGN_GCSP_NewAffiliations}</div>  
+            <lightning-datatable data='{childnewAddressList}' columns={addrcols} key-field="Id"
+                onrowselection={handleAddressRowSelection}>
+            </lightning-datatable> 
+        </div>
+    </template>
+</template>

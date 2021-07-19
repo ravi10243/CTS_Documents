@@ -1,0 +1,963 @@
+<aura:component controller="AGN_SPARK_TrainingProvidersController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <!--<ltng:require styles="{!join(',',                         
+                          $Resource.AGN_SPARK_TrainingProvidersPage + '/css/view-resource.css'
+                          )}"
+                  /> -->
+    <aura:attribute name="mainCategories" type="list" />
+    <aura:attribute name="selectedCatagory" type="string" default="All"/>
+    <aura:attribute name="catagorylabel" type="string" default="All"/>
+    <aura:attribute name="catagoryTitle" type="string" default="Training Providers"/>
+    <aura:attribute name="device" type="String" default=""/>    
+    <aura:attribute name="AGNSPARKImages" type="object"/>
+    
+    <aura:handler value="{!this}" name="init" action="{! c.doInit}" />
+    <ltng:require styles="{!join(',',
+                          $Resource.AGN_SPARK_Rebranding_TrainingProviders + '/css/TrainingProviders.css'
+                          )}"
+              />
+    <aura:html tag="style">
+  
+
+/* --------------------- Banner Section Starts ------------------------------------------ */
+
+#banner{
+	height: auto;
+}
+#bannerImageTp{
+    width: 100%;
+	background-position: right;
+    height: 755px;
+    background-size: cover;
+}
+#Icon_awesome-twitter,#Icon_awesome-facebook,#Icon_awesome-instagram {
+	fill: #ffffff !important;
+}
+#bannerContentTp{
+    background-color: #FADBD3;
+    display: flex;
+    align-items: center; 
+}
+#titleTp{
+    text-align: left;
+    font: normal normal 300 50px/60px Beatrice-light;
+    letter-spacing: 0px;
+    color: #000000;
+    padding-bottom: 30px;
+    padding-left: 115px;
+}
+#clearFloat{
+	clear: both;
+}
+
+
+/* ---------------------- Banner Section Ends ---------------------------- */
+
+/* ---------------------- Content Section Starts ------------------------- */
+body{
+    overflow-x: hidden;
+}
+#Home{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+        .filterClass{
+        	display:inline-block;
+        }
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid black;
+    margin: 1em 0;
+    width: 905px;
+    padding: 0;
+}
+#Group_88 {
+    top: 428px !important;
+}
+.cAGN_SPARK_TrainingProviderList{
+	width: 100%;  
+        margin-right:2%;
+}
+.providerSectionHead,#providerSectionSubHead{
+    text-align: left;
+    font: normal normal 300 50px/60px Beatrice-light;
+    letter-spacing: 0px;
+    color: #A7756E;
+    padding-bottom: 30px;
+    padding-top: 70px;
+    padding-left: 125px;
+}
+#providerSectionSubHead{
+    font: normal normal 300 30px/40px Beatrice-light;
+    letter-spacing: 0px;
+    padding-left: 130px;
+    margin-bottom: 40px;
+}
+#filterSection{
+    border-bottom: 1px solid black;
+}
+#providersContainer{
+    background-color: #A7756E;
+    color: white;
+    font-weight: lighter;
+}
+.providersHead{
+    font: normal normal 300 50px/60px Beatrice-light;
+    letter-spacing: 0px;
+    padding-bottom: 20px;
+}
+
+.providersSection{
+    padding-top: 75px;
+    padding-left: 70px;
+}
+.providersContent{
+    font: normal normal 300 21px/31px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.26px;
+}
+#welcomeSectionContentProvider{
+    font: normal normal 300 21px/41px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.26px;
+    text-align: left;
+    color: #000000;
+    padding-bottom: 30px;
+    padding-left: 115px;
+    padding-right: 40px;
+}
+#providerSectionWrapper{
+    border-bottom: 1px solid black;
+}
+#providerSectionWrapper .providerSectionHead{
+   padding-left: 110px;
+}
+#browseButtonContainer{
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-bottom: 80px;
+}
+.featuredBtn,.viewSiteBtn{
+    background-color: white;
+    color: black;
+    font: normal normal bold 21px/31px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.26px;
+    letter-spacing: 1px;
+    padding: 6px 28px;
+    width: 18%;
+    border: black 1px solid;
+}
+        .featuredBtn{
+            padding: 20px 28px;
+            width: 18%;
+        }
+.digital,.faculty,.training{
+    margin-left: 40px;
+}
+.featuredBtn.active {
+    background-color: white !important;
+    color: #a7756e !important;
+    border-color: #a7756e !important;
+    outline: none;
+}
+#digitalTrainingContainer{
+    border:1px solid black;
+        padding-left:8px;
+        padding-right:8px;
+       margin-left:50px;
+    flex: 0 0 26.9%;
+        text-align: center;
+        /*  min-width: 490px;*/
+    max-width: 26.9%;
+        margin-bottom: 100px;
+}
+        #digitalTrainingContainer:first-child,#digitalTrainingContainer:nth-child(3n+1){
+         margin-left: 150px;
+        }
+#logo{
+    padding-top: 8px;
+    font: normal normal bold 18px/27px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.08px;
+    text-align: center;
+    font-weight: bolder;
+    margin: 0px;
+    margin-bottom: 50px;
+    width: 100%;
+    height: auto;   
+}
+#companyName{
+    text-align: center;
+    font: normal normal 300 30px/40px Beatrice-light;
+    letter-spacing: 1.8px;
+}
+#viewSiteBtnContainer{
+    text-align: center;
+    margin: 20px 0px 50px 0px;
+}
+.viewSiteBtn{
+    width: 74%;
+    font: normal normal bold 21px/31px Neue_Haas_Unica_Pro-bold;
+    letter-spacing: 1.26px;
+    padding: 15px 28px;
+        margin-top: 62px;
+}
+.rowWrapper{
+    margin-left: 120px;
+    margin-top: 40px;
+}
+.rowWrapper:last-child{
+    margin-bottom: 150px;
+}
+.featuredBtn, .viewSiteBtn{
+    outline: none;
+}
+        
+/* ---------------------- Pagination ------------------------- */
+
+.view_resource_module .button_block{
+    display:block;
+    border-top: 1px solid #d4ccd5;
+    border-bottom: 1px solid #d4ccd5;
+    margin-top: 10%;
+    margin-bottom: 15%;
+}
+.view_resource_module .load_less{
+    display:none;
+}
+.view_resource_module .load_more, .view_resource_module .load_less{
+    margin-top: 10%;
+    margin-bottom: 10%;
+    padding: 8% 10%;
+    width: 102%;
+    color:#fff !important;
+    background: black;
+    border:0;
+    outline:none;
+    font-family: Beatrice-light;
+    font-size: 22px;
+}
+        .showVmenu{
+        display:block !important;
+        }
+.view_resource_module .load_more span{
+    color:#fff;
+}
+.view_resource_module img.down_arrow {
+    float: right;
+        display:none;
+}
+.view_resource_module .pagination {
+    padding:50px;
+    text-align: center;
+    width: 94%;
+    border-top: 1px solid #d4ccd5;
+    border-bottom: 1px solid #d4ccd5;
+    border-radius: unset;
+}
+.view_resource_module .pagination,
+.view_resource_module .pagination * {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.view_resource_module .pagination a {
+    display: inline-block;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #A7756E;
+    font-family: Beatrice-light;
+    font-size: 20px;
+}
+.view_resource_module .pagespan{
+    color:#d4ccd5 !important;
+}
+.view_resource_module .pagination a.disabled {
+    opacity: .3;
+    pointer-events: none;
+    cursor: not-allowed;
+}    
+        
+/* ---------------------- Content Section ends ------------------------- */
+
+/* Laptop styles */
+@media screen and (max-width: 1559px) and (min-width: 1346px) {
+    .featuredBtn{
+        font-size: 18px;
+        padding: 10px 28px;
+    }
+        .cAGN_SPARK_TrainingProviderList{
+	width: 100%;  
+        margin-right:0px;
+}
+        .providerSectionHead,#providerSectionSubHead{
+        padding-left:54px;
+        }
+        #companyName{
+        min-height:100px !important;
+        }
+    #titleTp{
+        padding-left: 40px;
+    }
+    #bannerImageTp{
+        width: 100%;
+        background-position: right;
+        height: 755px;
+        background-size: cover;
+    }
+    #providerSectionWrapper .providerSectionHead,#providerSectionSubHead,#providerSectionWrapper #welcomeSectionContentProvider{
+        padding-left: 54px;
+    }
+    #sectionDigitalTraining .providerSectionHead,#filterSection #providerSectionSubHead{
+        padding-left: 70px;
+    }
+        .cAGN_SPARK_TrainingProviderList .providerSectionHead{
+         padding-left: 54px;
+        }
+        .cAGN_SPARK_TrainingProviderList #digitalTrainingContainer:first-child,.cAGN_SPARK_TrainingProviderList #digitalTrainingContainer:nth-child(3n+1){
+        margin-left:80px;
+        }
+    #welcomeSectionContentProvider,#providersContent,#providersContent2{
+        font: normal normal 300 19px/31px Neue_Haas_Unica_Pro-light;
+    }
+    .rowWrapper {
+        margin-left: 65px;
+    }
+    .providersSection{
+        padding-left: 35px;
+    }
+        #digitalTrainingContainer:first-child, #digitalTrainingContainer:nth-child(3n+1) {
+        margin-left: 90px;
+    }
+        #digitalTrainingContainer{
+        flex: 0 0 27.2%;
+    	max-width: 27.2%;
+        }
+}
+@media screen and (max-width: 1345px) and (min-width: 992px) {
+    .featuredBtn{
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+          .cAGN_SPARK_TrainingProviderList{
+	width: 102%;  
+        margin-right:0px;
+}
+        #digitalTrainingContainer{
+        margin-left: 24px;
+        flex: 0 0 27.4%;
+    	max-width: 27.4%;
+    }
+         #digitalTrainingContainer:first-child, #digitalTrainingContainer:nth-child(3n+1) {
+        margin-left: 74px;
+    }
+    #titleTp{
+        padding-left: 42px;
+        font-size:35px;
+    }
+    #bannerImageTp{
+        width: 100%;
+        background-position: right;
+        height: 500px;
+        background-size: cover;
+    }
+    #Group_88 {
+        top: 270px !important;
+    }
+    #providerSectionWrapper .providerSectionHead,#providerSectionSubHead,#providerSectionWrapper #welcomeSectionContentProvider{
+        padding-left: 54px;
+        line-height: 40px;
+    }
+    .providerSectionHead, #providerSectionSubHead,.providersHead{
+        font-size: 35px;
+    }
+        .cAGN_SPARK_TrainingProviderList .providerSectionHead{
+        padding-left: 55px;
+        }
+    #filterSection #providerSectionSubHead{
+        font-size: 30px;
+    }
+    .digital, .faculty, .training {
+        margin-left: 15px;
+    }
+    #sectionDigitalTraining .providerSectionHead,#filterSection #providerSectionSubHead{
+        padding-left: 70px;
+    }
+    #welcomeSectionContentProvider,#providersContent,#providersContent2{
+        font: normal normal 300 17px/31px Neue_Haas_Unica_Pro-light;
+    }
+    .rowWrapper {
+        margin-left: 65px;
+    }
+    .providersSection{
+        padding-left: 35px;
+    }
+    #companyName{
+        font-size: 22px;
+        min-height: 80px;
+    }
+    .viewSiteBtn{
+        font-size: 18px;
+        width: 70%;
+        margin-top:0px;
+    }
+}
+@media screen and (max-width: 991px) and (min-width: 733px) {
+    .featuredBtn{
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+        #providerSectionWrapper .providerSectionHead{
+        	padding-top:30px;
+        }
+        #digitalTrainingContainer:first-child,#digitalTrainingContainer:nth-child(3n+1){
+         margin-left: 90px;
+        }
+        .hide{
+         display:none !important;
+        }
+    #bannerContentTp{
+        height: 400px;
+    }
+    #titleTp{
+        padding-left: 34px;
+        font-size:35px;
+    }
+    #bannerImageTp{
+        width: 100%;
+        background-position: center;
+        height: 660px;
+        background-size: cover;
+    }
+    #Group_88 {
+        top: 270px !important;
+    }
+    #providerSectionWrapper .providerSectionHead,#providerSectionSubHead,#providerSectionWrapper #welcomeSectionContentProvider{
+        padding-left: 54px;
+        line-height: 40px;
+    }
+    #providerSectionWrapper #welcomeSectionContentProvider{
+        padding-right: 45px;
+        line-height: 34px;
+    }
+    .providerSectionHead, #providerSectionSubHead{
+        font-size: 35px;
+    }
+    .providersHead{
+        font-size: 30px;
+    }
+    .digital, .faculty, .training {
+        margin-left: 15px;
+    }
+    #sectionDigitalTraining .providerSectionHead,#filterSection #providerSectionSubHead{
+        padding-left: 70px;
+    }
+    #welcomeSectionContentProvider,#providersContent,#providersContent2{
+        font-size: 21px;;
+    }
+    .rowWrapper {
+        margin-left: 65px;
+    }
+    .providersSection{
+        padding-left: 54px;
+        padding-top: 44px;
+    }
+        .providersSection .providersContent{
+        	padding-right:45px;
+        }
+    #companyName{
+        font: normal normal 300 16px/21px Beatrice-light;
+        letter-spacing: 0.96px;
+    }
+    .viewSiteBtn{
+        font-size: 18px;
+        width: 39%;
+        font: normal normal bold 12px/18px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 0.72px;
+    }
+    #providersContent2{
+        margin-bottom: 30px;
+    }
+    #browseButtonContainer{
+        padding-left: 50px;
+    margin-left: 0px;
+        margin-top: 0px;
+    }
+    .featuredBtn{
+        margin-left: 17px;
+        width: 90%;
+        font-size: 21px;
+        padding: 15px 0px;
+    }
+    #filterSection #providerSectionSubHead{
+        font-size: 30px;
+        padding-left: 0px;
+        padding-top: 25px;
+        margin-left: 0px;
+    }
+    .filter-by{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .providerSectionHead{
+        padding-top: 30px;
+    }
+    .digital, .faculty, .training {
+        margin-top: 35px;
+    }
+    #filterSection{
+        border: none;
+    }
+    #sectionDigitalTraining .providerSectionHead, .cAGN_SPARK_TrainingProviderList .providerSectionHead{
+        padding-left: 0px;
+        text-align: center;
+    }
+    #digitalTrainingContainer {
+        border: 1px solid black;
+            flex: 0 0 90%;
+    		max-width: 80%;
+        margin-bottom: 30px;
+        margin-left: 90px;
+    }
+    #logo{
+        font: normal normal bold 10px/15px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 0.6px;     
+    }
+        #filterSection #providerSectionSubHead{
+        padding-bottom:0px;
+        margin-bottom:0px;
+        }
+        .providerSectionHead{
+        padding-top:0px;
+        }
+}
+         @media screen and (max-width: 732px) and (min-width: 436px) {
+        .featuredBtn{
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+        #providerSectionWrapper .providerSectionHead{
+        	padding-top:30px;
+        }
+        #digitalTrainingContainer:first-child,#digitalTrainingContainer:nth-child(3n+1){
+         margin-left: 90px;
+        }
+        .hide{
+         display:none !important;
+        }
+    #bannerContentTp{
+        height: 400px;
+    }
+    #titleTp{
+        padding-left: 34px;
+        font-size:35px;
+    }
+    #bannerImageTp{
+        width: 100%;
+        background-position: center;
+        height: 660px;
+        background-size: cover;
+    }
+    #Group_88 {
+        top: 270px !important;
+    }
+    #providerSectionWrapper .providerSectionHead,#providerSectionSubHead,#providerSectionWrapper #welcomeSectionContentProvider{
+        padding-left: 54px;
+        line-height: 40px;
+    }
+    #providerSectionWrapper #welcomeSectionContentProvider{
+        padding-right: 45px;
+        line-height: 34px;
+    }
+    .providerSectionHead, #providerSectionSubHead{
+        font-size: 35px;
+    }
+    .providersHead{
+        font-size: 30px;
+    }
+    .digital, .faculty, .training {
+        margin-left: 15px;
+    }
+    #sectionDigitalTraining .providerSectionHead,#filterSection #providerSectionSubHead{
+        padding-left: 70px;
+    }
+    #welcomeSectionContentProvider,#providersContent,#providersContent2{
+        font-size: 16px;
+    }
+    .rowWrapper {
+        margin-left: 65px;
+    }
+    .providersSection{
+        padding-left: 54px;
+        padding-top: 44px;
+    }
+        .providersSection .providersContent{
+        	padding-right:45px;
+        }
+    #companyName{
+        font: normal normal 300 16px/21px Beatrice-light;
+        letter-spacing: 0.96px;
+    }
+    .viewSiteBtn{
+        font-size: 18px;
+        width: 39%;
+        font: normal normal bold 12px/18px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 0.72px;
+    }
+    #providersContent2{
+        margin-bottom: 30px;
+    }
+    #browseButtonContainer{
+        padding-left: 50px;
+    margin-left: 0px;
+        margin-top: 0px;
+    }
+    .featuredBtn{
+        margin-left: 17px;
+        width: 90%;
+        font-size: 21px;
+        padding: 15px 0px;
+    }
+    #filterSection #providerSectionSubHead{
+        font-size: 30px;
+        padding-left: 0px;
+        padding-top: 25px;
+        margin-left: 0px;
+    }
+    .filter-by{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .providerSectionHead{
+        padding-top: 30px;
+    }
+    .digital, .faculty, .training {
+        margin-top: 35px;
+    }
+    #filterSection{
+        border: none;
+    }
+    #sectionDigitalTraining .providerSectionHead, .cAGN_SPARK_TrainingProviderList .providerSectionHead{
+        padding-left: 0px;
+        text-align: center;
+    }
+    #digitalTrainingContainer {
+        border: 1px solid black;
+            flex: 0 0 90%;
+    		max-width: 80%;
+        margin-bottom: 30px;
+        margin-left: 90px;
+    }
+    #logo{
+        font: normal normal bold 10px/15px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 0.6px;     
+    }
+        #filterSection #providerSectionSubHead{
+        padding-bottom:0px;
+        margin-bottom:0px;
+        }
+        .providerSectionHead{
+        padding-top:0px;
+        }
+            #digitalTrainingContainer {
+          	  max-width: 72%;
+            }
+        .d-xs-none{
+        display: none !important;
+    }
+    .d-xs-block{
+        display: block !important;
+    }
+        }
+@media screen and (max-width: 435px) and (min-width: 320px) {
+    .featuredBtn{
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+    .d-xs-none{
+        display: none !important;
+    }
+    .d-xs-block{
+        display: block !important;
+    }
+    #bannerContentTp{
+        height: 400px;
+    }
+    #titleTp{
+        padding-left: 25px;
+        font-size:30px;
+    }
+    #bannerImageTp{
+        width: 100%;
+        background-position: center;
+        height: 380px;
+        background-size: cover;
+    }
+    #Group_88 {
+        top: 270px !important;
+    }
+    #providerSectionWrapper .providerSectionHead,#providerSectionSubHead,#providerSectionWrapper #welcomeSectionContentProvider{
+        padding-left: 35px;
+        line-height: 40px;
+    }
+    #providerSectionWrapper #welcomeSectionContentProvider{
+        padding-right: 30px;
+    }
+    .providerSectionHead, #providerSectionSubHead{
+        font-size: 28px;
+    }
+    .providersHead{
+        font-size: 28px;
+    }
+    .digital, .faculty, .training {
+        margin-left: 15px;
+    }
+    #filterSection #providerSectionSubHead{
+        padding-left: 70px;
+    }
+        #sectionDigitalTraining .providerSectionHead{
+            text-align: center;
+        }
+        #sectionDigitalTraining .providerSectionHead,.cAGN_SPARK_TrainingProviderList .providerSectionHead{
+        padding-left: 20px;
+        }
+    #welcomeSectionContentProvider,#providersContent,#providersContent2{
+        font-size: 15px;
+        padding-right: 30px;
+    }
+    .rowWrapper {
+        margin-left: 43px;
+    }
+    .providersSection{
+        padding-left: 35px;
+        padding-top: 44px;
+    }
+    #companyName{
+        font: normal normal 300 18px/21px Beatrice-light;
+        letter-spacing: 0.96px;
+    }
+    .viewSiteBtn{
+        font-size: 18px;
+        width: 50%;
+        font: normal normal bold 12px/18px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 0.72px;
+    }
+    #providersContent2{
+        margin-bottom: 30px;
+    }
+    .featuredBtn{
+        width: 100%;
+    }
+    #browseButtonContainer{
+        margin-left: 0px;
+        padding-left:0px;
+        margin-bottom:30px;
+        margin-top:0px;
+    }
+    .featuredBtn{
+        margin-left: 17px;
+        width: 82%;
+        font-size: 21px;
+        padding: 15px 0px;
+    }
+    #filterSection #providerSectionSubHead{
+        font-size: 28px;
+        padding-left: 0px;
+        padding-top: 25px;
+        margin: 0 auto;
+        margin-left: 35px;
+    }
+    .filter-by{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        width: 85%;
+    }
+        .providerSectionHead{
+        padding-top: 30px;
+    }
+    .academy_list .providerSectionHead{
+        padding-top: 0px;
+    }
+    .digital, .faculty, .training {
+        margin-top: 35px;
+    }
+    #filterSection{
+        border: none;
+    }
+        #digitalTrainingContainer:first-child, #digitalTrainingContainer:nth-child(3n+1) {
+       margin: 0px auto;
+    }
+        .row #digitalTrainingContainer{
+        	margin-left:75px;
+        margin-right:auto;
+        margin-bottom: 30px;
+        }
+         #digitalTrainingContainer {
+        border: 1px solid black;
+        flex: 0 0 90%;
+        max-width: 64%;
+        /* min-width:230px;*/
+        margin-bottom: 30px;
+        margin-left: auto;
+        margin-right:auto;
+    }
+    #logo{
+        font: normal normal bold 10px/15px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 0.6px;
+    }
+}
+       
+  	</aura:html>
+    <div>
+        <div class="loaderHolder">
+            <div aura:id="siteSpinner" class="hideEl siteforceSpinnerManager siteforcePanelsContainer"  data-aura-class="siteforceSpinnerManager siteforcePanelsContainer">
+                <div class="mask" ></div>
+                <div class="loadingCon global siteforceLoadingBalls"  data-aura-class="siteforceLoadingBalls">
+                    <span class="loadingBall first" ></span>
+                    <span class="loadingBall second" ></span>
+                    <span class="loadingBall third" ></span>
+                    <span class="assistiveText" >Loading</span>
+                </div>
+            </div>   </div>
+        <div class="resource-content">
+            <div class="view_resource_module">
+                <div class="content">
+                   <!-- <div class="clinical_banner" style="{!'background:linear-gradient(90deg,rgb(229, 219, 226),rgba(169,136,155,.3)) , url('+ v.AGNSPARKImages.ClinicalBanner+' )no-repeat;'}">
+                        
+                        <div class="banner_content">
+                            <h3>{!$Label.c.AGN_SPARK_TrainingProviders_Tittle}</h3>
+                        </div>
+                    </div>  -->
+                    <div id="banner" class="row">
+                        <div id="bannerContentTp" class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12" >
+                            <div id="titleTp"><aura:unescapedHTML value="{!v.catagoryTitle}"/></div>
+                        </div>
+                        <div id="bannerImageTp" class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                        <div id="Group_88">
+                            <a aura:id="facebook" id = "facebook" class="facebook" target="_blank" href="https://www.facebook.com/AllerganSparkUK/">
+                                <![CDATA[
+                                 <svg class="Icon_awesome-facebook" viewBox="0.562 0.562 28.095 28.043">
+                                  <path id="Icon_awesome-facebook" d="M 28.65703392028809 14.66943073272705 C 28.65703392028809 6.876489162445068 22.36974906921387 0.5624998807907104 14.60976696014404 0.5624998807907104 C 6.849785327911377 0.5624998807907104 0.5625001192092896 6.876489162445068 0.5625001192092896 14.66943073272705 C 0.5625001192092896 21.71038436889648 5.699381828308105 27.54655647277832 12.41488075256348 28.60571670532227 L 12.41488075256348 18.74736022949219 L 8.84642219543457 18.74736022949219 L 8.84642219543457 14.66943073272705 L 12.41488075256348 14.66943073272705 L 12.41488075256348 11.561354637146 C 12.41488075256348 8.026090621948242 14.51064205169678 6.073303699493408 17.72055625915527 6.073303699493408 C 19.25782585144043 6.073303699493408 20.86533164978027 6.348616123199463 20.86533164978027 6.348616123199463 L 20.86533164978027 9.818466186523438 L 19.09356498718262 9.818466186523438 C 17.34898567199707 9.818466186523438 16.80465126037598 10.90606498718262 16.80465126037598 12.02153778076172 L 16.80465126037598 14.66943073272705 L 20.70050430297852 14.66943073272705 L 20.07743835449219 18.74736022949219 L 16.80465126037598 18.74736022949219 L 16.80465126037598 28.60571670532227 C 23.52015495300293 27.54655647277832 28.65703392028809 21.71038436889648 28.65703392028809 14.66943073272705 Z">
+                                  </path>
+                                 </svg>
+                              ]]>
+                            </a>
+                            <a aura:id="instagram" id ="instagram" class="instagram" target="_blank" href="https://www.instagram.com/allergansparkuk/">
+                                <![CDATA[
+                                 <svg class="Icon_awesome-instagram" viewBox="-0.005 2.238 27.89 27.888">
+                                  <path id="Icon_awesome-instagram" d="M 13.94292449951172 9.031681060791016 C 9.985723495483398 9.031681060791016 6.793830394744873 12.22409343719482 6.793830394744873 16.18193817138672 C 6.793830394744873 20.1397819519043 9.985723495483398 23.33219528198242 13.94292449951172 23.33219528198242 C 17.90012359619141 23.33219528198242 21.09201431274414 20.13977813720703 21.09201431274414 16.18193817138672 C 21.09201431274414 12.22409439086914 17.90012359619141 9.031681060791016 13.94292449951172 9.031681060791016 Z M 13.94292449951172 20.83053588867188 C 11.38567733764648 20.83053588867188 9.295080184936523 18.74582290649414 9.295080184936523 16.18193626403809 C 9.295080184936523 13.6180477142334 11.37945556640625 11.5333366394043 13.94292449951172 11.5333366394043 C 16.50639343261719 11.5333366394043 18.59076690673828 13.6180477142334 18.59076690673828 16.18193626403809 C 18.59076690673828 18.74582290649414 16.50017356872559 20.83053588867188 13.94292449951172 20.83053588867188 Z M 23.05195045471191 8.739198684692383 C 23.05195045471191 9.666430473327637 22.30530548095703 10.40697002410889 21.38445091247559 10.40697002410889 C 20.45736885070801 10.40697002410889 19.71695327758789 9.66020679473877 19.71695327758789 8.739198684692383 C 19.71695327758789 7.818192481994629 20.46359443664551 7.071429252624512 21.38445091247559 7.071429252624512 C 22.30530548095703 7.071429252624512 23.05195045471191 7.818192481994629 23.05195045471191 8.739198684692383 Z M 27.78690147399902 10.43186283111572 C 27.68112754821777 8.197796821594238 27.17092132568359 6.218875408172607 25.5345344543457 4.588443279266357 C 23.90436363220215 2.958010911941528 21.9257640838623 2.447722434997559 19.69206237792969 2.335709095001221 C 17.38991928100586 2.205025196075439 10.48970603942871 2.205025196075439 8.187561988830566 2.335709095001221 C 5.960081100463867 2.441499948501587 3.981481075286865 2.951788425445557 2.345092296600342 4.582220077514648 C 0.708703339099884 6.212652206420898 0.2047198414802551 8.191572189331055 0.09272374957799911 10.42563819885254 C -0.03793852031230927 12.72815704345703 -0.03793852031230927 19.62948989868164 0.09272374957799911 21.93201065063477 C 0.1984979659318924 24.16607666015625 0.7087030410766602 26.14500045776367 2.345092296600342 27.77542877197266 C 3.981481075286865 29.40586090087891 5.953859329223633 29.9161491394043 8.187561988830566 30.02816009521484 C 10.48970603942871 30.15884399414062 17.38991928100586 30.15884399414062 19.69206237792969 30.02816009521484 C 21.92576599121094 29.92237091064453 23.90436553955078 29.41208267211914 25.5345344543457 27.77542877197266 C 27.16470146179199 26.14499282836914 27.67490577697754 24.16607284545898 27.78690147399902 21.93201065063477 C 27.91756439208984 19.62948989868164 27.91756439208984 12.73437881469727 27.78690147399902 10.43186092376709 Z M 24.81277847290039 24.40254974365234 C 24.32746124267578 25.62226486206055 23.38793563842773 26.56193923950195 22.16220092773438 27.05355834960938 C 20.32670974731445 27.78165435791016 15.97130012512207 27.61362838745117 13.94292449951172 27.61362838745117 C 11.91454792022705 27.61362838745117 7.552917003631592 27.77542877197266 5.723643779754639 27.05355834960938 C 4.504129886627197 26.56816101074219 3.564606189727783 25.62848663330078 3.073067426681519 24.40254974365234 C 2.345091819763184 22.5667610168457 2.513086318969727 18.21064376831055 2.513086318969727 16.18193817138672 C 2.513086318969727 14.15323162078857 2.351313829421997 9.790890693664551 3.073067426681519 7.961321353912354 C 3.55838418006897 6.741610050201416 4.497908115386963 5.801933765411377 5.723643779754639 5.310314178466797 C 7.55913782119751 4.582221031188965 11.91454792022705 4.750241756439209 13.94292449951172 4.750241756439209 C 15.97130012512207 4.750241756439209 20.33293151855469 4.588443279266357 22.16220092773438 5.310314178466797 C 23.38171577453613 5.795710563659668 24.32123947143555 6.735385894775391 24.81277847290039 7.961321353912354 C 25.54075241088867 9.797114372253418 25.37276077270508 14.15323066711426 25.37276077270508 16.18193817138672 C 25.37276077270508 18.21064376831055 25.54075241088867 22.57298278808594 24.81277847290039 24.40254974365234 Z">
+                                  </path>
+                                 </svg>
+                             ]]>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="welcomeSection" class="row" >
+                        <div id="providerSectionWrapper" class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12">
+                            <div class="providerSectionHead">
+                                <!-- <lightning:formattedRichText value="{!$Label.c.AGN_SPARK_TrainingProviders_SubTittle}"></lightning:formattedRichText>-->
+                                Choosing a <br/> Training Provider
+                            </div>
+                            <div id="welcomeSectionContentProvider">
+                               <!-- <lightning:formattedRichText value="{!$Label.c.AGN_SPARK_TrainingProviders_Content1}"></lightning:formattedRichText>-->
+                                <p>There are many medical aesthetics training providers offering a range of different courses. Here is a list (alphabetical order) of training providers who train with Allergan Aesthetics products. </p> 
+						<p>Please note, this is information and not advice, and Allergan Aesthetics makes no representation nor has any supervision or control over the quality or content of third party training providers.</p>
+                            </div>
+                        </div>
+                        <div id="providersContainer" class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12">
+							<div class="providersSection">
+                                <div id="providersHead" class="providersHead">
+                                    Faculty Provider:
+                                </div>
+                                <div id="providersContent" class="providersContent">
+                                    The training provider has an Allergan Aesthetics UK Faculty member delivering training.<br class="hide"/>
+                                    The name of the Allergan Aesthetics Faculty member is listed.
+                                </div>
+                            </div>
+                            <div class="providersSection">
+                                <div id="providersHead2" class="providersHead">
+                                    Training Provider:
+                                </div>
+                                <div id="providersContent2" class="providersContent">
+                                    The training provider has an Allergan Aesthetics supply agreement in place.
+                                </div>
+                            </div>                         
+                        </div>    
+                        <div class="clear"></div>
+                    </div>
+                    <!-- <aura:if isTrue="{!!empty(v.mainCategories)}"> -->
+                    <!-- <div class="edit_choose" aura:id="edit_chooseDiv">
+                        <button onclick="{!c.showAllCategories}" id="All" class="{!if(v.selectedCatagory == 'All', 'scot edit_category','landon edit_category firstBtn')}">All</button>                                                                    
+                        <aura:iteration items="{!v.mainCategories}" var="cus" indexVar="index" >    
+                            <div class="line"></div> 
+                            <button onclick="{!c.getArticlesBySelectedGp}" data-name="{!cus.key}" data-label="{!cus.value}" 
+                                    class="{!if(v.selectedCatagory == cus.key, 'scot edit_category','landon edit_category firstBtn')}">{!cus.value}</button>                                                                       
+                        </aura:iteration>                
+                        <div class="clear"></div>
+                    </div> -->
+                    
+                    <div class="row" id="filterSection" aura:id="">
+                       <div id="providerSectionSubHead" class="col-12 d-xl-block d-lg-block d-sm-none d-md-none d-xs-none">
+                           
+                            	Filter by:
+                           <span id="browseButtonContainer">
+                               <button onclick="{!c.showAllCategories}" id="All" class="{!if(v.selectedCatagory == 'All', 'featuredBtn active','featuredBtn')}">All</button>                                                                    
+                                <aura:iteration items="{!v.mainCategories}" var="cus" indexVar="index" >
+                                    <button onclick="{!c.getArticlesBySelectedGp}" data-name="{!cus.key}" data-label="{!cus.value}" 
+                                            class="{!if(v.selectedCatagory == cus.key, 'digital featuredBtn active','digital featuredBtn')}">{!cus.value}</button>                                                                       
+                                </aura:iteration>
+                           </span>
+                        </div> 
+                        <div id="providerSectionSubHead" class="d-xl-none d-lg-none d-sm-block d-md-block d-xs-block">
+                            <div class="col-sm-12 col-md-12 col-xs-12 filter-by"> <span>Filter by: </span></div>
+                            <div id="browseButtonContainer" class="col-sm-12 col-md-12 col-xs-12">
+                                <button onclick="{!c.showAllCategories}" id="All" class="{!if(v.selectedCatagory == 'All', 'scot edit_category active','landon edit_category firstBtn')+ ' featuredBtn col-sm-12 col-md-12 col-xs-12'}">All</button>                                                                    
+                                <aura:iteration items="{!v.mainCategories}" var="cus" indexVar="index" >
+                                    <button onclick="{!c.getArticlesBySelectedGp}" data-name="{!cus.key}" data-label="{!cus.value}" 
+                                            class="{!if(v.selectedCatagory == cus.key, 'scot edit_category active','landon edit_category firstBtn') + ' featuredBtn digital col-sm-12 col-md-12 col-xs-12'}">{!cus.value}</button>                                                                       
+                                </aura:iteration>
+                            </div>
+                        </div>
+                    </div>
+                    
+                 <!--   <div class="select_category_block">
+                        <div class="edit_query " >
+                            <div class="edit_asthtic_querybx editquery_select" onclick="{!c.showHideCatagoryPanelForMobile}" >
+                                <span class="chose_txt">{!$Label.c.AGN_SPARK_Select_category}</span>  
+                                <i aura:id="catagoryBtnIcon" class="glyphicon glyphicon-plus plus"></i>
+                            </div>
+                            <div class="edit_asthtic_dropbx" aura:id="catagoryOptions">
+                                <button onclick="{!c.showAllCategoriesMobile}" id="All" class="{!if(v.selectedCatagory == 'All', 'scot edit_category','landon edit_category firstBtn')}">All</button>                                                                    
+                                
+                                <aura:iteration items="{!v.mainCategories}" var="cus" indexVar="index" >                              
+                                    <button onclick="{!c.getArticlesBySelectedGpMobile}" data-name="{!cus.key}" data-label="{!cus.value}" class="{!if(v.selectedCatagory == cus.key, 'scot edit_category','landon edit_category firstBtn')}">{!cus.value}</button>                                                                    
+                                </aura:iteration>                        
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <aura:if isTrue="{!v.selectedCatagory == 'All'}">
+                       <div id="sectionDigitalTraining" class="row">
+                            <aura:iteration items="{!v.mainCategories}" var="cus" indexVar="index" > 
+                                <div id="{!cus.key}"></div>
+                                <c:AGN_SPARK_TrainingProviderList  selectedCatagory="{!cus.key}" selectedCatagoryLabel="{!cus.value}" />
+                                <!-- <c:AGN_SPARK_TrainingProviderList  selectedCatagory="{!v.selectedCatagory}" /> -->
+                            </aura:iteration>
+                       </div>
+                   </aura:if> 
+                    
+                     <aura:if isTrue="{!v.selectedCatagory != 'All'}">
+						<c:AGN_SPARK_TrainingProviderList  selectedCatagoryLabel="{!v.catagorylabel}" selectedCatagory="{!v.selectedCatagory}" /> 
+                   </aura:if> 
+                </div>                
+            </div>
+        </div>
+    </div>
+    <c:AGN_SPARK_ZincCode pageName="TrainingProvider"/>
+</aura:component>

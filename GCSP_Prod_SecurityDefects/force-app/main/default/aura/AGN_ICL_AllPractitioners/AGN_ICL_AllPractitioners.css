@@ -1,0 +1,94 @@
+.THIS .slds-modal__container{
+    max-width: none;
+}
+.THIS .slds-modal__container .slds-modal__header h2{
+        text-align: left;
+    font-size: 20px;
+    font-weight: 600;
+}
+.THIS .slds-select_container .slds-select{
+    box-shadow: none;
+}
+.THIS .has-content.effect-16 ~ label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS .section-text{
+    margin: 0;
+    color: #2c5596;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 20px;
+    text-align: center;
+}
+.THIS .table th{
+    text-align: center;
+    padding: 10px;
+    color: #2c5596;
+    font-weight: 300;
+    font-size: 15px;
+}
+.THIS.practioner-details-wrapper table tr td {
+    word-break: break-all;
+}
+.THIS table{
+    background-color: #fff;
+    margin-bottom: 0px;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+}
+.THIS .btn_true{
+    background: #61ad02;    border-radius: 1000px;
+    padding: 5px 10px;
+    color: #ffffff;
+    font: normal bold 12px/1 "Calibri",sans-serif;
+    text-align: center;
+    border: 0;
+    cursor: text;
+}
+.THIS .btn_false{
+    background: #f52c34;    border-radius: 1000px;
+    padding: 5px 10px;
+    color: #ffffff;
+    font: normal bold 12px/1 "Calibri",sans-serif;
+    text-align: center;
+    border: 0;
+    cursor: text;
+}
+.THIS .add-prac-wrapper{
+    text-align: center;
+    margin: 15px 0;
+}
+.THIS .add-prac{
+    font-weight: 600;
+    color: #fff;
+    background: #43af2a;
+    padding: 10px;
+    border-radius: 0;
+}
+.THIS table td .p-editlink, .THIS table td .p-deletelink{
+    margin: 0;
+}
+.THIS .container .practioner-details-wrapper{
+    margin: 0;	
+}
+.THIS .disable-click{
+    pointer-events: none;
+}
+.THIS .slds-dueling-list__column_responsive{
+        min-width: 12.4rem;
+}
+
+@media only screen and (max-device-width: 500px) and (min-device-width: 100px) and (orientation: portrait){
+.cAGN_ICL_AllPractitioners.practioner-details-wrapper table tr td {
+    word-break: break-all;
+    white-space: pre-line !important;
+}
+.THIS .add-prac-wrapper{
+    text-align: center;
+    margin: 15px 25%;
+    width:100%;
+   }
+}

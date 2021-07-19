@@ -1,0 +1,59 @@
+<aura:component access="public" controller="GPSAssessmentToolController">
+
+    <!-- Static Resources -->
+    <ltng:require styles="{!$Resource.gps_common_styles}" />
+    
+     <!-- Public Attributes -->
+    <aura:attribute name="assessmentId" type="Id" />
+
+    <!-- Private Attributes -->
+    <aura:attribute name="userId" type="Id" access="private" />
+    <aura:attribute name="user" type="User" access="private" />
+    <aura:attribute name="view" type="String" access="private" />
+    <aura:attribute name="showDevelopmentPanel" type="Boolean" access="private" default="false" />
+
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:AGN_GPSShowAssessmentEvt" action="{!c.handleShowAssessment}" includeFacets="true" />
+
+    <!-- Markup -->
+    <aura:if isTrue="{!v.user.ProfileId == '00e58000000V7aGAAS'}"> <!-- TODO remove dev panel -->
+        <lightning:button label="Toggle Development Panel" onclick="{!c.toggleDevelopmentPanel}" class="developmentPanelButton" />
+        <aura:if isTrue="{!v.showDevelopmentPanel}">
+            <div style="background-color:#ff8c8c; padding:4px; border:1px solid black;">
+                <p>This section is only shown for development and testing purposes. It will be removed before deploying to production.</p>
+                <p>User ID: ({!v.userId})</p>
+                <p>User Name: ({!v.user.Name})</p>
+                <p>Current User View: ({!v.view})</p>
+                <br /><br /><br />Select a User View:
+                <lightning:buttonGroup >
+                    <lightning:button label="Business Excellence" onclick="{!c.busiessExcellenceView}" />
+                    <lightning:button label="Line Manager" onclick="{!c.lineManagerView}" />
+                    <lightning:button label="Sales Rep" onclick="{!c.salesRepView}" />
+                </lightning:buttonGroup>
+            </div>
+        </aura:if>
+    </aura:if>
+    <c:toastNotification />
+    <aura:if isTrue="{!v.view == 'BusinessExcellence'}">
+        <div aura:id="assessmentListCmpWrapper">
+            <c:AGN_GPSAssessmentList />
+        </div>
+        <div aura:id="assessmentDetailsCmpWrapper" class="hidden">
+            <lightning:button label="{!$Label.c.Back}" onclick="{!c.showAssessmentList}" />
+           <c:AGN_GPSAssessmentSetup aura:id="assessmentDetailsCmp" />
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.view == 'LineManager'}">
+        <div>
+            <c:AGN_GPSAssessmentDirectReportList userId="{!v.userId}" />
+        </div>
+    </aura:if>
+      <aura:if isTrue="{!v.view == 'SalesRep'}">
+        <div>
+            <c:AGN_GPSAssessmentAssignmentList assessmentId="{!v.assessmentId}"  userId="{!v.userId}" user="{!v.user}" />
+            
+        </div>
+    </aura:if>
+
+</aura:component>

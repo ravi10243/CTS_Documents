@@ -1,0 +1,273 @@
+<aura:component controller="AGN_OAMPortalCustomerRegStep1Controller" access="global">
+    
+    <aura:attribute name="objAGNCustAddr" type="Allergan_Customer_Address_AGN__c" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}" access="private" />
+    <aura:attribute name="objAGNCustReg" type="Allergan_Customer_Registration_AGN__c" default="{'sobjectType': 'Allergan_Customer_Registration_AGN__c'}" access="private" />
+    <aura:attribute name="countryOptions" type="Country_vod__c[]"/>
+    <aura:attribute name="customerTypeConfig" type="Customer_Type_Configuration_AGN__c[]"/>
+    
+    <aura:attribute name="objMixType" type="sObject" access="private" default="{'sobjectType': 'sObject'}"/>
+    <aura:attribute name="fieldMetadata" type="AGN_Community_Layout_Setting__mdt[]" access="private" />
+    <aura:attribute name="sectionHeaderMap" type="Map" default="{}"/>
+    <aura:attribute name="openModal" type="boolean" default="true"/>
+    <aura:attribute name="requireFieldMissing" type="boolean" default="false"/>
+    <aura:attribute name="fieldWellFormated" type="boolean" default="true"/>
+    <aura:attribute name="isCaptchaValid" type="boolean" default="false"/>
+    <aura:attribute name="isTCAccepted" type="boolean" default="false"/>
+    <aura:attribute name="selectedCountryCode" type="String"/>
+    <aura:attribute name="selectedCustomerType" type="String"/>
+    <aura:attribute name="selectedCustomerSubType" type="String"/>
+    
+    <aura:attribute name="customerGroup" type="String"/>
+    
+    <aura:attribute name="tempLabel" type="String"/>
+    <aura:attribute name="sectionHeader" type="String"/>
+    <aura:attribute name="sectionLabelMap" type="Map" default="{}"/>
+    
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    
+    <aura:attribute name="communityBaseURL" type="String"/>
+    <aura:attribute name="communitySuffix" type="String"/>
+    <aura:attribute name="GDPRConsent" type="boolean" default="false" />
+    <aura:attribute name="SAPCountryCode" type="String" access="public" />
+    <aura:attribute name="CountryCode" type="String" access="public" />
+    
+    
+    
+    <aura:registerEvent name="messageStep1Completion" type="c:AGN_CustRegOnStep1Completed_Evt" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="aura:doneRendering" action="{!c.doneRendering}"/>
+    <aura:handler name="change" value="{!v.isCaptchaValid}" action="{!c.validateAndInsert}"/>
+    
+    <!-- Address Validation -->
+    <aura:attribute name="isAddressVerified" type="boolean" default="false"/>
+    <aura:attribute name="doValidate" type="boolean" default="true"/>
+    <aura:attribute name="addressOps" type="String[]" />
+    <aura:attribute name="activeAddressFound" type="boolean" default="false"/>
+    <aura:attribute name="userSelectedOneActiveAddress" type="boolean" default="false"/>
+    <aura:attribute name="addressType" type="String"/>    
+    <aura:attribute name="showError" type="boolean" default="false"/>
+    <aura:attribute name="selectedActiveAddress" type="String" />
+    
+    <!-- Prescribing Doctor's Details -->
+    <aura:attribute name="PrescribingDoctorsDependantFields" type="List" />
+    <aura:attribute name="clearPrescribingDrValues" type="boolean" default="false"/>
+    <aura:attribute name="isPrescribingDr" type="boolean" default="false"/>
+    <aura:attribute name="PrescribingDrLabel" type="String"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="showPrescribingDr" type="boolean" default="true"/>
+    <aura:attribute name="disablePrescribingDr" type="boolean" default="false"/>
+    <aura:attribute name="clearPrescribingDrRequiredFields" type="Boolean" default="false" />
+    <aura:attribute name="showPrescribingDrSlider" type="boolean" default="true"/>
+    
+    <aura:handler name="change" value="{!v.customerSubType}" action="{!c.handleSubTypeChange}"/>
+    
+    <aura:attribute name="Likedisable" type="Boolean" default="false" />
+    <aura:attribute name="Likedisable1" type="Boolean" default="true" />
+    <aura:attribute name="productInterestOptions" type="Map" />
+    
+    <aura:method name="displayFormStep1" action="{!c.showForm}">
+        <aura:attribute name="countryCode" type="String"/>
+        <aura:attribute name="customerType" type="String"/>
+        <aura:attribute name="customerSubType" type="String"/>
+        <aura:attribute name="countryOptions" type="Country_vod__c[]"/>
+        <aura:attribute name="customerTypeConfig" type="Customer_Type_Configuration_AGN__c[]"/>
+    </aura:method>
+    <aura:attribute name="footerConsentsList" type="Allergan_Consent_Footer_Info__c" />
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.showSpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end--> 
+    
+    <aura:registerEvent name="refreshChildComponent" type="c:RefreshChild"/>
+    
+    <div class="Basic_det">
+        <div class="divider"></div>
+        <div class="infr_det">
+            <div class="infr_bg">
+                <div class="infr_details">
+                    <aura:iteration items="{!v.sectionHeaderMap}" var="set" indexVar="key">
+                        <div class="slds-section-title--divider"><b>
+                            
+                            <!--{!set.value[0].Section_Header_Label_AGN__c} -->
+                            <c:AGN_OAMCustomerRegSectionHeader sectionHeaderLabel="{!set.value[0].Section_Header_Custom_Label_AGN__c}" />
+                            </b><span></span></div>
+                        <section class="content bgcolor-7 regStep1">                            
+                            <aura:iteration items="{!set.value}" var="fieldValue"> 
+                                
+                                <c:AGN_OAMPortalCommunityInputFieldWrapperCmp_ANZ 
+                                                                              aura:id="fieldId" 
+                                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                                              record="{!v.objMixType}" 
+                                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                                              required="{!fieldValue.Required_AGN__c}"
+                                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                                              customCountryCode = "{!v.SAPCountryCode}"
+                                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}" 
+                                                                              customLabelName = "{!fieldValue.Field_Label_AGN__c}" 
+                                                                              isAddressVerified = "{!v.isAddressVerified}" 
+                                                                              doValidate = "{!v.doValidate}" 
+                                                                              customerGroup = "{!v.customerGroup}"
+                                                                              customerType="{!v.selectedCustomerType}"
+                                                                              customerSubType="{!v.selectedCustomerSubType}"
+                                                                              customerTypeConfig = "{!v.customerTypeConfig}" 
+                                                                              productInterestOptions = "{!v.productInterestOptions}" 
+                                                                              />  
+                                
+                                
+                            </aura:iteration>
+                            <aura:renderIf isTrue="{!key == 1}" > 
+                                <!-- ********************Prescribing Doctor**************  -->
+                                <aura:if isTrue="{!v.showPrescribingDrSlider}" >
+                                    <div class="slds-form-element buying_group">
+                                        <span class="input input--nariko inputCheckboxValue" data-inputFiedlValue="{!v.showPrescribingDr}" >
+                                            <label class="slds-checkbox_toggle slds-grid"> 
+                                                <span class="slds-form-element__label input__Checkboxlabel--nariko">
+                                                    <p>{!$Label.c.AGN_OAM_Prescribing_doctor_Account}</p>
+                                                </span> 
+                                                <ui:inputCheckbox aura:id="ctrlChkBox" disabled="{!v.disablePrescribingDr}" value="{!v.showPrescribingDr}" change="{!c.handleshowPrescribingDrCheckBoxChange}" class="slds-input slds-checkbox uiInput--checkbox"/>               
+                                                <span id="toggle-desc" class="slds-checkbox_faux_container " aria-live="assertive">                     
+                                                    <span class="slds-checkbox_faux"></span>
+                                                </span>
+                                            </label> 
+                                        </span>                                
+                                        
+                                        <aura:If isTrue="{!v.isPrescribingDr}" > <br/>
+                                            <c:AGN_OAMPortalCheckboxDependentParent_ANZ aura:id="PrescribingDrField"
+                                                                                    DependantFields= "{!v.PrescribingDoctorsDependantFields}"  
+                                                                                    record = "{!v.objMixType}"
+                                                                                    selectedCountryCode = "{!v.SAPCountryCode}" 
+                                                                                    required = "{!v.isPrescribingDr}" 
+                                                                                    clearValues = "{!v.clearPrescribingDrValues}" 
+                                                                                    clearRequiredFields = "{!v.clearPrescribingDrRequiredFields}"
+                                                                                    step="1" />
+                                            
+                                        </aura:If>
+                                    </div>
+                                </aura:if>
+                                <!-- ********************Prescribing Doctor************** -->
+                            </aura:renderIf> 
+                        </section>
+                    </aura:iteration>                    
+                    <aura:if  isTrue="{!v.communityBaseURL != null}" >
+                        <div aura:id="openModal" id="openModal" class="modalDialog captcha-hide">                            
+                            <div class="openModal_content">	
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                                    <lightning:buttonIcon iconName="utility:close"  variant="border-filled" alternativeText="Close" onclick="{!c.tcClose}" />
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <span>{!$Label.c.AGN_OAM_Confirm_not_robot}</span> 
+                                <iframe aura:id="vfFrame" src="{!v.communityBaseURL + v.communitySuffix +'/AGN_GoogleCAPTCHAv2'}" scrolling="no" frameborder="0" width="100%" height="100%" allowtransparency="true" />                             
+                            </div>
+                        </div>
+                    </aura:if>
+                    
+                    <div class="GDPRConsent" id="GDPR_Terms">
+                        
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                                    <lightning:buttonIcon iconName="utility:close"  variant="border-filled" alternativeText="Close" onclick="{!c.tcCancel}" />
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>                                
+                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">                              
+                                    <!-- T&C Text -->
+                                    <lightning:formattedRichText value ="{!v.footerConsentsList.Footer_RichText_c__c}" />                                     
+                                    <div id="btn_container">
+                                        <ui:button class="slds-button slds-button_neutral __cancel" aura:id="btnTCCancel" label="{!$Label.c.AGN_OAM_Cancel}" press="{!c.tcCancel}"/>
+                                        <ui:button class="slds-button slds-button_brand __accept" aura:id="btnTCAccept" label="{!$Label.c.AGN_OAM_Accept}" press="{!c.tcAccept}"/>
+                                    </div>
+                                </div>
+                                <div class="down_click">                                    
+                                    <lightning:buttonIcon iconName="utility:jump_to_bottom" class="scroll_bottom_btn" variant="brand" alternativeText="Scroll to bottom" onclick="{!c.scrollToBottom}" disabled="{!v.Likedisable}"/>
+                                    <lightning:buttonIcon iconName="utility:jump_to_top" class="scroll_top_btn" variant="brand" alternativeText="Scroll to top" onclick="{!c.scrollToTop}" disabled="{!v.Likedisable1}"/>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open">
+                        </div>                       
+                    </div> 
+                    
+                    <!--###### MODAL BOX For Loqate Start######    --> 
+                    <div class="slds-modal_medium"> 
+                        <aura:if isTrue="{!v.isOpen}">
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container">
+                                    <!-- ###### MODAL BOX HEADER Start ######-->
+                                    <!--   <header class="slds-modal__header"> -->
+                                    <lightning:buttonIcon iconName="utility:close"
+                                                          onclick="{! c.closePopup }"
+                                                          alternativeText="close"
+                                                          variant="brand"
+                                                          class="slds-modal__close loqate_address_modal_close"/>
+                                    <h2 id="modal-heading-01" class="slds-text-heading_small slds-hyphenate"> {!$Label.c.AGN_OAM_Available_Address} </h2>
+                                    <!--  </header> -->
+                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                        <!-- <div aura:id="addressModal" class="slds-hide">	 -->							
+                                        <aura:If isTrue="{!v.activeAddressFound}">
+                                            <aura:If isTrue="{!v.showError}">
+                                                <span style="color:red">{!$Label.c.AGN_OAM_LOQATE_ERROR}</span>
+                                            </aura:If><br />
+                                            <aura:iteration items="{!v.addressOps}" var="addr">
+                                                <label class="uiLabel-left form-element__label uiLabel loqate_address_label">
+                                                    <ui:inputRadio name="address" label="" text="{!addr}" change="{!c.assignAddress}" class="loqate_address_radiobtn"/>
+                                                    <span class="loqate_address_label_span">{!addr}</span>
+                                                </label><br />
+                                            </aura:iteration>
+                                            <label class="uiLabel-left form-element__label uiLabel loqate_address_label" >
+                                                <ui:inputRadio name="address" label="" text="{!$Label.c.AGN_OAM_CONTINUE_WITH_CURRENT_ADDRESS}" change="{!c.assignAddress}" class="loqate_address_radiobtn"/>
+                                                <span class="loqate_address_label_span">{!$Label.c.AGN_OAM_CONTINUE_WITH_CURRENT_ADDRESS}</span>
+                                            </label><br />
+                                            <aura:set attribute="else">
+                                                {!$Label.c.AGN_OAM_NO_ADDRESS_FOUND}
+                                            </aura:set>                                                
+                                        </aura:If>                                            
+                                        <!-- </div> -->
+                                        
+                                    </div>
+                                    <!--###### MODAL BOX FOOTER Part Start ######-->
+                                    <!-- <footer class="slds-modal__footer"> -->
+                                    <div id="btn_container">
+                                        <ui:button class="slds-button slds-button_brand loqate_footer_okbtn"  label="Ok" press="{!c.submitRequest}" /> 
+                                        <ui:button  class="slds-button slds-button_neutral loqate_footer_cancelbtn" label="Cancel" press="{!c.closePopup}" />
+                                    </div>
+                                    <!--</footer> -->
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                        </aura:if>
+                    </div>
+                    
+                    
+                    <!--###### MODAL BOX Part For Loqate END Here ######-->
+                    
+                    <div class="slds-form-element check_box_btn">
+                        <div class="slds-form-element__control">
+                            <span componentreference-listbox_listbox="" title="{!$Label.c.AGN_OAM_GDPR_Terms_and_Conditions_HelpText}" class="item-description">
+                                <ui:inputCheckbox labelClass="myCheckbox" class="chkTC" aura:id="chkTC" value="{!v.isTCAccepted}" change="{!c.actionTCAccept}" label="{!$Label.c.AGN_OAM_I_Accept_the_GDPR_Terms_and_Conditions_ANZ}" />
+                            </span>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="det_btn">                              
+                        <div class="det_btns">  
+                            <ui:button aura:id="button" class="add_btn cancel_btn" label="{!$Label.c.AGN_OAM_Body_Cancel}" press="{!c.resetBlock}"/>
+                            <!--<aura:renderIf isTrue="{!v.isCaptchaValid}"> -->
+                            <ui:button aura:id="buttonSave" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Save_Continue}" press="{!c.validateAndInsert}" disabled="{!!v.isTCAccepted}"/>
+                            <!--</aura:renderIf> -->
+                        </div>	                        
+                    </div>                    
+                </div>
+            </div>
+        </div>			
+    </div>
+    
+</aura:component>

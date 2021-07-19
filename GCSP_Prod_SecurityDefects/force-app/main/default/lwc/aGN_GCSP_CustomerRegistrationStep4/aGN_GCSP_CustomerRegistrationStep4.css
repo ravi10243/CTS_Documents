@@ -1,0 +1,356 @@
+.outer_wrapper {
+    width: 100%;
+    max-width: 1366px;
+    margin: auto;
+    font-size: 0.8125rem;
+}
+
+.heading {
+    font-family: SFProText-Bold;
+    font-size: 22pt;
+    text-align: center;
+    color: #3E3E3E;
+    margin: 3% auto 0;
+}
+
+.instruction {
+    text-align: center;
+}
+
+/*.btn_margin {
+    padding-bottom: 5%;
+    padding-top: 0;
+    padding-right: 20%;
+}*/
+
+/*.gradient_btn {
+    margin-right: 0;
+    position: relative;  
+    margin-left: 24%;
+}*/
+.hd{
+    font-size: 1.1rem;
+    font-weight: 700;  
+    width: 100%;
+    font-family: Arial,sans-serif;
+    margin: 2% 0;
+}
+.soldtoaddress_bankdetails{    
+    width: 100%;
+    border: 1px solid #bfbfbf;
+    background: #fff;    
+    margin: 2% auto 3%;
+    padding-top:20px;
+}
+.soldtoaddress_bank11{
+    width: 90%;    
+    margin: 0 auto 3%;
+    border: 1px solid #b8860b;
+}
+.soldtoaddress{
+   /* display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;  */
+    padding: 20px 0px 0px;
+    width: 100%;
+    margin: 0 auto;
+  /*  background: #fff;
+    box-shadow: 5px 5px 10px #b6b5b5; */
+}
+.soldtoaddress_bank{   
+    width: 100%;
+    margin: 0 auto;
+ /*   padding: 0px 0px 30px;
+    background: #fff;
+    box-shadow: 5px 5px 10px #b6b5b5; */
+}
+.shownewbill_bankdetails, .billtoaddress_bankdetails{
+    width: 90%;  
+    /* width:95%;*/
+    background: #fff;
+    margin: 1% auto 0;
+    border: 1px solid #b8860b;
+}
+.billtoaddress, .shownewbill{
+  /*  display: flex;
+    flex-wrap: wrap; */
+    padding: 10px 0px;
+    width: 100%;
+    margin: 0 auto;  
+}
+
+.billtoaddress_bank, .shownewbill_bank{   
+    width: 100%;
+    margin: 0 auto;  
+  /*  background: #fff; */  
+  /*  box-shadow: 5px 5px 10px #b6b5b5; */
+}
+
+.addressbank_container{
+    width: 100%;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid #bfbfbf;
+    padding-top:20px;
+}
+
+.cheading{    
+    font-size: 1.1rem;
+    font-weight: 700;    
+    color: #565656;
+    font-family: Arial,sans-serif;
+    width: 100%;
+    margin: 0 auto;    
+}
+.cheadingboldnew{
+    font-size: 1rem;
+    font-weight: 700;   
+    color: #565656;
+    font-family: Arial,sans-serif;
+    width: 90%;
+    margin: 10px auto 10px;
+}
+.cheadingbold1{
+    width: 90%;
+    font-size: 1rem;    
+    margin: 1% auto 1%;    
+}
+.cheadingbold2{
+    width: 95%;
+    font-size: 1rem;
+    margin: 0 auto;
+    padding-top: 1%;
+}
+.btn_container{    
+    display: flex;
+    width: 90%;
+    margin: 0 auto;   
+    padding: 1% 0% 5% 0%;
+}
+.sameaddchk{
+    width: 90%;
+    margin:0 auto;
+}
+.newshipto_info{
+    font-size: 1rem;
+    width: 90%;   
+    margin: 1% auto;    
+}
+.btn_margin{
+    /*display: flex;
+    justify-content: space-between;
+    align-items: center;*/
+    display: block;
+    margin: 0 auto;
+    width: 75%;   
+    text-align: center;
+    padding: 3% 0% 5% 0%;  
+}
+.gradient_border_btn{
+    padding-left:0%;
+}
+.deletebtn{        
+    display:block;
+    width: 90%;        
+    margin: 5px 5px 0px auto;    
+} 
+.prev, .btn_next{
+    /* padding: 6% !important; */
+    margin:0 5%;
+}
+.btn_next{
+    display:inline;
+}
+ /*.Declt{
+    width: 730px;    
+    margin: -16px auto 45px;
+    margin-left: -16px 0px 0px -16px;
+    text-align: justify;
+ } */
+ .chk_box{    
+    width: 100%;
+    margin: 0 auto;    
+    padding-left: 1.5%;
+    text-align:justify;
+ }
+ .declartionpart{
+    width: 100%;
+    margin: 30px auto 0;
+    background: white;
+    border: 1px solid #bfbfbf;
+    padding: 0px 20px 20px;
+ }
+ .Declt1, .NLDeclt1{
+    width: 95%;
+    margin: 0 auto 1%;
+    font-size: 1rem;
+    font-weight: bolder;   
+ }
+ .NLDeclt1{
+    margin: 0 auto 3%;
+ }
+ .Declt2{
+    width: 95%;
+    font-size: 0.9rem;
+    text-align: justify;
+    margin: 0 auto 30px;      
+ }
+
+.checkbox_text{        	
+    display: flex;	
+    margin: 0 auto;	
+    width: 100%;   	
+    font-size: 0.9rem;	
+}	
+.chktxt{	
+    margin-top: 2px;	
+  /*  margin-left: -230px; */	
+    color: #2c5596;	
+    font-size: 1rem;	
+}
+.li_width{
+     width:auto;
+}
+.add_dec_chk_box{
+    padding: 1% 0;
+    width: 50%;    
+    border: 1px solid #b8860b;
+    margin: 1% 1.5% 2%;
+}
+ @media screen and (max-width: 1160px) and (min-width: 940px){
+    .prev, .btn_next{
+        /* padding: 4% !important; */
+        margin:0 3%;
+    }
+ }
+ @media screen and (max-width: 939px) and (min-width: 815px){
+    .prev, .btn_next{
+        /* padding: 2% !important; */
+        margin:0 1%;
+    }
+ }
+ @media screen and (max-width: 814px) and (min-width: 771px){
+    .prev, .btn_next{
+        /* padding: 1% !important; */
+        margin:0 1%;
+    }
+ }
+ @media screen and (max-width: 770px) and (min-width: 511px){
+    .cheadingbold2{
+        width: 88.5%;       
+    }
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        padding: 2% 0% 5%;  
+    }
+    .prev, .btn_next{
+        /* padding: 2%!important; */
+        margin:1% 0 5%;
+        display: block;
+    }
+    .chk_box{    
+        padding-left:2%;       
+    } 
+    .NLDeclt1{
+        margin:0 auto 4%;
+    }
+} 
+@media screen and (max-width: 510px) and (min-width:421px){
+    .cheadingbold2{
+        width: 303px;       
+    }
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        padding: 2% 0% 5%;  
+    }
+    .prev, .btn_next{
+        /* padding: 2%!important; */
+        margin:1% 0 5%;
+        display: block;
+    }   
+    .Declt2{
+        width: 90%;
+    }
+    .chk_box{    
+        padding-left:2%;       
+    } 
+    .NLDeclt1{
+        margin:0 auto 4%;
+    }
+}
+@media screen and (max-width: 420px) and (min-width:351px){
+    .cheadingbold2{
+        width: 245px;       
+    }
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        padding: 2% 0% 5%;  
+    }
+    .prev, .btn_next{
+        /* padding: 2%!important; */
+        margin:1% 0 5%;
+        display: block;
+    } 
+    .btn_container{    
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+    }
+    .Declt2{
+        width: 90%;
+    }   
+    .chk_box{    
+        width: 91%;
+        padding-left:2%;
+     } 
+    .sameaddchk{
+        width: 90%;
+        margin:0 auto 2%;
+    }
+     .NLDeclt1{
+        margin:0 auto 7%;
+    } 
+}
+@media screen and (max-width: 350px){
+    .cheadingbold2{
+        width: 215px;       
+    }
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        padding: 2% 0% 5%;  
+    }
+    .btn_container{    
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+    }
+    .prev, .btn_next{
+        /* padding: 2%!important; */
+        margin:1% 0 5%;
+        display: block;
+    } 
+    .Declt2{
+        width: 90%;
+    }
+    .chk_box{    
+        width: 91%;
+        padding-left:2%;
+     } 
+    .sameaddchk{
+        width: 90%;
+        margin:0 auto 2%;
+    } 
+    .NLDeclt1{
+        margin:0 auto 7%;
+    }
+}

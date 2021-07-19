@@ -1,0 +1,11 @@
+<aura:component >
+    <aura:attribute name="addressData" type="Allergan_Customer_Address_AGN__c" />
+    <aura:attribute name="addressFields" type="Map" />
+    <aura:attribute name="outPut" type="String" />
+    <aura:attribute name="index" type="Integer" access="public" />
+    
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <span>{!v.outPut}</span>
+    
+</aura:component>

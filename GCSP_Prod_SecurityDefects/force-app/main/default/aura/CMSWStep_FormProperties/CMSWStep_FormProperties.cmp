@@ -1,0 +1,42 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global"
+                controller="MDFormBuilderController">
+	<!-- Attributes -->
+    <aura:attribute name="listProperties" type="Object[]" />
+    <aura:attribute name = "renderMode" type = "String"/>
+    <aura:attribute name = "recordId" type = "String"/>
+    <aura:attribute name = "saveBtnLabel" type = "string" default = "Save"/>
+   	<aura:attribute name = "saveBtnVariant" type = "string" default = "brand"/>
+    <aura:attribute name = "saveBtnTitle" type = "string" default = "Save Properties"/>
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Aura Method -->
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <!-- Component Body -->
+    <aura:if isTrue ="{!v.listProperties!=null}">
+        <lightning:card iconName="utility:settings" title="Decide what you want to show?">
+            <aura:set attribute="actions">
+                <aura:if isTrue="{!v.renderMode=='DETAIL'}">
+                    <lightning:button variant = "{!v.saveBtnVariant}" label = "{!v.saveBtnLabel}" title = "{!v.saveBtnTitle}" onclick="{!c.doSaveProperties}" />
+                </aura:if>
+            </aura:set>
+            <p class="slds-p-around_small">
+                <aura:iteration items="{!v.listProperties}" var="formProperty">
+                    <div class="slds-m-top_xx-small">
+                        <lightning:input type="checkbox" label="{!formProperty.PropertyLabel}" checked="{!formProperty.PropertyValue}" />
+                    </div>
+                </aura:iteration>
+            </p>
+            <div class="slds-align_absolute-center slds-p-top_small">
+                <aura:if isTrue="{!v.renderMode!='DETAIL'}">
+                    <lightning:button variant = "{!v.saveBtnVariant}" label = "{!v.saveBtnLabel}" title = "{!v.saveBtnTitle}" onclick="{!c.doSaveProperties}" />
+                </aura:if>
+            </div>
+        </lightning:card>
+    </aura:if>
+</aura:component>

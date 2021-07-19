@@ -1,0 +1,4 @@
+<!--  ***** AGN_ICL_EditSpinner *****-->
+<aura:event type="APPLICATION" description="Event template" >
+    <aura:attribute name="CloseSpinner" type="Boolean" description="variable set true to close Edit practittioner Spinner" access="global" />
+</aura:event>

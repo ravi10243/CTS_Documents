@@ -1,0 +1,218 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 06-09-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   02-09-2021   Ravi Sirigiri   Initial Version
+-->
+<template>        
+    <div hidden={hidemaindiv}>
+        <div class="outer_wrapper">
+            <div class="reg_step3">
+                 <!--- *************** Steps Banner Code Starts********************************-->
+                 <div class="StepsBanner">   
+                        <div class="Banner notranslate">
+                                <div class="stepcomplete"> </div>                                                                        
+                                <div class="line"></div>
+                                <div class="stepcomplete"> </div>    
+                                <div class="line"></div>
+                                <div class="Step">{label.AGN_GCSP_STEP3}</div>
+                                <div class="line"></div>
+                                <div class="Step">{label.AGN_GCSP_STEP4}</div>
+                                <template if:true={isCS}>
+                                    <div class="line"></div>
+                                    <div class="Step">{label.AGN_GCSP_STEP5}</div>
+                                </template>
+                        </div>
+                        <div class="Bannertext">
+                                <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                                <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                                <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                                <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>
+                                <template if:true={isCS}>
+                                    <div class="Steptext">{label.AGN_OAM_Contact_Affiliation}</div>
+                                </template>                        
+                        </div>                        
+                 </div> 
+            <!--- *************** Steps Banner Code Ends ********************************-->
+                <!--<div class="instruction">All Fields are Mandatory</div> -->
+                <div class="content_center">
+                        <div class="hd">{label.AGN_OAM_Header_CustomerRegistration} -- {label.AGN_OAM_Document_Upload_Heading}</div>
+                       <!-- <template if:true={showToastMsg}>-->
+                                <div class="show-toast">
+                                        <c-agn_gcsp_custom-toast title="" message={error} variant={variant} auto-close="true">
+                                        </c-agn_gcsp_custom-toast>
+                                </div>
+                        <!-- </template>   -->                     
+                        <div class="regdocument">
+                                <template if:true={fieldloaded}>
+                                        <template iterator:it={step3fields}>
+                                                <template if:true={it.value.AGN_Document_Required__c}>
+                                                        <c-a-g-n_-g-c-s-p_-common-input-field-component key={it.value.Id}
+                                                                sobjectname={it.value.SObject_Name_AGN__c} 
+                                                                fieldname={it.value.Field_Name_AGN__c}
+                                                                required={it.value.Required_AGN__c} 
+                                                                record={record}
+                                                                record-value='{record}'
+                                                                regex={it.value.Field_Regex_AGN__c}
+                                                                customlabel={it.value.Field_Custom_Label_AGN__c} 
+                                                                country={country}
+                                                                picklist-option-values={it.value.Picklist_Options_AGN__c}
+                                                                objectfieldtype={it.value.Object_Field_Type_AGN__c}
+                                                                helptext={it.value.Help_Text_AGN__c}
+                                                                iscontrollingfield={it.value.Is_Controlling_Field_AGN__c}
+                                                                rendered={it.value.Default_Display_On_Load_AGN__c}
+                                                                oncontrollingfieldevent={handleControllingFieldEvent}
+                                                                documentrequired={it.value.AGN_Document_Required__c}
+                                                                onuploaddocevent={handledocupload}
+                                                                class=""  
+                                                                source={source}>
+                                                        </c-a-g-n_-g-c-s-p_-common-input-field-component> 
+                                                </template> 
+                                                <template if:false={it.value.AGN_Document_Required__c}> 
+                                                        <c-a-g-n_-g-c-s-p_-common-input-field-component key={it.value.Id}
+                                                                sobjectname={it.value.SObject_Name_AGN__c} 
+                                                                fieldname={it.value.Field_Name_AGN__c}
+                                                                required={it.value.Required_AGN__c} 
+                                                                record={record}
+                                                                record-value='{record}'
+                                                                regex={it.value.Field_Regex_AGN__c}
+                                                                customlabel={it.value.Field_Custom_Label_AGN__c} 
+                                                                country={country}
+                                                                picklist-option-values={it.value.Picklist_Options_AGN__c}
+                                                                helptext={it.value.Help_Text_AGN__c}
+                                                                objectfieldtype={it.value.Object_Field_Type_AGN__c}
+                                                                iscontrollingfield={it.value.Is_Controlling_Field_AGN__c}
+                                                                rendered={it.value.Default_Display_On_Load_AGN__c}
+                                                                oncontrollingfieldevent={handleControllingFieldEvent}
+                                                                documentrequired={it.value.AGN_Document_Required__c}
+                                                                onuploaddocevent={handledocupload}
+                                                                class=""   
+                                                                source={source}>
+                                                        </c-a-g-n_-g-c-s-p_-common-input-field-component>    
+                                                </template> 
+                                        </template>
+                                         
+                                </template>
+                        </div>
+                                <div class="docsupload">                                       
+                                        <div class="uploaddocs1">
+                                                <template if:true={proofodexemption}>
+                                                <!--  <div if:true={proofodexemption} class="cheading cheadingbold">Upload Documents</div>-->
+                                                <!-- <span>Upload Docs</span> --> 
+                                                        <c-agn_gcsp_tax-exempted-doc-upload 
+                                                                        registration-id={registrationid} source={source}
+                                                                        sobjectname={supportedDocument.sobjectname} fieldname={supportedDocument.fieldname} creteria-value={supportedDocument.selectedVal}>
+                                                         </c-agn_gcsp_tax-exempted-doc-upload>
+                                                        
+                                                </template>
+                                                <!--<template if:true={proofodexemption}> 
+                                                        <template iterator:it={step3fields}>                                                      
+                                                                <c-agn_gcsp_tax-exempted-doc-upload  key={it.value.Id}
+                                                                        registration-id={registrationid} source={source}>
+                                                                </c-agn_gcsp_tax-exempted-doc-upload>
+                                                        </template>
+                                                </template>-->
+                                        </div>
+                                        
+
+                                        <div class="uploaddocs2">
+                                                <template if:true={showupload}>
+                                                        <c-agn_gcsp_customer-reg-step2-uploader
+                                                                registration-id={registrationid} source={source}>
+                                                        </c-agn_gcsp_customer-reg-step2-uploader>
+                                                </template>
+                                                <template if:true={showuploadCA}>
+                                                        <c-agn_gcsp_ship-to-documents-upload_ca
+                                                                registration-id={registrationid} source={source} country-code={country}>
+                                                        </c-agn_gcsp_ship-to-documents-upload_ca>
+                                                </template>
+                                        </div>
+                                        <!--div class="checkbox_text" -->	
+                                                <template if:false={isCS} >	
+                                                        <template if:true={isNursePractitioner}> 
+                                                                <div class="checkbox_text" >   
+                                                                        <div class="address_text Declt1">	
+                                                                                <p>{label.AGN_OAM_Body_Declaration}</p>	
+                                                                        </div>	
+                                                                        <div class="address_text Declt2">	
+                                                                                <p>{label.AGN_OAM_NPDeclaration1}</p>	
+                                                                                <br/>	
+                                                                                <b><p>{label.AGN_OAM_NPDeclaration2}</p></b>
+                                                                                <br/>
+                                                                                <p>{label.AGN_OAM_NPDeclaration3} &nbsp;{label.AGN_OAM_NPDeclaration4}
+                                                                                </p>	
+                                                                        </div>
+                                                                        <div class="chktxt">
+                                                                                <lightning-input type="checkbox"  label={label.AGN_OAM_NPMP_Accept_the_Terms_and_Conditions}	
+                                                                                name="termsncondns" data-id="tncCheckBox" class="checkbox tncchkbox" >	
+                                                                                </lightning-input>
+                                                                        </div>
+                                                                </div>
+                                                        </template>
+                                                        <template if:true={isMPractioner}>   
+                                                                <div class="checkbox_text" >  
+                                                                        <div class="address_text Declt1">	
+                                                                                <p>{label.AGN_OAM_Body_Declaration}</p>	
+                                                                        </div>	
+                                                                        <div class="address_text Declt2">	
+                                                                                <p>{label.AGN_OAM_MPDeclaration1}</p>	
+                                                                                <br/>	
+                                                                                <b><p>{label.AGN_OAM_NPDeclaration2}</p></b>
+                                                                                <br/>
+                                                                                <p>{label.AGN_OAM_MPDeclaration2} &nbsp;{label.AGN_OAM_MPDeclaration3}
+                                                                                </p>	
+                                                                        </div>
+                                                                        <div class="chktxt">
+                                                                                <lightning-input type="checkbox"  label={label.AGN_OAM_NPMP_Accept_the_Terms_and_Conditions}	
+                                                                                name="termsncondns" data-id="tncCheckBox" class="checkbox tncchkbox" >	
+                                                                                </lightning-input>
+                                                                        </div>
+                                                                </div>
+                                                        </template>
+                                                        
+                                                </template>
+                                        <!--/div-->
+                                </div>
+
+                        
+                        
+                 <div class="btn_container btn_margin">                        
+                            <lightning-button-group class="btn_group">
+                                    <lightning-button variant="brand"
+                                            label={label.AGN_OAM_Previous}
+                                            title={label.AGN_OAM_Previous}
+                                            onclick={handlePrevious}
+                                            class="gradient_border_btn prev">
+                                    </lightning-button>
+                                    <div class="btn_next">
+                                            <lightning-button variant="brand"
+                                                    label={label.AGN_OAM_Save}
+                                                    title={label.AGN_OAM_Save}
+                                                    onclick={handleSave}
+                                                    class="gradient_border_btn saveCont">
+                                            </lightning-button>
+                                    </div>
+                                    
+                                    <div class="btn_next">
+                                            <lightning-button variant="brand"
+                                                        label={label.AGN_OAM_Next}
+                                                        title={label.AGN_OAM_Next}
+                                                    onclick={handleNext} class="gradient_btn next">
+                                            </lightning-button>
+                                    </div>
+                            </lightning-button-group>
+                    </div> 
+            </div>
+            </div>
+        </div>
+    </div>
+    <div if:true={showLoader}>
+        <div class="spinnnerdiv" style="height:10rem;">                    
+                <lightning-spinner  class="slds-is-absolute" alternative-text={label.AGN_OAM_Loading} variant="brand" size="large" ></lightning-spinner>
+        </div>
+    </div>
+</template>

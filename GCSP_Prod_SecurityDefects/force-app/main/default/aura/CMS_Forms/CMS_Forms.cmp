@@ -1,0 +1,70 @@
+<aura:component controller="CMS_Applications" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="applicationId" type="String"/>
+    <aura:attribute name="formList" type="Object"/>
+    <aura:attribute name="application" type="Object"/>
+    <aura:attribute name="formId" type="Object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div>
+        <div class="outer_div">
+            <div class="content_div">
+            	<div class="slds-m-top_small slds-box slds-box_xx-small " style="background-color:#061352;">
+                <div style="padding: 0.7rem;" >
+                        <h1 class="section_font">
+                            {!v.application.Name}           
+                        </h1>
+                    </div>
+                </div>
+           		<div class="slds-col slds-size_12-of-12">
+                    <aura:if isTrue = "{!v.applicationId}">
+                        <lightning:recordViewForm recordId="{!v.applicationId}" objectApiName="LEXApplication__c">
+                            <div class="slds-box">
+                                <strong><lightning:outputField fieldName="Name" /></strong>
+                                <strong><lightning:outputField fieldName="ApplicationNumber__c" /></strong>
+                                <strong><lightning:outputField fieldName="Status__c" /></strong>
+                                <strong><lightning:outputField fieldName="CreatedById" /></strong>
+                                
+                            </div>
+                        </lightning:recordViewForm>
+                    </aura:if>
+            	</div>
+            <div>
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                        <tr class="slds-text-title_caps slds-grid slds-wrap" >
+                            <th class="lex-app-header slds-size_1-of-3" scope="col">
+                                <div class="slds-truncate" title="Form">Form</div>
+                            </th>
+                            <th class="lex-app-header slds-size_1-of-3" scope="col">
+                                <div class="slds-truncate" title="Status">Status</div>
+                            </th>
+                            
+                            <th class="lex-app-header slds-size_1-of-3"  scope="col">
+                                <div class="slds-truncate" title="Action">&nbsp;</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.formList}" var="form">
+                            <tr class="slds-grid slds-wrap">
+                                <td class="lex-app-body slds-size_1-of-3" scope="col">
+                                   <div class="slds-truncate" >{!form.Portal_Label__c}</div>
+                                </td>
+                                <td class="lex-app-body slds-size_1-of-3" scope="col">
+                                    <div class="slds-truncate" >{!form.Status__c}</div>
+                                </td>
+                                <td class="lex-app-body slds-size_1-of-3"  scope="col">
+                                    <div class="slds-truncate" >
+                                        <lightning:button label="Start" value="{!form.Id}" onclick="{!c.startForm}"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                        
+                    </tbody>
+                </table>
+   	        </div>
+          </div> 
+        </div>
+      </div>
+</aura:component>

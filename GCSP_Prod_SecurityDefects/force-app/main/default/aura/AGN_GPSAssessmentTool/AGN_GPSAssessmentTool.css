@@ -1,0 +1,11 @@
+.THIS .hidden {
+    display: none;
+}
+.THIS, .THIS body, .THIS html {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #d0d0d0;
+}
+.THIS .developmentPanelButton {
+    background-color: red;
+}

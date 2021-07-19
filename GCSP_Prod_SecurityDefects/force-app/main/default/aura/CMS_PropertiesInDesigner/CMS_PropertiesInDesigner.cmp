@@ -1,0 +1,36 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <!-- Attributes -->
+    <aura:attribute name="dropEntity" type="Object" />
+    <!-- Attributes -->    
+    <div style="width:100%;height:100%;" ondrop="{!c.onDrop}" ondragover="{!c.onDragOver}">
+        <aura:if isTrue="{!v.dropEntity}">
+           
+            <div class="slds-p-around_x-small" style="padding-top: 0px;">
+                <aura:if isTrue="{!v.dropEntity.Type=='Form'}">
+                    <div class="property-title">
+                        Form
+                    </div>
+                    <c:CMS_PropertyForm recordId="{!v.dropEntity.Id}" 
+                                        developerName = "{!v.dropEntity.developerName}"/>
+                </aura:if>
+                <aura:if isTrue="{!v.dropEntity.Type=='FormStep'}">
+                    <div class="property-title">
+                        Step
+                    </div>
+                    <c:CMS_PropertyFormStep recordId="{!v.dropEntity.Id}" 
+                                            developerName = "{!v.dropEntity.developerName}"/>
+                </aura:if>
+
+                <aura:if isTrue="{!v.dropEntity.Type=='Component'}">
+                    <div class="property-title">
+                        Component
+                    </div>
+                    <c:CMS_PropertyComponent recordId="{!v.dropEntity.Id}" 
+                                             componentType="{!v.dropEntity.ComponentType}"
+                                             developerName = "{!v.dropEntity.developerName}"
+                                             compIconName = "{!v.dropEntity.compIconName}"/>
+                </aura:if>
+            </div>    
+        </aura:if>    
+    </div>
+</aura:component>

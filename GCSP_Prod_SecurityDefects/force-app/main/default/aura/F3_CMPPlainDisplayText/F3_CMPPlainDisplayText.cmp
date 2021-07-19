@@ -1,0 +1,21 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+	<!-- Attributes -->
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Component Body -->
+    <div class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small' : 'slds-hide'}">
+    <div name="{!v.elementWrapper.PageElement.Name}"  class="slds-p-around_small">        
+        <!--<div class="slds-grid slds-gutters slds-p-around_small"  >
+            <div class="slds-col slds-size_1-of-12 slds-border_right">
+                <lightning:icon size="small" class="slds-float_right" iconName="action:quote" title="" />
+            </div>-->
+            <div class="slds-col slds-size_11-of-12">
+                <lightning:formattedRichText value="{!v.elementWrapper.ContainerHtmlText}" />
+            </div>
+        <!--</div>-->
+    </div>
+    </div>
+</aura:component>

@@ -1,0 +1,522 @@
+<!--
+@description       : 
+@author            : Ravi Sirigiri
+@group             : 
+@last modified on  : 06-07-2021
+@last modified by  : Ravi Sirigiri
+Modifications Log 
+Ver   Date         Author          Modification
+1.0   02-04-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <template if:false={isUpdateSuccess}>
+        <div hidden={hidemaindiv}>
+            <template if:true={isCS}>
+                <div class="space"></div>
+            </template>
+            <div class={cssWrapperClass}>
+                <div class="reg_step4">
+                    <div class="show-toast">
+                        <c-agn_gcsp_custom-toast title="" message={error} variant={variant} auto-close="true">
+                        </c-agn_gcsp_custom-toast>
+                    </div>
+                    <div class="content_center">
+                         <template if:true={isCS}>
+                            <div class="hd">{label.AGN_GCSP_Customer_Details}</div>
+                         </template>
+                         <template if:false={isCS}>
+                            <div class="hd">{label.AGN_OAM_Manage_My_Account}</div>
+                         </template>
+                        <div class="slds-scope">
+                            <div class="scope_container">
+                                <template if:true={provienceShow}>
+                                    <lightning-input type="text" read-only='true' label={label.AGN_OAM_Body_Province}
+                                        name={label.AGN_OAM_Body_Province} value={provienceShow} class={header_css1}>
+                                    </lightning-input>
+                                </template>
+                                <lightning-input type="text" read-only='true' label={label.AGN_OAM_CustomerType}
+                                    name={label.AGN_OAM_CustomerType} value={customerType} class={header_css2}>
+                                </lightning-input>
+                                <lightning-input type="text" read-only='true' label={label.AGN_OAM_CustomerSubType}
+                                    name={label.AGN_OAM_CustomerSubType} value={customerSubType} class={header_css3}>
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <!--  Existing SoldTo Address Starts -->
+                        <div class="registered_address">
+                            <div class="cheading cheadingbold">{label.AGN_OAM_Body_RegisteredAddress}</div>
+                            <template for:each={existingSoldTo} for:item='soldtoRecord' for:index="indx">
+                                <div class="existing_add" key={soldtoRecord}>
+                                    <template if:true={isSoldToflatView} key={soldtoRecord}>
+                                        <div class="row1">
+                                            <div class="sapid">{soldtoRecord.SAP_ID_AGN__c}</div>
+                                            <div data-value='{soldtoRecord.SAP_ID_AGN__c}' data-address-type="SOLDTO"
+                                                class="slds-show" key={soldtoRecord}>
+                                                <div class="reg_address">
+                                                <lightning-button onclick={show_hide_SoldTo_Address} value={soldtoRecord}
+                                                    label={label.AGN_GCSP_Edit_Button} class="editbtn1">
+                                                </lightning-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div data-value='{soldtoRecord.SAP_ID_AGN__c}' key={soldtoRecord} class="slds-show">
+                                            <div class="address_clear">
+                                                <c-agn_gcsp_address-flat-view key={soldtoRecord}
+                                                    address-fields={soldToAddressFields} address-data={soldtoRecord}>
+                                                </c-agn_gcsp_address-flat-view>
+                                            </div>
+                                            <!--template if:false={isShowDeactivateButton}>
+                                                    <lightning-button onclick={show_hide_SoldTo_Address_Delete} value={soldtoRecord}
+                                                        label="Deactivate"></lightning-button>
+                                                </template-->
+                                        </div>
+
+                                    </template>
+                                    <br />
+                                    <div data-id={soldtoRecord.SAP_ID_AGN__c} key={soldtoRecord} class='slds-hide'> <!--Registered_add-->
+                                        <lightning-button onclick={show_hide_SoldTo_FullView} value={soldtoRecord} name="soldtoClose"
+                                            key={soldtoRecord} label={label.AGN_GCSP_Close_Button} class="closebtn">
+                                        </lightning-button>
+                                        
+                                        <template if:true={soldtoRecord.showDetail}>
+											<div class="Registered_add_block1">                                         
+												<template iterator:it={soldToAddressFields}>
+													<c-a-g-n_-g-c-s-p_-common-input-field-component 
+													key={it.value.Id}
+														instancetype='old' objecttype='soldto'
+														sobjectname={it.value.SObject_Name_AGN__c}
+														fieldname={it.value.Field_Name_AGN__c}
+														required={it.value.Required_AGN__c} 
+														record={soldtoRecord}
+														record-value='{soldtoRecord}'
+														index={indx}
+														regex={it.value.Field_Regex_AGN__c}
+														customlabel={it.value.Field_Custom_Label_AGN__c} 
+														country={country} 
+														sapid={soldtoRecord.SAP_ID_AGN__c}                                                  
+														picklist-option-values={it.value.Picklist_Options_AGN__c}
+														objectfieldtype={it.value.Object_Field_Type_AGN__c}
+														iscontrollingfield={it.value.Is_Controlling_Field_AGN__c}
+														rendered={it.value.Default_Display_On_Load_AGN__c}
+														oncontrollingfieldevent={handleControllingFieldEvent}
+														helptext={it.value.Help_Text_AGN__c}
+														disabled={it.value.ReadOnly_AGN__c}
+														class=""
+														is-last={it.last}
+														is-first={it.first}
+														onstartstopevent={handleSpinnerLoader}
+														onzipcodevalue={handleZipCodeValueChange}>
+													</c-a-g-n_-g-c-s-p_-common-input-field-component>                                               
+												</template>
+											</div>
+											<div class="Registered_add_block2">
+												<template if:false={isBrazilOam}>
+													<template if:true={PaymentMethod} key={soldtoRecord}>
+														<c-agn_gcsp_payment-form index={indx} key={soldtoRecord} objecttype='soldto'
+															paymentmethod={PaymentMethod} isupdateform ='true' record={soldtoRecord}
+															paymentmap='{paymentTermMap}' onpaymentselection={paymentHandler}
+															instancetype="update" customer-type-config='{customerTypeConfig}'
+															customer-type={ctype} customer-sub-type={cSubtype} source={source}
+															step-no="4" countrycode='{country}'
+															sapid={soldtoRecord.SAP_ID_AGN__c}>
+														</c-agn_gcsp_payment-form>
+													</template>
+												</template>
+											</div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        <!--  Existing SoldTo Address Ends-->
+                        <!--Existing Shipping Address Starts -->
+                        <div class="newshipto_address">
+                            <div class="cheading cheadingbold">{label.AGN_OAM_Shipping_Address}</div>
+                            <template for:each={existingShipTo} for:item='shiptoRecord' for:index="indx">
+                                <div class="shipping_add1" key={shiptoRecord}>
+                                    <template if:true={isShipToflatView}>
+                                        <div class="row1">
+                                            <div class="sapid">{shiptoRecord.SAP_ID_AGN__c}</div>
+                                            <div data-value='{shiptoRecord.SAP_ID_AGN__c}' key={shiptoRecord} class="slds-show">  
+                                                <div class="newship_add">                                          
+                                                    <!--template if:false={isShowDeactivateButton}>
+                                                        <lightning-button onclick={show_hide_ShipTo_Address_Delete}
+                                                            value={shiptoRecord} key={shiptoRecord}
+                                                            label={label.AGN_GCSP_Deactivate_Button} class="deactivate_btn">
+                                                        </lightning-button>
+                                                    </!--template -->
+                                                    <lightning-button onclick={show_hide_ShipTo_Address} value={shiptoRecord}
+                                                        key={shiptoRecord} label={label.AGN_GCSP_Edit_Button} class="editbtn2">
+                                                    </lightning-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div data-value='{shiptoRecord.SAP_ID_AGN__c}' key={shiptoRecord} class="slds-show">
+                                            <div class="address_clear">  
+                                                <c-agn_gcsp_address-flat-view key={shiptoRecord}
+                                                    address-fields={shipToAddressFields} address-data={shiptoRecord}>
+                                                </c-agn_gcsp_address-flat-view>
+                                            </div>
+                                        </div>
+
+                                    </template>
+                                    <div data-id={shiptoRecord.SAP_ID_AGN__c} key={shiptoRecord} class='slds-hide'>
+                                        <div class='Shipping_add1'>
+                                            <lightning-button onclick={hideFullView} value={shiptoRecord} name="shiptoClose"
+                                                key={shiptoRecord} label={label.AGN_GCSP_Close_Button} class="closebtn1">
+                                            </lightning-button>
+
+                                            <template if:false={isShowDeactivateButton}>
+                                                <div key={shiptoRecord} class="hide_deactivate_button_shipto">
+                                                    
+                                                        <lightning-input  type="toggle" class="inputToggle" name={shiptoRecord.SAP_ID_AGN__c} onchange={show_hide_ShipTo_Address_Delete}                                               
+                                                            label={label.AGN_GCSP_Deactivate_Shipping_Address}>
+                                                        </lightning-input>
+                                                    
+                                                </div>
+                                            </template>
+                                            
+                                            <template if:true={shiptoRecord.showDetail}>
+												<div class="Shipping_add_block1">
+													<div data-address-id={shiptoRecord.SAP_ID_AGN__c} class="">
+														<template for:each={shipToAddressFields} for:item='fieldvalue'>
+															<c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+																instancetype='old' 
+																objecttype='shipto'
+																index={indx}
+																sobjectname={fieldvalue.SObject_Name_AGN__c}
+																fieldname={fieldvalue.Field_Name_AGN__c}
+																required={fieldvalue.Required_AGN__c} 
+																record={shiptoRecord}
+																record-value='{shiptoRecord}'
+																regex={fieldvalue.Field_Regex_AGN__c}
+																customlabel={fieldvalue.Field_Custom_Label_AGN__c} 
+																country={country}
+																picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+																objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+																iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+																rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+																oncontrollingfieldevent={handleControllingFieldEvent}
+																helptext={fieldvalue.Help_Text_AGN__c}
+																class=""
+																sapid={shiptoRecord.SAP_ID_AGN__c}
+																disabled={fieldvalue.ReadOnly_AGN__c}
+																onzipcodevalue={handleZipCodeValueChange}
+																source={source}>
+															</c-a-g-n_-g-c-s-p_-common-input-field-component>
+														</template>
+													</div>
+												</div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!--Existing Shipping Address Endss -->
+                            <!--To add New Shipping Address Starts -->
+                            <template if:true={showNewShipto}>
+                                <template for:each={shippingMap} for:item='set' for:index="indx">
+                                    <!---  <div key={set.key}>
+                                            <div class="cheading cheadingbold">{label.AGN_OAM_New_Shipping}</div> -->
+                                    <!--{label.AGN_CP_ADD_NEW_SHIPPING}-->
+                                    <!-- </div><br key={set.key} /> -->
+                                    <!-- delete button -->                                    
+                                    <!-- input component -->
+                                    <div class="newshipto_address_block1" key={set.key}>
+                                        <c-agn_gcsp_address-delete key={set.key} onshiptoaddressdelete={deleteShipTo}
+                                        index={indx} shipping-map-counter={shippingMapCounter} instancetype='new'
+                                        class="deletebtn">
+                                        </c-agn_gcsp_address-delete>
+                                        <div class="cheading cheadingbold1">{label.AGN_OAM_New_Shipping}</div>
+                                        <template for:each={set.value} for:item="fieldvalue" for:index="index">
+                                            <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+                                                instancetype='new' 
+                                                objecttype='shipto'
+                                                index={indx}
+                                                sobjectname={fieldvalue.SObject_Name_AGN__c}
+                                                fieldname={fieldvalue.Field_Name_AGN__c}
+                                                required={fieldvalue.Required_AGN__c} record=''
+                                                regex={fieldvalue.Field_Regex_AGN__c}
+                                                customlabel={fieldvalue.Field_Custom_Label_AGN__c} country={country}
+                                                picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                                objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                                iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                                rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                                oncontrollingfieldevent={handleControllingFieldEvent}
+                                                helptext={fieldvalue.Help_Text_AGN__c}
+												onzipcodevalue={handleZipCodeValueChange}                                               
+                                                source={source}
+                                                class="">
+                                            </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                        </template>
+                                    </div>
+                                </template>
+                            </template>
+
+                            <template if:true={showNewShiptoButton}>
+                                <div class="btn_container addShipAddr">
+                                    <lightning-button variant="brand" label={label.AGN_OAM_New_ShipTo}
+                                        title={label.AGN_OAM_New_ShipTo} onclick={addNewShipTo} class="gradient_border_btn">
+                                    </lightning-button> <!-- {label.AGN_CP_ADD_NEW_SHIPTO_BTN} -->
+                                </div>
+                            </template>
+
+                            <!--To add New Shipping Address Ends -->
+                        </div>
+                        <!--Existing Billing Address Starts -->
+						<template if:true={showBillTo}>
+							<div class="newbillto_address">
+								<div class="cheading cheadingbold">{label.AGN_OAM_Biling_Address}</div>
+								<template for:each={existingBillTo} for:item='billtoRecord' for:index="indx">
+									<div class="billing_add1" key={billtoRecord}>
+										<template if:true={isBillToflatView}>
+											<div class="row1">
+												<div class="sapid" key={billtoRecord}>{billtoRecord.SAP_ID_AGN__c}</div>
+												<div data-value='{billtoRecord.SAP_ID_AGN__c}' key={billtoRecord} class='slds-show'>                                            
+													<div class="newship_add">
+														<!--template if:false={isShowDeactivateButton}>
+															<lightning-button onclick={show_hide_BillTo_Address_Delete}
+																value={billtoRecord} key={billtoRecord}
+																label={label.AGN_GCSP_Deactivate_Button} class="deactivate_btn">
+															</lightning-button>
+														</template -->
+														<lightning-button onclick={show_hide_BillTo_Address} value={billtoRecord}
+															key={billtoRecord} label={label.AGN_GCSP_Edit_Button} class="editbtn2">
+														</lightning-button>
+													</div>
+												</div>
+											</div>
+											<div data-value='{billtoRecord.SAP_ID_AGN__c}' key={billtoRecord} class='slds-show'>
+												<div class="address_clear">
+													<c-agn_gcsp_address-flat-view key={billtoRecord}
+														address-fields={billToAddressFields} address-data={billtoRecord}>
+													</c-agn_gcsp_address-flat-view>
+												</div>
+											</div>
+										</template>
+
+										<div data-id={billtoRecord.SAP_ID_AGN__c} key={billtoRecord} class='slds-hide'>
+											<!--<div class='billing_add1'>-->
+												<lightning-button onclick={hideFullView} value={billtoRecord} name="billtoClose"
+													key={billtoRecord} label={label.AGN_GCSP_Close_Button} class="closebtn1">
+												</lightning-button>
+												<template if:false={isShowDeactivateButton}>
+													<div key={billtoRecord} class="hide_deactivate_button_billto">
+													
+															<lightning-input  type="toggle" class="inputToggle" name={billtoRecord.SAP_ID_AGN__c} onchange={show_hide_BillTo_Address_Delete}                                               
+																label={label.AGN_GCSP_Deactivate_Billing_Address}>
+															</lightning-input>
+													
+													</div>
+												</template>
+												<template if:true={billtoRecord.showDetail}>
+												<div data-address-id={billtoRecord.SAP_ID_AGN__c} class="" >
+													<div class="Billing_add_block1">
+														<template for:each={billToAddressFields} for:item='fieldvalue'>
+															<c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+																instancetype='old'
+																objecttype='billto'                                                            
+																sobjectname={fieldvalue.SObject_Name_AGN__c} 
+																index={indx}
+																fieldname={fieldvalue.Field_Name_AGN__c}
+																required={fieldvalue.Required_AGN__c} record={billtoRecord}
+																record-value='{billtoRecord}'
+																regex={fieldvalue.Field_Regex_AGN__c}
+																customlabel={fieldvalue.Field_Custom_Label_AGN__c} country={country}
+																picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+																objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+																iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+																rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+																oncontrollingfieldevent={handleControllingFieldEvent}
+																helptext={fieldvalue.Help_Text_AGN__c}
+																class=""
+																sapid={billtoRecord.SAP_ID_AGN__c}
+																disabled={fieldvalue.ReadOnly_AGN__c}>
+															</c-a-g-n_-g-c-s-p_-common-input-field-component>
+														</template>
+													</div>
+													<div class="Billing_add_block2">                                               
+														<template if:true={PaymentMethod} key={billtoRecord}>
+															<c-agn_gcsp_payment-form key={billtoRecord} objecttype='billto'
+																paymentmethod={PaymentMethod} isupdateform ='true' record={billtoRecord}
+																onpaymentselection={paymentHandler} paymentmap='{paymentTermMap}'
+																customer-type-config='{customerTypeConfig}' customer-type={ctype}
+																instancetype="update" customer-sub-type={cSubtype} source={source}
+																step-no="4" countrycode={country}
+																sapid={billtoRecord.SAP_ID_AGN__c}>
+															</c-agn_gcsp_payment-form>
+														</template>
+													</div>
+												</div>
+												</template>
+										   <!-- </div>-->
+										</div>
+									</div>
+								</template>
+
+								<!--Existing Billing Address Ends -->
+								<!--To add New Billing Address Starts -->
+								<template if:true={showNewBillto}>
+									<template for:each={billingMap} for:item='set' for:index="indx">
+										<!-- <div key={set.key} class="cheading cheadingbold1">New Billing
+											{label.AGN_OAM_New_Biling_Address}
+										</div><br key={set.key} /> -->
+										<!-- delete button -->
+										
+										<!-- input component -->
+										<div class="newshipto_address_block1" key={set.key}>
+											<c-agn_gcsp_address-delete key={set.key} onshiptoaddressdelete={deleteBillTo}
+											index={indx} shipping-map-counter={billingMapCounter} instancetype='new'
+											class="deletebtn">
+											</c-agn_gcsp_address-delete>
+											<div key={set.key} class="cheading cheadingbold1">
+												{label.AGN_GCSP_NewBiiling_Address}</div>
+											<template for:each={set.value} for:item="fieldvalue" for:index="index">
+												<c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+													instancetype='new' 
+													objecttype='billto' 
+													index={indx}
+													sobjectname={fieldvalue.SObject_Name_AGN__c}
+													fieldname={fieldvalue.Field_Name_AGN__c}
+													required={fieldvalue.Required_AGN__c} record=''
+													regex={fieldvalue.Field_Regex_AGN__c}
+													customlabel={fieldvalue.Field_Custom_Label_AGN__c} country={country}
+													picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+													objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+													iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+													rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+													oncontrollingfieldevent={handleControllingFieldEvent}
+													helptext={fieldvalue.Help_Text_AGN__c}
+													class="">
+												</c-a-g-n_-g-c-s-p_-common-input-field-component>
+											</template>
+											<template if:true={PaymentMethod} key={set.key}>
+												<c-agn_gcsp_payment-form index={indx} key={set.key} objecttype='billto'
+													paymentmethod={PaymentMethod} record='' onpaymentselection={paymentHandler}
+													customer-type-config='{customerTypeConfig}' customer-type={ctype}
+													paymentmap='{paymentTermMap}' customer-sub-type={cSubtype} source={source}
+													step-no="4" countrycode='{country}'>
+												</c-agn_gcsp_payment-form>
+											</template>
+										</div>
+										<br key={set.key} />
+									</template>
+								</template>
+								<template if:true={showNewBilltoButton}>
+									<div class="btn_container addShipAddr">
+										<lightning-button variant="brand" label={label.AGN_OAM_NewBillTo}
+											title={label.AGN_OAM_NewBillTo} onclick={addNewBillTo} class="gradient_border_btn">
+										</lightning-button>
+									</div>
+								</template>
+								<!--To add New Billing Address Ends -->
+							</div>
+						</template>
+                        <template if:false={isCS}>
+                            <template if:true={displayNLdeclaration}>
+                                <div class="declartionpart">
+                                    <div class="address_text NLDeclt1">
+                                        <p>{label.AGN_OAM_Declaration}</p>
+                                    </div>
+                                    <div class="slds-grid chk_box" >
+                                        <p><lightning-input type="checkbox"
+                                            label={label.AGN_OAM_Mandatory_Declaration} title={label.AGN_OAM_Mandatory_Declaration}
+                                            name="nlDeclaration" class="li_width nlChkBox">
+                                        </lightning-input></p>  
+                                    </div>
+                                </div>
+                            </template>
+					</template>
+                    </div>
+                    <template if:false={isCS}>
+                    <div class="btn_container submitbtn">
+                        <template if:true={isCanadaOam}>
+                            <lightning-button variant="brand" label={label.AGN_OAM_Next}
+                                title={label.AGN_OAM_Next} disabled={disableFinishBtn} onclick={handleClick} class="gradient_border_btn">
+                            </lightning-button>
+                        </template>
+                        <template if:false={isCanadaOam}>
+                        <lightning-button variant="brand" label={label.AGN_OAM_Body_Submit}
+                            title={label.AGN_OAM_Body_Submit} disabled={disableFinishBtn} onclick={handleClick} class="gradient_border_btn">
+                        </lightning-button>
+                        </template>                        
+                    </div>
+                    </template>
+                    <template if:true={isCS}>
+                        <div class="btn_container submitbtn">
+                            <lightning-button variant="brand" label={label.AGN_OAM_Next}
+                                title={label.AGN_OAM_Next} disabled={disableFinishBtn} onclick={handleClick} class="gradient_border_btn">
+                            </lightning-button>
+                        </div>
+                   </template>
+                </div>
+            </div>
+            <template if:true={isCS}>
+                <div class="space"></div>
+            </template>
+        </div>
+    </template>
+
+    <template if:true={isShowCanadaShiptoLicenseDocuments}>
+        <div class={cssWrapperClass}> 
+            <div class="hd">{label.AGN_GCSP_UploadDocumentsForUpdate}</div>  
+            <div class="reg_step4">
+                <div class="DocsUpload">    
+                    <template if:true={registrationId}>
+                        <c-agn_gcsp_update-flow-documents source={source} registration-id={registrationId}></c-agn_gcsp_update-flow-documents>
+                        <c-agn_gcsp_ship-to-documents-upload_ca
+                            registration-id={registrationId} source={source} country-code={country}>
+                        </c-agn_gcsp_ship-to-documents-upload_ca>
+                    </template>
+                </div>
+                    <div class="btn_container submitbtn">
+                        <lightning-button variant="brand" label={label.AGN_OAM_Body_Submit}
+                                    title={label.AGN_OAM_Body_Submit} onclick={handleSubmitCanada} class="gradient_border_btn">
+                        </lightning-button>
+                    </div>                
+                
+            </div> 
+        </div>
+    </template>
+
+    <!--<div if:true={showLoader}>
+        <lightning-spinner alternative-text={label.AGN_OAM_Loading}></lightning-spinner>
+    </div>-->
+    <template if:true={isUpdateSuccess}>        
+            <section class="regSuccessMsg">
+                <template if:false={isCS}>                                           
+                    <template if:false={isShowCanadaShiptoLicenseDocuments}>                                            
+                        <div class="div_oam">                            
+                            <div class="right_cont">
+                                <div class="regSuccessMsg_bg"></div>
+                            </div>
+                            <div class="left_cont">
+                                <div class="para_txt">                                
+                                    <span>{label.AGN_OAM_Account_Update_case_number}:{caseNumber}  {label.AGN_OAM_Thank_you}</span> 
+                                </div>                            
+                            </div>                    
+                        </div> 
+                </template>
+                </template>
+                <template if:true={isCS}>                                                          
+                        <div class="div_cs">                            
+                            <div class="right_cont">
+                                <div class="regSuccessMsg_bg"></div>
+                            </div>
+                            <div class="left_cont">
+                                <div class="para_txt">                                
+                                    <span>{label.AGN_OAM_Account_Update_case_number}:{caseNumber}  {label.AGN_OAM_Thank_you}</span> 
+                                </div>                            
+                            </div>                    
+                        </div> 
+                </template>                    
+            </section>   
+    </template> 
+    <div if:true={showLoader}>
+        <div class="spinnnerdiv" style="height:10rem;">                    
+            <lightning-spinner  class="slds-is-absolute" alternative-text={label.AGN_OAM_Loading} variant="brand" size="large" ></lightning-spinner>
+        </div>
+    </div>
+</template>

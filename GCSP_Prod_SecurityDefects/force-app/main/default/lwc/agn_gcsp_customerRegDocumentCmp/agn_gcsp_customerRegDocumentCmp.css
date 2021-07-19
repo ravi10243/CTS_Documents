@@ -1,0 +1,151 @@
+.outer_wrapper {
+    width: 100%;
+    max-width: 1366px;
+    margin: auto;
+    font-size: 0.8125rem;
+}
+.regdocument{
+    width: 100%;
+    padding: 2% 2% 3%;
+    margin: 0 auto;
+    background: white;   
+    border: 1px solid #bfbfbf;    
+}
+.docsupload{      
+    width: 100%;
+    margin: 3% auto 0;    
+    background: white;
+    border: 1px solid #bfbfbf;
+}
+.uploaddocs1{           
+    width: 95%;    
+    margin: 0 auto; 
+}
+.uploaddocs2 {         
+    width: 95%;    
+    margin: 0 auto; 
+}
+.btn_container{
+    width: 75%;
+    margin: 0 auto;
+    padding: 3% 0 5%;
+    text-align: center;
+    display: block;
+}
+.prev, .btn_next{
+    /* padding: 6% !important; */
+    display:inline;
+    margin:0 5%;
+}
+.gradient_border_btn{
+    padding-left:0%;
+}
+.cheading{    
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: Arial,sans-serif;
+    padding: 0;
+    width: 100%;
+    color: #565656;
+    margin: 10px auto;
+}
+.hd{
+    font-size: 1.1rem;
+    font-weight: 700;  
+    width: 100%;
+    font-family: Arial,sans-serif;
+    margin: 2% 0;
+}
+
+.Declt1{
+    font-size: 1rem;
+    width: 95%;
+    font-size: 1rem;
+    color: #2c5596;
+    margin: 0 auto 2%;
+ }
+ .Declt2{
+    width: 95%;
+    font-size: 0.9rem;
+    text-align: justify;
+    margin: 0 auto 5%;      
+ }
+ .checkbox_text{        
+    /* display: flex; */
+    margin: 0 auto 2%;
+    width: 95%;   
+    font-size: 0.9rem;
+    border: 1px solid #bfbfbf;
+}
+.chktxt{
+    margin-top: 2px;
+  /*  margin-left: -230px; */
+    color: #2c5596;
+    font-size: 1rem;
+}
+.tncchkbox{
+    margin: 0 1em 2em;
+    width: 95%;
+}
+
+/* ----------------------------- Tablet and Mobile View Changes --------------------------- */
+
+@media screen and (max-width: 1160px) and (min-width: 941px){
+    .prev, .btn_next{
+        /* padding: 4% !important; */
+        margin:0 3%;
+    }
+ }
+ @media screen and (max-width: 940px) and (min-width: 815px){
+    .prev, .btn_next{
+        /* padding: 2% !important; */
+        margin:0 1%;
+    }
+    .regdocument{      
+        padding: 2% 2.5% 3%; 
+    }                   
+ }
+ @media screen and (max-width: 814px) and (min-width: 771px){
+    .prev, .btn_next{
+        margin:0 1%;
+        /* padding: 1% !important; */
+    }
+    .regdocument{      
+        padding: 2% 2.5% 3%; 
+    }     
+ }
+ @media screen and (max-width: 770px) and (min-width: 511px){    
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        /* padding: 2% 0% 5%;   */
+    }    
+    .prev, .btn_next{
+        /* padding: 2%!important; */
+        margin:1% 0 5%;
+        display: block;
+    }
+    .regdocument{      
+        padding: 2% 2.5% 3%; 
+    }     
+} 
+@media screen and (max-width: 510px){    
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        /* padding: 2% 0% 5%;   */
+    }
+    .prev, .btn_next{
+        /* padding: 2%!important; */
+        margin:1% 0 5%;
+        display: block;
+    }
+    .regdocument{      
+        padding: 3% 0 2%;
+    }
+    .uploaddocs1, .uploaddocs2 {           
+        width: 100%;           
+    }                
+}

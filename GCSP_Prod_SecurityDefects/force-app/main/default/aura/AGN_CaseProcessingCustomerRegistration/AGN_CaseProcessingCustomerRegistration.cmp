@@ -1,0 +1,59 @@
+<aura:component controller="AGN_ApexCaseProcessing" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global"  >
+    
+    <aura:attribute name="controllerObj" type="AGN_ApexCaseProcessing"/>
+    <aura:attribute name="hasSAPIdForAllAdrs" type="boolean"/>
+    <aura:attribute name="ProcessAGN" type="boolean"/>
+    <aura:attribute name="sendToSAPBtnDisabled" type ="boolean"/>
+    <aura:attribute name="ProcessBtnDisabled" type ="boolean"/>
+    <aura:attribute name="customerPortalBtnDisabled" type = "boolean"/>
+    <aura:attribute name="showSendSAPBtn" type="boolean"/>
+    <aura:attribute name="hasEnableportalUserAllContacts" type = "boolean"/>
+    <aura:attribute name="refreshRequired" type="boolean" default="false" />
+    <aura:attribute name="showLoader" type="boolean" default="false" />
+    <aura:attribute name="errorMsg" type="String"/>
+    <aura:attribute name="successMsg" type="String"/>
+    <!-- added for netherlands requirement -->
+    <aura:attribute name = "showExtDataBtn" type = "boolean"/>
+    <aura:attribute name="ExtDataBtnDisabled" type ="boolean"/>
+    <aura:attribute name="ListofFields" type="Allergan_Customer_Address_AGN__c[]"/> 
+
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:workspaceAPI aura:id="workspace"/>
+    <aura:renderIf isTrue="{!v.showLoader}">
+    	<lightning:spinner alternativeText="Loading" size="large" />
+        <aura:set attribute="else">
+            <div class="slds-box">
+                <aura:renderIf isTrue="{! !v.refreshRequired}">
+                    <div class="slds-align_absolute-center">
+                        <lightning:button label='Activate Portal Access' aura:id = "cusPorBtnId" onclick="{!c.callSendToOkta}" disabled="{!v.customerPortalBtnDisabled}"/>
+                        <lightning:button label='Process' aura:id = "prcsBtnID" onclick="{!c.callProcess}" disabled="{!v.ProcessBtnDisabled}"/>
+                        <aura:renderIf isTrue="{!v.showSendSAPBtn}">
+                            <lightning:button label='Send To SAP' aura:id = "sapBtnID" onclick="{!c.callSendToSAP}" disabled="{!v.sendToSAPBtnDisabled}" />
+                        </aura:renderIf>
+                        <aura:renderIf isTrue="{!v.showExtDataBtn}">
+                        <lightning:button label='Extract Data' aura:id = "extDataId" onclick = "{!c.downloadExcel}" disabled = "{!v.ExtDataBtnDisabled}"/>
+                          </aura:renderIf>  
+                    </div>
+                    <aura:set attribute="else">
+                        <div style="display:block; width:100%;">
+                            <aura:renderIf isTrue="{!v.errorMsg != null}">
+                                <ui:message title="Error" severity="error" closable="true">
+                                    <pre>{!v.errorMsg}</pre>
+                                </ui:message>
+                            </aura:renderIf>
+                            <aura:renderIf isTrue="{!v.successMsg != null}">
+                                <ui:message title="Successful" severity="confirm" closable="true">
+                                    <pre>{!v.successMsg}</pre>
+                                </ui:message>
+                            </aura:renderIf>
+                        </div>
+                        <div class="slds-align_absolute-center">                        
+                            <lightning:button label='Page Refresh' aura:id = "pagerefBtnId" onclick="{!c.pageRefresh}"/>
+                    	</div>
+                	</aura:set>
+                </aura:renderIf> 
+            </div>
+        </aura:set>
+    </aura:renderIf>
+</aura:component>

@@ -1,0 +1,23 @@
+.THIS .inputCheckboxValue {
+    max-width: 50%;
+    padding-left: 5px;
+    height: 51px;
+}
+.THIS .input__Checkboxlabel--nariko {
+    font-size: 15px;
+    margin-right: 5%;
+}
+.THIS .inputtextValue {
+    bottom: 10px;
+}
+@media only screen 
+    and (min-device-width : 300px) 
+    and (max-device-width : 767px) {
+    .THIS .inputCheckboxValue {
+        max-width: 100%;
+        padding-left: 0;
+    } 
+    .THIS .inputtextValue {
+        bottom: -10px;
+    }
+}

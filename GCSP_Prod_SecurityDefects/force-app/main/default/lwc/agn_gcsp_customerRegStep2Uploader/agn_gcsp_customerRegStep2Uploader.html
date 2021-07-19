@@ -1,0 +1,13 @@
+<template>
+    
+    <!-- <div if:true={showUploadHeader} class="cheading cheadingbold">Upload Documents</div>-->
+
+    <template for:each={AttachmentList} for:item='attachment'>
+      <c-agn_gcsp_file-upload key={attachment.file} onattachmentupload={onupload} parentid={registrationId}
+            attachment={attachment} source={source} class="upload_sec"></c-agn_gcsp_file-upload>
+    </template>
+
+    <!--<div class="line">
+        <hr>
+    </div> -->
+</template>

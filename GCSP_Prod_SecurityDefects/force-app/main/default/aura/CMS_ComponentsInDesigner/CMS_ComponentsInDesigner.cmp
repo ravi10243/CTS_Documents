@@ -1,0 +1,106 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="CMDTComponentsController">
+    
+    <!-- Attributes -->
+    <aura:attribute name="componentsInDesignerWrapper" type="Object" />
+    
+    <aura:attribute name="listComponentTypes" type="Object" />
+    <aura:attribute name="listObjectField" type="Object" />
+    <aura:attribute name="originalListComponentTypes" type="Object" />
+    <aura:attribute name="originalListObjectField" type="Object" />
+    
+    <aura:attribute name="listFormSteps" type="Object" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="currentStepId" type="String" />
+    <aura:attribute name="currentStepDeveloperName" type="String" />
+    <aura:attribute name="searchQuery" type="String" default="" />
+
+    
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- RegisterEvent -->
+    <aura:registerEvent name="CMS_FormStepChangeEvent" type="c:CMS_FormStepChangeEvent"/>
+    
+    <!-- EventHandlers -->
+    <aura:handler event="c:CMS_ComponentsRefreshEvent" action="{!c.componentsRefreshEventHandler}"/>
+    
+    <!-- Component Body -->
+    <div class="slds-p-around_x-small">
+        <aura:if isTrue="{!v.componentsInDesignerWrapper}">
+            <div style="font-weight:bold">
+                Current Step
+            </div>
+            <lightning:select value="{!v.currentStepId}" onchange="{!c.onCurrentStepChange}" >
+                <option value="--">Select Current Step..</option>
+                <aura:if isTrue ="{!v.listFormSteps!=null}">
+                    <aura:iteration items="{!v.listFormSteps}" var="formStep">
+                        <option value="{!formStep.StepId}">{!formStep.DeveloperName}</option> 
+                    </aura:iteration>
+                </aura:if>
+            </lightning:select>
+            <aura:if isTrue="{!v.currentStepId!='--'}">
+                <!-- Search Input -->
+                <div>
+                    <div class="slds-form-element">
+                        <lightning:input onkeyup="{!c.searchComponentsAndObjects}" 
+                                         name="search" 
+                                         value="{!v.searchQuery}" 
+                                         placeholder="Search components..." 
+                                         label=""
+                                         type = "search"/>
+                    </div>
+                </div>
+                <!-- Items -->
+                <aura:if isTrue ="{!v.listComponentTypes!=null}">
+                    <div style="font-weight:bold" class="slds-p-top_small">
+                        Components
+                    </div>
+                    <p class="slds-p-around_small">
+                        <aura:iteration items="{!v.listComponentTypes}" var="componentType">
+                            <div class="slds-p-around_xx-small" draggable="true" ondragstart="{!c.drag}">
+                                <div class="slds-clearfix">
+                                    <div class="slds-float_left slds-p-around_xx-small">
+                                        <lightning:icon iconName="{!componentType.IconName}" size="x-small" alternativeText="{!componentType.Label}" />
+                                    </div>    
+                                    <div class="slds-float_left slds-p-around_xx-small">
+                                        {!componentType.Label}
+                                    </div>
+                                    <div class="slds-float_right slds-p-around_xx-small">
+                                        <lightning:buttonIcon iconName="utility:add" size="small" value="{!componentType}"
+                                                              variant="bare" alternativeText="Add Component Type" onclick="{!c.openAddComponent}"/>
+                                    </div>
+                                </div>    
+                            </div>
+                        </aura:iteration>
+                    </p>
+                </aura:if>
+                <aura:if isTrue ="{!v.listObjectField!=null}">
+                    <div style="font-weight:bold" class="slds-p-top_small">
+                        Object Fields
+                    </div>
+                    <p class="slds-p-around_small">
+                        <aura:iteration items="{!v.listObjectField}" var="objectField">
+                            <div draggable="true" class="slds-p-around_xx-small" ondragstart="{!c.drag}">
+                                <div class="slds-clearfix">
+                                    <div class="slds-float_left slds-p-around_xx-small">
+                                        <lightning:icon iconName="standard:all" size="x-small" alternativeText="{!objectField.FieldLabel}" />
+                                    </div>    
+                                    <div class="slds-float_left slds-p-around_xx-small">
+                                        {!objectField.FieldLabel}
+                                    </div>
+                                    <div class="slds-float_right slds-p-around_xx-small">
+                                        <lightning:buttonIcon iconName="utility:add" size="small" value="{!objectField}"
+                                                              variant="bare" alternativeText="Add Object Field" onclick="{!c.openDataFieldAddComponent}"/>
+                                    </div>
+                                </div>    
+                            </div>	
+                        </aura:iteration>
+                    </p>
+                </aura:if>
+            </aura:if>    
+        </aura:if>
+    </div>
+	<div aura:id="showChildModal" ></div>    
+</aura:component>

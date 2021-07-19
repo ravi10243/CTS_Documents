@@ -1,0 +1,30 @@
+<design:component>
+	<design:attribute
+		name="custRegId"
+		label="Customer Registration Id"
+		description="Customer Registration Record Id"/>
+	<design:attribute
+		name="MissingAttachment"
+		label="Document Missing"
+		description="Required document Missing"/>
+	<design:attribute
+		name="isSingleAttachment"
+		label="Is Single Attachment"
+		description="Is this component is being used for uploading single file, if yes enter 'true' else enter 'false'"/>
+	<design:attribute
+		name="singleAttachmentLabel"
+		label="Single Attachment Label"
+		description="Display label for single file attachment"/>
+	<design:attribute
+		name="singleAttachmentIsRequired"
+		label="Single Attachment IsRequired"
+		description="Is this single attachment mandatory, if yes enter 'true' else enter'false'"/>
+	<design:attribute
+		name="nameOfDocuments"
+		Label="Name Of Documents"
+		description="Name Of Documents seperated by semi colone"/>
+	<design:attribute
+		name="showWebSite"
+		label="Show Websites"
+		description="Show Websites by Customer Group"/>
+</design:component>

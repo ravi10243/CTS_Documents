@@ -1,0 +1,1853 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" 
+                controller ="AGN_SPARK_Detail" access="global">
+    <ltng:require styles="{!$Resource.AGN_SPARK_Theme + '/css/edit_profile.css'}"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:attribute name="userDetails" type ="object" default=""/>
+    <aura:attribute name="multiChannelConsent" type="boolean" default="" />
+    <aura:attribute name="multiChannelEvent" type="boolean" default="" />
+    <aura:attribute name="isView" type ="boolean" default="true"/>
+    <aura:attribute name="showError" type="boolean" description="" default="false"/>
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="private"/>
+    <aura:attribute name="custDetail" type="sObject" default="{'sobjectType': 'Allergan_Customer_Registration_AGN__c'}"/> 
+    <aura:attribute name="profession" type="object" default="[]"/>
+    <aura:attribute name="aestheticPat" type="object" default="[]"/>
+    <aura:attribute name="daysPerWeek" type="object" default="[]"/>
+    <aura:attribute name="planDays" type="object" default="[]"/>
+    <aura:attribute name="currLoc" type="object" default="[]"/>
+    <aura:attribute name="currentPracticing" type="string"/>
+    <aura:attribute name="AGNSPARKImage" type="object"/>
+    
+	<ltng:require styles="{!join(',', 
+                          $Resource.AGN_SPARK_Theme + '/fonts/font-awesome/css/font-awesome.min.css',
+                         $Resource.AGN_SPARK_Rebranding_MyAccount + '/lib/bootstrap.min.css', 
+                         $Resource.AGN_SPARK_Rebranding_MyAccount + '/css/MyAccounts.css'
+                          )}"
+              />
+    <!--Attributes Ends-->
+    <aura:html tag="style">
+     <!-- .topbanner{
+            background-position: right !important;
+            background-size: 28%!important;
+            background-position-y: -101px !important;
+        }-->
+         .row{
+        margin:0px;
+        }
+        .container-fluid{
+        padding:0px;
+        }
+
+        .slds-form-element__control {
+                width: 100%;
+            }
+	.Content3LeftSection #QuestionHead, .Content3RightSection #QuestionHead{
+       min-height:68px;
+        }
+
+        .Content3LeftSection  .slds-combobox__input, .Content3RightSection .slds-combobox__input  {
+        	width: 100%;
+            padding: 25px 38px !important;
+            background-color: #ffffff !important;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 21px !important;
+           margin: 40px 10px 0px 0px;
+        }
+        .Content3question1 .slds-form-elemen{
+        width:100% !important;
+        }
+     .InputSection input.slds-input {
+               font-family: 'Neue_Haas_Unica_Pro-bold';
+                font-size: 21px;
+                color: #000000;
+                width: 100%;
+                border-color: black;
+        background-color:#faf6f5;
+                padding: 38px 40px;
+            }
+        .slds-assistive-text{
+        	display:none;
+        } 
+        .input_set label {
+        	font-family: 'Beatrice-light';
+            font-size: 21px;
+            margin-bottom: 18px;
+        }
+        .slds-has-error .slds-form-element__help {
+            color: #800000;
+        	font-size:21px;
+        }
+        
+		.errorMessage{
+        	color: #800000;
+        	font-size:21px;
+        }        
+/* --------------------- Banner Section Starts ------------------------------------------ */
+
+#bannerAccount{
+	height: 980px;
+}
+         #bannerImageMobile{
+            display: none;
+        }
+        #bannerImageMobile img{
+            width: 100%;
+            height: 100%;
+        }
+        /*
+#bannerImageAccount{
+        background: url("/images/AllerganAesthetics_Photography_16@2x.jpg") no-repeat;
+	background-size: cover;
+    width: 1134px;
+    position: relative;
+        }*/
+#bannerImageAccount{
+        /*background-size: 100% 100%;*/
+        }
+#bannerContentAccount{
+	background-color: #a7756e;
+}
+
+#titleAccount {
+    white-space: nowrap;
+    text-align: left;
+    font-family: 'Beatrice-light';
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 50px;
+    color: #ffffff;
+    padding: 388px 115px;
+    line-height: initial;
+}
+.bannerButton {
+    font-size: 30px;
+    font-family: Helvetica;
+    padding: 25px 140px;
+    font-weight:bold;
+    margin-top: 62px;
+    /* margin-left: -31px; */
+    display: inline-block;
+    background: #000000;
+    cursor: pointer;
+}
+        #QuestionAnswer .edit_category {
+            float: left;
+            color: #000;
+            padding: 17px 52px;
+            width: 385px;
+            padding: 25px;
+            margin-right: 28px;
+            /* border-radius: 1%; */
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 21px;
+            font-weight: normal;
+            border: 1px solid #707070;
+            background: linear-gradient(to left, #ffffff 20%,#ffffff 100%,#ffffff 10%);
+            outline: none;
+        }
+    #QuestionAnswer .doctor {
+    background: linear-gradient(to left, #000000 26%,#000000 80%,#000000 80%,#000000 90%,#000000 100%) !important;
+    border: 1px solid;
+    border-color: black;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    color: #FFFFFF !important;
+}
+   .edit_yes{
+	background: linear-gradient(to left, #000000 26%,#000000 80%,#000000 80%,#000000 90%,#000000 100%) !important;
+    border: 1px solid;
+    border-color: black;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    color: #FFFFFF !important;
+	}     
+#clearFloat{
+	clear: both;
+}
+#Icon_awesome-facebook {
+	fill:#ffffff !important;
+}
+#Icon_awesome-twitter {
+	fill: #ffffff !important;
+}
+#Icon_awesome-instagram {
+	fill: #ffffff !important;
+}
+/* ---------------------- Banner Section Ends ---------------------------- */
+
+/* ---------------------- Content Section Starts ------------------------- */
+.container-fluid{
+    padding:0px !important;
+}
+.contentHead {
+    text-align: center;
+    font-size: 50px;
+    font-family: 'Beatrice-light';
+    padding-top: 73px;
+    color: rgba(167,117,110,1);
+    margin: 0 auto;
+    display: block;
+}
+.contentSubHead {
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Beatrice-light';
+    margin-top: 10px;
+    margin-bottom: 84px;
+    display: block;
+}
+.Forename,.UserName, .BusinessAddress1, .City, .Postcode{
+    width: 790px;
+    font-size: 30px;
+    padding: 16px;
+    background: none;
+    font-weight: bolder;
+    margin-left: 38px;
+    margin-top: 65px;
+    background-color: #faf6f5;
+}
+.Surname,.Email,.BusinessAddress2, .Country, .Phone{
+    width: 790px;
+    font-size: 30px;
+    padding: 16px;
+    background: none;
+    font-weight: bolder;
+    /* margin-left: 80px; */
+    margin-top: 65px;
+    background-color: #faf6f5;
+}
+.InputSection {
+    width: 100%;
+    padding: 0px 58px 0px 115px;
+    margin-top: 50px !important;
+}
+ #Question2 .regNumber .slds-input {
+    background-color: #ffffff;
+    font-weight: bold;
+    width: 723px;
+    padding: 25px 34px;
+    margin-left: 0px;
+    border-color: black;
+    font-size: 21px;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+}
+.edit_check_tick {
+    background: linear-gradient(to left, #000000 26%,#000000 80%,#000000 80%,#000000 90%,#000000 100%);
+    width: 275px;
+    color: white;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    font-size: 24px;
+    margin-left: 80px;
+    margin-top: 0px;
+    margin-bottom: 0px !important;
+    padding: 20px 16%;
+    padding-left: 75px;
+    padding-right: 80px;
+}
+        .container1 {
+    margin-top: 5%;
+    display: flex;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 0%;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.light-raido{
+        margin-top:6px !important;
+        }
+.answer, .answer2{
+  font-size: 21px;
+        font-size: 21px;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    padding: 17px 152px;
+    color: #000000;
+    border: 1px solid #000000;
+    margin-left: 40px;
+    margin-top: 25px;
+    width: 275px;
+        border: 1px solid #707070;
+        background: linear-gradient(to left, #ffffff 20%,#ffffff 100%,#ffffff 10%);
+            
+}
+      
+  .answer2{
+    padding: 25px 0px;
+  }
+  .active_answer{
+    background-color: #000000 !important;
+    color:#ffffff;
+  }
+
+  .answerSection{
+    margin: 0 auto;
+    padding-top:70px;
+  }
+  .answer2Section{
+      margin-left: 46px;
+  }
+  #QuestionAnswer, #Question2Answer{
+    width: 100%;
+  }
+#QuestionHead {
+       width: 100%;
+    text-align: left;
+    margin: 0 auto;
+    font-size: 24px;
+    font-family: 'Neue_Haas_Unica_Pro-light';
+    padding-top: 0px;
+    padding-left: 0px;
+}
+        
+       .innerContent3 .slds-form-element {
+    display: block;
+    width: 692px !important;
+}
+  #QuestionAnswer, #Question2Answer{
+    width: 100%;
+  }
+  .question2Input{
+    width: 777px;
+    padding: 10px;
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 29px;
+    border: 2px solid #000000;
+  }
+  #Question2{
+    padding-left: 0px;
+    margin-top: 0px;
+  }
+  #Question3{
+    margin-top: 0px;
+        padding:0px;
+  }
+ #questionanswersection2 {
+    margin: 0 auto;
+    margin-top: 115px;
+        align-items: center;
+    width: 83%;
+}
+.innerContent2{
+    width:100%;
+}
+.borderBottom{
+    width: 89%;
+    border-bottom: 1px solid #000000;
+    margin: 0 auto;
+    margin-top: 60px;
+}
+
+        
+     .Content3LeftSection #QuestionHead, .Content3RightSection #QuestionHead {
+    min-height: 68px;
+    margin-top: 40px;
+} 
+      
+        
+.Content3question1option{
+    width: 800px;
+    padding: 12px;
+    font-size: 26px;
+    font-weight: bold;
+    height: 65px;
+    margin-bottom: 15px;
+    margin-top: 75px;
+    border: 1px solid #000000;
+}
+.bottomButton{
+    padding: 15px 125px;
+    font-size: 35px;
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: bold;
+    margin: 40px auto;
+    cursor:pointer;
+}
+.removeMargin{
+margin:0px !important;
+}
+     .Content3LeftSection .slds-icon_xx-small, .slds-icon--xx-small {
+    width: 25px !important;
+    height: 22px !important;
+    margin-top: 17px;
+}
+        .Content3RightSection .slds-icon_xx-small, .slds-icon--xx-small {
+    width: 25px !important;
+    height: 22px !important;
+    margin-top: 17px;
+}
+        .bottomButton {
+            padding: 25px 0px;
+            font-size: 30px;
+            font-family: Helvetica;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: bold;
+            margin: 40px auto;
+            cursor: pointer;
+            width: 521px;
+            text-align: center;
+        }
+        .cAGN_SPARK_UpdateProfile .slds-media__body {
+        font-size:21px;
+        display:block;
+		padding:20px 10px;
+        font-family: 'Neue_Haas_Unica_Pro-bold';
+        }
+        .slds-dropdown{
+        margin-left:10px;
+        }
+        .row.dropdownquestionsection {
+            margin: 0 auto;
+        	width: 90%;
+        }
+        .cAGN_SPARK_UpdateProfile .errorMessage {
+            font-weight: bold;
+            /* align-items: center; */
+            color: #800000;
+            /* margin-left: 38%; */
+            padding-top: 10px;
+            margin: 0px auto;
+        }
+        @media screen and (max-width: 1620px) and (min-width: 1280px) {
+        
+        #titleAccount {
+            font-size: 39px;
+            padding: 274px 39px;
+        }
+        .bannerButton {
+            font-size: 23px;
+            font-family: Helvetica;
+            padding: 22px 87px;
+            font-weight: bold;
+            margin-top: 42px;
+            /* margin-left: -31px; */
+            display: inline-block;
+            background: #000000;
+            cursor: pointer;
+        }
+        #bannerAccount {
+            height: 760px;
+        }
+        .InputSection {
+            width: 100%;
+            padding: 0px 58px 0px 39px;
+            margin-top: 50px !important;
+        }
+        .InputRightSection .slds-form-element {
+            display: block;
+            width: 97%;
+            margin: 0;
+        }
+        
+        InputSection input.slds-input {
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 16px;
+            color: #000000;
+            width: 100%;
+            border-color: black;
+            background-color: #faf6f5;
+            padding: 25px 28px;
+        }
+        .input_set label {
+            font-family: 'Beatrice-light';
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .contentHead {
+            text-align: center;
+            font-size: 38px;
+            font-family: 'Beatrice-light';
+            padding-top: 55px;
+            color: rgba(167,117,110,1);
+            margin: 0 auto;
+            display: block;
+        }
+        .contentSubHead {
+            text-align: center;
+            font-size: 21px;
+            font-family: 'Beatrice-light';
+            margin-top: 10px;
+            margin-bottom: 84px;
+            display: block;
+        }
+        .contentHead {
+            text-align: center;
+            font-size: 28px;
+            font-family: 'Beatrice-light';
+            padding-top: 55px;
+            color: rgba(167,117,110,1);
+            margin: 0 auto;
+            display: block;
+        }
+        .InputSection input.slds-input {
+    		font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 15px;
+            color: #000000;
+            width: 100%;
+            border-color: black;
+            background-color: #faf6f5;
+            padding: 27px 28px;
+        }
+        #QuestionAnswer .edit_category {
+            float: left;
+            color: #000;
+            padding: 17px 52px;
+            width: 290px;
+            padding: 18px;
+            margin-right: 28px;
+            /* border-radius: 1%; */
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 15px;
+            font-weight: normal;
+            border: 1px solid lightgrey;
+            outline: none;
+        }
+       #Question3 #QuestionHead{
+			
+            padding-left: 89px !important;
+        }
+        #QuestionHead {
+            width: 100%;
+            text-align: left;
+            margin: 0 auto;
+            font-size: 19px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            padding-top: 0px;
+            padding-left: 0px;
+        }
+        #Question2 .regNumber .slds-input {
+            background-color: #ffffff;
+            font-weight: bold;
+            width: 513px;
+            padding: 18px 21px;
+            margin-left: 0px;
+            border-color: black;
+            font-size: 13px;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+        
+        }
+        answer, .answer2 {
+            font-size: 21px;
+            font-size: 15px;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            padding: 17px 152px;
+            color: #000000;
+            border: 1px solid #000000;
+            margin-left: 46px;
+            margin-top: 25px;
+            width: 200px;
+        }
+        .answer2 {
+            padding: 18px 0px;
+        }
+        .edit_check_tick{
+        width: 200px;
+        font-size: 18px;
+        padding-left: 44px;
+    	padding-right: 96px;
+        }
+        .light-raido {
+        margin-top: 2px !important;
+    }
+        .container1 {
+    margin-left: 0px;
+        }
+        .Content3LeftSection .slds-combobox__input, .Content3RightSection .slds-combobox__input {
+            width: 100%;
+            padding: 18px 26px !important;
+            background-color: #ffffff !important;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 15px !important;
+            margin: 21px 10px 0px 0px !important;
+        }
+        .innerContent3 .slds-form-element {
+            display: block;
+            width: 533px !important;
+        }
+        .Content3LeftSection .slds-icon_xx-small, .slds-icon--xx-small {
+            width: 25px !important;
+            height: 22px !important;
+            margin-top: 9px;
+        }
+        .Content3RightSection .slds-icon_xx-small, .slds-icon--xx-small {
+            width: 25px !important;
+            height: 22px !important;
+            margin-top: 9px;
+        }
+        .bottomButton {
+            padding: 18px 0px;
+            font-size: 21px;
+            font-family: Helvetica;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: bold;
+            margin: 40px auto;
+            cursor: pointer;
+            width: 400px;
+            text-align: center;
+        }
+        }
+                @media screen and (max-width: 1280px) and (min-width: 992px) {
+        .slds-has-error .slds-form-element__help {
+    color: #800000;
+    font-size: 15px;
+}
+       #titleAccount {
+            font-size: 34px;
+            padding: 200px 39px 0px 39px;
+        }
+        .InputSection {
+            width: 93%;
+            margin: 0 auto;
+            padding: 0px;
+            /* padding: 0px 58px 0px 115px; */
+            margin-top: 50px !important;
+        }
+        .slds-form-element {
+            display: block;
+            width: 100%;
+            margin: 0;
+        }
+        .edit_check_tick{
+        margin-left: 20px;
+		width: 153px;
+		font-size: 15px;
+		padding-left: 0px;
+    padding-right: 0px;
+        }
+		
+        .light-raido {
+        margin-top: 2px !important;
+    }
+        .container1 {
+    margin-left: -25px;
+        }
+        .bannerButton {
+                font-size: 19px;
+                font-family: Helvetica;
+                padding: 22px 87px;
+                font-weight: bold;
+                margin-top: 33px;
+                /* margin-left: -31px; */
+                display: inline-block;
+                background: #000000;
+                cursor: pointer;
+        }
+        #bannerAccount {
+            height: 655px;
+        }
+        .answer2Section {
+            margin-left: 0px;
+        }
+        InputSection input.slds-input {
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 16px;
+            color: #000000;
+            width: 100%;
+            border-color: black;
+            background-color: #faf6f5;
+            padding: 25px 28px;
+        }
+        .input_set label {
+            font-family: 'Beatrice-light';
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .contentHead {
+            text-align: center;
+            font-size: 26px;
+            font-family: 'Beatrice-light';
+            padding-top: 55px;
+            color: rgba(167,117,110,1);
+            margin: 0 auto;
+            display: block;
+        }
+        .contentSubHead {
+            text-align: center;
+            font-size: 18px;
+            font-family: 'Beatrice-light';
+            margin-top: 10px;
+            margin-bottom: 7px;
+            display: block;
+        }
+        .contentHead {
+            text-align: center;
+            font-size: 28px;
+            font-family: 'Beatrice-light';
+            padding-top: 55px;
+            color: rgba(167,117,110,1);
+            margin: 0 auto;
+            display: block;
+        }
+        .InputSection input.slds-input {
+    		font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 15px;
+            color: #000000;
+            width: 100%;
+            border-color: black;
+            background-color: #faf6f5;
+            padding: 27px 28px;
+        }
+        #QuestionAnswer .edit_category {
+            float: left;
+            color: #000;
+            padding: 17px 52px;
+            width: 230px;
+            padding: 18px;
+            margin-right: 28px;
+            /* border-radius: 1%; */
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 15px;
+            font-weight: normal;
+            border: 1px solid lightgrey;
+            outline: none;
+		}
+       #QuestionHead {
+            width: 100%;
+            text-align: left;
+            margin: 0 auto;
+            font-size: 17px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            padding-top: 0px;
+            padding-left: 0px !important;
+        }
+        #Question3 #QuestionHead{
+			width: 100%;
+            text-align: left;
+            margin: 0 auto;
+            font-size: 17px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            padding-top: 0px;
+            padding-left: 27px !important;
+        }
+       #Question2 .regNumber .slds-input {
+            background-color: #ffffff;
+            font-weight: bold;
+            width: 100%;
+            padding: 18px 21px;
+            margin-left: 0px;
+            border-color: black;
+            font-size: 13px;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+        }
+        #Question2 label{
+        width:100%;
+        }
+        #questionanswersection2 {
+            margin: 0 auto;
+            margin-top: 115px;
+            width: 90%;
+        }
+        answer, .answer2 {
+            font-size: 21px;
+            font-size: 15px;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            padding: 17px 152px;
+            color: #000000;
+            border: 1px solid #000000;
+            margin-left: 30px;
+            margin-top: 30px;
+            width: 153px;
+        }
+        .answer2 {
+            padding: 18px 0px;
+        }
+        .Content3LeftSection .slds-combobox__input, .Content3RightSection .slds-combobox__input {
+            width: 100%;
+            padding: 18px 26px !important;
+            background-color: #ffffff !important;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 15px !important;
+            margin: 21px 10px 0px 0px !important;
+        }
+        .innerContent3 .slds-form-element {
+            display: block;
+            width: 417px !important;
+        }
+        .Content3LeftSection .slds-icon_xx-small, .slds-icon--xx-small {
+            width: 25px !important;
+            height: 22px !important;
+            margin-top: 9px;
+        }
+        .Content3RightSection .slds-icon_xx-small, .slds-icon--xx-small {
+            width: 25px !important;
+            height: 22px !important;
+            margin-top: 9px;
+        }
+       .bottomButton {
+            padding: 16px 0px;
+            font-size: 19px;
+            font-family: Helvetica;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: bold;
+            margin: 40px auto;
+            cursor: pointer;
+            width: 349px;
+            text-align: center;
+        }
+        }
+        @media screen and (max-width: 991px) and (min-width: 600px) {
+        #bannerImageMobile{
+            display:contents;
+            padding:0px;
+        }
+        .edit_check_tick{
+        font-size: 21px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+	padding: 17px;
+        }
+        .container1 {
+             margin-top: 0px; 
+            display: inline-flex;
+            position: relative;
+            padding-left: 90px;
+        }
+        #titleAccount {
+            white-space: nowrap;
+            text-align: left;
+            font-family: 'Beatrice-light';
+            font-style: normal;
+            font-weight: lighter;
+            font-size: 35px;
+            color: #ffffff;
+            padding: 87px 36px;
+            line-height: initial;
+        }
+        .bannerButton {
+            font-size: 21px;
+            font-family: Helvetica;
+            padding: 17px 0px;
+            font-weight: bold;
+            width: 300px;
+            margin-top: 34px;
+            text-align: center;
+            /* margin-left: -31px; */
+            display: inline-block;
+            background: #000000;
+            cursor: pointer;
+        }
+        .slds-has-error .slds-form-element__help {
+    color: #800000;
+    font-size: 15px;
+}
+        #bannerAccount {
+            height: 100%;
+        }
+        .contentHead {
+            text-align: center;
+            font-size: 35px;
+            font-family: 'Beatrice-light';
+            padding-top: 34px;
+            color: rgba(167,117,110,1);
+            margin: 0 auto;
+            display: block;
+		}
+        .contentSubHead {
+            text-align: center;
+            font-size: 16px;
+            font-family: 'Beatrice-light';
+            margin-top: 20px;
+            margin-bottom: 30px;
+            display: block;
+        }
+        .InputSection {
+            width: 100%;
+            padding: 10px;
+            margin-top: 50px !important;
+        }
+        .InputSection input.slds-input {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            color: #000000;
+            width: 100%;
+            border-color: black;
+            background-color: #faf6f5;
+            padding: 8px;
+            text-align: center;
+        }
+        .input_set label {
+            font-family: 'Beatrice-light';
+            font-size: 16px;
+            /* margin: 0 auto; */
+            width: 100%;
+            text-align: center;
+            margin-bottom: 5px;
+            margin-top: 14px;
+        }
+        .Content3LeftSection #QuestionHead, .Content3RightSection #QuestionHead {
+            min-height: 32px;
+            margin-top: 26px;
+        }
+       .innerContent3 label {
+           width: 508px;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 5px;
+        }
+       .InputSection {
+            width: 100%;
+            padding: 0px 10px;
+            margin-top: 0px !important;
+        }
+        .borderBottom{
+       border-color:transparent !important;
+        }
+       .InputSection .slds-form-element {
+            display: block;
+            width: 80%;
+            margin: 0 auto;
+}
+        .contentHead {
+            text-align: center;
+            font-size: 35px;
+            font-family: 'Beatrice-light';
+            padding-top: 20px;
+            color: rgba(167,117,110,1);
+            margin: 0 auto;
+            display: block;
+        }
+        .answerSection {
+            margin: 0 auto;
+            padding-top: 27px;
+        	width:303px;
+        }
+        #QuestionAnswer .edit_category {
+            float: left;
+            color: #000;
+            padding: 17px 52px;
+            width: 145px;
+            padding: 8px;
+            margin-right: 28px;
+            /* border-radius: 1%; */
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            font-weight: normal;
+            border: 1px solid lightgrey;
+            outline: none;
+        }
+        .mble_dentist{
+            float: none !important;
+            display: block !important;
+            margin-left: 85px !important;
+        }
+        .empty_margin_mobile{
+       		 margin-right:0px !important;
+        }
+        .slds-has-error .slds-form-element__help {
+    color: #800000;
+    font-size: 15px;
+}
+        #QuestionHead {
+            width: 100%;
+            text-align: center;
+            margin: 0 auto;
+            font-size: 16px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            padding-top: 0px;
+            padding-left: 0px;
+            width: 100%;
+            margin-bottom: 8px !important;
+        }
+        .slds-form-element {
+            display: block;
+            width: 100%;
+            margin: 0;
+		}
+        #questionanswersection2 {
+            /* margin: 0 auto; */
+            margin-top: 37px;
+            width: 100%;
+        }
+        #Question2 {
+            padding-left: 0px;
+            margin-top: 0px;
+            padding-right: 0px !important;
+        }
+        .answer2Section{
+        margin:0 auto !important;
+        }
+        #QuestionHead {
+            width: 100%;
+            text-align: center;
+            /* margin: 0 auto; */
+            font-size: 16px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            text-align: center;
+            padding-top: 0px;
+            padding-left: 0px !important;
+            width: 100%;
+            margin-bottom: 8px !important;
+        }
+        #Question2 #QuestionHead {
+        	width:215px;
+        }
+        #Question2 .regNumber .slds-input {
+            background-color: #ffffff;
+            font-weight: bold;
+            width: 300px;
+            padding: 8px;
+            margin-left: 0px;
+            border-color: black;
+            font-size: 16px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+        }
+        .answerInput{
+        margin: 0 auto;
+        margin-bottom:20px;
+        }
+        #Question3 {
+            margin-top: 24px;
+            padding: 0px;
+        }
+       #Question3  #QuestionHead{
+        width:354px;
+        } 
+        .answer, .answer2 {
+            font-size: 21px;
+            font-size: 16px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            padding: 17px 152px;
+            color: #000000;
+            border: 1px solid #000000;
+            margin-left: 10px;
+            margin-top: 25px;
+            width: 145px;
+		}
+        .answer2 {
+            padding: 8px;
+        }
+        .innerContent3 {
+        background-color:#FADBD3;
+        }
+        .innerContent3 .slds-form-element {
+            display: inline-block;
+            width: 100% !important;
+            border: 1px solid #000;
+        	background-color:#FADBD3;
+            }
+        .Content3LeftSection .slds-combobox__input, .Content3RightSection .slds-combobox__input {
+            width: 97%;
+            padding: 8px 8px !important;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px !important;
+            margin: 10px 10px 0px 0px !important;
+        background-color:#FADBD3 !important;
+        }
+        .Content3LeftSection .slds-combobox__input, .Content3RightSection .slds-combobox__input {
+            width: 87%;
+            padding: 8px 8px !important;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px !important;
+            margin: 0px  !important;
+	        background-color:#FADBD3 !important;
+            border: 0px;
+        	text-align:center;
+        }
+        .Content3LeftSection .slds-icon_xx-small, .slds-icon--xx-small {
+            width: 25px !important;
+            height: 22px !important;
+            margin-top: -5px;
+		}
+         .Content3RightSection .slds-icon_xx-small, .slds-icon--xx-small {
+            width: 25px !important;
+            height: 22px !important;
+            margin-top: -5px;
+		}
+        .bottomButton {
+            padding: 17px;
+            font-size: 21px;
+            font-family: Helvetica;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: bold;
+            margin: 40px auto;
+            cursor: pointer;
+            width: 300px;
+            text-align: center;
+}
+        .slds-has-error .slds-form-element__help {
+            color: #800000;
+            font-size: 14px;
+        }
+        
+
+
+        }
+        @media screen and (max-width: 600px) {
+        #bannerImageMobile{
+            display:contents;
+            padding:0px;
+        }
+        
+        .edit_check_tick{
+        font-size: 21px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+	padding: 17px;
+        }
+        .container1 {
+             margin-top: 0px; 
+            display: inline-flex;
+            position: relative;
+            padding-left: 90px;
+        }
+        #titleAccount {
+            white-space: nowrap;
+            text-align: left;
+            font-family: 'Beatrice-light';
+            font-style: normal;
+            font-weight: lighter;
+            font-size: 35px;
+            color: #ffffff;
+            padding: 87px 22px;
+            line-height: initial;
+        }
+        .bannerButton {
+            font-size: 21px;
+            font-family: Helvetica;
+            padding: 17px 0px;
+            font-weight: bold;
+            width: 300px;
+            margin-top: 34px;
+            text-align: center;
+            /* margin-left: -31px; */
+            display: inline-block;
+            background: #000000;
+            cursor: pointer;
+        }
+        #bannerAccount {
+            height: 100%;
+        }
+        .slds-has-error .slds-form-element__help {
+    color: #800000;
+    font-size: 15px;
+}
+        .contentHead {
+            text-align: center;
+            font-size: 35px;
+       	    padding:0px 20px;
+            font-family: 'Beatrice-light';
+            padding-top: 34px;
+            color: rgba(167,117,110,1);
+            margin: 0 auto;
+            display: block;
+		}
+        .contentSubHead {
+            text-align: center;
+            font-size: 16px;
+            font-family: 'Beatrice-light';
+            margin-top: 20px;
+            margin-bottom: 30px;
+            display: block;
+        }
+        .InputSection {
+            width: 100%;
+            padding: 10px;
+            margin-top: 50px !important;
+        }
+        .InputSection input.slds-input {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            color: #000000;
+            width: 100%;
+            border-color: black;
+            background-color: #faf6f5;
+            padding: 8px;
+            text-align: center;
+        }
+        .input_set label {
+            font-family: 'Beatrice-light';
+            font-size: 16px;
+            /* margin: 0 auto; */
+            width: 100%;
+            text-align: center;
+            margin-bottom: 5px;
+            margin-top: 14px;
+        }
+        .InputSection {
+            width: 100%;
+            padding: 10px;
+            margin-top: -11px !important;
+		}
+       .InputSection  .slds-form-element {
+            display: block;
+            width: 100%;
+            margin: 0;
+        }
+        .contentHead {
+            text-align: center;
+            font-size: 35px;
+            font-family: 'Beatrice-light';
+            padding-top: 20px;
+            color: rgba(167,117,110,1);
+            margin: 0 auto;
+            display: block;
+        }
+        .answerSection {
+            margin: 0 auto;
+            padding-top: 27px;
+        	width:303px;
+        }
+        #QuestionAnswer .edit_category {
+            float: left;
+            color: #000;
+            padding: 17px 52px;
+            width: 145px;
+            padding: 8px;
+            margin-right: 28px;
+            /* border-radius: 1%; */
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            font-weight: normal;
+            border: 1px solid lightgrey;
+            outline: none;
+        }
+        .mble_dentist{
+            float: none !important;
+            display: block !important;
+            margin-left: 85px !important;
+        }
+        .empty_margin_mobile{
+       		 margin-right:0px !important;
+        }
+        #QuestionHead {
+            width: 100%;
+            text-align: center;
+            /* margin: 0 auto; */
+            display: block;
+            font-size: 16px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            text-align: center !important;
+            padding-top: 0px;
+            padding-left: 0px !important;
+            width: 100%;
+            margin-bottom: 8px !important;
+        }
+        .slds-form-element {
+            display: block;
+            width: 100%;
+            margin: 0;
+		}
+        #questionanswersection2 {
+            /* margin: 0 auto; */
+            margin-top: 37px;
+            width: 100%;
+        }
+        #Question2 {
+            padding-left: 0px;
+            margin-top: 0px;
+            padding-right: 0px !important;
+        }
+        #Question2 #QuestionHead {
+        	width:57%;
+        }
+        #Question2 .regNumber .slds-input {
+            background-color: #ffffff;
+            font-weight: bold;
+            width: 300px;
+            padding: 8px;
+            margin-left: 0px;
+            border-color: black;
+            font-size: 21px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+        }
+        .answerInput{
+        margin: 0 auto;
+        margin-bottom:20px;
+        }
+        #Question3 {
+            margin-top: 24px;
+            padding: 0px;
+        }
+       #Question3  #QuestionHead{
+        width:94%;
+        } 
+        .answer, .answer2 {
+            font-size: 21px;
+            font-size: 16px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            padding: 17px 152px;
+            color: #000000;
+            border: 1px solid #000000;
+            margin-left: 10px;
+            margin-top: 25px;
+            width: 145px;
+		}
+        .answer2 {
+            padding: 8px;
+        }
+        .innerContent3 {
+        background-color:#FADBD3;
+        }
+        .innerContent3 .slds-form-element {
+            display: block;
+            width: 100% !important;
+            border: 1px solid #000;
+        	background-color:#FADBD3;
+        }
+        .Content3LeftSection  label, .Content3RightSection label{
+        width:100% !important;
+        }
+        .Content3LeftSection .slds-combobox__input, .Content3RightSection .slds-combobox__input {
+            width: 97%;
+            padding: 8px 8px !important;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px !important;
+            margin: 10px 10px 0px 0px !important;
+        background-color:#FADBD3 !important;
+        }
+        .Content3LeftSection .slds-combobox__input, .Content3RightSection .slds-combobox__input {
+            width: 87%;
+            padding: 8px 8px !important;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px !important;
+            margin: 0px !important;
+	        background-color:#FADBD3 !important;
+            border: 0px;
+        	text-align:center;
+        }
+        .Content3LeftSection .slds-icon_xx-small, .slds-icon--xx-small {
+            width: 25px !important;
+            height: 22px !important;
+            margin-top: -5px;
+		}
+         .Content3RightSection .slds-icon_xx-small, .slds-icon--xx-small {
+            width: 25px !important;
+            height: 22px !important;
+            margin-top: -5px;
+		}
+        .bottomButton {
+            padding: 17px;
+            font-size: 21px;
+            font-family: Helvetica;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: bold;
+            margin: 40px auto;
+            cursor: pointer;
+            width: 300px;
+            text-align: center;
+}
+        .slds-has-error .slds-form-element__help {
+    color: #800000;
+    font-size: 12px;
+}
+        .borderBottom{
+        border-color:transparent;
+        }
+        .answer2Section {
+            margin: 0 auto;
+        }
+        }
+
+    </aura:html>
+   <!-- <div class="edit_profile_body" id="scrollUp">
+        <div class="edit_profile_banner edit_mobile_banner topbanner" style="{!'background: linear-gradient(90deg,rgb(229, 219, 226),rgba(169, 136, 155, 0.3)), url(' + v.AGNSPARKImage.EditMyProfileBanner +') no-repeat;'}">
+            <div class="editbanner-content"> <h3><span class="slds-m-right_small">{!$Label.c.AGN_SPARK_Edit_Details}</span>{!$Label.c.AGN_SPARK_Myprofile_Profile}</h3>
+                <p>{!$Label.c.AGN_SPARK_Myprofile_Uptodate}</p>
+            </div>
+        </div>
+        
+        <div class="edit_mydetails">
+            <div class="edit_details_head">
+                <h3>{!$Label.c.AGN_SPARK_Myprofile_MyDetails}</h3>
+                <h6>{!$Label.c.AGN_SPARK_Healthcare_Professional_Confirm}</h6>
+            </div>
+            <aura:renderIf isTrue="{!v.showError}">
+                <div id="error" class="errorMessage">
+                    <ui:outputRichText  value="{!v.errorMessage}"/>
+                </div>
+            </aura:renderIf>
+            <div class="update_form_group">
+                <div class="input_set">
+                    <label for="Forename">{!$Label.c.AGN_SPARK_Myprofile_Forename}  sd{!v.userDetails.userData.First_Name_AGN__c}</label>
+                    <lightning:input aura:id="field" class="forname" type="text" value="{!v.userDetails.userData.First_Name_AGN__c}" name="Forename" disabled="{!v.isView}" required="true"/>
+                </div>
+                <div class="input_set">
+                    <label for="Surname">{!$Label.c.AGN_SPARK_Myprofile_Surname}</label>
+                    <lightning:input aura:id="field" class="forname" type="text" value="{!v.userDetails.userData.Last_Name_AGN__c}" name="Surname" disabled="{!v.isView}" required="true"/>
+                </div>
+                <div class="input_set">
+                    <label for="User Name">{!$Label.c.AGN_SPARK_Myprofile_Username}</label>
+                    <lightning:input aura:id="field" class="forname" type="text" value="{!v.userDetails.userDetailed.Username}" name="User Name" disabled="{!v.isView}" required="true"/>
+                </div>
+                <div class="input_set">
+                    <label for="Email">{!$Label.c.AGN_SPARK_Myprofile_Email}</label>
+                    <lightning:input aura:id="field" class="forname" type="text" value="{!v.userDetails.userDetailed.Email}" name="Email" disabled="{!v.isView}" required="true"/>
+                </div>
+                <div class="input_set">
+                    <label for="Business Address 1">{!$Label.c.AGN_SPARK_Myprofile_BusinessAddress1}</label>
+                    <lightning:input aura:id="field" class="forname" type="text" value="{!v.userDetails.addressDetails.Address_Line_1_AGN__c}" name="Business Address 1" disabled="{!v.isView}" required="true"/>
+                </div>
+                <div class="input_set">
+                    <label for="Business Address 2">{!$Label.c.AGN_SPARK_Myprofile_BusinessAddress2}</label>
+                    <lightning:input aura:id="field" class="forname" type="text" value="{!v.userDetails.addressDetails.Address_Line_2_AGN__c}" name="Business Address 2*" disabled="{!v.isView}" required="true"/>
+                </div>
+                <div class="input_set">
+                    <label for="Phone">{!$Label.c.AGN_SPARK_Myprofile_Phone}</label>
+                    <lightning:input aura:id="field" class="forname "  type="text" value="{!v.userDetails.userData.Phone_AGN__c}" name="Phone" disabled="{!v.isView}" required="true" pattern="^[0-9_ ]*$" messageWhenPatternMismatch="Please remove the special character."/>
+                    <span id="phone"></span>
+                </div>
+                <div class="input_set">
+                    <label for="Postcode">{!$Label.c.AGN_SPARK_Myprofile_Postcode}</label>
+                    <lightning:input aura:id="field" class="forname" label="Postcode*" type="text" value="{!v.userDetails.addressDetails.Zip_AGN__c}" name="Postcode" disabled="{!v.isView}" required="true">
+                    </lightning:input>
+                </div>
+                <div class="input_set">
+                    <label for="City">{!$Label.c.AGN_SPARK_My_Profile_City}</label>
+                    <lightning:input aura:id="field" class="forname" type="text" value="{!v.userDetails.addressDetails.City_AGN__c}" name="Phone" disabled="{!v.isView}" required="true"/>
+                </div>
+                <div class="input_set">
+                    <label for="Country">{!$Label.c.AGN_SPARK_Myprofile_Country}</label>
+                    <lightning:input class="forname" type="text" value="{!v.userDetails.addressDetails.Country_AGN__c}" name="Phone" disabled="{!v.isView}" required="true"/>
+                </div>
+                <div class="clear" ></div>
+            </div>
+        </div>
+        
+        <div class="edit_your_profession">
+            <h3 class="edit_proff_head">{!$Label.c.AGN_SPARK_Your_Profession}</h3>
+            <div class="edit_profession_sectn">
+                <div class="edit_choose slds-p-bottom_xx-large">
+                    <button class="{!if(v.userDetails.userData.Profession_Spark_AGN__c   == 'Doctor', 'doctor edit_category', 'patient edit_category' )}" id="selDoc" onclick="{!c.clickDoctor}" disabled="{!v.isView}">Doctor</button>
+                    <div class="line"></div>
+                    <button class="{!if(v.userDetails.userData.Profession_Spark_AGN__c  == 'Nurse', 'doctor edit_category', 'patient edit_category' )}" id="selNur" onclick="{!c.clickNurse}" disabled="{!v.isView}">Nurse</button>
+                    <div class="line"></div>
+                    <button class="{!if(v.userDetails.userData.Profession_Spark_AGN__c  == 'Dentist', 'doctor edit_category', 'dentist edit_category' )}" id="selDent" onclick="{!c.clickDent}" disabled="{!v.isView}">Dentist</button>
+                    <div class="clear" ></div>
+                </div> 
+                <div class="edit_reg_numb  slds-p-bottom_xx-large">
+                    <label class="reg_label" for="Medical Registration Number*">{!$Label.c.AGN_SPARK_Myprofile_MedicalRegistrationNumber}</label>
+                    <lightning:input class="regNumber" type="text" placeholder="XX-XX-XX-XX-XX-XX" value="{!v.userDetails.userData.Registration_License_Number_AGN__c}" name="" disabled="{!v.isView}"/>
+                    <span id="mdno"></span>
+                </div>
+                <div class="edit_prescrber_confrm">
+                    <div class="prescrb_quest"> {!$Label.c.AGN_SPARK_Legally_Prescribe}</div>
+                    <div class="prescr_yes_no">
+                        <button class="{!if(v.userDetails.userData.Independent_Prescriber_Spark_AGN__c == 'Yes', 'edit_yes', 'edit_no')}" onclick="{!c.clickYes}" disabled="{!v.isView}">Yes</button>
+                        <span class="yn_line"></span>
+                        <button class="{!if(v.userDetails.userData.Independent_Prescriber_Spark_AGN__c == 'No', 'edit_yes', 'edit_no')}" onclick="{!c.clickNo}" disabled="{!v.isView}">No</button>
+                    </div>
+                    <div class="clear" ></div>
+                </div>
+            </div>
+            
+            <div class="edit_checkbx_sectn ">
+                <div class="edit_check_content">
+                    <div class="product_sectn">
+                        <div class="product_left">{!$Label.c.AGN_SPARK_Product_Service_Marketing_Consent}</div>
+                        <div class="product_right">
+                            <div class="edit_check_tick">
+                                <label class="container">
+                                    <lightning:input type="checkbox" aura:id="checkboxMark" checked="{!(v.userDetails.mcMarkUpt)}" disabled="{!v.isView}" />
+                                    
+                                    {!$Label.c.AGN_SPARK_Myprofile_Accepted}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+              
+                    <div class="product_sectn">
+                        <div class="product_left">{!$Label.c.AGN_SPARK_Details_Registration_Consent}</div>
+                        <div class="product_right">
+                            <div class="edit_check_tick">
+                                <label class="container">
+                                <lightning:input type="checkbox" aura:id="checkboxMark" checked="{!(v.userDetails.mcEventUpt)}" disabled="{!v.isView}"/>   
+                                   
+                                   {!$Label.c.AGN_SPARK_Myprofile_Accepted}
+                                </label>
+                            </div>  
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    
+                    <div class="product_sectn">
+                        <div class="product_left">{!$Label.c.AGN_SPARK_Phone_Consent}</div>
+                        <div class="product_right">
+                            <div class="edit_check_tick">
+                                <label class="container">
+                                <lightning:input type="checkbox" aura:id="checkboxMark" checked="{!(v.userDetails.mcPhoneUpt)}" disabled="{!v.isView}"/>   
+                                   
+                                   {!$Label.c.AGN_SPARK_Myprofile_Accepted}
+                                </label>
+                            </div>  
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear" ></div>
+                </div>
+            </div>
+            
+            <div class="log_header_popup_stageseven">
+                <h3 class="aestheticsCls">{!$Label.c.AGN_SPARK_My_Aesthetics_Journey}</h3>
+            </div>
+            <div class="edit_myasthetic">
+                <div class="asthetic_content">
+                    <div class="edit_query">
+                        <label class="asteic_label">{!$Label.c.AGN_SPARK_Stage_in_Aesthetics}
+                        </label>
+                        <lightning:combobox class="selectBox" name="progress" placeholder="Select stage" options="{!v.profession}" value="{!v.userDetails.userData.Aesthetics_Stage_Spark_AGN__c}" disabled="{!v.isView}"/>
+                    </div>
+                    <div class="edit_query">
+                        <label class="asteic_label">{!$Label.c.AGN_SPARK_Aesthetics_treated}
+                        </label>
+                        <lightning:combobox class="selectBox" name="progress" placeholder="Select aesthetic patients" options="{!v.aestheticPat}" value="{!v.userDetails.userData.Number_Of_Aesthetics_Patients_Spark_AGN__c}" disabled="{!v.isView}"/>   
+                    </div>
+                    <div class="edit_query">
+                        <label class="asteic_label">{!$Label.c.AGN_SPARK_Days_Spend_Aesthetics}
+                        </label>
+                        <lightning:combobox class="selectBox" name="progress" placeholder="Select days per week" options="{!v.daysPerWeek}" value="{!v.userDetails.userData.Days_Per_Week_Spark_AGN__c}" disabled="{!v.isView}"/>  
+                    </div>
+                    <div class="edit_query">
+                        <label class="asteic_label">{!$Label.c.AGN_SPARK_Weeks_Plan_to_Spend_Aesthetics}
+                        </label>
+                        <lightning:combobox class="selectBox" name="progress" placeholder="Select plan days" options="{!v.planDays}" value="{!v.userDetails.userData.Planed_Days_Per_Week_Spark_AGN__c}" disabled="{!v.isView}"/>
+                    </div>
+                    
+                    <label class="asteic_label">{!$Label.c.AGN_SPARK_Current_Practicing}
+                    </label>
+                    
+                    <lightning:radioGroup name="radioGroup"
+                                          options="{!v.currLoc}"
+                                          value="{!v.userDetails.userData.Current_Practice_Locations_Spark_AGN__c}"
+                                          type="radio" disabled="{!v.isView}"/>
+                </div>
+            </div>
+        </div>
+        
+        <aura:if isTrue="{!v.isView}">
+            <div class="register-block" onclick="{!c.editProfile}">
+                <button class="register-line" >{!$Label.c.AGN_SPARK_Myprofile_EditButton}</button>
+            </div>
+            <aura:set attribute="else">
+                <div class="register-block" onclick="{!c.submit}">
+                    <button class="register-line save-reg" >{!$Label.c.AGN_SPARK_Myprofile_SaveButton}</button>
+                </div>
+            </aura:set>
+        </aura:if> 
+    </div> -->
+    
+    
+    
+    
+    
+    
+    
+    <div id="bannerAccount" class="removeMargin row">
+		<div id="bannerContentAccount" class="col-sm-12 col-md-12 col-lg-5 col-xl-5" >
+			<div id="titleAccount">My Account<br> </br>
+                <aura:if isTrue="{!v.isView}">
+                    <label class="bottomButton" onclick="{!c.editProfile}">{!$Label.c.AGN_SPARK_Myprofile_EditButton}</label>
+                    <aura:set attribute="else">
+                            <label class="bottomButton saveButton" id="saveButton" onclick="{!c.submit}">{!$Label.c.AGN_SPARK_Myprofile_SaveButton}</label>
+                    </aura:set>
+                </aura:if>
+               </div>
+		</div>
+        <div id="bannerImageMobile" class="col-sm-12 col-md-12 col-lg-0 col-xl-0">
+                        <img src="{!$Resource.AGN_SPARK_Rebranding_MyAccount +'/images/AllerganAesthetics_Photography_16@2x.jpg'}"/>
+                        
+        </div>
+        
+		<div id="bannerImageAccount" class="col-sm-0 col-md-0 col-lg-7 col-xl-7">
+			<div id="Group_88">
+				<div id="facebook" class="facebook">
+					<!--<![CDATA[
+					<svg class="Icon_awesome-facebook" viewBox="0.562 0.562 28.095 28.043">
+						<path id="Icon_awesome-facebook" d="M 28.65703392028809 14.66943073272705 C 28.65703392028809 6.876489162445068 22.36974906921387 0.5624998807907104 14.60976696014404 0.5624998807907104 C 6.849785327911377 0.5624998807907104 0.5625001192092896 6.876489162445068 0.5625001192092896 14.66943073272705 C 0.5625001192092896 21.71038436889648 5.699381828308105 27.54655647277832 12.41488075256348 28.60571670532227 L 12.41488075256348 18.74736022949219 L 8.84642219543457 18.74736022949219 L 8.84642219543457 14.66943073272705 L 12.41488075256348 14.66943073272705 L 12.41488075256348 11.561354637146 C 12.41488075256348 8.026090621948242 14.51064205169678 6.073303699493408 17.72055625915527 6.073303699493408 C 19.25782585144043 6.073303699493408 20.86533164978027 6.348616123199463 20.86533164978027 6.348616123199463 L 20.86533164978027 9.818466186523438 L 19.09356498718262 9.818466186523438 C 17.34898567199707 9.818466186523438 16.80465126037598 10.90606498718262 16.80465126037598 12.02153778076172 L 16.80465126037598 14.66943073272705 L 20.70050430297852 14.66943073272705 L 20.07743835449219 18.74736022949219 L 16.80465126037598 18.74736022949219 L 16.80465126037598 28.60571670532227 C 23.52015495300293 27.54655647277832 28.65703392028809 21.71038436889648 28.65703392028809 14.66943073272705 Z">
+						</path>
+					</svg>
+					]]>-->
+				</div>
+				<!--<div id="twitter" class="twitter">
+					<svg class="Icon_awesome-twitter" viewBox="0 3.381 34.496 27.948">
+						<path id="Icon_awesome-twitter" d="M 30.94974136352539 10.34597492218018 C 30.97163772583008 10.65164279937744 30.97163772583008 10.9573802947998 30.97163772583008 11.2630500793457 C 30.97163772583008 20.58637237548828 23.85805320739746 31.32903099060059 10.85649394989014 31.32903099060059 C 6.850955963134766 31.32903099060059 3.130007743835449 30.17174911499023 -9.5367431640625e-07 28.16305351257324 C 0.5691098570823669 28.228515625 1.116256594657898 28.25035667419434 1.707264065742493 28.25035667419434 C 5.012311458587646 28.25035667419434 8.05479907989502 27.13682556152344 10.48438549041748 25.23721313476562 C 7.376272678375244 25.17168045043945 4.77158260345459 23.14108085632324 3.87415623664856 20.34623336791992 C 4.311954975128174 20.41169548034668 4.749685764312744 20.45537948608398 5.209380626678467 20.45537948608398 C 5.844114303588867 20.45537948608398 6.478915214538574 20.36800575256348 7.069854736328125 20.21524238586426 C 3.830430746078491 19.56014633178711 1.400778412818909 16.72168159484863 1.400778412818909 13.2936544418335 L 1.400778412818909 13.20635032653809 C 2.341930150985718 13.73038291931152 3.436425447463989 14.05789566040039 4.596409320831299 14.10151386260986 C 2.692142009735107 12.83508205413818 1.44457221031189 10.67348480224609 1.44457221031189 8.227993011474609 C 1.44457221031189 6.917941093444824 1.794716358184814 5.717039108276367 2.407620429992676 4.668971061706543 C 5.887839794158936 8.948548316955566 11.11911773681641 11.74332714080811 16.98506355285645 12.04906463623047 C 16.87565040588379 11.52503108978271 16.80995750427246 10.97922134399414 16.80995750427246 10.4333438873291 C 16.80995750427246 6.546741485595703 19.96186447143555 3.38076376914978 23.87981605529785 3.38076376914978 C 25.91539573669434 3.38076376914978 27.75397491455078 4.23231029510498 29.04540252685547 5.607890129089355 C 30.64318466186523 5.302221298217773 32.17534255981445 4.712657928466797 33.53246688842773 3.904798030853271 C 33.00708389282227 5.542428016662598 31.89082527160645 6.918008804321289 30.42435646057129 7.791332244873047 C 31.84709930419922 7.638564109802246 33.22604751586914 7.245454788208008 34.49551391601562 6.699644088745117 C 33.53260040283203 8.097002029418945 32.32868957519531 9.341523170471191 30.94974136352539 10.34597206115723 Z">
+						</path>
+					</svg>
+				</div>-->
+				<div id="instagram" class="instagram">
+					<!--<![CDATA[
+					<svg class="Icon_awesome-instagram" viewBox="-0.005 2.238 27.89 27.888">
+						<path id="Icon_awesome-instagram" d="M 13.94292449951172 9.031681060791016 C 9.985723495483398 9.031681060791016 6.793830394744873 12.22409343719482 6.793830394744873 16.18193817138672 C 6.793830394744873 20.1397819519043 9.985723495483398 23.33219528198242 13.94292449951172 23.33219528198242 C 17.90012359619141 23.33219528198242 21.09201431274414 20.13977813720703 21.09201431274414 16.18193817138672 C 21.09201431274414 12.22409439086914 17.90012359619141 9.031681060791016 13.94292449951172 9.031681060791016 Z M 13.94292449951172 20.83053588867188 C 11.38567733764648 20.83053588867188 9.295080184936523 18.74582290649414 9.295080184936523 16.18193626403809 C 9.295080184936523 13.6180477142334 11.37945556640625 11.5333366394043 13.94292449951172 11.5333366394043 C 16.50639343261719 11.5333366394043 18.59076690673828 13.6180477142334 18.59076690673828 16.18193626403809 C 18.59076690673828 18.74582290649414 16.50017356872559 20.83053588867188 13.94292449951172 20.83053588867188 Z M 23.05195045471191 8.739198684692383 C 23.05195045471191 9.666430473327637 22.30530548095703 10.40697002410889 21.38445091247559 10.40697002410889 C 20.45736885070801 10.40697002410889 19.71695327758789 9.66020679473877 19.71695327758789 8.739198684692383 C 19.71695327758789 7.818192481994629 20.46359443664551 7.071429252624512 21.38445091247559 7.071429252624512 C 22.30530548095703 7.071429252624512 23.05195045471191 7.818192481994629 23.05195045471191 8.739198684692383 Z M 27.78690147399902 10.43186283111572 C 27.68112754821777 8.197796821594238 27.17092132568359 6.218875408172607 25.5345344543457 4.588443279266357 C 23.90436363220215 2.958010911941528 21.9257640838623 2.447722434997559 19.69206237792969 2.335709095001221 C 17.38991928100586 2.205025196075439 10.48970603942871 2.205025196075439 8.187561988830566 2.335709095001221 C 5.960081100463867 2.441499948501587 3.981481075286865 2.951788425445557 2.345092296600342 4.582220077514648 C 0.708703339099884 6.212652206420898 0.2047198414802551 8.191572189331055 0.09272374957799911 10.42563819885254 C -0.03793852031230927 12.72815704345703 -0.03793852031230927 19.62948989868164 0.09272374957799911 21.93201065063477 C 0.1984979659318924 24.16607666015625 0.7087030410766602 26.14500045776367 2.345092296600342 27.77542877197266 C 3.981481075286865 29.40586090087891 5.953859329223633 29.9161491394043 8.187561988830566 30.02816009521484 C 10.48970603942871 30.15884399414062 17.38991928100586 30.15884399414062 19.69206237792969 30.02816009521484 C 21.92576599121094 29.92237091064453 23.90436553955078 29.41208267211914 25.5345344543457 27.77542877197266 C 27.16470146179199 26.14499282836914 27.67490577697754 24.16607284545898 27.78690147399902 21.93201065063477 C 27.91756439208984 19.62948989868164 27.91756439208984 12.73437881469727 27.78690147399902 10.43186092376709 Z M 24.81277847290039 24.40254974365234 C 24.32746124267578 25.62226486206055 23.38793563842773 26.56193923950195 22.16220092773438 27.05355834960938 C 20.32670974731445 27.78165435791016 15.97130012512207 27.61362838745117 13.94292449951172 27.61362838745117 C 11.91454792022705 27.61362838745117 7.552917003631592 27.77542877197266 5.723643779754639 27.05355834960938 C 4.504129886627197 26.56816101074219 3.564606189727783 25.62848663330078 3.073067426681519 24.40254974365234 C 2.345091819763184 22.5667610168457 2.513086318969727 18.21064376831055 2.513086318969727 16.18193817138672 C 2.513086318969727 14.15323162078857 2.351313829421997 9.790890693664551 3.073067426681519 7.961321353912354 C 3.55838418006897 6.741610050201416 4.497908115386963 5.801933765411377 5.723643779754639 5.310314178466797 C 7.55913782119751 4.582221031188965 11.91454792022705 4.750241756439209 13.94292449951172 4.750241756439209 C 15.97130012512207 4.750241756439209 20.33293151855469 4.588443279266357 22.16220092773438 5.310314178466797 C 23.38171577453613 5.795710563659668 24.32123947143555 6.735385894775391 24.81277847290039 7.961321353912354 C 25.54075241088867 9.797114372253418 25.37276077270508 14.15323066711426 25.37276077270508 16.18193817138672 C 25.37276077270508 18.21064376831055 25.54075241088867 22.57298278808594 24.81277847290039 24.40254974365234 Z">
+						</path>
+					</svg>
+					]]>-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <!-- implementing new design-->
+    <div id="ContentAccounts removeMargin row" style=" width: 100%;margin:0px">
+		<div class="row" style="width:100%;background-color: #faf6f5;margin:0px;padding-bottom: 25px;">
+		<div class="contentHead row" style="width:100%">{!$Label.c.AGN_SPARK_Myprofile_MyDetails} </div>
+		<div class="contentSubHead row" style="width:100%">{!$Label.c.AGN_SPARK_Healthcare_Professional_Confirm} </div>
+        <aura:renderIf isTrue="{!v.showError}">
+            <!--<div id="error" class="errorMessage">
+                <ui:outputRichText  value="{!v.errorMessage}"/>
+            </div>-->
+        </aura:renderIf>
+		<div class="InputSection row">
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            	<div class="input_set">
+                    <label for="Forename">{!$Label.c.AGN_SPARK_Myprofile_Forename}</label>
+                    <lightning:input aura:id="field" class="forname"  messageWhenValueMissing="Forename field is required" type="text" value="{!v.userDetails.userData.First_Name_AGN__c}" name="Forename" disabled="{!v.isView}" required="true"/>
+                </div>
+             
+            </div>
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                  <div class="input_set">
+                    <label for="Surname">{!$Label.c.AGN_SPARK_Myprofile_Surname}</label>
+                    <lightning:input aura:id="field" class="forname" messageWhenValueMissing="Surname field is required" type="text" value="{!v.userDetails.userData.Last_Name_AGN__c}" name="Surname" disabled="{!v.isView}" required="true"/>
+                </div>
+            </div>
+		</div>
+            <div class="InputSection row">
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            	
+                <div class="input_set">
+                    <label for="User Name">{!$Label.c.AGN_SPARK_Myprofile_Username}*</label>
+                    <lightning:input aura:id="field" class="forname" messageWhenValueMissing="Username field is required" type="text" value="{!v.userDetails.userDetailed.Username}" name="User Name" disabled="{!v.isView}" required="true"/>
+                </div>
+           
+            </div>
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                 <div class="input_set">
+                    <label for="Email">{!$Label.c.AGN_SPARK_Myprofile_Email} *</label>
+                    <lightning:input aura:id="field" class="forname" messageWhenValueMissing="Email field is required" type="text" value="{!v.userDetails.userDetailed.Email}" name="Email" disabled="{!v.isView}" required="true"/>
+                </div>
+            </div>
+		</div>
+            <div class="InputSection row">
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+
+                <div class="input_set">
+                    <label for="Business Address 1">{!$Label.c.AGN_SPARK_Myprofile_BusinessAddress1}</label>
+                    <lightning:input aura:id="field" class="forname" type="text" messageWhenValueMissing="Business Address 1 field is required" value="{!v.userDetails.addressDetails.Address_Line_1_AGN__c}" name="Business Address 1" disabled="{!v.isView}" required="true"/>
+                </div>
+            </div>
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="input_set">
+                    <label for="Business Address 2">Business Address 2</label>
+                    <lightning:input aura:id="field" class="forname" type="text" value="{!v.userDetails.addressDetails.Address_Line_2_AGN__c}" name="Business Address 2" disabled="{!v.isView}" required="false"/>
+                </div>
+               
+            </div>
+		</div>
+		
+        <div class="InputSection row">
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            	  <div class="input_set">
+                    <label for="City">{!$Label.c.AGN_SPARK_My_Profile_City}</label>
+                    <lightning:input aura:id="field" class="forname" type="text" messageWhenValueMissing="City field is required" value="{!v.userDetails.addressDetails.City_AGN__c}" name="Phone" disabled="{!v.isView}" required="true"/>
+                </div>
+            </div>
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="input_set">
+                    <label for="Country">{!$Label.c.AGN_SPARK_Myprofile_Country}</label>
+                    <lightning:input class="forname" type="text" value="{!v.userDetails.addressDetails.Country_AGN__c}" messageWhenValueMissing="Country field is required" name="Phone" disabled="{!v.isView}" required="true"/>
+                </div>
+            </div>
+		</div>
+            
+        <div class="InputSection row">
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            	 <div class="input_set">
+
+                     <label for="Postcode">{!$Label.c.AGN_SPARK_Myprofile_Postcode}</label>
+                    <lightning:input aura:id="field" class="forname" label="Postcode*" messageWhenValueMissing="Postcode field is required" type="text" value="{!v.userDetails.addressDetails.Zip_AGN__c}" name="Postcode" disabled="{!v.isView}" required="true">
+                    </lightning:input>
+                </div>
+            </div>
+            <div class="InputRightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">             
+               <div class="input_set">
+					<label for="Phone">{!$Label.c.AGN_SPARK_Myprofile_Phone}</label>
+                    <lightning:input aura:id="field" class="forname " messageWhenValueMissing="Phone field is required"  type="text" value="{!v.userDetails.userData.Phone_AGN__c}" name="Phone" disabled="{!v.isView}" required="true" pattern="^[0-9_ ]*$" messageWhenPatternMismatch="Please remove the special character."/>
+                    <span id="phone"></span>
+                </div>
+            </div>
+		</div>
+            
+	</div>
+	<div class="innerContent2 removeMargin row ">
+		<div class="contentHead row" style="width:100%">{!$Label.c.AGN_SPARK_Your_Profession}</div>
+		<div id="QuestionAnswer" class="row">
+			<div class = "answerSection row">
+             
+                	<button class="{!if(v.userDetails.userData.Profession_Spark_AGN__c   == 'Doctor', 'doctor edit_category', 'patient edit_category' )}" id="selDoc" onclick="{!c.clickDoctor}" disabled="{!v.isView}">Doctor</button>
+                    <button class="{!if(v.userDetails.userData.Profession_Spark_AGN__c  == 'Nurse', 'doctor edit_category empty_margin_mobile', 'patient edit_category empty_margin_mobile' )}" id="selNur" onclick="{!c.clickNurse}" disabled="{!v.isView}">Nurse</button>
+                    <button class="{!if(v.userDetails.userData.Profession_Spark_AGN__c  == 'Dentist', 'doctor edit_category mble_dentist', 'dentist edit_category mble_dentist' )}" id="selDent" onclick="{!c.clickDent}" disabled="{!v.isView}">Dentist</button>
+                    <div class="clear" ></div>
+			</div>
+		</div>
+        <div class="row" id="questionanswersection2">
+            <div id="Question2" class="col-sm-12 col-md-12 col-lg-6 col-xl-6" >
+                <div id="QuestionHead" class="row" style="margin-bottom: 56px;" >{!$Label.c.AGN_SPARK_Myprofile_MedicalRegistrationNumber}</div>
+                <div id="QuestionAnswer" class="row" style="width: 100%;">
+                    <label class="answerInput">
+                        <lightning:input class="regNumber" type="text" messageWhenValueMissing="Medical Registration Number field is required" value="{!v.userDetails.userData.Registration_License_Number_AGN__c}" name="" disabled="{!v.isView}" required="true"/>
+                    </label>
+                </div>
+            </div>
+            <div id="Question3" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div id="QuestionHead" class="row" style="padding-left: 80px;">Can you legally prescribe medicine under your own <br/>initiative (i.e as an independent prescriber)?*</div>
+                <div id="Question2Answer" class="row">
+                    <div class = "answer2Section row">
+                        <button class="{!if(v.userDetails.userData.Independent_Prescriber_Spark_AGN__c == 'Yes', 'edit_yes answer2', 'edit_no answer2')}" onclick="{!c.clickYes}" disabled="{!v.isView}">Yes</button>
+                        <button class="{!if(v.userDetails.userData.Independent_Prescriber_Spark_AGN__c == 'No', 'edit_yes answer2', 'edit_no answer2')}" onclick="{!c.clickNo}" disabled="{!v.isView}">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="borderBottom"></div>
+	</div>
+        
+        
+        
+                  
+            
+            
+                <div class="innerContent2 removeMargin row">
+                    <div class="row" id="questionanswersection2">
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" id="QuestionHead">{!$Label.c.AGN_SPARK_Product_Service_Marketing_Consent}</div>
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="edit_check_tick">
+                                <label class="container1">
+                                    <lightning:input type="checkbox" class="light-raido" aura:id="checkboxMark" checked="{!(v.userDetails.mcMarkUpt)}" disabled="{!v.isView}" />
+                                    
+                                    <span>{!$Label.c.AGN_SPARK_Myprofile_Accepted}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+              
+                    <div class="row" id="questionanswersection2">
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" id="QuestionHead">{!$Label.c.AGN_SPARK_Details_Registration_Consent}</div>
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="edit_check_tick">
+                                <label class="container1">
+                                <lightning:input type="checkbox" aura:id="checkboxMark" class="light-raido" checked="{!(v.userDetails.mcEventUpt)}" disabled="{!v.isView}"/>   
+                                   
+                                 <span>  {!$Label.c.AGN_SPARK_Myprofile_Accepted}</span>
+                                </label>
+                            </div>  
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    
+                    <div class="row" id="questionanswersection2">
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" id="QuestionHead">{!$Label.c.AGN_SPARK_Phone_Consent}</div>
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="edit_check_tick">
+                                <label class="container1">
+                                <lightning:input type="checkbox" aura:id="checkboxMark" class="light-raido" checked="{!(v.userDetails.mcPhoneUpt)}" disabled="{!v.isView}"/>   
+                                   
+                                  <span>{!$Label.c.AGN_SPARK_Myprofile_Accepted}</span> 
+                                </label>
+                            </div>  
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear" ></div>
+                    <div class="borderBottom"></div>
+                </div>
+            	
+        
+        
+        
+        
+        
+        
+        
+        
+        
+	<div class="innerContent3 removeMargin row" style="margin:0px" >
+		<div class="contentHead row" style="width:100%">{!$Label.c.AGN_SPARK_My_Aesthetics_Journey}</div>
+        <div class="row dropdownquestionsection">		
+            <div class="Content3LeftSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+			<div class="Content3question1">
+				<div id="QuestionHead">
+                    {!$Label.c.AGN_SPARK_Stage_in_Aesthetics}
+                    </div>
+				<label >
+					<lightning:combobox class="selectBox" name="progress" placeholder="Select stage" options="{!v.profession}" value="{!v.userDetails.userData.Aesthetics_Stage_Spark_AGN__c}" disabled="{!v.isView}"/>
+
+				</label>
+			</div>
+		</div>
+		<div class="Content3RightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+			<div class="Content3question4">
+				<div id="QuestionHead">{!$Label.c.AGN_SPARK_Weeks_Plan_to_Spend_Aesthetics}</div>
+				<label >
+                        <lightning:combobox class="selectBox" name="progress" placeholder="Select plan days" options="{!v.planDays}" value="{!v.userDetails.userData.Planed_Days_Per_Week_Spark_AGN__c}" disabled="{!v.isView}"/>
+					
+				</label>
+			</div>
+			
+		</div>
+            </div>
+		<div class="row dropdownquestionsection">		
+            <div class="Content3LeftSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+			<div class="Content3question2">
+				<div id="QuestionHead">
+                    {!$Label.c.AGN_SPARK_Aesthetics_treated}
+                    </div>
+				<label >
+                    <lightning:combobox class="selectBox" name="progress" placeholder="Select aesthetic patients" options="{!v.aestheticPat}" value="{!v.userDetails.userData.Number_Of_Aesthetics_Patients_Spark_AGN__c}" disabled="{!v.isView}"/>   
+
+				</label>
+			</div>
+		</div>
+		<div class="Content3RightSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+			<div class="Content3question5">
+				<div id="QuestionHead">{!$Label.c.AGN_SPARK_Current_Practicing}</div>
+				<label >
+					<!--<lightning:radioGroup name="radioGroup"
+                                          options="{!v.currLoc}"
+                                          value="{!v.userDetails.userData.Current_Practice_Locations_Spark_AGN__c}"
+                                          type="radio" disabled="{!v.isView}"/>-->
+                    <lightning:combobox class="selectBox" name="radioGroup" placeholder="Select " options="{!v.currLoc}" value="{!v.userDetails.userData.Current_Practice_Locations_Spark_AGN__c}" disabled="{!v.isView}"/>
+				</label>
+			</div>
+			
+		</div>
+            </div>
+        <div class="row dropdownquestionsection">		
+            <div class="Content3LeftSection col-sm-12 col-md-12 col-lg-6 col-xl-6">
+			<div class="Content3question3">
+				<div id="QuestionHead">{!$Label.c.AGN_SPARK_Days_Spend_Aesthetics}</div>
+				<label >
+					 <lightning:combobox class="selectBox" name="progress" placeholder="Select days per week" options="{!v.daysPerWeek}" value="{!v.userDetails.userData.Days_Per_Week_Spark_AGN__c}" disabled="{!v.isView}"/>  
+
+				</label>
+			</div>
+		</div>
+            </div>
+		<div class="borderBottom"></div>
+	</div>
+        <div class="innerContent4 removeMargin row">
+            <div id="errorbot" class="errorMessage"></div>
+        </div>
+	<div class="innerContent4 removeMargin row">
+		
+        <aura:if isTrue="{!v.isView}">
+            <label class="bottomButton" onclick="{!c.editProfile}">{!$Label.c.AGN_SPARK_Myprofile_EditButton}</label>
+            <aura:set attribute="else">
+                
+                    <label class="bottomButton saveButton" id="saveButton" onclick="{!c.submit}">{!$Label.c.AGN_SPARK_Myprofile_SaveButton}</label>
+            </aura:set>
+        </aura:if>
+	</div>
+	</div>
+    <c:AGN_SPARK_ZincCode pageName="EditMyProfilePage"/>
+</aura:component>

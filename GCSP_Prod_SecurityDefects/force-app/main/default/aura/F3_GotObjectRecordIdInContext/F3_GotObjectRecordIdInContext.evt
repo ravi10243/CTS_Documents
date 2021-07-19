@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="Event template" >
+    <aura:attribute name="recordIdInContext" type="String" />
+    <aura:attribute name="currentFormStepViewState" type="String" />
+</aura:event>

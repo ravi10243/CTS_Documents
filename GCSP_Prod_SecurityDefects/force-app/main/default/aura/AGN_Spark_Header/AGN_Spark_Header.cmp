@@ -1,0 +1,198 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+     <aura:attribute name="register" type="Boolean" default="true"/>
+     <aura:attribute name="login" type="Boolean" />    
+     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+     <aura:html tag="style">
+             #logout, #login, #Register {
+                cursor: pointer;
+                text-transform: capitalize;
+                float: right;
+                width: 172px;
+                white-space: nowrap;
+                text-align: center;
+                font-family: Montserrat;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 24px;
+                color: rgba(0,0,0,1);
+                padding: 6px;
+                border: 1px solid #000000;
+            }
+         .header-logo img {
+               height: 5vw;
+    			width: 30% !important;
+        	}
+         .zinc_code{
+        	margin-left:124px;
+        	font-size:21px;
+        	font-family: 'Neue_Haas_Unica_Pro-light';
+        	}
+         @media  screen and (max-width: 1620px) and (min-width: 1280px) {
+         	#headerLogo img {
+                width: 200px !important;
+            }
+         .CloseMenu{
+            width: 60px !important;
+            display: none;
+            margin: 3px 5px 0px 18px !important;
+        	}
+         #hamburgerMenu img {
+            width: 83px;
+            margin-top: -4px;
+        	}
+        #MenuItem {
+            top: 104px;
+            right: 60px;
+        	height: 63px;
+    		width: 650px;	
+    		font-size: 18.5px;
+            }
+        #logout, #login, #Register {
+            
+            width: 146px;
+            font-size: 21px;
+        	}
+        .zinc_code{
+        	margin-left:83px;
+        	font-size:18px;
+        	}
+  		}
+         @media  screen and (max-width: 1279px) and (min-width: 992px) {
+          #headerLogo img {
+                width: 200px !important;
+            }
+         .CloseMenu{
+            width: 60px !important;
+            display: none;
+            margin: 3px 5px 0px 18px !important;
+        }
+        #MenuItem {
+            top: 104px;
+            right: 60px;
+        	height: 63px;
+    		width: 637px;	
+    		font-size: 16px;
+        }
+        #logout, #login, #Register {            
+            width: 146px;
+            font-size: 18px;
+        }
+        .zinc_code{
+        	margin-left:46px;
+        	font-size:16px;
+        }
+         #header {
+            padding: 39px !important;
+            height: 105px !important;
+        }
+        #headerLogo img {
+        	width: 200px !important;
+    	}
+  }
+
+        @media only screen and (max-device-width: 1024px) and (min-device-width: 768px) and (orientation: landscape){
+             #headerLogo img {
+                    width: 200px !important;
+                }
+         .zinc_code{
+        			margin-left:63px;
+                    font-size:16px;
+                }
+         #header {
+                padding: 39px 36px !important;
+                height: 105px !important;
+        	}
+         #headerLogo img {
+            	width: 175px !important;
+        	}
+         }
+           @media only screen and (max-device-width: 1024px) and (min-device-width: 768px) and (orientation: portrait){
+         .#headerLogo img {
+                    width: 200px !important;
+                }
+         .header-logo {
+            width: 35%;
+        }
+         .header-nav {
+            padding-top: 8vw;
+        }
+         .zinc_code{
+        			margin-left:63px;
+                    font-size:16px;
+                }
+         #header {
+                padding: 39px 36px !important;
+                height: 105px !important;
+        	}
+         #headerLogo img {
+            	width: 175px !important;
+        	}
+         }
+         @media only screen and (max-device-width: 765px){
+         #headerLogo img {
+                width: 175px !important ;
+            }
+              .icon{
+             position: relative;
+             top: 4vw;
+             left: 12%;
+         }
+         .zinc_code{	
+        			margin-left:43px;
+                    font-size:13px;
+                }
+         #header {
+                padding: 39px 36px !important;
+                height: 105px !important;
+        	}
+         #headerLogo img {
+            	width: 175px !important;
+        	}
+         }
+         @media only screen and (max-device-width: 600px){
+         		#header {
+                    padding: 39px 20px !important;
+                    height: 100px !important;
+                }
+         #headerLogo img {
+                width: 150px !important;
+            }
+         }
+      </aura:html>
+    <ltng:require styles="{! $Resource.AGN_SPARK_Theme + '/css/home-page.css'}"/>
+     <ltng:require styles="{! $Resource.SPARK_Rebranding_LoginLayout + '/css/Login.css'}"/>
+    <header id="header" class="row" style="height:131px; padding: 39px 115px; position: relative;margin:0px;">
+		<div id="headerLogo" class="col-sm-6" style="padding:0px; width:50%;float:left;" >
+            <img src="{!$Resource.SPARK_Rebranding_PageLayout +'/images/TopNav_Logo.jpg'}" alt="Logo Header" onclick="{!c.showHomePage}" style="width:300px; cursor:pointer;" />
+		</div>
+		<div id="headerRightSection" class="col-sm-6" style="padding:0px;width:50%;float:right;">
+			<label id="hamburgerMenu" style="display: none;">
+                <img src="{!$Resource.SPARK_Rebranding_PageLayout +'/images/Hamburger_Menu.png'}" alt="Menu" id="Hamburger_Menu" class="" />
+			</label>
+            <aura:if isTrue="{!v.userType!=''}">
+			<aura:if isTrue="{!!v.userType}">
+                <label id="login" onclick="{!c.clickLogin}" style="margin:0px 0px 5px;" >Login</label>
+                <label id="Register"  data-toggle="modal" data-target="#Registration" style="margin:0px 30px 5px 0px;" onclick="{!c.clickRegister}">{!$Label.c.AGN_SPARK_Header_Registerbutton}</label>
+                <aura:set attribute="else">
+                	<label id="logout" onclick="{!c.logoutPage}" >{!$Label.c.AGN_SPARK_logout}</label>
+                </aura:set> 
+            </aura:if>
+            </aura:if>
+			<span class="clearFloat"></span>
+		</div>
+		<div id="MenuItem" style="display:none;">
+            <aura:if isTrue="{!v.userType}">
+                <span id="KnowledgeHub" onclick="{!c.knowledgePage}">{!$Label.c.AGN_SPARK_Knowledge_hub}</span>
+                <span id="TrainingEvents" onclick="{!c.trainingPage}">{!$Label.c.AGN_SPARK_Training}</span>
+                <span id="Contact" onclick="{!c.contactUsPage}">{!$Label.c.AGN_SPARK_Contact}</span>
+                <aura:set attribute="else">
+					<span id="KnowledgeHub" onclick="{!c.clickRegister}">{!$Label.c.AGN_SPARK_Knowledge_hub}</span>
+                    <span id="TrainingEvents" onclick="{!c.clickRegister}">{!$Label.c.AGN_SPARK_Training}</span>
+                    <span id="Contact" onclick="{!c.clickRegister}">{!$Label.c.AGN_SPARK_Contact}</span>                    
+                </aura:set>
+            </aura:if>                  
+		</div>
+	</header>
+    <c:AGN_Spark_Registration/>
+</aura:component>

@@ -1,0 +1,23 @@
+/************************************************************************************************************
+@FileName:          agnAccountHierarchyDatatable.css
+@Version:           1.0
+@Author:            Ayush Basak (ayush.basak@cognizant.com)
+@Purpose:           This component is to display related records of the accounts on individual account nodes
+-------------------------------------------------------------------------------------------------------------
+@ Change history: 04.01.2021 / Ayush Basak / Created the file.
+*************************************************************************************************************/
+
+@import 'c/agnAccountHierarcyCssLib';
+
+.container {
+    
+    margin-left: 0.5rem;
+    /*border-left: gray 1px dashed; */
+    padding: 1rem 1rem 1rem 1rem;
+    overflow: hidden;
+}
+
+.table {
+    border : rgb(217, 219, 221) 1px solid;
+    line-height: 3;
+}

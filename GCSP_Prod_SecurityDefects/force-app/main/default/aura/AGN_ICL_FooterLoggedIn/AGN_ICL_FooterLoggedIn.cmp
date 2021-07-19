@@ -1,0 +1,17 @@
+<aura:component controller="AGN_ICL_PageFooterController">
+    <link href="{!$Resource.AGN_CustomerPortal+'/css/footer.css'}" rel="stylesheet"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="currentyear" type="String"/> 
+    <aura:attribute name="privacyLink" type="String" default="{!$Label.c.AGN_ICL_Defualt_Privacy_Link}"/>
+    <aura:attribute name="countryCode" type="String"/>
+    <!--Vault Code changes for LATAM-->
+    <aura:attribute name="VaultCode" type="String"/>
+    <!--Vault Code changes for LATAM-->
+    <div class="footer">
+        
+        {!v.VaultCode} &nbsp;{!$Label.c.OnlineConsent_FooterCopyright} &nbsp;{!v.currentyear} &nbsp;{!$Label.c.OnlineConsent_FooterAInc} |
+        <a href="{!v.privacyLink}" target="_blank"> <span class="privacy-statement" style="font-weight: bold; color: #2c5596;">{!$Label.c.AGN_ICL_Privacy_Statement}</span></a>
+        
+        
+    </div>
+</aura:component>

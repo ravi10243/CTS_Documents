@@ -1,0 +1,304 @@
+.THIS .infr_det{
+    clear:both;
+    width: 98%;
+    position: relative;
+    float: left;
+    margin-top: 10px;
+}
+.THIS .basic_details .divider{
+    background:#ccc;
+    width:2px;
+    height:33px;
+    position:relative;
+    left:50px;
+    clear: both;
+}
+.THIS .infr_bg{
+    background:#FFF;
+    border:1px solid #bfbfbf;
+    position: relative;
+    width: 100%;
+    float: left;    
+}
+.THIS .infr_bg .input__label--nariko::after {
+    border-top: 1px solid #CCC;
+}
+.THIS .infr_bg .input__label--nariko {
+    color: #2c5596;
+}
+.THIS .infr_bg .input__label-content--nariko{
+    text-transform:none;
+}
+.THIS .infr_bg .input__label-content--nariko span{
+    color:#ff0000;
+}
+.THIS .infr_bg .input__field--nariko{
+    color:#333333;
+    position: relative;
+    float: inherit;
+    top: 5px;
+    padding: 0;
+    border: none;
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
+    max-width: 100%;
+   /* padding-bottom: 6px; */
+}
+.THIS textarea:focus{
+   outline: none;
+}
+.THIS input:focus{
+    outline: none;
+}
+
+.THIS .input-state{
+    padding-top: 21px;
+}
+.THIS .input{
+    vertical-align: bottom;
+}
+.THIS .required{
+    display: none;
+    position: relative !important;
+    border-bottom: 1px solid #F00 !important;
+    top: -2px !important;
+    z-index: 1 !important;
+    border-radius: 0 !important;
+
+}
+.THIS .attach_btn_text{
+    background: #3d86ca;
+    color: white;
+    padding: 4px 16px;
+}
+.THIS .upload_file{
+    border: 1px solid;
+    border-color: #3d86ca;
+    padding: 3px 10px 3px 10px;
+    margin-left: 30px;
+}
+
+.THIS .det_btn{
+    position: relative;
+    display: inline-block;
+    top: 40px;
+    left: 497px;
+    margin-bottom: 60px;
+    margin-left: -35px;
+    width: 590px;
+}
+.THIS .add_btn{
+    width: 170px;
+    height: 45px;
+    text-align: center;
+    text-transform: uppercase;    
+    background: #FFF;
+    border: 1px solid #bfbfbf;
+    padding: 13px;
+    position:relative;
+    border-radius: 0rem;
+    font-size: inherit;
+    display:inline-block;
+}
+.THIS .continue_btn{
+    background: #43af2a;
+    color: #fff;
+    margin-left: 30px;
+    border: none;
+    width: 180px;
+    margin-right: 20px;
+}
+.THIS .cancel_btn{
+    top: 0;
+    width: 180px;
+    min-width: 140px;
+    margin-left: 170px;
+    float: left;
+}
+.THIS .success_com{
+    float: left;
+    position: relative;
+    font-size: 16px;
+    color: #333333;
+    padding: 45px 50px;
+    display: none;
+    background: white;
+    border: 1px solid #bfbfbf;
+    width: 98%;
+    margin-bottom: 15%;
+    top: 100px;
+    max-height: 130px;
+}
+.THIS .success_com span{
+    /*color:#43af2a;*/
+    margin-top: -5px;
+}
+
+.THIS .success_btn{
+    background: #43af2a;
+    color: #fff;
+    right: 0px;
+    margin-left: 30px;
+    border: none;
+    top: -10px;
+}
+
+.THIS .section_header {
+    position: relative;
+    top: 20px;
+    width: 100%;
+    float: left;
+    left: 16px;
+    
+}
+
+.THIS .uiButton .label {
+    display: block;
+    margin-top: -5px !important;
+}
+
+.THIS .loader {
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  opacity:0.5;
+  border-top: 4px solid #3498db;
+  width: 40px;
+  height: 40px;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@media only screen 
+  and (max-device-width: 750px) and (min-device-width: 100px) {
+    .THIS .infr_det{
+        width: 100%;
+    }
+    .THIS .input-state{
+        padding-top: 0;
+    }
+    .THIS .section_header {
+        width: 96%;
+        left: 2%;
+        margin-bottom: 15px;
+    }
+    .THIS .det_btn {
+        position: relative;
+        display: inline-block;
+        top:0;
+        left: 0;
+        margin-bottom:10%;
+        margin-left: 0;
+        width: 100%;
+        height: 170px;
+    }
+    .THIS .continue_btn{
+        margin: 0% 25%;
+        width: 50%;
+        float: none;
+    }
+    .THIS .cancel_btn{
+        margin: 7% 25%;
+        float: none;
+        width: 50%;
+    }
+    .THIS .infr_bg .input__field--nariko{
+        top:0;
+    }
+}
+.THIS .download_btn{
+    border: 1px solid;
+    border-color: #3d86ca;
+    height: auto;
+    width: 220px;
+    top: 0 !important;
+    color: #565656;
+    margin-left: 30px!important;
+    right: 0%;
+    padding: 3px 8px;
+    margin-top: -28px;
+    margin-right: 6px;
+    text-align: left;
+    overflow: hidden;
+    left: 0;
+    background: #fff;
+    text-decoration: none;
+}
+.THIS .docs_details{
+    display:inline-block;
+    /*width:auto;*/
+    width: 35%;
+}
+/*Mobile Portrait*/
+@media only screen
+    and (max-device-width: 500px) and (min-device-width: 100px) {
+ .THIS .docs_details{
+        width: 100%;
+    }   
+    .THIS .download_btn{
+        margin: 0;
+        width: auto;
+        text-align: center;
+        margin-left: 0px!important;
+        float: left;
+        margin-top: 10px;
+    }
+}
+@media only screen 
+  and (max-device-width: 750px) and (min-device-width: 501px) {
+    .THIS .input-state{
+        padding-top: 15px;
+    }
+    .THIS .infr_bg .input__field--nariko{
+        top:0;
+    }
+}
+@media only screen 
+  and (max-device-width: 1200px) and (min-device-width: 751px) {
+    
+    .THIS .infr_det{
+        width: 100%;
+    }
+    .THIS .section_header {
+        margin-bottom: 35px;
+    }
+    .THIS .det_btn {
+        left: 120px;
+    }
+    .THIS .input-state {
+        padding-top: 15px;
+    }
+    .THIS .infr_bg .input__field--nariko{
+        top:0;
+        padding-bottom: 3px;
+    }
+}
+@media only screen 
+  and (max-device-width: 1250px) and (min-device-width: 1200px) {
+    
+    .THIS .infr_det{
+        width: 98%;
+    }
+    .THIS .section_header {
+        margin-bottom: 15px;
+    }
+    .THIS .det_btn {
+      /*  left: 474px;*/
+    }
+    .THIS .input-state {
+        padding-top: 15px;
+    }
+    .THIS .infr_bg .input__field--nariko{
+        top:0;
+    }
+}

@@ -1,0 +1,42 @@
+<aura:component controller="AGN_OAMMultiSelectController" >
+    
+    <aura:attribute name="options" type="List" />
+    
+    <aura:attribute name="sobjectName" type="String" required="true" />
+    <aura:attribute name="fieldName" type="String" required="true" />
+    <aura:attribute name="record" type="SObject" required="true" />
+    <aura:attribute name="displayType" type="String" />
+    <aura:attribute name="picklistOptions" type="Object[]" />
+    <aura:attribute name="variant" type="String" default="form" description="Options: form (default) and bare" />
+    <aura:attribute name="render" type="Boolean" default="true" />
+    <aura:attribute name="disabled" type="Boolean" />
+    <aura:attribute name="required" type="Boolean" />
+    <aura:attribute name="addRequiredCSS" type="Boolean" default="false"/>
+    <aura:attribute name="fieldValueMissing" type="Boolean" default="false"/>
+    <aura:attribute name="currencyIsoCode" type="String" />
+    <aura:attribute name="customLabel" type="String" />
+    <aura:attribute name="isFormatValid" type="Boolean" default="true" />
+    <aura:attribute name="fieldRegex" type="String" />
+    <aura:attribute name="fieldMetadata" type="Object" access="private" />
+    <aura:attribute name="fieldValue" type="Object" access="public" />
+    <aura:attribute name="customLabelName" type="String" access="public"/>
+    <aura:attribute name="customCountryCode" type="String" access="public"/>
+    <aura:attribute name="cmpHelpText" type="String" access="public" default=''/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+ 
+    
+  <!--  <div class="slds-form-element"> -->
+        <span class="input input--nariko inputtextValue input-identifier required-identifier cAGN_CommunityInputFieldCmp" data-inputfiedlvalue="null" data-fieldvaluemissing="false" style="/*padding-top: 21px;*/" data-aura-class="cAGN_CommunityInputFieldCmp cAGN_OAMCommunityInputFieldWrapperCmp">
+            <ui:inputSelect aura:id="InputSelectMultiple" change="{!c.onMultiSelectChange}">
+                <aura:iteration items="{!v.options}" var="opt" indexVar="index">                   
+                    <ui:inputSelectOption text="{!opt.value}" label="{!opt.label}"></ui:inputSelectOption>
+                </aura:iteration> 
+            </ui:inputSelect>
+             <label class="input__label input__label--nariko">
+                    <span class="input__label-content input__label-content--nariko"> {!v.customLabelName}<span>{!v.required ? '*' : ''}</span> </span>
+                </label>
+                <span class="{!(v.required ? 'required-identifier' : '')}"  ></span>
+            </span>
+    <!-- </div> -->
+</aura:component>

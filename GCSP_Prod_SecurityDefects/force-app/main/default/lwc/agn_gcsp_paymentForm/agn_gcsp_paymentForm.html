@@ -1,0 +1,145 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 07-08-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   01-21-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <div hidden={hidemaindiv} class="reg_step4">
+        <div key={record} class="cheading cheadingbold">{label.AGN_OAM_PaymentDetails_Header}</div>
+       
+        <div class="slds-form-element__control">
+            <section>
+                <div class="bank_input">
+                    <div class="slds-form-element bank_inputdata">
+                        <!-- cus_details (CSS class)-->                                                   
+                                <label class="slds-form-element__label">
+                                    <abbr title="" class="slds-required">*</abbr>                                   
+                                    {label.AGN_OAM_Body_PaymentMethod}
+                                </label>
+                                <select required disabled={disablePaymentMethod} class="slds-select slds-input"
+                                    name="paymentForm" onchange={paymentFormChangeHandler}>
+                                    <option value=''>  </option>
+                                    <template if:true={PaymentMethod1}>
+                                        <option selected key={PaymentMethod1.Id} value={PaymentMethod1.Id}>
+                                            <template if:true={isOnlineRegistration}>
+                                                <template if:true={isCanadaEnglishOam}>                                                    
+                                                     {PaymentMethod1.Name}
+                                                 </template>  
+                                                 <template if:false={isCanadaEnglishOam}>
+                                                    {PaymentMethod1.Form_Of_Payment_Label_AGN__c}
+                                                 </template>                                               
+                                            </template>
+                                            <template if:false={isOnlineRegistration}>
+                                                {PaymentMethod1.Name}
+                                            </template>
+                                        </option>
+                                    </template>
+                                   <!--<template if:false={PaymentMethod1}>
+                                        <option value=''>  </option>
+                                    </template>--> 
+                                    <template for:each={paymentmethod} for:item='payment'>
+                                        <option key={payment.Id} value={payment.Id}>
+                                            <template if:true={isOnlineRegistration} key={payment.Id}>                                                
+                                                <template if:true={isCanadaEnglishOam}>                                                    
+                                                     {payment.Name}
+                                                 </template>  
+                                                 <template if:false={isCanadaEnglishOam}>
+                                                    {payment.Form_Of_Payment_Label_AGN__c}
+                                                 </template>    
+                                            </template>
+                                            <template if:false={isOnlineRegistration} key={payment.Id}>
+                                                {payment.Name}
+                                            </template>                                            
+                                        </option>
+                                    </template>
+                                </select>                           
+                    </div>
+                    <div class="show-toast">
+                        <c-agn_gcsp_custom-toast title="" message={error} variant={variant} auto-close="true">
+                        </c-agn_gcsp_custom-toast>
+                    </div>
+                    <div class="slds-form-element bank_inputdata">
+                         <!-- cus_details (CSS class)-->                        
+                                <label class="slds-form-element__label">
+                                    <abbr title="" class="slds-required">*</abbr>
+                                    {label.AGN_OAM_Payment_Term}
+                                </label>
+                                  <!--disabled={disablePaymentTerm}-->
+                               <select required disabled={disablePaymentTerm} class="slds-select slds-input commoninputcmp" 
+                                    name="paymentTermForm" onchange={paymentTermChangeHandler}>
+                                    <!--<option value=''></option>-->
+                                    <template if:true={PaymentTerm1}>
+                                        <option selected key={PaymentTerm1.Id} value={PaymentTerm1.Id}>                                            
+                                             <template if:true={isOnlineRegistration}>                                                 
+                                                 <template if:true={isCanadaEnglishOam}>                                                    
+                                                    {PaymentTerm1.Name}
+                                                 </template>  
+                                                 <template if:false={isCanadaEnglishOam}>
+                                                    {PaymentTerm1.Payment_Term_Label_AGN__c}
+                                                 </template> 
+                                             </template>
+                                             <template if:false={isOnlineRegistration}>
+                                                 {PaymentTerm1.Name}
+                                             </template>
+                                             
+                                        </option>
+                                    </template>
+                                   <!-- <template if:false={PaymentTerm1}>
+                                        <option value=''>  </option>
+                                    </template>-->
+                                     <template if:true={PaymentTerm}>
+                                        <template for:each={PaymentTerm} for:item='payment'>
+                                            <option key={payment.Id}
+                                                value={payment.Id}>                                                
+                                                <template if:true={isOnlineRegistration}>                                                    
+                                                    <template if:true={isCanadaEnglishOam}>                                                    
+                                                        {payment.Name}
+                                                    </template>  
+                                                    <template if:false={isCanadaEnglishOam}>
+                                                        {payment.Payment_Term_Label_AGN__c}
+                                                    </template> 
+                                                </template>
+                                                <template if:false={isOnlineRegistration}>
+                                                    {payment.Name}
+                                                </template>
+                                            </option>
+                                        </template>
+                                    </template>
+                                </select>                                                       
+                    </div>
+                </div>
+            </section>
+        </div>
+        <br />        
+    <div class="bankdetails">
+        <template if:true={showBankDetails}> 
+            <!--disabled={disablePaymentMethod}-->
+            <template for:each={sectionPaymentCreditList} for:item='fieldvalue'>
+                <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+                    instancetype='old' objecttype='billto' sobjectname={fieldvalue.SObject_Name_AGN__c}
+                    fieldname={fieldvalue.Field_Name_AGN__c} required={fieldvalue.Required_AGN__c} record='{record}'
+                    regex={fieldvalue.Field_Regex_AGN__c} customlabel={fieldvalue.Field_Custom_Label_AGN__c}
+                    country={countrycode} 
+                    picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                    objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                    iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                    helptext={fieldvalue.Help_Text_AGN__c}
+                    rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                    oncontrollingfieldevent={handleControllingFieldEvent}
+                    class="">
+                </c-a-g-n_-g-c-s-p_-common-input-field-component>
+            </template>
+        </template>
+    </div>
+    </div>    
+    <div if:true={showLoader}>
+        <div class="spinnnerdiv" style="height:10rem;">                    
+            <lightning-spinner  class="slds-is-absolute" alternative-text={label.AGN_OAM_Loading} variant="brand" size="large" ></lightning-spinner>
+        </div>
+    </div>
+</template>

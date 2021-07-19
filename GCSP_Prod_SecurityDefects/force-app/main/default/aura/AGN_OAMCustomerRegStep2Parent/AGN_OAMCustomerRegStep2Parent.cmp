@@ -1,0 +1,173 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="AGN_OAMPortalCustomerRegStep2Controller">
+    <!--<ltng:require scripts="{!$Resource.AGN_CustomerPortal + '/js/function.js'}"/>
+     <aura:handler name="init" action="{!c.init}" event="c:AGN_CustRegHdr_Evt" />  -->   
+    
+    <ltng:require styles="{! $Resource.AGN_CustomerPortal_Ltng + '/css/style.css'}"/> 
+    <ltng:require styles="{! $Resource.AGN_CustomerPortal_Ltng + '/css/add_style.css'}" /> 
+    
+    <aura:attribute name="customer" type="Allergan_Customer_Registration_AGN__c"/> 
+    <aura:attribute name="custConfig" type="Customer_Type_Configuration_AGN__c"/>
+    
+      <!-- <aura:attribute name="selectedProvience" type="AGN_CR_CountryRegionMapping__mdt[]" /> -->
+    <aura:attribute name="selectedProvience" type="string" /> 
+    
+    <aura:attribute name="language" type="String" />
+    
+    <!-- create 2 aura handler with waiting and donewaiting events--> 
+    <!--<aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>-->
+    <!--create a component attributs -->
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <aura:attribute name="currentRegStep" type="Integer" default="2"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="aura:doneRendering" action="{!c.doneRendering}"/>
+    <aura:handler name="formSubmitAddress" action="{!c.onSubmitAddress}" event="c:AGN_CustRegStep2_Evt"/>
+    <aura:handler name="notifyRegStepChange" action="{!c.onNotifyRegStepChange}" event="c:AGN_Reg_Step_Chg_Evt"/>
+    
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end--> 
+    <div class="container">        
+        <aura:If isTrue="{!v.language=='en'}">                    
+            <c:AGN_OAMCustomerRegStep2Header selectedCountry = "{!v.customer.Country_AGN__r.AGN_Country_Name__c}" 
+                                             selectedCustomerType = "{!v.custConfig.Category_AGN__c}"
+                                             selectedSubType = "{!v.custConfig.Sub_Category__c}"
+                                             selectedProvince = "{!v.customer.Province_AGN__c}"
+                                             />
+            <aura:set attribute="else">
+                <c:AGN_OAMCustomerRegStep2Header selectedCountry = "{!v.customer.Country_AGN__r.AGN_Country_Name__c}" 
+                                                 selectedCustomerType = "{!v.custConfig.Category_Label_AGN__c}"
+                                                 selectedSubType = "{!v.custConfig.Sub_Category_Label_AGN__c}"
+                                                 selectedProvince = "{!v.customer.Province_AGN__c}"
+                                                 /> 
+            </aura:set>
+        </aura:If>         
+        
+        <div class="basic_details">           
+            <li class="basic_detail">
+                <div class="no_det active">
+                    <aura:if isTrue="{!lessthanorequal(v.currentRegStep,1) }"><span>1</span></aura:if>
+                    <aura:if isTrue="{!greaterthan(v.currentRegStep,1)}"><img  src="{!$Resource.AGN_CustomerPortal + '/images/tick.png'}" styleClass="tick"/></aura:if>
+                </div>
+                <span class="no_det_text">{!$Label.c.AGN_OAM_Body_BasicInformation}</span>
+            </li>           
+            
+            <!-- Address -->
+            <li class="add_det" style="margin-top:30px;">
+                <aura:if  isTrue="{!v.customer.Customer_Category_AGN__c != null}" > 
+                    <div class="no_det"> 
+                        <aura:if isTrue="{!lessthanorequal(v.currentRegStep,2) }"><span>2</span></aura:if>
+                        <aura:if isTrue="{!greaterthan(v.currentRegStep,2)}"><img  src="{!$Resource.AGN_CustomerPortal + '/images/tick.png'}" styleClass="tick"/></aura:if>                         
+                    </div>
+                    <span class="no_det_text">{!$Label.c.AGN_OAM_Body_Address}</span>
+                    <span class="edit_btn" style="cursor:pointer" id="edit_btn" onclick="{!c.editAddress}"><img  src="{!$Resource.AGN_CustomerPortal + '/images/pen.png'}"/>{!$Label.c.AGN_OAM_Body_Edit}</span>
+                    <div class="divider"></div>
+                    <div class="infr_det">
+                        <aura:if isTrue="{! v.currentRegStep == 2}"> 
+                            <div class="infr_bg" >
+                               <aura:if isTrue="{!v.custConfig !=null}">	
+                                <aura:if isTrue="{!v.customer.Country_Code_AGN__c == 'CA'}" >
+                                    <c:AGN_OAMCustomerRegStep2_CA aura:id="formStep2" countryCode = "{!v.customer.Country_Code_AGN__c}" 
+                                                                  customerType = "{!v.customer.Customer_Category_AGN__c}"
+                                                                  customerSubType = "{!v.customer.Customer_Sub_Category_AGN__c}"
+                                                                  custRegID ="{!v.customer.Id}" 
+                                                                  customerGroup="{!v.customer.Customer_Group_AGN__c}"
+                                                                  selectedProvince = "{!v.customer.Province_AGN__c}"
+                                                                  /> 
+                                    <aura:set attribute="else">
+                                       <c:AGN_OAMCustomerRegStep2 aura:id="formStep2" countryCode = "{!v.customer.Country_Code_AGN__c}" 
+                                                                   customerType = "{!v.customer.Customer_Category_AGN__c}"
+                                                                   customerSubType = "{!v.customer.Customer_Sub_Category_AGN__c}"
+                                                                  CustomerGrouptype ="{!v.custConfig.Sub_Category_Label_AGN__c}"
+                                                                   custRegID ="{!v.customer.Id}"
+                                                           		   SAPCountryCode ="{!v.customer.SAP_Country_Code_AGN__c}"
+                                                                   /> 
+                                           
+                                    </aura:set>
+                                   </aura:if>	
+                                </aura:if>  
+                            </div>
+                        </aura:if >
+                    </div>
+                </aura:if>
+            </li>
+            
+            <!-- Document -->
+            <li class="upload_doc" style="margin-top:30px;">
+                <div class="no_det">
+                    <aura:if isTrue="{!lessthanorequal(v.currentRegStep,3)}"><span>3</span></aura:if>
+                    <aura:if isTrue="{!greaterthan(v.currentRegStep,3)}"><img  src="{!$Resource.AGN_CustomerPortal + '/images/tick.png'}" styleClass="tick"/></aura:if>
+                </div>
+                <span class="no_det_text">{!$Label.c.AGN_OAM_Body_UploadDocuments}</span>
+                <span class="edit_btn" onclick="{!c.editDocs}" style="cursor:pointer"><img  src="{!$Resource.AGN_CustomerPortal + '/images/pen.png'}"/>{!$Label.c.AGN_OAM_Body_Edit}</span>
+                <div class="divider"></div>
+                <div class="infr_det">
+                    
+                    <aura:if isTrue="{! v.currentRegStep == 3}">
+                        <aura:if  isTrue="{!v.customer.Id != null}" >
+                            <div class="infr_bg">
+                                 <aura:if isTrue="{!v.customer.Country_Code_AGN__c == 'CA'}" >
+                                    <c:AGN_OAMCustomerRegDocumentUploader_CA aura:id="formStep3" countryCode = "{!v.customer.Country_Code_AGN__c}" 
+                                                                             customerType = "{!v.customer.Customer_Category_AGN__c}"
+                                                                             customerSubType = "{!v.customer.Customer_Sub_Category_AGN__c}"
+                                                                             selectedProvince = "{!v.customer.Province_AGN__c}"
+                                                                             customerGroup="{!v.customer.Customer_Group_AGN__c}" 
+                                                                             selectedCustRegID="{!v.customer.Id}"/> 
+                                    
+                                    
+                                    <aura:set attribute="else">
+                                        <c:AGN_OAMCustomerRegDocumentUploader aura:id="formStep3" countryCode = "{!v.customer.Country_Code_AGN__c}" 
+                                                                      customerType = "{!v.customer.Customer_Category_AGN__c}"
+                                                                      customerSubType = "{!v.customer.Customer_Sub_Category_AGN__c}" 
+                                                                      selectedCustRegID="{!v.customer.Id}"
+                                                                      SAPCountryCode ="{!v.customer.SAP_Country_Code_AGN__c}"
+                                                                      /> 
+                                    </aura:set>
+                                    
+                                </aura:if>
+                                
+                            </div>
+                        </aura:if>
+                    </aura:if>
+                    
+                </div>
+            </li>
+            
+            <!-- Payment/Confirmation -->
+            <li class="payment">
+                <div class="no_det">
+                    <aura:if isTrue="{!lessthanorequal(v.currentRegStep,4)}"><span>4</span></aura:if>
+                    <aura:if isTrue="{!greaterthan(v.currentRegStep,4)}"><img  src="{!$Resource.AGN_CustomerPortal + '/images/tick.png'}" styleClass="tick"/></aura:if>
+                </div>
+                <span class="no_det_text">{!$Label.c.AGN_OAM_Body_Confirmation}</span>
+                <span class="edit_btn" style="cursor:pointer" onclick="{!c.editPayment}"><img  src="{!$Resource.AGN_CustomerPortal + '/images/pen.png'}"/>{!$Label.c.AGN_OAM_Body_Edit}</span>
+                <div class="divider"></div>
+                <div class="infr_det">
+                    <aura:if isTrue="{! v.currentRegStep == 4}">
+                        <aura:if isTrue="{! not(empty(v.customer.Country_Code_AGN__c))}">
+                             <aura:if isTrue="{!v.customer.Country_Code_AGN__c == 'CA'}">
+                                <c:AGN_OAMCustomerPaymentInfo_CA countryCode = "{!v.customer.Country_Code_AGN__c}"/>
+                                <aura:set attribute="else">
+                                    <c:AGN_OAMCustomerPaymentInfo countryCode = "{!v.customer.Country_Code_AGN__c}" 
+                                                          SAPCountryCode ="{!v.customer.SAP_Country_Code_AGN__c}"
+                                                          />
+                                </aura:set>
+                            </aura:if>   
+                        </aura:if>
+                    </aura:if>
+                </div>
+            </li>
+        </div>
+        <div class="success_com com_fully"><span>{!$Label.c.AGN_OAM_Body_Confirm_Youhave}&nbsp;{!$Label.c.AGN_OAM_Body_Confirm_SuccessfullyCompleted}&nbsp;{!$Label.c.AGN_OAM_Body_Confirm_CheckInbox}</span></div>
+    </div> 
+    
+    <!--<ui:button aura:id="buttonAD" class="add_btn continue_btn" label="Login to AD" press="{!c.logInAD}"/>-->
+</aura:component>

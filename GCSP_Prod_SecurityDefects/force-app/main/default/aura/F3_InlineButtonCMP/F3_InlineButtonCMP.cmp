@@ -1,0 +1,18 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="recordId" type="Id" />
+    <aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+    
+    <aura:attribute name="parentId" type="String"/> 
+    
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="componentClass" type="String" default="slds-form-element" />
+    <aura:attribute name="labelStyle" type="String" />
+    
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <div class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small' : 'slds-hide'}">
+        <lightning:button variant="brand" label="Affordiablity Assessment" title="Brand action"/>
+    </div>
+</aura:component>

@@ -1,0 +1,42 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <aura:html tag="style">  
+        @media  screen and (max-width: 1999px) and (min-width: 1991px){
+                    .popup_login{
+        				margin-left:-25px !important;
+        			}
+                    
+       	} 
+        @media  screen and (max-width: 1990px) and (min-width: 1981px){
+                    .popup_login{
+        				margin-left:-20px !important;
+        			}
+                    
+       	}
+        @media only screen and (max-width: 1980px){
+                    .popup_login{
+        				margin-left:-15px !important;
+        			}
+                    
+       	}
+    </aura:html> 
+	<div class="container" id="hidden_cookie_content" aura:id="popUpLogin" style="width: 100%; display:none; position: relative; font-size:18px; margin: 0px auto;max-width: 2010px;">
+        <div  class="popup_login" aura:id="popup_login" style="background: #a7756e; z-index: 102; position: fixed; width: auto; margin: 0px auto; bottom: 0px; padding: 15px 15px; display: inline-flex; color: white;max-width: 2010px;margin: 0 auto;margin-left: -30px;">
+            <div class="popup_text" style="text-align: left; position: relative; font-size: 18px; font-family: helvetica;cursor: auto;">
+                {!$Label.c.AGN_SPARK_Landing_Disclaimer} <b class="readmore_land" style="cursor:pointer;font-size: 18px;" aura:id="readMoreBtn" onclick="{!c.showReadMore}">&nbsp;{!$Label.c.AGN_SPARK_Read_More}</b>
+               <p></p>
+               <p class="landing_readmore slds-hide" aura:id="readMore">
+                {!$Label.c.AGN_SPARK_Landing_Disclaimer2}
+                {!$Label.c.AGN_SPARK_Landing_Disclaimer3} <b class="readless_land" style="cursor:pointer;font-size: 18px;" onclick="{!c.showReadLess}">&nbsp; {!$Label.c.AGN_SPARK_Read_Less}</b>                  
+                </p> 
+            </div>            
+            <div class="popup_btn" style="text-align: center; float: left; cursor: default;">
+                <div class="popup_btn_login" 
+                     style="border: 1px solid #f5f5f5; width: 80px; float: left; margin: auto;font-family: helvetica; line-height: 27px; color: white;"
+                     onclick="{!c.popupLogin}">
+                    {!$Label.c.AGN_SPARK_Allowcookiebtn}
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

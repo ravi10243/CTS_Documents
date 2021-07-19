@@ -1,0 +1,46 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" 
+                access="global"
+                controller="F3_LocalisedPicklistController">
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+    <!-- Attributes -->
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="fieldValue" type="List"/>
+    <aura:attribute name="translatedOptions" type="List" />
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="componentClass" type="String" default="slds-form-element" />
+    <aura:attribute name="labelStyle" type="String" />
+    
+    <!-- Component Body -->
+    <div class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small' : 'slds-hide'}" 
+         name="{!v.elementWrapper.PageElement.Name}">
+        <div class="slds-form-element__control ">
+            <aura:if isTrue="{!v.renderMode == 'COMMUNITY'}">
+                <aura:if isTrue="{!v.translatedOptions}">
+                    <lightning:checkboxGroup name="{!v.elementWrapper.PageElement.Name}"
+                                          label="{!v.elementWrapper.PortalLabel}"
+                                          options="{!v.translatedOptions}"
+                                          value="{!v.fieldValue}"
+                                          onchange="{!c.onCheckBoxChange}">
+                    </lightning:checkboxGroup>
+                </aura:if>    
+                <div class="slds-hide">
+                    <lightning:inputField aura:id="hiddenPickList" 
+                                          fieldName="{!v.elementWrapper.PageElement.DataFieldAPIName__c}" 
+                                          
+                                          hidden="true"/>
+                </div>    
+            </aura:if>
+            <aura:if isTrue="{!v.renderMode == 'DESIGNER'}">
+                <div class="slds-m-top_xx-small slds-m-bottom_xx-small slds-m-left_xx-small">
+                    <lightning:checkboxGroup name="{!v.elementWrapper.PageElement.Name}"
+                                          label="{!v.elementWrapper.PortalLabel}"
+                                          options="{!v.translatedOptions}"
+                                          value="{!v.fieldValue}"
+                                          />
+                </div>
+            </aura:if>
+        </div>  
+    </div>
+</aura:component>

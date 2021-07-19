@@ -1,0 +1,4 @@
+<!--  ***** AGN_ICL_CloseEditModal *****-->
+<aura:event type="APPLICATION" description="Event template" >
+    <aura:attribute name="CloseEditPopupvalue" type="Boolean" description="variable set false to close edit practitioner popup" access="global" />
+</aura:event>

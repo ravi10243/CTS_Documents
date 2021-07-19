@@ -1,0 +1,449 @@
+/* --------------------- NEW UI Changes ----------------------------- */
+.outer_wrapper {
+    width: 100%;
+    max-width: 1366px;
+    margin: auto;
+    font-size: 0.8125rem;
+}
+.cs_outer_wrapper {
+    width: 1148px;
+    max-width: 1366px;
+    margin: auto;
+    font-size: 0.8125rem;
+}
+.space{
+    padding-top:5%;
+}
+.slds-scope{
+   
+     width: 100%;
+     margin: 0 auto;
+ 
+     border: 1px solid #bfbfbf;
+     background: #fff;
+ }
+ .scope_container{
+     width: 90%;    
+     margin: 2% auto 3%;  
+ }
+ /* .scope2{
+     padding-left:2.8em;
+ } */
+ .scope2{
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 50%;
+}
+.scope3{
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 50%;
+     padding-left:2.8em;
+ }
+.scope1_ca{
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 33%;
+    padding-right:2em;
+}
+.scope2_ca{
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 33%;
+    padding-left:1.5em;
+}
+.scope3_ca{
+    padding-left:3em;
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 33%;
+}
+.hd{
+    font-size: 1.1rem;
+    font-weight: 700;  
+    width: 100%;
+    font-family: Arial,sans-serif;
+    margin: 2% 0;
+}
+.registered_address, .newshipto_address, .newbillto_address{ /* Outer Box */
+    width:100%;
+    padding: 20px 0px 30px;    
+    border: 1px solid #bfbfbf;
+    background: #fff;
+    margin: 40px 0px;
+}
+.existing_add, .shipping_add1, .billing_add1{ /* Inner Box-1 */   
+    width: 90%;    
+    border: solid 1px  darkgoldenrod;
+    margin: 0 auto 2.5%;
+}
+.Registered_add_block1, .Shipping_add_block1, .Billing_add_block2, .Billing_add_block1, .Registered_add_block2{  /* Inner Box -2 */  
+    padding: 25px 0px 30px 0px;
+    width: 100%;
+    margin: 0 auto;
+}
+.Billing_add_block1, .Registered_add_block1 {      
+    padding: 25px 0px 0px;
+}
+.Billing_add_block2, .Registered_add_block2 {      
+    padding: 0px 0px 30px 0px;
+} 
+.newshipto_address_block1{   
+    padding: 0 0 2%;
+    width: 90%;   
+    border: 1px solid #b8860b;
+    margin: 0 auto 1%;
+}
+.reg_address{
+    float: right;
+   /* margin-left: 76.7%; */
+}
+.newship_add{
+  /*  margin-left: 64%;      */
+    width: 25%;
+    float: right;
+}
+.address_clear{
+    clear:both;
+}
+
+/*.deactivate_btn{
+    float:right;
+}*/
+/*.editbtn1{
+    margin-left: 76.7%;
+}*/
+.editbtn2{ 
+    float:right;
+    /*margin-left: 64%; 
+    margin-right: 1%;*/
+}
+.closebtn, .closebtn1{
+    float: right;
+    margin-top: -4.6%;
+    margin-right: 0.8%;   
+}
+/*.closebtn1{
+    float: right;
+    margin-top: -4.6%;
+    margin-right: 0.8%;
+}*/
+.deletebtn {        
+    margin-right: 5px;
+    margin-top: 5px;   
+    display: block;
+}
+.btn_container {
+    display: flex;
+    padding: 1% 5% 1% 0%;
+}
+.hide_deactivate_button_shipto, .hide_deactivate_button_billto{    
+    /* width:285px;  */
+    width:auto; 
+    margin-top: 0;
+    margin-left: 1%;  
+    padding: 1%;
+    border: 0.2px solid #bfbfbf;
+    display:inline-block;
+}
+.inputToggle{
+    width:auto;
+    margin:0px;
+}
+.row1{    
+    padding: 1% 1%;
+    display: inline-block;
+    width: 100%;
+}
+.sapid{
+    border-radius: 5px;
+    text-align: center;
+    border: none;    
+    font-size: 1.1rem;  
+    color: #fff;
+    background: rgba(119,136,153,.59);
+    padding: 4px;
+  /*  min-width: 7.5rem !important; */
+    width: auto;
+    float: left;
+}
+.cheading {
+    font-size: 1rem;
+    font-weight: 700;   
+    width: 90%;   
+    margin: 0 auto;
+    font-family: Arial,sans-serif;
+    padding-bottom: 1%;
+}
+.cheadingbold1{
+    width: 95%;
+    margin-top: 1%;
+}
+.submitbtn{
+    display: flex;
+    padding: 1% 5% 1% 0;
+    width: 75%;  
+    margin: 0 auto;
+    justify-content: center;
+}
+.Registered_add, .Billing_add, .Shipping_add {
+    display: none;
+}
+/*
+.hide_deactivate_button_shipto,
+.hide_deactivate_button_billto {
+    display: block;
+} */
+
+.Registered_add1 {
+    display: block!important;
+    clear: both;
+    padding-top: 1%;
+} 
+
+/*.readonlyAddressclass {
+   /* pointer-events:none;     
+    background: #dddddd;   
+}*/
+.editAddressclass {
+    pointer-events: block !important;
+}
+
+.chk_box{    
+    width: 100%;
+    margin: 0 auto;    
+    padding-left: 1.5%;
+    text-align:justify;
+ }
+ .declartionpart{
+    width: 100%;
+    margin: 30px auto 0;
+    background: white;
+    border: 1px solid #bfbfbf;
+    padding: 0px 20px 20px;
+ }
+ .Declt1, .NLDeclt1{
+    width: 95%;
+    margin: 0 auto 1%;
+    font-size: 1rem;
+    font-weight: bolder;    
+ }
+ .NLDeclt1{
+    margin: 0 auto 3%;
+ }
+ .li_width{
+    width:auto;
+}
+/*.reg_address::after {
+    content: '';
+    position: absolute;
+    width: 85%;
+    height: 4em;
+    top: 100%;
+    left: 0;
+    border-top: 1px solid #d9d9d9;
+} */
+.DocsUpload{
+    width: 100%;
+    background: #fff;
+    border: 1px solid #bfbfbf;
+    margin: 1% auto 3%;
+}
+@media screen and (max-width: 1160px) and (min-width: 1025px){   
+    .scope3{
+        padding-left: 2.5em;
+    }    
+}
+@media screen and (max-width: 1024px) and (min-width: 1001px){   
+    .scope3{
+        padding-left: 2.5em;
+    }
+    .closebtn, .closebtn1{
+        margin-top: -5.1%;
+    }    
+}
+@media screen and (max-width: 1000px) and (min-width: 901px){          
+    .scope3{
+        padding-left: 2.5em;
+    }
+    .closebtn, .closebtn1{
+        margin-top: -5.2%;
+    } 
+}
+@media screen and (max-width: 900px) and (min-width: 815px){           
+    .closebtn, .closebtn1{
+        margin-top: -5.7%;
+    }
+    .scope3{
+        padding-left: 2.5em;
+    }
+}
+@media screen and (max-width: 814px) and (min-width: 701px){        
+    .closebtn, .closebtn1{
+        margin-top: -6.2%;
+    }
+    .scope3{
+        padding-left: 2.5em;
+    }
+     .NLDeclt1{
+        margin:0 auto 4%;
+    }
+    .chk_box{    
+        padding-left:2%;       
+    } 
+}
+@media screen and (max-width: 700px) and (min-width: 616px){        
+    .closebtn, .closebtn1{
+        margin-top: -7.2%;
+    }
+    .scope3{
+        padding-left: 2.5em;
+    }
+    .NLDeclt1{
+        margin:0 auto 4%;
+    }
+    .chk_box{    
+        padding-left:2%;       
+    } 
+} 
+@media screen and (max-width: 615px) and (min-width: 591px){        
+    .closebtn, .closebtn1{
+        margin-top: -8.1%;
+    }
+    .scope3{
+        padding-left: 0.8em;
+    }
+    .NLDeclt1{
+        margin:0 auto 4%;
+    }
+    .chk_box{    
+        padding-left:2%;       
+    } 
+}
+@media screen and (max-width: 590px) and (min-width: 551px){        
+    .closebtn, .closebtn1{
+        margin-top: -8.7%;
+    }
+    .scope3{
+        padding-left: 2.5em;
+    }
+    .NLDeclt1{
+        margin:0 auto 4%;
+    }
+    .chk_box{    
+        padding-left:2%;       
+    } 
+}
+@media screen and (max-width: 550px) and (min-width: 511px){        
+    .closebtn, .closebtn1{
+        margin-top: -9.1%;
+    }
+    .scope3{
+        padding-left: 1.2em;
+    }
+    .NLDeclt1{
+        margin:0 auto 4%;
+    }
+    .chk_box{    
+        padding-left:2%;       
+    } 
+}
+@media screen and (max-width: 510px) and (min-width:421px){    
+    .hide_deactivate_button_shipto, .hide_deactivate_button_billto{                   
+        width: 215px;           
+    }
+    .closebtn, .closebtn1{
+        margin-top: -9.7%;
+    }
+    .scope3{
+        padding-left: 0;
+    }               
+    .scope1_ca,.scope2_ca,.scope3_ca{
+        padding:0;
+    }
+    .NLDeclt1{
+        margin:0 auto 4%;
+    }
+    .chk_box{    
+        padding-left:2%;       
+    } 
+}
+@media screen and (max-width: 420px) and (min-width:351px){    
+    .hide_deactivate_button_shipto, .hide_deactivate_button_billto{                   
+        width: 215px;            
+    }
+    .closebtn, .closebtn1{
+        margin-top: -11.6%;
+    }
+    .scope3{
+        padding-left: 0;
+    }
+    .scope1_ca,.scope2_ca,.scope3_ca{
+        padding:0;
+    } 
+    .chk_box{    
+        width: 91%;
+        padding-left:2%;       
+     }
+    .btn_container{    
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+        padding: 1% 0% 5% 0%;
+    } 
+   .NLDeclt1{
+        margin:0 auto 7%;
+    }
+}
+@media screen and (max-width: 350px){    
+    .hide_deactivate_button_shipto, .hide_deactivate_button_billto{                   
+        width: 215px; 
+        margin: 2% auto;
+        display: block;          
+    }
+    .closebtn, .closebtn1{
+        text-align: center;
+        margin: 1% auto;
+        width: 100%;
+        float: none;
+        display: inline-block;
+    }
+    .scope3{
+        padding-left: 0;
+    }
+    .scope1_ca,.scope2_ca,.scope3_ca{
+        padding:0;
+    } 
+    .sapid{
+        float: none;
+    } 
+    .reg_address, .newship_add{
+        text-align: center;
+        margin: 2% auto;
+        width: 100%;
+        float:none;
+    }
+    .editbtn2{
+        float:none;
+    }
+    .chk_box{    
+        width: 91%;
+        padding-left:2%;       
+     }
+    .btn_container{    
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+        padding: 1% 0% 5% 0%;
+    }
+    .NLDeclt1{
+        margin:0 auto 7%;
+    }
+}

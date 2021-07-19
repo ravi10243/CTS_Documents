@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="Event template" >
+     <aura:attribute name="param" type="Object" description="brand value" access="global" />
+</aura:event>

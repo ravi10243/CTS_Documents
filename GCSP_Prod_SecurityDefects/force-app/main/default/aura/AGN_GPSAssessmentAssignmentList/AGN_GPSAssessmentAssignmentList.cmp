@@ -1,0 +1,126 @@
+<aura:component access="public" controller="GPSAssessmentToolController">
+
+    <!-- Static Resources -->
+    <ltng:require styles="{!$Resource.gps_common_styles}" />
+
+    <!-- Public Attributes -->
+    <aura:attribute name="userId" type="Id" />
+    <aura:attribute name="user" type="User" />
+    <aura:attribute name="assessmentId" type="Id" />
+
+    <!-- Private Attributes -->
+    <aura:attribute name="settings" type="GPS_Assessment_Tool_Settings__c" access="private" />
+    <aura:attribute name="assessmentStats" type="Object[]" access="private" />
+    <aura:attribute name="showAssessmentAccountForm" type="Boolean" access="private" default="false" />
+    <aura:attribute name="displaySpinner" type="Boolean" access="private" default="false" />
+
+    <!-- Pagination Attributes -->
+    <aura:attribute name="sortField" type="String" access="private" default="Name" />
+    <aura:attribute name="sortArrow" type="String" access="private" default="&nbsp;  &#9650;" />
+    <aura:attribute name="sortIsAsc" type="Boolean" access="private" default="true" />
+    <aura:attribute name="pageNumber" type="Integer" access="private" default="1" />
+    <aura:attribute name="totalRecords" type="Integer" access="private" />
+    <aura:attribute name="totalPages" type="Integer" access="private" />
+
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.userId}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.sortField}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.sortIsAsc}" action="{!c.doInit}" default="true" />
+    <aura:handler name="change" value="{!v.recordsPerPage}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.pageNumber}" action="{!c.doInit}" />
+    <aura:handler event="c:AGN_GPSShowAccountAssessmentsEvt" action="{!c.handleShowAccountAssessments}" />
+
+    <!-- Events -->
+    <aura:registerEvent name="showAccountAssessmentEvent" type="c:AGN_GPSShowAccountAssessmentsEvt" />
+
+    <!-- Markup -->
+    <aura:if isTrue="{!v.displaySpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <lightning:spinner variant="brand" size="large" />
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.showAssessmentAccountForm == false}">
+        <c:AGN_GPSAssessmentHeader showBanner="true" />
+        <h2><c:sobjectLabel sobjectName="GPS_Assessment__c" variant="labelPlural" /></h2>
+        <div aura:Id="assessmentList">
+            <table class="gps-table" role="grid">
+                <thead>
+                    <tr>
+                        <th class="slds-is-sortable" scope="col" data-fieldname="Name" onclick="{!c.sortByField}">
+                            <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                                <span class="slds-assistive-text">Sort</span>
+                                <span class="slds-truncate"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Name" /></span>
+                                <aura:if isTrue="{!v.sortField == 'Name'}">{!v.sortArrow}</aura:if>
+                            </a>
+                        </th>
+                        <th class="slds-is-sortable" scope="col" data-fieldname="Assessment_Type_AGN__c" onclick="{!c.sortByField}">
+                            <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                                <span class="slds-assistive-text">Sort</span>
+                                <span class="slds-truncate"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Assessment_Type_AGN__c" /></span>
+                                <aura:if isTrue="{!v.sortField == 'Assessment_Type_AGN__c'}">{!v.sortArrow}</aura:if>
+                            </a>
+                        </th>
+                        <th class="slds-is-sortable" scope="col" data-fieldname="Status_AGN__c" onclick="{!c.sortByField}">
+                            <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                                <span class="slds-assistive-text">Sort</span>
+                                <span class="slds-truncate"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Status_AGN__c" /></span>
+                                <aura:if isTrue="{!v.sortField == 'Status_AGN__c'}">{!v.sortArrow}</aura:if>
+                            </a>
+                        </th>
+                        <th class="slds-is-sortable" scope="col" data-fieldname="Due_Date_AGN__c" onclick="{!c.sortByField}">
+                            <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                                <span class="slds-assistive-text">Sort</span>
+                                <span class="slds-truncate"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Due_Date_AGN__c" /></span>
+                                <aura:if isTrue="{!v.sortField == 'Due_Date_AGN__c'}">{!v.sortArrow}</aura:if>
+                            </a>
+                        </th>
+                        <th class="slds-is-sortable" scope="col" data-fieldname="Overdue_in_Days_AGN__c" onclick="{!c.sortByField}">
+                            <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                                <span class="slds-assistive-text">Sort</span>
+                                <span class="slds-truncate"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Overdue_in_Days_AGN__c" /></span>
+                                <aura:if isTrue="{!v.sortField == 'Overdue_in_Days_AGN__c'}">{!v.sortArrow}</aura:if>
+                            </a>
+                        </th>
+                        <th scope="col">{!$Label.c.Completed}</th>
+                        <th scope="col">{!$Label.c.Total}</th>
+                    </tr>
+                </thead>
+                <aura:iteration items="{!v.assessmentStats}" var="assessmentStat">
+                    <tr>
+                        <td>
+                            <a onclick="{!c.toggleAssessmentAccountForm}" id="{!assessmentStat.assessment.Id}" class="clickable_list_item">{!assessmentStat.assessment.Name}</a>
+                        </td>
+
+                        <td role="gridcell">{!if(assessmentStat.assessment.Assessment_Type_AGN__c == 'Customers', $Label.c.Customer, $Label.c.Account)}</td>
+                        <td role="gridcell">{!assessmentStat.assessment.Status_AGN__c}</td>
+                        <td role="gridcell"><ui:outputDate value="{!assessmentStat.assessment.Due_Date_AGN__c}" /></td>
+                        <td role="gridcell">{!assessmentStat.assessment.Overdue_in_Days_AGN__c}</td>
+                        <td role="gridcell">{!assessmentStat.completedAssessmentCount}</td>
+                        <td role="gridcell">{!assessmentStat.totalAssessmentCount}</td>
+                    </tr>
+                </aura:iteration>
+            </table>
+            <div class="slds-page-header" role="banner">
+                <ui:inputSelect aura:id="recordsPerPage" label="{!$Label.c.records_Per_Page + ': '}" change="{!c.doInit}">
+                    <ui:inputSelectOption text="25" label="25" value="true"/>
+                    <ui:inputSelectOption text="50" label="50"/>
+                    <ui:inputSelectOption text="100" label="100"/>
+                </ui:inputSelect>
+                <aura:if isTrue="{!v.pageNumber &gt; 1}">
+                   <lightning:button onclick="{!c.previousPage}" label="{!$Label.c.Previous_Page}"/>
+                </aura:if>
+                <aura:if isTrue="{!v.pageNumber &lt; v.totalPages}">
+                   <lightning:button aura:id="nextbtn" onclick="{!c.nextPage}" label="{!$Label.c.Next_Page}"/>
+                </aura:if>
+
+                &nbsp;{!v.totalRecords}&nbsp;{!$Label.c.total_records} • {!$Label.c.page_number}&nbsp; {!v.pageNumber} / {!v.totalPages}
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.showAssessmentAccountForm == true}">
+        <lightning:button label="{!$Label.c.Back}" onclick="{!c.back}" />
+        <c:AGN_GPSAssessmentAccountForm aura:id="assessmentAccountFormCmp" assessmentId="{!v.assessmentId}" userId="{!v.userId}" user="{!v.user}" />
+    </aura:if>
+
+</aura:component>

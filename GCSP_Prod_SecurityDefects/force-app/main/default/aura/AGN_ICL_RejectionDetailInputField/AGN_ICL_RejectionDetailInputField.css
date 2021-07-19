@@ -1,0 +1,57 @@
+.THIS .check-input label{
+    font-weight: 300;
+    font-size: 14px;
+        letter-spacing: .5px;
+    display: inline;
+}
+.THIS .required{
+    color: red;
+}
+.THIS span {
+    color: #2c5596;
+}
+.THIS .check_input{
+    display: inline-block;
+    float: left;
+    margin-bottom: 0;
+    color: #2c5596;
+}
+.THIS .uiInput--checkbox input[type=checkbox][disabled], 
+.THIS input.uiInput--checkbox[type=checkbox][disabled] {
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+}
+.THIS .helper_txt{
+    margin-top: 35px;
+    position: relative;
+    float: left;
+    font-size: 10px;
+}
+
+.THIS .uiInput--select.select:not([multiple]){
+    height: 34px;
+    padding-left: 0px;
+    opacity: 0.6;
+}
+/* Media Queries */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  { 
+    .THIS .check_input_wrap {
+       padding-top: 0;
+    }
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation: landscape) { 
+    .THIS .uiInput--checkbox input[type="checkbox"], .THIS input.uiInput--checkbox[type="checkbox"]  {
+       width: 13px;
+        height: 13px;
+    }
+    .THIS .check-input label{
+        display: block;
+    margin-top: 9%;
+    }
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation: portrait) { 
+    .THIS .check_input_wrap {
+        padding: 15px 0;
+    }
+}

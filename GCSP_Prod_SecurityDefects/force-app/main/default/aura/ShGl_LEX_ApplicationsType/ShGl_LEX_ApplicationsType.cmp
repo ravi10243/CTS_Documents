@@ -1,0 +1,28 @@
+<aura:component controller = "ShGl_LEX_Applications" implements="forceCommunity:availableForAllPageTypes" >
+    <aura:attribute name = "applications" type = "object[]"/>
+    <aura:attribute name = "searchQuery" type = "string"/>
+    <aura:attribute name = "isSearching" type = "boolean"/>
+    <aura:handler name = "init" value = "{!this}" action = "{!c.doInit}"/>
+    
+        <lightning:input class=""
+                             variant="label-hidden"
+                             placeholder="Search here to start a new application or notification"
+                             isLoading="{! v.isSearching }"
+                             value="{!v.searchQuery}"
+                             type="search" />
+        <div class = "slds-m-top_large">
+        
+        </div>
+    	<div class = "">
+            <aura:if isTrue = "{!v.applications != null}">
+                <lightning:accordion aura:id="appAccordion">
+                    <aura:iteration items="{!v.applications}" var="app1">
+                        
+                        <c:ShGl_LEX_ApplicationDetails applicationdetails = "{!app1}"/>
+                        
+                    </aura:iteration>
+                </lightning:accordion>
+                
+            </aura:if>
+		</div>
+</aura:component>

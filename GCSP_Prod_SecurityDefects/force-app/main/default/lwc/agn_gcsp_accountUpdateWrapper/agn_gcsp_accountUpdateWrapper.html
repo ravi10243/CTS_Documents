@@ -1,0 +1,27 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 05-29-2021
+  @last modified by  : Avik Shaw
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   03-03-2021   Ravi Sirigiri   Initial Version
+	1.1   05-29-2021   Avik Shaw       PMO 2817 for Brazil
+-->
+<template>
+    <template if:false={isContacts}>
+        <c-agn_gcsp_account-detail-page 
+            sold-to-s-a-p-id={soldToSAPId} 
+            source-o-a-m={sourceOAM}
+            source-c-s={sourceCS}
+						cr-record={crRecord}
+            onsaveclicked={handleSave}>
+        </c-agn_gcsp_account-detail-page>
+   </template>
+    <template if:true={isContacts}>
+        <c-agn_-g-c-s-p_-multiple-contact_-creation case-id={caseId} sap-id={soldToSAPId} source={sourceCS}
+            existing-sold-to={existingSoldTo} existing-ship-to={existingShipTo} existing-bill-to={existingBillTo}>
+        </c-agn_-g-c-s-p_-multiple-contact_-creation>
+   </template>
+</template>

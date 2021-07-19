@@ -1,0 +1,92 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId" 
+                access="global" controller="F3_SitePageController">
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="application" type="Object" />
+    <aura:attribute name="applicationId" type="String" />
+    <!--Attributes-->
+    <aura:attribute name="pageKey" type="String"/>
+    <aura:attribute name="langCode" type="String" default="enGB"/>
+    
+    <aura:attribute name="currentSitePage" type="Object"/>
+    
+    
+    <aura:attribute name="pageTopJSON" type="Object" />
+    <aura:attribute name="headerJSON" type="object" />
+    <aura:attribute name="formJSON" type="Object" />
+    <aura:attribute name="footerJSON" type="Object" />
+    <aura:attribute name="bottomJSON" type="Object" />
+    
+    <aura:attribute name="showPageTop" type="Boolean" />
+    <aura:attribute name="showPageHeader" type="Boolean" />
+    <aura:attribute name="showLanguageSelector" type="Boolean" />
+    <aura:attribute name="showPageFooter" type="Boolean" />
+    <aura:attribute name="showPageBottom" type="Boolean" />
+    
+    <aura:attribute name="stepId" type="String"/>
+    <aura:attribute name="recordIdInContext" type="String"/>
+    <aura:attribute name="visibilityState" type="String"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:F3_FormStepChangeEvent" action="{!c.onFormStepChangeEventHandler}"/>
+    <aura:handler event="c:F3_GotObjectRecordIdInContext" action="{!c.onGotObjectRecordIdInContextHandler}"/>
+    <!--Component Body-->
+    <!-- Accessibility bar -->
+    <div style="background: #ffffff; width: 100%; position: relative;">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_12-of-12">
+                <aura:if isTrue = "{!v.applicationId}">
+                    <lightning:recordViewForm recordId="{!v.applicationId}" objectApiName="LEXApplication__c">
+                        <div class="slds-box">
+                            <strong><lightning:outputField fieldName="Name" /></strong>
+                            <strong><lightning:outputField fieldName="ApplicationNumber__c" /></strong>
+                            <strong><lightning:outputField fieldName="Status__c" /></strong>
+                            <strong><lightning:outputField fieldName="CreatedById" /></strong>
+                            
+                        </div>
+                    </lightning:recordViewForm>
+                </aura:if>
+            </div>
+            <div class="slds-col slds-size_3-of-12"> 
+                <div >
+                    {!v.currentSitePage.languagesList}
+                    <aura:if isTrue = "{!v.showLanguageSelector == true &amp;&amp; v.currentSitePage != null}">
+                        <c:F3_PageLanguageSelector pageKey="{!v.pageKey}" renderMode="COMMUNITY"
+                                                   langCode="{!v.langCode}" 
+                                                   languageOptions="{!v.currentSitePage.languagesList}"/>
+                    </aura:if>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "slds-m-top_small">
+        <aura:if isTrue="{!v.currentSitePage != null}">
+            <aura:if isTrue = "{!v.showPageTop == true}">
+                <c:F3_SitePageTop renderMode="COMMUNITY" />
+            </aura:if>
+            <aura:if isTrue = "{!v.showPageHeader == true}">
+                <c:F3_SitePageHeader aura:id="sitePageHeader" currentSitePage="{!v.currentSitePage}"
+                                     headerJson = "{!v.headerJSON}" />
+            </aura:if>
+            <div style="clear:both;"></div>
+            <c:AGN_DSRM_Experian_Form />
+            <div class="slds-grid slds-wrap slds-m-bottom_large">
+                <!--div class="slds-col slds-size_6-of-12">
+                    <c:F3_PageTopAccessibility />                
+                </div-->
+                <div class="slds-col slds-size_6-of-12">
+                </div>
+            </div>
+            
+            <aura:if isTrue="{!v.showPageFooter == true}">
+                <!--  <c:F3_SitePageFooter renderMode="COMMUNITY"  
+                                 currentSitePage="{!v.currentSitePage}" />  -->
+            </aura:if>
+            
+            <aura:if isTrue = "{!v.showPageBottom == true}">
+                <c:F3_SitePageBottom renderMode="COMMUNITY" 
+                                     bgColor="#ffffff"/>
+            </aura:if>
+        </aura:if>
+    </div>
+</aura:component>

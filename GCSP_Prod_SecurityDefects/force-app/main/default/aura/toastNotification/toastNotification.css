@@ -1,0 +1,14 @@
+.THIS {
+    pointer-events: none;
+    position: absolute !important;
+    top: 80px !important;
+}
+.THIS * {
+    pointer-events: auto;
+}
+.THIS .slds-notify__close {
+    top: 4px !important;
+}
+.THIS .slds-text-heading_small {
+    color: #fff !important;
+}

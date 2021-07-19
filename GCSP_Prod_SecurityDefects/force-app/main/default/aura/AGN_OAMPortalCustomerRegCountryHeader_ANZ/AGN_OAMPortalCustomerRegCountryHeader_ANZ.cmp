@@ -1,0 +1,53 @@
+<aura:component controller="AGN_OAMPortalCountryHeaderController">
+    
+    <aura:attribute name="picklistCountryOptions" type="Country_vod__c[]"/>
+    <aura:attribute name="picklistCustomerTypeOptions" type="String[]" default="[]"/>
+    <aura:attribute name="picklistSubTypeOptions" type="String[]" default="[]"/>
+    <aura:attribute name="customerTypeConfig" type="Customer_Type_Configuration_AGN__c[]"/>
+    <aura:attribute name="selectedCountry" type="String"/>
+    <aura:attribute name="selectedCustomerType" type="String"/>
+    <aura:attribute name="selectedSubType" type="String"/>
+    <aura:attribute name="showPrescribingDr" type="boolean" default="true"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="formHeaderChange" type="c:AGN_CustRegHdr_Evt" />
+
+    
+    <div class="cus_details">
+        <section class="content bgcolor-7">
+            <span class="input input--nariko inputtextValue input-identifier"  data-inputFiedlValue="{!v.selectedCountry}">              
+                <ui:inputSelect aura:id="inputSelectCountry" class='input__field input__field--nariko input-select inputtextValue slds-text-title_caps' change="{!c.onSelectChangeCountry}">
+                    <ui:inputSelectOption text="" label="" />
+                    <aura:iteration items="{!v.picklistCountryOptions}" var="lst">
+                        <ui:inputSelectOption label="{!lst.AGN_Country_Name__c}" text="{!lst.Alpha_2_Code_vod__c}"  class="slds-text-title_caps"/>
+                    </aura:iteration>
+                </ui:inputSelect>                
+                <label class="input__label input__label--nariko">
+                    <span class="input__label-content input__label-content--nariko">{!$Label.c.AGN_OAM_Body_Country}</span>
+                </label>                       
+            </span>
+            <span class="input input--nariko inputtextValue input-identifier" data-inputFiedlValue="{!v.selectedCustomerType}">              
+                <ui:inputSelect aura:id="inputSelectCustomerType" class='input__field input__field--nariko input-select inputtextValue slds-text-title_caps' change="{!c.onSelectChangeCustomerType}">
+                    <ui:inputSelectOption text="" label="" /> 
+                    <aura:iteration items="{!v.picklistCustomerTypeOptions}" var="lst">
+                        <ui:inputSelectOption label="{!lst.val}" text="{!lst.key}" class="slds-text-title_caps"/>
+                    </aura:iteration>
+                </ui:inputSelect>                
+                <label class="input__label input__label--nariko">
+                    <span class="input__label-content input__label-content--nariko">{!$Label.c.AGN_OAM_Body_CustomerType}</span>
+                </label>                       
+            </span>
+            <span class="input input--nariko inputtextValue input-identifier" data-inputFiedlValue="{!v.selectedSubType}">              
+                <ui:inputSelect aura:id="inputSelectSubType" class='input__field input__field--nariko input-select inputtextValue slds-text-title_caps' change="{!c.onSelectChangeSubType}">
+                    <ui:inputSelectOption text="" label="" />
+                    <aura:iteration items="{!v.picklistSubTypeOptions}" var="lst">
+                        <ui:inputSelectOption label="{!lst.val}" text="{!lst.key}" class="slds-text-title_caps"/>
+                    </aura:iteration>
+                </ui:inputSelect>                
+                <label class="input__label input__label--nariko">
+                    <span class="input__label-content input__label-content--nariko">{!$Label.c.AGN_OAM_Body_SubType}</span>
+                </label>                       
+            </span>
+        </section>
+    </div>
+</aura:component>

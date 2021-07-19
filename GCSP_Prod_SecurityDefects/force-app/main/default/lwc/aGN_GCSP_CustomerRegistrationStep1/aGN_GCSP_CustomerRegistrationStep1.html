@@ -1,0 +1,458 @@
+<!--
+  @description       : First step of customer registration for GCSP.
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 06-08-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   01-05-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <div>       
+        <div>
+            <div if:false={isCompleted} hidden={hidemaindiv}>
+                <div class="outer_wrapper">
+                    <div class="reg_step1">
+                        <!--- *************** Steps Banner Code Starts********************************-->
+                        <div class="StepsBanner">
+                            <div class="Banner notranslate">
+                                <div class="Step">{label.AGN_GCSP_STEP1}</div>
+                                <!--<div class="stepcomplete"> </div> -->
+                                <div class="line"></div>
+                                <div class="Step">{label.AGN_GCSP_STEP2}</div>
+                                <div class="line"></div>
+                                <div class="Step">{label.AGN_GCSP_STEP3}</div>
+                                <div class="line"></div>
+                                <div class="Step">{label.AGN_GCSP_STEP4}</div>
+                                <template if:true={isCS}>
+                                    <div class="line"></div>
+                                    <div class="Step">{label.AGN_GCSP_STEP5}</div>
+                                </template>
+                            </div>
+                            <div class="Bannertext">
+                                <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                                <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                                <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                                <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>
+                                <template if:true={isCS}>
+                                    <div class="Steptext">{label.AGN_OAM_Contact_Affiliation}</div>
+                                </template>                        
+                            </div>
+                        </div>
+                        <!--- *************** Steps Banner Code Ends ********************************-->
+                        <!-- <div class="instruction">{label.AGN_GCSP_AllFieldMandatory}</div> -->
+        
+                        <!---->
+                        <!-- **************************Country Header*********************************-->
+                        <div class="content_center">
+                            <div class="hd">{label.AGN_OAM_Header_CustomerRegistration} - {label.AGN_OAM_Basic_Information_Heading} </div>
+                            <!-- <div class="hd">Customer Registration-Basic Details</div>-->
+                            <div class="show-toast">
+                                <c-agn_gcsp_custom-toast title="" message={error} variant={variant} auto-close="true">
+                                </c-agn_gcsp_custom-toast>
+                            </div>
+                            <div class="container">                       
+                                    <div class="slds-form-element__control">
+                                        <section>
+                                            <div class="cus_basic_details">
+                                                <!--******* Country Dropdown Functionality*********-->
+                                                <!--<div class="cus_details">
+                                                                <span class="input input--nariko">              
+                                                                    <div class="box">
+                                                                        <select class="slds-select" name ="countrySelect" onchange={countryChangeHandler} >
+                                                                                <option value=''></option>
+                                                                                        <template for:each={picklistCountryOptions} for:item='country'>
+                                                                                            <option  key={country.AGN_Country_Name__c} value={country.Alpha_2_Code_vod__c}>{country.AGN_Country_Name__c}</option>
+                                                                                        </template>
+                                                                        </select>   
+                                                                        <label class="input__label input__label--nariko">
+                                                                                <span class="input__label-content input__label-content--nariko">{label.AGN_OAM_Body_Country}</span>
+                                                                        </label>                                  
+                                                                    </div>                          
+                                                                </span>
+                                                </div>-->
+                                            
+                                                <template if:false={showDisSelection}>
+                                                    <template if:true={isProvience}>
+                                                        <div class={header_cus_css}>                                                                                                   
+                                                            <label class="slds-form-element__label">
+                                                                {label.AGN_OAM_Body_Province}                                                   
+                                                            </label>     
+                                                            <select class={header_css}
+                                                                name="provienceSelect"
+                                                                onchange={provienceChangeHandler}>
+                                                                <option value=''></option>
+                                                                <template for:each={picklistProvienceOptions}
+                                                                    for:item='provence'>
+                                                                    <option key={provence.key} value={provence.key}>
+                                                                        {provence.val}
+                                                                    </option>
+                                                                </template>
+                                                            </select>                                                                                                                                                                      
+                                                        </div>
+                                                    </template>
+
+                                                    <div class={header_cus_css}>                                                                                                   
+                                                        <label class="slds-form-element__label">
+                                                            {label.AGN_OAM_Body_CustomerType}                                                   
+                                                        </label>     
+                                                        <select class={header_css}
+                                                            name="customerCategorySelect"
+                                                            onchange={customerCategoryChangeHandler}>
+                                                            <option value=''></option>
+                                                            <template for:each={picklistCustomerTypeOptions}
+                                                                for:item='category'>
+                                                                <option key={category.key} value={category.key}>
+                                                                    {category.val}
+                                                                </option>
+                                                            </template>
+                                                        </select>                                                                                                                                                                      
+                                                    </div>
+        
+                                                    <div class={header_cus_css}>                                                                                                    
+                                                        <label  class="slds-form-element__label">                                                          
+                                                            {label.AGN_OAM_Body_SubType}                                                                                                                       
+                                                        </label>
+                                                        <!--"slds-select slds-input"-->
+                                                        <select class={header_css}
+                                                            name="customerSubCategorySelect"
+                                                            onchange={customerSubCategoryChangeHandler}>
+                                                            <option value=''></option>
+                                                            <template for:each={picklistSubTypeOptions}
+                                                                for:item='subCategory'>
+                                                                <option key={subCategory.key} value={subCategory.key}>
+                                                                    {subCategory.val}</option>
+                                                            </template>
+                                                        </select>                                                                                                  
+                                                    </div>
+                                                </template>
+        
+                                                <template if:true={showDisSelection}>
+                                                    <div class="slds-scope">
+                                                        <template if:true={isProvience}>
+                                                          <lightning-input type="text" read-only='true'
+                                                            label={label.AGN_OAM_Body_Province} name='provience'
+                                                            value={provienceShow} class={header_css_read}>
+                                                          </lightning-input>  
+                                                        </template>
+                                                        <lightning-input type="text" read-only='true'
+                                                            label={label.AGN_OAM_Body_CustomerType} name='Customer Type'
+                                                            value={custypeshow} class={header_css_read}>
+                                                        </lightning-input>
+                                                        <lightning-input type="text" read-only='true'
+                                                            label={label.AGN_OAM_Body_SubType} name='Customer SubType'
+                                                            value={cusSubtypeshow} class={header_css_read}>
+                                                        </lightning-input>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </section>
+                                    </div>                      
+                            </div>
+                            <!-- **************************Country Header*********************************-->
+        
+                            <!-- **************************Step1 Form*********************************-->
+        
+                            <template if:true={showStep1}>
+                                <div class="basicstep1">
+                                    <br />
+                                    <div class="cheading cheadingbold">{basicInfoLabel}</div> <!--{label.AGN_OAM_Basic_Information}-->
+                                    
+                                    <div class="basic_info">
+                                        <template for:each={basicInformationFields} for:item='fieldvalue'>
+                                            <c-a-g-n_-g-c-s-p_-common-input-field-component 
+                                                fielddescribe={fieldvalue.fieldDescribe}
+                                                key={fieldvalue.Id}
+                                                sobjectname={fieldvalue.SObject_Name_AGN__c}
+                                                fieldname={fieldvalue.Field_Name_AGN__c} 
+                                                required={fieldvalue.Required_AGN__c}
+                                                record='{record}' 
+                                                regex={fieldvalue.Field_Regex_AGN__c}
+                                                record-value='{record}'
+                                                customlabel={fieldvalue.Field_Custom_Label_AGN__c} 
+                                                country={country}
+                                                index='1'
+                                                picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                                objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                                iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                                rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                                helptext={fieldvalue.Help_Text_AGN__c}
+                                                oncontrollingfieldevent={handleControllingFieldEvent}
+                                                disabled={fieldvalue.ReadOnly_AGN__c}
+                                                class=""
+                                                source={source}>
+                                            </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                        </template>
+                                    </div>
+                                
+                                    <template if:true={productIntSection}>
+                                        <div class="cheading cheadingbold">{label.AGN_OAM_Product_Interest}</div>
+                                        <div class="product_interest2">                                    
+                                            <template for:each={productInterestFields} for:item='fieldvalue'>                                        
+                                                <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+                                                    fielddescribe={fieldvalue.fieldDescribe}
+                                                    sobjectname={fieldvalue.SObject_Name_AGN__c}
+                                                    fieldname={fieldvalue.Field_Name_AGN__c}
+                                                    required={fieldvalue.Required_AGN__c} record='{record}'
+                                                    record-value='{record}'
+                                                    regex={fieldvalue.Field_Regex_AGN__c}
+                                                    customlabel={fieldvalue.Field_Custom_Label_AGN__c} country={country}
+                                                    picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                                    objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                                    iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                                    rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                                    helptext={fieldvalue.Help_Text_AGN__c}
+                                                    oncontrollingfieldevent={handleControllingFieldEvent}
+                                                    customertype={selectedCustomerCategory}
+                                                    customersubtype={selectedCustomerSubCategory}
+                                                    custtypeconfig={customerTypeConfig} customergroup={customerGroup}
+                                                    countrycode={country}
+                                                    source={source}>
+                                                </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                            </template>
+                                        </div>
+                                    </template>
+                                
+                                    <div class="cheading cheadingbold">{label.AGN_OAM_Address}</div>
+                                    <!-- -->
+                                    <div class="address_info">
+                                        <template if:true={isPostalCodeBR}>	
+                                            <template for:each={brazilPostalCodeFields} for:item='fieldvalue'>	
+                                                <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}	
+                                                    fielddescribe={fieldvalue.fieldDescribe}
+                                                    sobjectname={fieldvalue.SObject_Name_AGN__c}	
+                                                    fieldname={fieldvalue.Field_Name_AGN__c} required={fieldvalue.Required_AGN__c}	
+                                                    record='{record}' regex={fieldvalue.Field_Regex_AGN__c}
+                                                    record-value='{record}'	
+                                                    customlabel={fieldvalue.Field_Custom_Label_AGN__c} country={country}	
+                                                    picklist-option-values={fieldvalue.Picklist_Options_AGN__c}	
+                                                    objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}	
+                                                    iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}	
+                                                    helptext={fieldvalue.Help_Text_AGN__c}	
+                                                    rendered={fieldvalue.Default_Display_On_Load_AGN__c}	
+                                                    oncontrollingfieldevent={handleControllingFieldEvent}	
+                                                    onzipcodevalue={handleZipCodeValueChange}	
+                                                    class=""
+                                                    source={source}>	
+                                                </c-a-g-n_-g-c-s-p_-common-input-field-component>                                                	
+                                            </template>	
+                                            <!-- <br/>	 -->
+                                        </template>	
+                                       <!-- <template if:false={isPostalCodeBR}> -->	
+                                            <template for:each={practiceAddressFields} for:item='fieldvalue'>	
+                                                <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}	
+                                                    fielddescribe={fieldvalue.fieldDescribe}
+                                                    sobjectname={fieldvalue.SObject_Name_AGN__c}	
+                                                    fieldname={fieldvalue.Field_Name_AGN__c} required={fieldvalue.Required_AGN__c}	
+                                                    record='{record}' regex={fieldvalue.Field_Regex_AGN__c}
+                                                    record-value='{record}'	
+                                                    customlabel={fieldvalue.Field_Custom_Label_AGN__c} country={country}	
+                                                    picklist-option-values={fieldvalue.Picklist_Options_AGN__c}	
+                                                    objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}	
+                                                    iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}	
+                                                    helptext={fieldvalue.Help_Text_AGN__c}	
+                                                    rendered={fieldvalue.Default_Display_On_Load_AGN__c}	
+                                                    oncontrollingfieldevent={handleControllingFieldEvent}
+                                                    disabled={fieldvalue.ReadOnly_AGN__c}	
+                                                    class=""	
+                                                    source={source}
+                                                   >	
+                                                </c-a-g-n_-g-c-s-p_-common-input-field-component>	
+                                            </template>	
+                                            <!-- disable={isBRAddressDisable}-->	
+                                        <!-- </template> -->
+                                    </div>
+                                
+                                    <div class="cheading cheadingbold"><b>{label.AGN_OAM_Communication_Contact}</b></div>
+                                    <!---->
+        
+                                    <div class="communication_info">
+                                        <template for:each={contactFields} for:item='fieldvalue'>
+                                            <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+                                                fielddescribe={fieldvalue.fieldDescribe}
+                                                sobjectname={fieldvalue.SObject_Name_AGN__c}
+                                                fieldname={fieldvalue.Field_Name_AGN__c} required={fieldvalue.Required_AGN__c}
+                                                record='{record}' regex={fieldvalue.Field_Regex_AGN__c}
+                                                record-value='{record}'
+                                                customlabel={fieldvalue.Field_Custom_Label_AGN__c} country={country}
+                                                picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                                objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                                iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                                helptext={fieldvalue.Help_Text_AGN__c}
+                                                rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                                oncontrollingfieldevent={handleControllingFieldEvent}
+                                                oncheckboxevent={handleEnableDirectAccess}
+                                                class="" 
+                                                disabled={fieldvalue.ReadOnly_AGN__c}
+                                                source={source}>
+                                            </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                        </template>
+                                    </div>
+                                    
+                                    <template if:false={isBR}>
+                                    <div class="checkbox_text"  onchange={openModal}>
+                                        <template if:true={isOnlineRegistration}>
+                                        <!-- <lightning-input type="checkbox" onchange={checkboxHandler} label=""
+                                                name="termsncondns" class="checkbox">
+                                            </lightning-input>-->
+                                         <!-- <div class="totalchkbox" onchange={openModal}>  -->
+                                                <lightning-input type="checkbox"  label=""
+                                                name="termsncondns" checked data-id="tncCheckBox" class="checkbox tncchkbox">
+                                                </lightning-input>
+                                            
+                                                <div class="chktxt">
+                                                    <template if:true={ShowTermsAndConditions}>
+                                                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                                        <div class="slds-modal__container">
+                                                            <!-- modal header start -->
+                                                            <header class="slds-modal__header">
+                                                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                                                                    <lightning-icon icon-name="utility:close"
+                                                                    alternative-text="close"
+                                                                    variant="inverse"
+                                                                    size="small" ></lightning-icon>
+                                                                    <span class="slds-assistive-text">Close</span>
+                                                                </button>
+                                                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.AGN_OAM_TnC_Header}</h2>
+                                                            </header>
+                                                            <!-- modal body start -->
+                                                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                                <p>  <lightning-formatted-rich-text
+                                                                    value={textTNC}></lightning-formatted-rich-text>
+                                                                </p>
+                                                                <button class="slds-button slds-button_neutral acceptbtn" onclick={acceptTNC}>{label.AGN_OAM_Accept}</button>
+                                                            </div>
+                                                            
+                                                            <!-- modal footer start-->
+                                                            <footer class="slds-modal__footer">
+                                                                <!-- <button class="slds-button slds-button_neutral" onclick={acceptTNC}>{label.AGN_OAM_Accept}</button> -->
+                                                                <button class="slds-button slds-button_neutral" onclick={closeModal}>{label.AGN_OAM_Cancel}</button>
+                                                            </footer>
+                                                        </div>
+                                                        </section>
+                                                        <div class="slds-backdrop slds-backdrop_open"></div>
+                                                    </template>
+                                                    {label.AGN_OAM_I_Accept_the_GDPR_Terms_and_Conditions}                                         
+                                                </div>
+                                         <!--</div> -->
+                                        </template>
+                                    </div>
+                                    </template>
+                                    <br />
+                                    <br />
+                                </div>
+                                    <template if:true={isOnlineRegistration}>
+                                        <div id="openModal" class="modalDialog captcha-hide">
+                                            <div class="openModal_content">
+                                                <!--   <a href="#close" title="Close" class="close">X</a> -->
+                                                <span class="openModaltext">{label.AGN_OAM_Confirm_not_robot}</span>
+                                                <iframe id="vfFrame" src={captchaurl} scrolling="no" frameborder="0" width="100%"
+                                                    height="100%"> </iframe>
+                                                <!--   <div style="text-align: center;">
+                                                                <button class="slds-button slds-button_outline-brand modal_close_btn">Submit</button> 
+                                                        </div>-->
+                                            </div>
+                                        </div>
+                                    </template>                                                                 
+                                <template if:true={isOnlineRegistration}>
+                                    <div class="btn_container slds-grid">
+                                        <lightning-button variant="brand" 
+                                            label={label.AGN_OAM_Body_Submit} onclick={handleClick} class="gradient_btn">
+                                        </lightning-button>
+                                        <!--{label.AGN_CP_FORMSUBMIT}-->
+                                    </div>
+                                </template>
+                                <template if:false={isOnlineRegistration}>
+                                    <div class="btn_container slds-grid">
+                                        <lightning-button variant="brand" label={label.AGN_OAM_Next} onclick={handleClick}
+                                            class="gradient_btn">
+                                        </lightning-button>
+                                        <!--{label.AGN_CP_FORMSUBMIT}-->
+                                    </div>
+                                </template>
+        
+                            </template>
+        
+                        </div>
+                    </div>
+                </div>
+                <!-- **************************Step1 Form*********************************-->
+        
+                <!-- **************************Loader*********************************width: 20rem;left: 35em;position: fixed;top: 20em;background-color:white;display:block;-->
+              <div if:true={showLoader}>  
+                    <div class="spinnnerdiv" style="height:10rem;">                    
+                        <lightning-spinner  class="slds-is-absolute" alternative-text={label.AGN_OAM_Loading} variant="brand" size="large" ></lightning-spinner>
+                    </div>                                         
+               </div>  
+            </div>    
+            <div if:true={isCompleted}>    
+                <br />
+                <!--      <br/> <br/> <br/> <br/> <br/>     -->
+                <!--- *************** Steps Banner Code Starts********************************-->
+                <div class="StepsBanner">  
+                    <div class="Banner notranslate">
+                        <div class="stepcomplete"> </div>
+                        <!--<div class="stepcomplete"> </div> -->
+                        <div class="line"></div>
+                        <div class="Step">{label.AGN_GCSP_STEP2}</div>
+                        <div class="line"></div>
+                        <div class="Step">{label.AGN_GCSP_STEP3}</div>
+                        <div class="line"></div>
+                        <div class="Step">{label.AGN_GCSP_STEP4}</div>
+                        <template if:true={isCS}>
+                            <div class="line"></div>
+                            <div class="Step">{label.AGN_GCSP_STEP5}</div>
+                        </template>
+                    </div>
+                    <div class="Bannertext">
+                        <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                        <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                        <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                        <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>
+                        <template if:true={isCS}>
+                            <div class="Steptext">{label.AGN_OAM_Contact_Affiliation}</div>
+                        </template>    
+                    </div>
+                </div>
+                <!--- *************** Steps Banner Code Ends ********************************-->
+                <section class="regSuccessMsg">
+                    <template if:false={isCS}> 
+                        <div class="div_oam">
+                            <div class="right_cont">
+                                <div class="regSuccessMsg_bg"></div>
+                            </div>
+                            <div class="left_cont">
+                                <div class="para_txt">
+                                    <template if:true={isNL}>
+                                        <span>{label.AGN_OAM_Successfully_reset_and_check_inbox_NL}</span>
+                                    </template>
+                                    <template if:false={isNL}>
+                                   		<span>{label.AGN_OAM_Body_Confirm_Youhave}&nbsp;{label.AGN_OAM_Body_Confirm_SuccessfullyCompleted}&nbsp;{label.AGN_OAM_Body_Confirm_FirstStep}</span>
+                                    </template>
+                                </div>
+                                <!--<lightning-button label="Send email again" onclick={navigatAdPage} class="gradient_btn btn_rgt">
+                                    </lightning-button>-->
+                            </div>
+                        </div>
+                    </template>
+                    <template if:true={isCS}> 
+                        <div class="div_cs">
+                            <div class="right_cont">
+                                <div class="regSuccessMsg_bg"></div>
+                            </div>
+                            <div class="left_cont">
+                                <div class="para_txt">
+                                    <span>{label.AGN_OAM_Body_Confirm_Youhave}&nbsp;{label.AGN_OAM_Body_Confirm_SuccessfullyCompleted}&nbsp;{label.AGN_OAM_Body_Confirm_FirstStep}</span>
+                                </div>
+                                <!--<lightning-button label="Send email again" onclick={navigatAdPage} class="gradient_btn btn_rgt">
+                                    </lightning-button>-->
+                            </div>
+                        </div>
+                    </template>
+                </section>
+            </div>        
+        </div>    
+        
+  </div> 
+</template>

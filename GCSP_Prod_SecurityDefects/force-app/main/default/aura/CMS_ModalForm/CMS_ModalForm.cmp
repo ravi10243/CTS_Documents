@@ -1,0 +1,82 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global" >
+	
+    <!-- Attributes Starts -->
+    <aura:attribute name="hasError" type="Boolean" default="false" />
+    <aura:attribute name="currentStep" type="String" default="form" />
+    <!-- Record type attribute to receive API Name of record type of  MD form-->
+    <aura:attribute name = "mdRecordTypeName" type = "String" default = ""/>
+    <!--Attributes Ends-->
+    
+    <!-- aura Handler starts -->
+    <aura:handler name = "init" value = "{!this}" action = "{!c.doInit}"/>
+    <!-- aura Handler ends -->
+    
+     <!-- Component Body --> 
+    <div class="demo-only" style="height: auto;">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" 
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit Form Details</h2>
+                    <div class="slds-grid slds-wrap slds-border_top"> 
+                        <div class="slds-col slds-size_12-of-12 slds-p-around_small">
+                            <!-- Progress indicator/Bar components start-->
+                            <lightning:progressIndicator currentStep="{!v.currentStep}" type="path" hasError="{!v.hasError}" variant="base">
+                                <lightning:progressStep label="Details" value="form" />
+                                <!--<lightning:progressStep label="Object" value="object"/>-->
+                                <!--<lightning:progressStep label="Properties" value="properties"/>-->
+                                <!--<lightning:progressStep label="Languages" value="languages"/>-->
+                                <!--<lightning:progressStep label="Branding" value="branding"/>-->
+                                <lightning:progressStep label="Finish" value="finish" />
+                            </lightning:progressIndicator>
+                            <!-- Progress indicator/Bar components ends-->
+                        </div>
+                    </div>
+                </header>
+                <!-- Main Body of Modal -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <aura:if isTrue="{!v.currentStep=='form'}">
+                        <c:CMSWStep_FormDetail aura:id="formDetailChild" renderMode="WIZARD"
+                                               recordId = "{!v.recordId}" 
+                                               mdFormRecordTypeName = "{!v.mdRecordTypeName}"/> 
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentStep=='object'}">
+                        <c:CMSWStep_FormObject aura:id="formObjectChild" renderMode="WIZARD"
+                                               recordId="{!v.recordId}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentStep=='properties'}">
+                        <c:CMSWStep_FormProperties aura:id="formPropertyChild" renderMode="WIZARD"
+                                                   recordId="{!v.recordId}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentStep=='languages'}">
+                        <c:CMSWStep_FormLanguages aura:id="formLangChild" renderMode="WIZARD"
+                                                  recordId = "{!v.recordId}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentStep=='branding'}">
+                        <c:CMSWStep_FormBranding aura:id="formBrandChild" renderMode="WIZARD"
+                                                 recordId="{!v.recordId}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentStep=='finish'}">
+                        <c:CMS_FinishWizard aura:id="finishWizard" renderMode="WIZARD"
+                                               recordId = "{!v.recordId}"/> 
+                    </aura:if>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button disabled="{!v.currentStep != 'start' ? '' : 'disabled'}"
+                                          variant="brand" 
+                                          label="Back"
+                                          title="Back"
+                                          onclick="{! c.moveBack }"/>
+                    <lightning:button variant="brand" 
+                                      label="{!v.currentStep != 'finish' ? 'Next' : 'Finish'}"
+                                      title="{!v.currentStep != 'finish' ? 'Next' : 'Finish'}"
+                                      onclick="{! c.moveNext }"/>
+                    <lightning:button variant="neutral" label="Cancel" title="Cancel" onclick="{!c.closeComponentModal}" /> 
+                </footer>    
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>    
+</aura:component>

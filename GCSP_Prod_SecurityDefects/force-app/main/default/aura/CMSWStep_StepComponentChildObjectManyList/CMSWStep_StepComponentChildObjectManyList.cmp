@@ -1,0 +1,40 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="MDFormBuilderController">
+    
+    <!-- Attributes -->
+    <aura:attribute name="renderMode" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="mdChildObjectOneConfig" type="list"/>
+    <aura:attribute name="listFieldConfig" type="List" />
+    
+    <aura:attribute name="addNewMode" type="Boolean" default="false" />
+    <aura:attribute name="newFieldConfig" type="Object" />
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Componennt Body -->
+    <lightning:card iconName="custom:custom15" title="Child Object - Yes, no code!!">
+        <aura:if isTrue ="{!v.mdChildObjectOneConfig}" >
+            <div class="slds-p-around_small slds-grid slds-wrap ">
+                <div class="slds-col slds-large-size_12-of-12">
+                    <div class="slds-align_absolute-center slds-m-bottom_small">
+                        <lightning:button variant="brand" label="Add new Object" title="Add child object" onclick="{!c.OnSaveObjectsAndFields}" />
+                    </div>    
+                </div>
+               
+                <aura:if isTrue="{!v.mdChildObjectOneConfig != null}">
+                    <aura:iteration items = "{!v.mdChildObjectOneConfig}" var = "objectName">
+                        <lightning:accordion allowMultipleSectionsOpen="true">
+                            <lightning:accordionSection label = "{!objectName.ChildObjectAPIName}" name="{!objectName.ChildObjectAPIName}">
+                                <c:CMSWStep_StepComponentChildObjectMany aura:id="childObjectMany" renderMode="BUILDER" 
+                                                            recordId = "{!v.recordId}"/>
+                            </lightning:accordionSection>
+                        </lightning:accordion>
+                    </aura:iteration>
+                </aura:if>
+            </div>    
+        </aura:if>    
+    </lightning:card>
+</aura:component>

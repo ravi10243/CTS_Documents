@@ -1,0 +1,6 @@
+<design:component>
+    <design:attribute name="PageName" />
+    <design:attribute name="KnowledgehubPage" />
+	<design:attribute name="training" />
+    <design:attribute name="contact" />
+</design:component>

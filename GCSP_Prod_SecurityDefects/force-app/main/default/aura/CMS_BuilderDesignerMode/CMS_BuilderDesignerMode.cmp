@@ -1,0 +1,16 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="MDFormBuilderController">
+	
+    <aura:attribute name="stepId" type="String"/>
+    <aura:attribute name="formId" type="String"/>
+    
+    <!-- Lightning Custom Event Handler -->
+    <aura:handler event="c:CMS_FormStepChangeEvent" action="{!c.onFormStepChangeEventHandler}"/>
+	
+    <aura:if isTrue="{!v.formId}">
+        <c:CMS_SitePageDesigner  aura:id="sitePageDesigner"
+                                formId="{!v.formId}" stepId="{!v.stepId}"  />
+    </aura:if>    
+    
+</aura:component>

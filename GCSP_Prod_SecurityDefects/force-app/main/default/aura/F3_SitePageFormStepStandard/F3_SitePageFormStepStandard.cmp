@@ -1,0 +1,367 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                access="global"
+                controller="F3_FormStepController">
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+    
+    <!--Attributes-->
+    <aura:attribute name="currentSitePage" type="Object"/>
+    <aura:attribute name="successPopup" type ="boolean" default="false"/>
+    <aura:attribute name="saveButtonLabel" type="String" default="Save"/>
+    <aura:attribute name="saveNextButtonLabel" type="String" default="Save and Next"/>
+    <aura:attribute name="savePreviousButtonLabel" type="String" default="Save and Previous"/>
+    <aura:attribute name="captchaCheck" type="boolean" default="false"/>
+    
+    <aura:attribute name="currentFormStep" type="Object"/>
+    <aura:attribute name="currentStepId" type="String"/>
+    <aura:attribute name="listPageElements" type="Object"/>
+    <aura:attribute name="primaryFormObjectAPIName" type="String"/>
+    <aura:attribute name="primaryObjRecordTypeId" type="String"/>
+    <aura:attribute name="numberOfSteps" type="Integer"/>
+    <aura:attribute name="firstName" type="String"/>
+    <aura:attribute name="lastName" type ="String" />
+    <aura:attribute name="Captcha1" type ="String" />
+    
+    <aura:attribute name="requiredValidationFailed" type="Boolean" default="false" />
+    
+    <!-- Messages -->
+    <aura:attribute name="requiredValidationFailedErrorTitle" type="String" />
+    <aura:attribute name="requiredValidationFailedErrorMessage" type="String" />
+    
+    
+    <aura:attribute name="hasOtherErrors" type="Boolean" default="false" />
+    <aura:attribute name="hasOtherErrorsMessage" type="String" default="This form has some unexpected errors. Please try again or report it to contact center." />
+    
+    <aura:attribute name="hasObjectFieldsOnUI" type="Boolean" default="false" />
+    
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="clickedButtonType" type="String"/>
+    <aura:attribute name="formStepSequence" type="String"/>
+    
+    <aura:attribute name="bodyBackground" type="String"/>
+    <aura:attribute name="buttonBackground" type="String" />
+    <aura:attribute name="buttonStyle" type="String" />
+    <aura:attribute name="currentViewState" type="String"  />
+    
+    <aura:handler name="fielddependentevent" event="c:F3_LEXViewStateChangeEvent" 
+                  action="{!c.componentViewStateHandler}" includeFacets="true"/>
+    
+    <!-- Experian related change -->
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.showSpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container slds-is-fixed">
+            <div class="slds-spinner--brand slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+                <p style="transform: translate(-32%, -50%) rotate(-90deg);width: 320px;text-align: center;">{!$Label.c.AGN_CCPA_Page_Loading_Message}</p>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end-->
+    <!-- End of Experian related change -->
+    
+    <!--Component Body-->  
+    <!--{!v.currentSitePage.urlKey}-->
+    <div class="slds-p-around_medium" style="{!v.bodyBackground}">
+        <div class="slds-grid" >
+            <div class="slds-col slds-size_12-of-12">
+                
+                    <aura:if isTrue="{!v.listPageElements}">
+                        <lightning:recordEditForm
+                                                  aura:id="editform"
+                                                  recordId="{!v.recordId}"
+                                                  onload="{!c.onEditFormLoad}"
+                                                  onsubmit="{!c.onSubmitForm}"
+                                                  onsuccess="{!c.onSubmitSuccess}"
+                                                  onerror="{!c.onSubmitError}"
+                                                  objectApiName="{!v.primaryFormObjectAPIName}"
+                                                  recordTypeId="{!v.primaryObjRecordTypeId}">
+                            <lightning:messages />
+                            <aura:if isTrue="{!v.requiredValidationFailed}">
+                                <ui:message title="{!v.requiredValidationFailedErrorTitle}" severity="error" closable="false">
+                                    {!v.requiredValidationFailedErrorMessage}
+                                </ui:message>
+                            </aura:if>
+                            <aura:if isTrue="{!v.hasOtherErrors}">
+                                <ui:message title="Errors" severity="error" closable="false">
+                                    {!v.hasOtherErrorsMessage}
+                                </ui:message>
+                            </aura:if> 
+                            <aura:iteration items="{!v.listPageElements}" var="elementWrapper">
+                                <!-- SectionHeader -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='SectionHeader'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPSectionHeader 
+                                                               aura:id="formstepComponent" 
+                                                               elementWrapper="{!elementWrapper}"
+                                                               renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- ImportantInfo -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='ImportantInfo'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPImportantInfo 
+                                                               aura:id="formstepComponent" 
+                                                               elementWrapper="{!elementWrapper}" 
+                                                               renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- FAQ -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='FAQ'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <lightning:accordion aura:id="accordion" activeSectionName = "{!elementWrapper.PortalLabel}">
+                                            <c:F3_CMPFAQ 
+                                                         aura:id="formstepComponent" 
+                                                         elementWrapper="{!elementWrapper}" 
+                                                         renderMode="{!v.renderMode}"/>
+                                        </lightning:accordion>
+                                        
+                                    </div>
+                                </aura:if>
+                                <!-- InlineHelp -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='InlineHelp'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPInlineHelp 
+                                                            aura:id="formstepComponent" 
+                                                            elementWrapper="{!elementWrapper}" 
+                                                            renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- SuccessMessage -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='SuccessMessage'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPSuccessMessage 
+                                                                aura:id="formstepComponent" 
+                                                                elementWrapper="{!elementWrapper}" 
+                                                                renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- Failure Message -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='FailureMessage'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPFailureMessage 
+                                                                aura:id="formstepComponent" 
+                                                                elementWrapper="{!elementWrapper}" 
+                                                                renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <aura:if isTrue="{!v.primaryFormObjectAPIName}">
+                                    <!-- DataField -->
+                                    <aura:if isTrue="{!elementWrapper.ElementType=='ObjectField'}">
+                                        <div>
+                                            <c:F3_CMPDataField 
+                                                               aura:id="formstepComponent" 
+                                                               elementWrapper="{!elementWrapper}"
+                                                               currentStepType="{!v.currentFormStep.StepType}"
+                                                               renderMode="{!v.renderMode}"
+                                                               currentSitePage="{!v.currentSitePage}"
+                                                               />
+                                        </div>
+                                    </aura:if>
+                                    <!-- TranslatedPicklist -->
+                                    <aura:if isTrue="{!elementWrapper.ElementType=='TranslatedPicklist'}">
+                                        <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                            <c:F3_CMPTranslatedPicklist aura:id="formstepComponent"
+                                                                        elementWrapper="{!elementWrapper}" 
+                                                                        renderMode="{!v.renderMode}"/>
+                                        </div>
+                                    </aura:if>
+                                    <!-- SurveyRadioPicklist -->
+                                    <aura:if isTrue="{!elementWrapper.ElementType=='SurveyRadioPicklist'}">
+                                        <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                            <c:F3_CMPSurveyRadio aura:id="formstepComponent"
+                                                                 elementWrapper="{!elementWrapper}" 
+                                                                 renderMode="{!v.renderMode}"/>
+                                        </div>
+                                    </aura:if> 
+                                    <!-- SurveyChecklistPicklist -->
+                                    <aura:if isTrue="{!elementWrapper.ElementType=='SurveyCheckboxPicklist'}">
+                                        <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                            <c:F3_CMPSurveyCheckbox aura:id="formstepComponent"
+                                                                 elementWrapper="{!elementWrapper}" 
+                                                                 renderMode="{!v.renderMode}"/>
+                                        </div>
+                                    </aura:if> 
+                                    <!-- SurveyIconPicklist -->
+                                    <aura:if isTrue="{!elementWrapper.ElementType=='SurveyIconPicklist'}">
+                                        <div class="slds-m-top_x-small slds-m-bottom_x-small" > 
+                                            <c:F3_CMPSurveyIcons aura:id="formstepComponent"
+                                                                 elementWrapper="{!elementWrapper}" 
+                                                                 renderMode="{!v.renderMode}"/>
+                                        </div>
+                                    </aura:if>
+                                    <!-- ChildObjectOne -->
+                                    <aura:if isTrue="{!elementWrapper.ElementType=='ChildObjectOne'}">
+                                        <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                            <c:F3_CMPChildObjectOne aura:id="formstepComponent"
+                                                                    parentRecordId="{!v.recordId}"
+                                                                    elementWrapper="{!elementWrapper}" 
+                                                                    renderMode="{!v.renderMode}"
+                                                                    currentSitePage="{!v.currentSitePage}"/>
+                                        </div>
+                                    </aura:if>
+                                    <!--Child Object many-->
+                                    <aura:if isTrue="{!elementWrapper.ElementType=='ChildObjectMany'}">
+                                        <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                            <c:F3_CMPChildObjectMany aura:id="formstepComponent"
+                                                                     parentRecordId="{!v.recordId}"
+                                                                     elementWrapper="{!elementWrapper}" 
+                                                                     renderMode="{!v.renderMode}"
+                                                                     currentSitePage="{!v.currentSitePage}"/>
+                                        </div>
+                                    </aura:if>
+                                </aura:if>     
+                                <!-- PlainDisplayText -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='PlainText'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPPlainDisplayText 
+                                                                  aura:id="formstepComponent" 
+                                                                  elementWrapper="{!elementWrapper}" 
+                                                                  renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- HTML Control -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='HTMLControl'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPHTMLControl 
+                                                             aura:id="formstepComponent" 
+                                                             elementWrapper="{!elementWrapper}" 
+                                                             renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- Rich Text Control -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='RichTextControl'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPRichTextControl
+                                                                 aura:id="formstepComponent" 
+                                                                 elementWrapper="{!elementWrapper}" 
+                                                                 renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- File Upload Single -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='FileUploadSingle'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_FileUploadSIngle
+                                                               aura:id="formstepComponent" 
+                                                               elementWrapper="{!elementWrapper}" 
+                                                               renderMode="{!v.renderMode}"
+                                                               parentId="{!v.recordId}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- InlineReadOnlyDataTable -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='InlineReadOnlyDataTable'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_InlineTableCMP 
+                                                             aura:id="formstepComponent" 
+                                                             elementWrapper="{!elementWrapper}" 
+                                                             renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <aura:if isTrue="{!elementWrapper.ElementType=='InlineButtoGroup'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_InlineButtonCMP 
+                                                             aura:id="formstepComponent" 
+                                                             elementWrapper="{!elementWrapper}" 
+                                                             renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>                                
+                            </aura:iteration>
+                        </lightning:recordEditForm>
+                    </aura:if>               
+            </div>
+        </div>
+    </div>
+    <aura:if isTrue="{!v.currentFormStep.StepType!='Success'}">
+        <div class="slds-grid slds-wrap lex-actionpanel" style="background-color: #fff;">
+            <!--div class="slds-grid slds-wrap lex-actionpanel" style="{!v.buttonBackground}"-->
+            <div class="slds-col slds-size_12-of-12 slds-p-around_medium main-border" >
+                <div class="slds-clearfix slds-p-around_small">
+                    <div class="captcha_wrapper slds-grid">
+                        <aura:if isTrue="{!v.numberOfSteps == 2}">
+                            <!-- Google Recaptcha -->
+                            <div class="captcha_container slds-col slds-size_6-of-12" style="width:48% !important;">
+                                
+                                 <iframe aura:id="vfFrame" src="{!v.Captcha1}" scrolling="no" frameborder="0" width="100%" height="500px" allowtransparency="true" />  
+                            </div>
+                             <div>
+                                <div style="padding-top: 4%;"> 
+                                    <div align="center" style="padding: 20px;">
+                                        <!--Site Page Footer-->
+                                        <p class="footerText">
+                                            <lightning:formattedUrl value="www.allergan.com/privacy" label="Privacy Statement"/>
+                                        </p>  
+                                        <p class="footerText">
+                                            <lightning:formattedUrl value="www.allergan.com/privacy/ccpa" label="California Privacy Policy"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div style="padding-top: 2%; padding-left: 20%;">
+                                <button class="slds-button slds-button_brand slds-m-right_x-small submit_btn"
+                                        onclick="{!c.onClickSave}"
+                                        disabled="{!v.renderMode == 'DESIGNER' ? true : false}"
+                                        style="{!v.buttonStyle}">{!v.saveButtonLabel}</button>          
+                                <!--  <lightning:button label="{!v.saveButtonLabel}" disabled="{!v.renderMode == 'DESIGNER' ? true : false}"
+                                                  onclick="{!c.onClickSave}" class="" /> -->
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.numberOfSteps>2}">
+                            <aura:if isTrue="{!v.formStepSequence!='START'}">
+                                <button class="slds-button slds-button_brand slds-m-right_x-small"
+                                        onclick="{!c.onClickSavePrevious}"
+                                        disabled="{!v.renderMode == 'DESIGNER' ? true : false}"
+                                        style="{!v.buttonStyle}">{!v.savePreviousButtonLabel}</button>
+                                <!--<lightning:button label="{!v.savePreviousButtonLabel}" disabled="{!v.renderMode == 'DESIGNER' ? true : false}"
+                                                  onclick="{!c.onClickSavePrevious}" class="slds-button slds-button_brand slds-m-right_x-small"/>-->
+                            </aura:if>
+                            <button class="slds-button slds-button_brand slds-m-right_x-small"
+                                    onclick="{!c.onClickSaveNext}"
+                                    disabled="{!v.renderMode == 'DESIGNER' ? true : false}"
+                                    style="{!v.buttonStyle}">{!v.saveNextButtonLabel}</button>
+                            <!--<lightning:button label="{!v.saveNextButtonLabel}" disabled="{!v.renderMode == 'DESIGNER' ? true : false}"
+                                              onclick="{!c.onClickSaveNext}"  class="slds-button slds-button_brand slds-m-right_x-small" />-->
+                        </aura:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    
+      <!-- Code Edited by Rajeev For popup on success -->
+    <aura:if isTrue="{!v.successPopup}">
+          <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <!--<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">REQUEST SUBMITTED !!</h2>-->
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <p><b>
+                            {!$Label.c.Dear_AGN}&nbsp;{!v.firstName}&nbsp;{!v.lastName},<br></br><br></br>{!$Label.c.AGN_CCPA_Data_Subject_Success}
+                            </b>
+                        </p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button class="slds-align_absolute-center"
+                                          variant="brand" 
+                                          label="OK"
+                                          title="OK"
+                                          onclick="{!c.PopupOK }"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    
+</aura:component>

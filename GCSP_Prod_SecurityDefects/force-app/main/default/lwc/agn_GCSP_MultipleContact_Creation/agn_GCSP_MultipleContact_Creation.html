@@ -1,0 +1,254 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 07-09-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   03-02-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <div class="contact_outer_wrapper">
+        <!--- *************** Steps Banner Code Starts********************************-->
+
+        <template if:false={isRegistrationCompleted}>
+            <template if:true={isNew}>
+                <div class="StepsBanner">
+                    <div class="Banner notranslate">
+                        <!-- <div class="Step1">1</div> -->
+                        <div class="stepcomplete"> </div>
+                        <div class="line"></div>
+                        <div class="stepcomplete"> </div>
+                        <div class="line"></div>
+                        <div class="stepcomplete"> </div>
+                        <div class="line"></div>
+                        <div class="stepcomplete"> </div>
+                        <!--<template if:true={isCS}>-->
+                        <div class="line"></div>
+                        <div class="Step">5</div>
+                        <!--</template>	-->
+                    </div>   
+                    <div class="Bannertext">
+                        <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                        <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                        <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                        <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>                      
+                        <div class="Steptext">{label.AGN_OAM_Contact_Affiliation}</div>                        
+                    </div>
+                    <!--<div class="Bannertext">
+                    <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                    <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                    <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                    <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>
+                    <template if:true={isCS}>
+                        <div class="Steptext">Contact Affiliation</div>
+                    </template>
+                </div>-->
+                </div>
+            </template>
+            <div class="slds-m-around_large">
+                <h1 class="heading">{label.AGN_OAM_Header_CustomerRegistration} - {label.AGN_OAM_Contact_Affiliation}</h1>
+            </div>
+            <!--<div class="show-toast">
+                <template if:true={error}>
+                        <c-agn_gcsp_custom-toast title="" message={error} variant={variant} auto-close="true">
+                        </c-agn_gcsp_custom-toast>
+                </template>
+            </div>-->
+
+            <!--<template if:true={showToastMsg}>-->
+                <div class="show-toast">
+                        <c-agn_gcsp_custom-toast title="" message={error} variant={variant} auto-close="true">
+                        </c-agn_gcsp_custom-toast>
+                </div>
+            <!--</template>-->
+               
+            <div hidden={hidemaindiv}>
+                <div class="outer_wrapper">
+                    <div class="reg_step4">
+                        <div class="content_center">
+                            <!-- Existing Contact Layout Starts -->
+                            <template if:true='{contactsoption}'>
+                                <div class="cheading cheadingbold">{label.AGN_GCSP_ExistingContacts}</div>
+                                <template for:each='{contactsoption}' for:item="con" for:index="indx">
+                                    <div class="existing_contact" key={con}>
+                                        <div class="row1">
+                                            <div class="sapid">{con.label}</div>
+                                            <div data-value='{con.label}' class="slds-show">
+                                                <lightning-button  onclick={show_hide_contact} value={con.value}
+                                                    label={label.AGN_GCSP_Edit_Button} class="editbtn" name="editContact">
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                        <div data-value='{con.label}'  class="slds-show">
+                                            <div class="clearspace">
+                                                <template if:true={step5fields}>
+                                                    <c-agn_gcsp_address-flat-view key={con} address-fields='{step5fields}'
+                                                        address-data={con.value}>
+                                                    </c-agn_gcsp_address-flat-view>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        <div data-id={con.label} class="slds-hide">
+                                            <lightning-button onclick={hideFullview_contact} value={con.value}
+                                                label={label.AGN_GCSP_Close_Button} class="closebtn" name="closeContact">
+                                            </lightning-button>
+                                            <template if:true='{step5fields}'>
+                                                <c-agn_gcsp_mange_accounts indx={indx} instancetype="update"
+                                                    layout-data={step5fields} record={con.value} country={country}
+                                                    address-list={addressList}
+                                                    existing-address-list={existingAddressList}
+                                                    new-address-list={newAddressList} contact-sap-map={contactSapMap}
+                                                    sap-id={sapId}
+                                                    con-label={con.label}>
+                                                </c-agn_gcsp_mange_accounts>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                            <!-- Existing Contact Layout Ends -->
+
+                            <!-- New Contact Layout Starts -->
+                            <template if:true={showNewContactsLayout}>
+                                <template if:true={newcontactsMap}>
+                                    <template for:each={newcontactsMap} for:item='set' for:index="indx">
+                                        <div class="new_contact" key={set.key}>
+                                            <c-agn_gcsp_address-delete key={set.key}
+                                                onshiptoaddressdelete={deleteContact} index={indx}
+                                                shipping-map-counter={contactMapCounter} instancetype='new'
+                                                class="deletebtn">
+                                            </c-agn_gcsp_address-delete>
+                                            <div key={set.key}>
+                                                <div class="cheading cheadingboldnew1">{label.AGN_GCSP_NewContacts}</div>
+                                                <template if:true={step5fields}>
+                                                    <c-agn_gcsp_mange_accounts indx={indx} instancetype="new"
+                                                        layout-data={set.value} record='' country={country}
+                                                        address-list={addressList}
+                                                        existing-address-list={existingAddressList}
+                                                        new-address-list={newAddressList}>
+                                                    </c-agn_gcsp_mange_accounts>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                            </template>
+                            <div class="newshipto_info">
+                                <!-- {label.AGN_OAM_AdditionalShippingHelpTxt} -->
+                                {label.AGN_GCSP_NewContactDescription}                               
+                            </div>
+                            <div class="btn_container addShipAddr">
+                                <lightning-button variant="brand" label={label.AGN_GCSP_AddNewContact} title={label.AGN_GCSP_AddNewContact}
+                                    onclick={addNewContact} class="gradient_border_btn">
+                                </lightning-button>
+                            </div>
+                        </div>
+                        <div class="content_center2">                            
+                                <div class="cheading cheadingboldnew1">{label.AGN_GCSP_CaseDetails}</div>
+                                <br />
+                                <template if:true={showEscalateQA}>
+                                    <div class="center2_text testing">
+                                    <lightning-input onchange={handleChangeQA} 
+                                    type="checkbox" 
+                                    checked={isEscalateQA}
+                                    label={label.AGN_OAM_CaseRequestToQA} 
+                                    name={label.AGN_OAM_CaseRequestToQA} 
+                                    class="commoninputcmpCase">
+                                   </lightning-input>
+                                </div>
+                                </template>
+                                <div class="center2_text">
+                                    <lightning-combobox onchange={handleChangePriyarity} 
+                                    name={label.AGN_GCSP_CasePriority} 
+                                    label={label.AGN_GCSP_CasePriority} 
+                                    value={priorityValue} 
+                                    options={casePriorityOptions} 
+                                    class="commoninputcmpCase">
+                                    </lightning-combobox>
+                                </div>                           
+                        </div>
+                        <template if:false={isNew}>
+                            <div class="content_center3">                              
+                                    <template if:true={registrationId}>
+                                        <c-agn_gcsp_update-flow-documents source={source} registration-id={registrationId}></c-agn_gcsp_update-flow-documents>
+                                    </template>                             
+                                    <template if:true={showuploadCA}> 
+                                        <c-agn_gcsp_ship-to-documents-upload_ca
+                                                registration-id={registrationId} source={source} country-code={country}>
+                                        </c-agn_gcsp_ship-to-documents-upload_ca>
+                                    </template>                             
+                            </div>
+                        </template>
+                        <div class="btn_container savecontact">
+                            <lightning-button variant="brand" 
+                                label={label.AGN_GCSP_SubmitContact} 
+                                title={label.AGN_GCSP_SubmitContact} 
+                                onclick={handleClick}
+                                class="gradient_border_btn">
+                            </lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template if:true={isRegistrationCompleted}> 
+            <template if:true={isNew}>
+                <div class="StepsBanner">
+                    <div class="Banner notranslate">
+                        <!-- <div class="Step1">1</div> -->
+                        <div class="stepcomplete"> </div>
+                        <div class="line"></div>
+                        <div class="stepcomplete"> </div>
+                        <div class="line"></div>
+                        <div class="stepcomplete"> </div>
+                        <div class="line"></div>
+                        <div class="stepcomplete"> </div>
+                        <!--<template if:true={isCS}>-->
+                        <div class="line"></div>
+                        <div class="stepcomplete"> </div>
+                        <!--</template>	-->
+                    </div>                  
+                    <div class="Bannertext">
+                        <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                        <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                        <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                        <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>                      
+                        <div class="Steptext">{label.AGN_OAM_Contact_Affiliation}</div>                        
+                    </div>
+                    <!--<div class="Bannertext">
+                    <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                    <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                    <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                    <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>
+                    <template if:true={isCS}>
+                        <div class="Steptext">Contact Affiliation</div>
+                    </template>
+                </div>-->
+                </div>
+            </template>
+            <section class="regSuccessMsg">
+                <div class="div_cs">
+                    <div class="right_cont">
+                        <div class="regSuccessMsg_bg"></div>
+                    </div>
+                    <div class="left_cont">
+                        <div class="para_txt">
+                            <span>
+                                {label.AGN_OAM_Body_Confirm_Youhave}&nbsp;{label.AGN_OAM_Body_Confirm_SuccessfullyCompleted}
+                                 {label.AGN_OAM_CaseNumber} <a href={CaseIdVal} target="_blank">{caseNumber}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>          
+        </template>
+        <div if:true={showLoader}>
+            <div class="spinnnerdiv" style="height:10rem;">                    
+                <lightning-spinner  class="slds-is-absolute" alternative-text={label.AGN_OAM_Loading} variant="brand" size="large" ></lightning-spinner>
+            </div>
+        </div>
+    </div>
+
+</template>

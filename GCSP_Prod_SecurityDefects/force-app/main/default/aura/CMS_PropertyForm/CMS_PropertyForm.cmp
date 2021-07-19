@@ -1,0 +1,46 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <!-- Handlers-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="developerName" type="String" />
+    
+    
+    <aura:if isTrue="{!v.recordId}">
+        <c:CMS_TreeNodeBox>
+            <aura:set attribute="box">
+                <lightning:icon size="small" iconName="standard:customer_portal_users"/>
+            </aura:set>
+            <aura:set attribute="boxtitle">
+                <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="MDForm__c">
+                    <lightning:outputField fieldName="Name" variant="label-hidden"/>
+                    <lightning:outputField fieldName="CreatedById"/>
+                    <lightning:outputField fieldName="LastModifiedById"/>
+                </lightning:recordViewForm>                
+            </aura:set> 
+        </c:CMS_TreeNodeBox>
+        <lightning:tabset selectedTabId="form">
+            <lightning:tab label="Details" id="form">
+                <c:CMSWStep_FormDetail aura:id="formDetailChild" renderMode="BUILDER"
+                                       recordId = "{!v.recordId}"/> 
+            </lightning:tab>
+            <!--
+            <lightning:tab label="Object" id="object">
+                <c:CMSWStep_FormObject aura:id="formObjectChild" renderMode="BUILDER"
+                                       recordId="{!v.recordId}"/>
+            </lightning:tab>
+			-->
+            <lightning:tab label="Properties" id="properties">
+                <c:CMSWStep_FormProperties aura:id="formPropertyChild" renderMode="BUILDER"
+                                           recordId="{!v.recordId}"/>
+            </lightning:tab>
+            <lightning:tab label="Languages" id="languages">
+                <c:CMSWStep_FormLanguages aura:id="formLangChild" renderMode="BUILDER"
+                                          recordId = "{!v.recordId}"/>
+            </lightning:tab>
+            <lightning:tab label="Branding" id="branding">
+                <c:CMSWStep_FormBranding aura:id="formBrandChild" renderMode="BUILDER"
+                                         recordId="{!v.recordId}"/>
+            </lightning:tab>
+        </lightning:tabset> 
+    </aura:if>    
+    
+</aura:component>

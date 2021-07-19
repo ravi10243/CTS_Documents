@@ -1,0 +1,82 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+   
+    <!-- Attributes -->
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="fieldValue" type="Object"/>
+    <aura:attribute name="componentClass" type="String" default="slds-form-element" />
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="currentStepType" type="String"/>
+   
+    <aura:attribute name="inputValue" type="String" />
+    <aura:attribute name="componentBodyStyle" type="String" default=""/>
+    <aura:attribute name="labelStyle" type="String" default=""/>
+   
+    <aura:method name="isValid" description="Method to validate this component.">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    <!-- Experian Change -->
+   	<aura:attribute name="currentSitePage" type="Object"/>
+    <!-- End of Experian Change -->
+    
+    <!-- Event Register -->
+    <aura:registerEvent name="fielddependentevent" type="c:F3_LEXViewStateChangeEvent"/>
+   
+    <!-- Component Body -->
+    <div class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-col slds-size_12-of-12 slds-m-top_x-small slds-p-left_x-large slds-p-right_x-large slds-m-bottom_x-small' : 'slds-hide'}">
+        <div class="{!v.elementWrapper.PageElement.IsHidden__c ? ' slds-hidden' : ''}"
+             name="{!v.elementWrapper.PageElement.Name}"
+             style="{!v.componentBodyStyle}">
+            <div class="{!v.componentClass}">
+                <label class="slds-form-element__label" for="{!v.elementWrapper.PageElement.DataFieldAPIName__c}" style="{!v.labelStyle}" >
+                    <!--<aura:if isTrue="{!v.elementWrapper.PageElement.Required__c}">
+                        <abbr class="slds-required">* </abbr>
+                    </aura:if>-->
+                    <aura:if isTrue="{!v.elementWrapper.class != 'OPTIONAL'}">
+                    <aura:if isTrue="{!v.elementWrapper.PageElement.Required__c}">
+                        <abbr class="slds-required">* </abbr>
+                    </aura:if>
+                    </aura:if>
+                    {!v.elementWrapper.PortalLabel}
+                </label>
+                <aura:if isTrue="{!v.elementWrapper.QuickHelpText}">
+                    <lightning:helptext content="{!v.elementWrapper.QuickHelpText}"/>
+                </aura:if>
+                <div class="slds-form-element__control">
+                    <aura:if isTrue="{!v.currentStepType!='Success'}">
+                        <div class="slds-m-top_xx-small slds-m-bottom_xx-small slds-m-left_xx-small">
+                         
+                            <aura:if isTrue = "{!v.elementWrapper.PageElement.Component_Display_Type__c == 'Toggle'}">
+                                <lightning:inputField aura:id="{!v.elementWrapper.PageElement.Name}"
+                                                      onchange="{!c.dataFieldOnChange}"
+                                                      fieldName="{!v.elementWrapper.PageElement.DataFieldAPIName__c}"  
+                                                      class="slds-m-vertical_small slds-checkbox_toggle"
+                                                      variant="label-hidden"
+                                                      disabled="{!v.elementWrapper.PageElement.ReadOnly__c}"
+                                                      />
+                                <aura:set attribute="else">
+                                <lightning:inputField aura:id="{!v.elementWrapper.PageElement.Name}"
+                                                      onchange="{!c.dataFieldOnChange}"
+                                                      fieldName="{!v.elementWrapper.PageElement.DataFieldAPIName__c}"  
+                                                      class="slds-m-vertical_small"
+                                                      variant="label-hidden"
+                                                      disabled="{!v.elementWrapper.PageElement.ReadOnly__c}"/>
+                                </aura:set>
+                            </aura:if>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentStepType=='Success'}">
+                        <div class="slds-m-top_xx-small slds-m-bottom_xx-small slds-m-left_xx-small">
+                            <lightning:outputField aura:id="{!v.elementWrapper.PageElement.Name}"
+                                                   fieldName="{!v.elementWrapper.PageElement.DataFieldAPIName__c}"  
+                                                   class="slds-m-vertical_small" variant="label-hidden" />
+                        </div>
+                    </aura:if>
+                </div>  
+            </div>
+            <!-- <button class="slds-button slds-button_neutral" onclick="{!c.test}">Test</button> -->
+        </div>
+        </div>
+</aura:component>

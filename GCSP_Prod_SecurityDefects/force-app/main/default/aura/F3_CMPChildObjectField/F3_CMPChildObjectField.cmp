@@ -1,0 +1,41 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <!-- Attributes -->
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="fieldValue" type="Object"/>
+    <aura:attribute name="componentClass" type="String" default="slds-form-element" />
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="currentStepType" type="String"/>
+    
+    <aura:method name="isValid" description="Method to validate this component.">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <!-- Component Body -->
+    <div class="{!v.componentClass}">
+        <label class="slds-form-element__label" for="{!v.elementWrapper.FieldAPIName}" >
+            <aura:if isTrue="{!v.elementWrapper.Required}">
+                <abbr class="slds-required">* </abbr>
+            </aura:if>
+            {!v.elementWrapper.DisplayLabel}
+        </label>
+        <aura:if isTrue="{!v.elementWrapper.QuickHelpText}">
+            <lightning:helptext content="{!v.elementWrapper.QuickHelpText}"/>
+        </aura:if>
+        <div class="slds-form-element__control">
+            <aura:if isTrue="{!v.currentStepType!='Success'}">
+                <div class="slds-m-top_xx-small slds-m-bottom_xx-small slds-m-left_xx-small">
+                    <lightning:inputField aura:id="{!v.elementWrapper.FieldAPIName}" onchange="{!c.dataFieldOnChange}"
+                                          fieldName="{!v.elementWrapper.FieldAPIName}"  
+                                          class="slds-m-vertical_small" variant="label-hidden" />
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.currentStepType=='Success'}">
+                <div class="slds-m-top_xx-small slds-m-bottom_xx-small slds-m-left_xx-small">
+                    <lightning:outputField aura:id="{!v.elementWrapper.PageElement.Name}" 
+                                           fieldName="{!v.elementWrapper.FieldAPIName}"  
+                                           class="slds-m-vertical_small" variant="label-hidden" />
+                </div>
+            </aura:if>
+        </div>  
+    </div>
+</aura:component>

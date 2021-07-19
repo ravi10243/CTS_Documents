@@ -1,0 +1,29 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+	 <!-- Attributes -->
+    <aura:attribute name="mdAplication" type="Object" />
+    
+    <aura:attribute name="showStartApplicationButton" type="Boolean" default="false" />
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+    
+    <!-- Handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+     <!-- Register start legacy application event -->
+    <!--<aura:registerEvent name="startLegacyApplication" type="c:AuPo_Lex_startLegacyApplication"/>-->
+    
+    <!-- Component Body -->    
+    <div style="background-color:#701b45;" >
+        <h1 class="slds-p-vertical_x-small slds-m-left_medium section-header-font">
+            Before you start
+        </h1>
+    </div>
+    <ui:scrollerWrapper class="slds-p-around_small scrollerSize">
+        <!--<lightning:formattedRichText value="{!v.mdAplication.ShGl_CheckList__c}" />-->
+    </ui:scrollerWrapper>
+    <aura:if isTrue="{!v.showStartApplicationButton}">
+         <div class="">
+            <hr/>
+            <lightning:button class="slds-float_right slds-m-around_small primaryButton" variant="brand" label="Start Application" disabled="{!v.isLoading}" onclick="{!c.handleStartApplication}"/>
+        </div>
+    </aura:if>
+   <lightning:overlayLibrary aura:id="overlayLib"/>    
+</aura:component>

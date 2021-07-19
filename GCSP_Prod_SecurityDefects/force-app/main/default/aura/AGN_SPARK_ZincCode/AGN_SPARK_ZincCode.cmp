@@ -1,0 +1,19 @@
+<aura:component controller="AGN_SPARK_ZincCode">
+    <aura:attribute name="zincValue" type="SPARK_Page_ZincCode_AGN__mdt" />
+    <aura:attribute name="pageName" type="string" default="HomePage" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:if isTrue="{!!empty(v.zincValue)}">
+        <div class="zinc_code">
+            <span>{!v.zincValue.Zinc_Code_AGN__c}</span>&nbsp;&nbsp;
+            <aura:if isTrue="{!!empty(v.zincValue.Date_of_Prep_AGN__c)}">
+                {!$Label.c.AGN_SPARK_Zinc_Date_of_prep}&nbsp;
+                <lightning:formattedDateTime value="{!v.zincValue.Date_of_Prep_AGN__c}" year="numeric"  month="long" />
+            </aura:if>
+        </div> 
+        <aura:set attribute="else">
+                <div class = 'zinc_code'>
+            	 UK-BCT-2050117&nbsp;&nbsp;   Date of preparation :  January 2021
+            	</div>
+        </aura:set>
+    </aura:if>
+</aura:component>

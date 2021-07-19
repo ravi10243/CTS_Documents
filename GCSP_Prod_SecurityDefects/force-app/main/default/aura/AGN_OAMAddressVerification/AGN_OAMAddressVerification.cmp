@@ -1,0 +1,5 @@
+<aura:component >
+    <aura:attribute name="sectionHeaderMap" type="Map" default="{}"/>
+    
+    <ui:button aura:id="button" label="Verify Address" press="{!c.verifyAddress}"/> <br/>	
+</aura:component>

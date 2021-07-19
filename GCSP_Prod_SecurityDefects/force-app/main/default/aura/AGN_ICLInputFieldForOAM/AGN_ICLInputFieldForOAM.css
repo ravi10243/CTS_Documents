@@ -1,0 +1,59 @@
+.THIS .check-input{
+    margin-top: 45px;
+    margin-bottom: 0;
+    color: #2c5596;
+    display: inline-block;
+    
+}
+.THIS .check-input label{
+	font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+.THIS .required{
+    color: red;
+}
+.THIS .form-group{
+    margin-top:0 !important;
+}
+.THIS span {
+    color: #2c5596;
+}
+.THIS .input-effect input{
+    max-width: none;
+    margin: 20px 0;
+}
+.THIS .input-effect .effect-16 ~ label{
+        top: 30px;
+}
+.THIS .input-effect .effect-16:focus ~ label, .THIS .effect-16 ~ label{
+    top: 12px;
+}
+.THIS .col-md-3{
+    min-height: 75px !important;
+}
+.THIS .Test{
+    color: #FFFF00;
+}
+.THIS .required{
+    color: red;
+}
+.THIS .requiredBorder{
+    border-color: red;
+}
+.THIS .helper_txt{
+    margin-top: 60px;
+    position: absolute;
+    float: left;
+    font-size: 9px;
+}
+.THIS .check_input{
+    display: inline-block;
+    float: left;
+}
+.THIS .has-content.effect-16~label{
+    top: 12px;
+}
+.THIS .requiredField{
+    color:red;
+}

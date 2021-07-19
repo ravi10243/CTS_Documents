@@ -1,0 +1,75 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    
+    <aura:attribute name = "renderMode" type = "String"/>
+    <aura:attribute name = "recordId" type = "String"/>
+    <aura:attribute name = "formId" type = "String"/>
+
+    <!-- Form attributes -->
+    <aura:attribute name = "requiredValidationFailed" type = "Boolean" default = "false"/>
+    
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    
+    <!-- RegisterEvent -->
+    <aura:registerEvent name="CMS_BuilderRefreshEvent" type="c:CMS_BuilderRefreshEvent"/>
+    
+    <lightning:card iconName="doctype:gform" title="Step Details">
+        <p class="slds-p-around_small">
+        	<!--
+            <lightning:recordEditForm aura:id="newStepForm" 
+                                      objectApiName="MDFormStep__c"
+                                      onerror="{!c.errorCheck}"
+                                      >
+                <lightning:messages />
+                <lightning:inputField fieldName="DeveloperName__c" aura:id = "developerName"/>
+                <lightning:inputField fieldName="LocalisedShortName__c" />
+                <lightning:inputField fieldName="LocalisedLongName__c" />
+                <lightning:inputField fieldName="StepOrder__c" aura:id = "stepOrder"/>
+                <lightning:inputField fieldName="Type__c" />
+                <lightning:inputField fieldName="IsActive__c" />
+                <lightning:inputField class="slds-hidden" fieldName="MDForm__c" value="{!v.formId}"/>
+            
+            </lightning:recordEditForm> -->
+            
+            
+            
+            <lightning:recordEditForm aura:id="editStep"
+                                      onsuccess="{!c.onFormSuccess}"
+                                      onerror="{!c.onFormError}"
+                                      onsubmit="{!c.handleSubmit}"
+                                      recordId="{!v.recordId}"
+                                      objectApiName="MDFormStep__c">
+                
+                <aura:if isTrue="{!v.requiredValidationFailed}">
+                    <ui:message title="Errors" severity="error" closable="false">
+                        Please fill all the fields!
+                    </ui:message>
+                </aura:if>    
+                
+                <lightning:inputField fieldName="Name"/>
+                <lightning:inputField fieldName="DeveloperName__c" aura:id = "developerName"/>
+                <lightning:inputField fieldName="LocalisedShortName__c" aura:id = "localisedShortName"/>
+                <lightning:inputField fieldName="LocalisedLongName__c" aura:id = "localisedLongName"/>
+                <lightning:inputField fieldName="Description__c" aura:id = "description"/>
+                <lightning:inputField fieldName="StepOrder__c" aura:id = "stepOrder"/>
+                <lightning:inputField fieldName="Type__c" />
+                <lightning:inputField fieldName="IsActive__c" />
+                <aura:if isTrue="{!v.recordId==null}">
+                    <lightning:inputField class="slds-hidden" fieldName="MDForm__c" value="{!v.formId}" />
+                </aura:if>    
+                <aura:if isTrue="{!v.recordId!=null}">
+                    <lightning:inputField class="slds-hidden" fieldName="MDForm__c" />
+                </aura:if>
+                			
+            </lightning:recordEditForm> 
+            <lightning:notificationsLibrary aura:id="notifLib"/>
+            <aura:if isTrue="{!v.renderMode == 'BUILDER'}"> 
+                <div class="slds-align_absolute-center slds-p-top_small">
+                    <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.doSaveDetails}" />
+                </div>
+            </aura:if>
+        </p>
+    </lightning:card>     
+</aura:component>

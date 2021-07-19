@@ -1,0 +1,366 @@
+.THIS .no_det img {
+    display: inline;
+}
+.THIS .infr_det{
+    clear:both;
+    width: 98%;
+    position: relative;
+    float: left;
+    margin-top: 10px;    
+}
+.THIS.infr_details{
+    padding: 0 40px;
+}
+.THIS .basic_details .divider{
+    background:#ccc;
+    width:2px;
+    height:33px;
+    position:relative;
+    left:50px;
+    clear: both;
+}
+
+.THIS .com_fully{
+    width: 93%;
+    background-color: white;
+    border: 2px solid #ccc;
+    margin-left: 30px;
+    padding: 20px;
+}
+
+.THIS .infr_bg{
+    background:#FFF;
+    border:1px solid #bfbfbf;
+    position: relative;
+    width: 100%;
+    float: left;    
+}
+
+/* for checkBox -- Start    */
+
+.THIS .inputCheckboxValue{
+    opacity: 1;
+} 
+.THIS .input__CheckBoxlabel {
+    display: inline-block;
+    float: right;
+    padding: 0 1em;
+    width: 106%;
+    color: #696969;
+    -webkit-font-smoothing: antialiased;   
+    user-select: none;
+}
+.THIS .input__Checkboxlabel-content {
+    position: relative;
+    display: block;
+    padding: 1.6em 0;
+    width: auto;
+}
+
+.THIS .infr_bg .input__Checkboxlabel--nariko::after {
+    border-top: 1px solid #CCC; 
+}
+
+.THIS .infr_bg .input__Checkboxlabel--nariko.required::after {
+    border-top: 1px solid red; 
+}
+.THIS .infr_bg .input__Checkboxlabel--nariko {
+    color: #2c5596;
+}
+/* for checkBox -- End    */
+
+.THIS .infr_bg .input__label--nariko::after {
+    border-top: 1px solid #CCC;
+}
+
+.THIS .infr_bg .input__label--nariko {
+    color: #2c5596;
+}
+.THIS .infr_bg .input__label-content--nariko{
+    text-transform:none;
+}
+.THIS .infr_bg .input__label-content--nariko span{
+    color:#ff0000;
+}
+.THIS .infr_bg .input__field--nariko{
+    color:#333333;
+    position: relative;
+    float: inherit;
+    top: 5px;
+    padding: 0;
+    border: none;
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
+    max-width: 100%;
+}
+.THIS textarea:focus{
+    outline: none;
+}
+.THIS input:focus{
+    outline: none;
+}
+.THIS input[type="checkbox"]:focus {
+    outline: -webkit-focus-ring-color auto 5px;
+}
+.THIS .input-state{
+    padding-top: 21px;
+}
+.THIS .required{
+    display: none;
+    position: relative !important;
+    border-bottom: 1px solid #F00 !important;
+    top: -2px !important;
+    z-index: 1 !important;
+    border-radius: 0 !important;
+    /*margin-left: 4px!important; */
+}
+.THIS .attach_btn_text{
+    background: #3d86ca;
+    color: white;
+    padding: 4px 16px;
+}
+.THIS .upload_file{
+    border: 1px solid;
+    border-color: #3d86ca;
+    padding: 3px 10px 3px 10px;
+    margin-left: 30px;
+}
+
+.THIS .det_btn{
+    position: relative;
+    display: inline-block;
+    margin: 5% auto 5%;
+    float: right;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin-right: 2.5%;
+    /*margin: 45px 30px 0 190px;*/
+}
+.THIS .add_btn{
+    text-align: center;
+    text-transform: uppercase;    
+    background: #FFF;
+    border: 1px solid #bfbfbf;
+    padding: 13px;
+    position:relative;
+    border-radius: 0rem;
+    font-size: inherit;
+    display:inline-block;
+    width: auto;
+    min-width: 210px;
+}
+.THIS .continue_btn{
+    background:#43af2a;
+    color:#FFF;
+    margin-left: 30px;
+    border: none; 
+}
+
+.THIS .cancel_btn{
+    top:0;
+    margin-left:50px;
+    float: left;
+}
+.THIS .success_com{
+    float: left;
+    position: relative;
+    font-size: 16px;
+    color: #333333;
+    padding: 20px 90px;
+    display: none; 
+    background: white;
+    border: 1px solid #bfbfbf;
+    width: 98%;
+    margin-bottom: 15%;
+    top: 100px;
+}
+.THIS .success_com span{
+    /*color:#43af2a;*/
+    margin-top: -5px;
+}
+
+.THIS .success_btn{
+    background:#43af2a;
+    color:#FFF;
+    right: -35px;
+    margin-left: 30px;
+    border: none;   
+    top: 0;
+}
+
+.THIS .section_header {
+    position: relative;
+    top: 20px;
+    width: 100%;
+    float: left;
+    left: 16px;
+    
+}
+
+.THIS .uiButton .label {
+    display: block;
+    margin-top: -5px !important;
+}
+
+.THIS .loader {
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    opacity:0.5;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+.THIS .cus_details{
+    width: 98%;
+}
+/* Added one  */
+.THIS .no_det{
+    width: 40px;
+    height: 40px;
+    background: #FFF;
+    border-radius: 100px;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    border: 2px solid #bfbfbf;
+    padding: 8px 10px 8px 12px;
+    float: left;
+    position: relative;
+    text-align: center;
+    left: 30px;
+}
+
+.THIS .no_det.active.complete-step{
+    background: #a3d233;
+    border: 2px solid #a3d233;
+}
+.THIS.basic_details li .no_det_text{
+    float: left;
+    position: relative;
+    /* clear: both; */
+    left: 50px;
+    top: 5px;
+    font-size: 20px;
+    color:#333333;
+}
+.THIS.basic_details .divider{
+    background:#ccc;
+    width:2px;
+    height:33px;
+    position:relative;
+    left:50px;
+    clear: both;
+}
+.THIS.no_det img{
+    display:none;   
+}
+.THIS.success_com span{
+    color:#43af2a;
+}
+.THIS.hideDiv {
+    display: none;
+}
+@media only screen 
+    and (max-device-width: 500px) and (min-device-width: 100px) {
+    .THIS .basic_details .divider{
+        left: 30px;
+    }
+    .THIS .basic_details li .no_det_text{
+        left: 23px;
+    }
+    .THIS .no_det{
+        left: 10px !important;
+    }
+    .THIS .basic_details{
+        margin: 130px 0;
+    }
+    .THIS .det_btn{
+        width: 100%;
+        float: none;
+        margin: 5% 2%;
+        text-align: center;
+        /*width: 90%;
+        margin: 5% auto;*/
+    }
+    .THIS .det_btns {
+        width: auto;
+        margin: auto;
+    }
+    .THIS .cancel_btn,.THIS .continue_btn{
+        width: auto;
+        margin: 5% auto;
+        float: none;
+    }
+    .THIS .basic_detail .infr_details{
+        margin-bottom: 20px;
+    }
+    .THIS .infr_bg .input__field--nariko{
+        padding-bottom: 6px;
+    }
+}
+@media only screen 
+    and (max-device-width: 750px) and (min-device-width: 501px) {
+    .THIS .basic_details .divider{
+        left: 30px;
+    }
+    .THIS .basic_details li .no_det_text{
+        left: 23px;
+    }
+    .THIS .no_det{
+        left: 10px !important;
+    }
+    .THIS .basic_details{
+        margin: 130px 0;
+    }
+    .THIS .det_btn{
+        width: 100%;
+        float: none;
+        margin: auto;
+        text-align: center;
+    }
+    .THIS .det_btns {
+        width: 50%;
+        margin: auto;
+    }
+    .THIS .cancel_btn,.THIS .continue_btn{
+        width: 100%;
+        margin: 0 0 10% 0;
+    }
+    .THIS .basic_detail .infr_details{
+        margin-bottom: 20px;
+    }
+    .THIS .infr_bg .input__field--nariko{
+        padding-bottom: 6px;
+    }
+}
+@media only screen 
+    and (max-device-width: 1200px) and (min-device-width: 751px) {
+    .THIS .infr_bg{
+        margin: 0 1% 5%;
+    }
+    .THIS .cus_details{
+        width:100%;
+    }
+    .THIS .det_btn{
+        margin: 5% 5% 10% 0%;
+        float: right;
+        width: 460px;
+    }   
+    .THIS .cancel_btn{
+        margin: 0;
+    }
+    .THIS .continue_btn{
+        margin: 0 0 0 5%;
+    }
+    .THIS .infr_bg .input__field--nariko{
+        padding-bottom: 9px;
+    }
+    .THIS .uiButton .label{
+        display: inline-block;
+    }
+}

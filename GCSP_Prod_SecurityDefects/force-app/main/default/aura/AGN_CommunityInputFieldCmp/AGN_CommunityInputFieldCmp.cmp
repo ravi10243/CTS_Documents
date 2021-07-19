@@ -1,0 +1,241 @@
+<aura:component controller="AGN_OAMMetadataController" implements="flexipage:availableForAllPageTypes">
+    
+    <!-- Public Attributes -->
+    <aura:attribute name="sobjectName" type="String" required="true" />
+    <aura:attribute name="fieldName" type="String" required="true" />
+    <aura:attribute name="record" type="SObject" required="true" />
+    <aura:attribute name="displayType" type="String" />
+    <aura:attribute name="picklistOptions" type="Object[]" />
+    <aura:attribute name="variant" type="String" default="form" description="Options: form (default) and bare" />
+    <aura:attribute name="render" type="Boolean" default="true" />
+    <aura:attribute name="disabled" type="Boolean" />
+    <aura:attribute name="required" type="Boolean" />
+    <aura:attribute name="addRequiredCSS" type="Boolean" default="false"/>
+    <aura:attribute name="fieldValueMissing" type="Boolean" default="false"/>
+    <aura:attribute name="currencyIsoCode" type="String" />
+    <aura:attribute name="customLabel" type="String" />
+    <aura:attribute name="isFormatValid" type="Boolean" default="true" />
+    <aura:attribute name="fieldRegex" type="String" />
+    <aura:attribute name="fieldMetadata" type="Object" access="private" />
+    <aura:attribute name="fieldValue" type="Object" access="public" />
+    <aura:attribute name="customLabelName" type="String" access="public"/>
+    <aura:attribute name="customCountryCode" type="String" access="public"/>
+    <aura:attribute name="cmpHelpText" type="String" access="public" default=''/>
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.record}" action="{!c.handleRecordChanged}" />
+    <aura:handler name="change" value="{!v.fieldValue}" action="{!c.handleFieldValueChanged}" />
+    <aura:handler name="change" value="{!v.handleBlur}" action="{!c.handleFieldValueChanged}" />
+    
+    <aura:attribute name="isReadonly" type="Boolean" default="false"/>
+    
+    <!-- Markup -->
+    <!--<aura:if isTrue="{!and(v.fieldMetadata.sobjectMetadata.isAccessible, v.fieldMetadata.isAccessible, v.render)}">-->
+    
+    <!--<aura:if isTrue="{!v.variant == 'form'}">
+            <label class="slds-form-element__label" for="{!v.auraId}">
+                <aura:if isTrue="{!and(v.required, v.displayType != 'BOOLEAN')}">
+                    <abbr class="slds-required" title="required">*</abbr>
+                </aura:if>
+                {!v.customLabelName}
+            </label>
+        </aura:if>-->
+    
+    <!--
+                    Input type is determined based on the field's display type
+                    More info: https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_enum_Schema_DisplayType.htm
+                -->
+    <!-- ADDRESS - TODO -->
+    <!-- BASE64 - TODO -->
+    <!-- COMBOBOX - TODO -->
+    <!-- DATACATEGORYGROUPREFERENCE - TODO -->
+    <!-- ID - TODO -->
+    <!-- REFERENCE - TODO -->
+    <!-- TIME - TODO -->
+    
+    <!-- BOOLEAN -->
+    <aura:if isTrue="{!v.displayType == 'BOOLEAN'}">
+        <div class="slds-form-element">
+            <span class="{!'input input--nariko inputCheckboxValue' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.fieldValue}" 
+                  data-fieldValueMissing="{!v.fieldValueMissing}" title="{!v.cmpHelpText}">
+                <label class="slds-checkbox_toggle slds-grid"> 
+                    <span class="slds-form-element__label input__Checkboxlabel--nariko">{!v.customLabelName}<span class="slds-required" >{!v.required ? '*' : ''}</span> </span> 
+                    <ui:inputCheckbox disabled="{!v.disabled}" value="{!v.fieldValue}" required="{!v.required}" class="slds-input slds-checkbox uiInput--checkbox"/>               
+                    <span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+                        <span class="slds-checkbox_faux"></span>
+                        <!-- <span class="slds-checkbox_on">Enabled</span>
+                            <span class="slds-checkbox_off">Disabled</span> -->
+                    </span>
+                </label> 
+            </span>
+        </div>
+    </aura:if>       
+    
+    <!-- CURRENCY -->
+    <aura:if isTrue="{!v.displayType == 'CURRENCY'}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.fieldValue}" 
+              data-fieldValueMissing="{!v.fieldValueMissing}" title="{!v.cmpHelpText}">
+            <ui:inputCurrency aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" 
+                              blur="{!c.handleBlur}" format="{!'######0.00 ' + v.currencyIsoCode}"
+                              disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">{!v.customLabelName}<span>{!v.required ? '*' : ''}</span></span>
+            </label>
+        </span>
+    </aura:if>
+    
+    <!-- DATE -->
+    <aura:if isTrue="{!v.displayType == 'DATE'}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" 
+              data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}" title="{!v.cmpHelpText}">
+            <ui:inputDate aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}"  displayDatePicker="true"
+                          blur="{!c.handleBlur}"
+                          disabled ="{!v.isReadonly}"/>
+        </span>
+    </aura:if>
+    
+    <!-- DATETIME -->
+    <aura:if isTrue="{!v.displayType == 'DATETIME'}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" 
+              data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}" title="{!v.cmpHelpText}">
+            <ui:inputDatetime aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" displayDatePicker="true"
+                              blur="{!c.handleBlur}"
+                              disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">{!v.customLabelName}<span>{!v.required ? '*' : ''}</span></span>
+            </label>
+        </span>
+    </aura:if>
+    
+    <!-- DOUBLE or INTEGER -->
+    <aura:if isTrue="{!or(v.displayType == 'DOUBLE', v.displayType == 'INTEGER')}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" 
+              data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}" title="{!v.cmpHelpText}">
+            <ui:inputNumber aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}"
+                            blur="{!c.handleBlur}"
+                            disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">{!v.customLabelName}<span>{!v.required ? '*' : ''}</span></span>
+            </label>
+        </span>
+    </aura:if>
+    
+    <!-- EMAIL -->
+    <aura:if isTrue="{!v.displayType == 'EMAIL'}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" 
+              data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}" data-isFormatValid="{!v.isFormatValid}" title="{!v.cmpHelpText}">
+            <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" maxlength="{!v.fieldMetadata.maxLength}"
+                          blur="{!c.handleBlur}"
+                          disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">{!v.customLabelName}<span>{!v.required ? '*' : ''}</span></span>
+            </label>
+        </span>
+    </aura:if>
+    
+    <!-- ENCRYPTEDSTRING -->
+    <aura:if isTrue="{!v.displayType == 'ENCRYPTEDSTRING'}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" 
+              data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}" title="{!v.cmpHelpText}">
+            <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" maxlength="{!v.fieldMetadata.maxLength}"
+                          blur="{!c.handleBlur}"
+                          disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">
+                    {!v.customLabelName}
+                    <span>{!v.required ? '*' : ''}</span>
+                </span>
+            </label>
+        </span>
+    </aura:if>
+    
+    <!-- MULTIPICKLIST or PICKLIST -->
+    <aura:if isTrue="{!or(v.displayType == 'MULTIPICKLIST', v.displayType == 'PICKLIST')}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}"   style="/*padding-top: 21px;*/" 
+              data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}" title="{!v.cmpHelpText}">
+            <ui:inputSelect aura:id="inputField" required="{!v.required}" 
+                            blur="{!c.handleBlur}" multiple="{!v.displayType == 'MULTIPICKLIST'}" change="{!c.handleFieldValueChanged}"
+                            class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" disabled ="{!v.isReadonly}">
+                <aura:iteration items="{!v.picklistOptions}" var="picklistOption">
+                    <ui:inputSelectOption label="{!picklistOption.label}" text="{!picklistOption.value}" value="{!picklistOption.value == v.fieldValue}" />
+                </aura:iteration>
+            </ui:inputSelect>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">{!v.customLabelName}<span>{!v.required ? '*' : ''}</span></span>
+            </label>
+        </span>
+    </aura:if>
+    
+    <!-- PERCENT -->
+    <aura:if isTrue="{!v.displayType == 'PERCENT'}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}">
+            <ui:inputNumber aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}"
+                            blur="{!c.handleBlur}"
+                            disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">{!v.customLabelName}<span>{!v.required ? '*' : ''}</span></span>
+            </label>
+        </span>
+    </aura:if>
+    
+    <!-- PHONE -->
+    <aura:if isTrue="{!v.displayType == 'PHONE'}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" 
+              data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}" data-isFormatValid="{!v.isFormatValid}" title="{!v.cmpHelpText}">
+            <ui:inputPhone aura:id="inputField" value="{!v.fieldValue}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" maxlength="{!v.fieldMetadata.maxLength}"
+                           blur="{!c.handleBlur}"
+                           disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">{!v.customLabelName}<span>{!v.required ? '*' : ''}</span></span>
+            </label>
+        </span>
+    </aura:if>
+    
+    <!-- STRING -->
+    <aura:if isTrue="{!v.displayType == 'STRING'}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" 
+              data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}" title="{!v.cmpHelpText}">
+            <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" maxlength="{!v.fieldMetadata.maxLength}"
+                          blur="{!c.handleBlur}"
+                          disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">
+                    {!v.customLabelName}
+                    <span>{!v.required ? '*' : ''}</span>
+                </span>
+            </label>
+            
+        </span>
+    </aura:if>
+    
+    <!-- TEXTAREA -->
+    <aura:if isTrue="{!v.displayType == 'TEXTAREA'}"> 
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}">
+            <ui:inputTextArea aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" maxlength="{!v.fieldMetadata.maxLength}"
+                              blur="{!c.handleBlur}"
+                              disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">{!v.customLabelName}<span>{!v.required ? '*' : ''}</span></span>
+            </label>
+            <aura:if isTrue="{!v.required == 'true'}">
+                <div class='required'/>
+            </aura:if>
+        </span>
+    </aura:if>
+    
+    <!-- URL -->
+    <aura:if isTrue="{!v.displayType == 'URL'}">
+        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.fieldValue}" data-fieldValueMissing="{!v.fieldValueMissing}">
+            <ui:inputURL aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" maxlength="{!v.fieldMetadata.maxLength}"
+                         blur="{!c.handleBlur}"
+                         disabled ="{!v.isReadonly}"/>
+            <label class="input__label input__label--nariko">
+                <span class="input__label-content input__label-content--nariko inputHasValue">{!v.customLabelName}<span>{!v.required ? '*' : ''}</span></span>
+            </label>
+            <aura:if isTrue="{!v.required == 'true'}">
+                <div class='required'/>
+            </aura:if>
+        </span>
+    </aura:if>
+    <!--</aura:if>-->
+</aura:component>

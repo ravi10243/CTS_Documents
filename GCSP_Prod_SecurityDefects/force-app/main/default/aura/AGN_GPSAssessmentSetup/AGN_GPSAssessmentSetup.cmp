@@ -1,0 +1,637 @@
+<aura:component access="public" controller="GPSAssessmentToolController">
+
+    <!-- Static Resources -->
+    <ltng:require styles="{!$Resource.gps_common_styles}" />
+
+    <!-- Public Attributes -->
+    <aura:attribute name="assessmentId" type="Id" />
+
+    <!-- Private Attributes -->
+    <aura:attribute name="assessment" type="GPS_Assessment__c" access="private" />
+    <aura:attribute name="assessmentProducts" type="GPS_Assessment_Product_AGN__c[]" access="private" />
+
+    <!-- Assessments by Users-->
+    <aura:attribute name="accountAssessmentsByOwner" type="Account_GPS_Assessment__c[]" access="private" />
+    <aura:attribute name="accountAssessmentStatsByOwner" type="AggregateResult[]" access="private" />
+    <aura:attribute name="accountAssessmentStatsByOwnerSortField" type="String" access="private" default="Owner.Name" />
+    <aura:attribute name="accountAssessmentStatsByOwnerSortArrow" type="String" access="private" default="&nbsp;  &#9650;" />
+    <aura:attribute name="accountAssessmentStatsByOwnerSortIsAsc" type="Boolean" access="private" default="true" />
+    <aura:attribute name="accountAssessmentStatsByOwnerPageNumber" type="Integer" access="private" default="1" />
+    <aura:attribute name="accountAssessmentStatsByOwnerTotalRecords" type="Integer" access="private" />
+    <aura:attribute name="accountAssessmentStatsByOwnerTotalPages" type="Integer" access="private" />
+
+    <aura:attribute name="displaySpinner" type="Boolean" access="private" default="false" />
+    <aura:attribute name="usersWithMatchingProducts" type="User[]" access="private" />
+    <aura:attribute name="accountsToAdd" type="Account[]" access="private" />
+    <aura:attribute name="accountIdsToAdd" type="String[]" access="private" />
+    <aura:attribute name="showSelectUsers" type="Boolean" access="private" default="false" />
+    <aura:attribute name="showUpload" type="Boolean" access="private" default="false" />
+    <aura:attribute name="showAccountAssessments" type="Boolean" access="private" default="false" />
+    <aura:attribute name="newAssessmentOwnerId" type="Id" access="private" />
+    <aura:attribute name="newAssessmentOwnerName" type="String" access="private" />
+
+    <!-- PMO 3408: GPS Assessment: Start: Added Multiselect Picklist Values -->
+    <aura:attribute name="businessUnitList" type="List" default="[]" description="Business Unit Picklist Values"/>
+    <aura:attribute name="selectedBusinessUnitList" type="List" default="[]" description="Selected Business Unit Values"/>
+    <!-- PMO 3408: GPS Assessment: End: Added Multiselect Picklist Values -->
+    
+    <!-- Add Product -->
+    <aura:attribute name="showAddProducts" type="Boolean" access="private" default="false" />
+    <aura:attribute name="products" type="Product_vod__c[]" />
+    <aura:attribute name="productSearchString" type="String"/>
+
+    <!-- Add Accounts -->
+    <aura:attribute name="showAddAccounts" type="Boolean" access="private" default="false" />
+    <aura:attribute name="accountSearchString" type="String" />
+
+    <!--Bulk Upload-->
+    <aura:attribute name="parentId" type="Id" />
+    <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
+    <aura:attribute name="fileName" type="String" default="No File Selected.." />
+
+    <!-- Handlers -->
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}" />
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}" />
+    <aura:handler event="c:AGN_GPSShowAssessmentEvt" action="{!c.handleShowAssessment}" includeFacets="true" />
+    <aura:handler name="change" value="{!v.accountAssessmentStatsByOwnerSortField}" action="{!c.fetchAccountGPSAssessmentsByOwner}" />
+    <aura:handler name="change" value="{!v.accountAssessmentStatsByOwnerSortIsAsc}" action="{!c.fetchAccountGPSAssessmentsByOwner}" default="true" />
+    <aura:handler name="change" value="{!v.accountAssessmentStatsByOwnerRecordsPerPage}" action="{!c.fetchAccountGPSAssessmentsByOwner}" />
+    <aura:handler name="change" value="{!v.accountAssessmentStatsByOwnerPageNumber}" action="{!c.fetchAccountGPSAssessmentsByOwner}" />
+
+    <!-- PMO 3408: GPS Assessment: Start: Business unit Multiselect-Picklist Assignment -->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" description="Call doInit function on component load to get picklist values"/>
+    <!-- PMO 3408: GPS Assessment: End: Business unit Multiselect-Picklist Assignment -->
+    
+    <!-- Events -->
+    <aura:registerEvent name="assessmentUpdated" type="c:AGN_GPSAssessmentUpdatedEvt" />
+
+    <!-- Markup -->
+    <aura:if isTrue="{!v.displaySpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <lightning:spinner variant="brand" size="large" />
+        </div>
+    </aura:if>
+    <div style="margin-bottom: 20px;">
+        <h2><c:sobjectLabel sobjectName="GPS_Assessment__c" />: {!v.assessment.Name}</h2>
+        <div style="display:inline;float:right;margin-top:-20px;">
+            <lightning:buttonGroup >
+                
+                <!-- PMO 3408: GPS Assessment: Start: Export --> 
+                <aura:if isTrue="{!v.assessmentId != null}">
+                    <lightning:button label="{!$Label.c.AGN_Export}" onclick="{!c.exportAssessment}" disabled="{!or(v.accountAssessmentStatsByOwner == null, or(v.accountAssessmentStatsByOwner.length == 0,v.assessmentProducts.length == 0))}" />
+                </aura:if>
+                <!-- PMO 3408: GPS Assessment: End: Export -->
+                
+                <aura:if isTrue="{!v.assessmentId != null}">
+                    <lightning:button label="{!$Label.c.Clone}" onclick="{!c.cloneAssessment}" />
+                </aura:if>
+                <lightning:button label="{!$Label.c.Save}" class="gps-primary-action" onclick="{!c.saveAssessment}" />
+            </lightning:buttonGroup>
+        </div>
+    </div>
+    <lightning:tabset variant="scoped">
+        <lightning:tab title="Details and Products" id="products">
+            <aura:set attribute="label">Details and Products</aura:set>
+
+            <div class="gps-header"><h2>General</h2></div>
+            <lightning:layout horizontalAlign="space">
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="slds-form slds-form_horizontal">
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Name" />
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Added Brand_Portfolio_AGN__c -->
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Brand_Portfolio_AGN__c" />
+                        <!-- PMO 3408: GPS Assessment: End: Added Brand_Portfolio_AGN__c -->
+                        
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Product_Name_AGN__c" />
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Added Business_Unit_AGN__c -->
+                        <lightning:dualListbox aura:id="selectBusinessUnit"
+                               name="Business Unit"
+                               label="{!$Label.c.AGN_Business_Unit}"
+                               sourceLabel="Available"
+                               selectedLabel="Selected"
+                               options="{!v.businessUnitList }"
+                               value="{!v.selectedBusinessUnitList}"
+                               />
+                        <!-- PMO 3408: GPS Assessment: End: Added Business_Unit_AGN__c -->
+                        
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Due_Date_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Assessment_Type_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Value_Type_AGN__c" />
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Removed Data period related functionality -->
+                        <!--
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Data_Period_Collection_AGN__c" />
+                        <aura:if isTrue="{!v.assessment.Data_Period_Collection_AGN__c >= '1'}">
+                            <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Data_Collection_Period_1_AGN__c" />
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Data_Period_Collection_AGN__c == '2'}">
+                            <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Data_Collection_Period_2_AGN__c" />
+                        </aura:if>
+						-->
+                        <!-- PMO 3408: GPS Assessment: End: Removed Data period related functionality -->
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="slds-form slds-form_horizontal">
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Status_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Time_Frame_AGN__c" />
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Removed Projection Metric, Change Metric, Financial Projection Period -->
+                        <!--
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Projection_Metric_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Change_Metrics_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Financial_Projection_Period_Mths_AGN__c" />
+                        -->
+                        <!-- PMO 3408: GPS Assessment: End: Removed Projection Metric, Change Metric, Financial Projection Period -->
+                        
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Allow_Account_Removal_AGN__c" />
+                        <!-- <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Display_Confidence_Level_Capture_AGN__c" /> -->
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Added help text -->
+                        <aura:if isTrue="{!v.assessment.Assessment_Type_AGN__c == 'Customers'}">
+                            <!-- <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Display_KOL_Capture_AGN__c" /> -->
+                            <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Display_Referrer_Capture_AGN__c" />
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Assessment_Type_AGN__c == 'Accounts'}">
+                            <abbr class="slds-required">{!$Label.c.AGN_Account_Help_Text}</abbr>
+                        </aura:if>
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Display_KOL_Capture_AGN__c" />
+                        <!-- PMO 3408: GPS Assessment: End: Added help text -->
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Removed Display_Local_ASP_Capture_AGN__c -->
+                        <!-- <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Display_Local_ASP_Capture_AGN__c" /> -->
+                        <!-- PMO 3408: GPS Assessment: End: Removed Display_Local_ASP_Capture_AGN__c -->
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Added Digital_Only_AGN__c, Consent_for_Digital_AGN__c -->
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Digital_Only_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Consent_for_Digital_AGN__c" />
+                    	<!-- PMO 3408: GPS Assessment: End: Added Digital_Only_AGN__c, Consent_for_Digital_AGN__c -->
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+
+            <div>
+                <c:modal title="Add Products" isOpen="{!v.showAddProducts}" class="slds-modal_large"
+                    primaryAction="{!c.addSelectedProducts}" primaryActionClass="gps-primary-action" primaryActionLabel="Add Selected Products"
+                >
+                    <aura:set attribute="body">
+                        <ui:inputText value="{!v.productSearchString}" class="slds-input" placeholder="Search" />
+                        <lightning:button label="Search Products" onclick="{!c.searchProducts}" />
+
+                        <table class="gps-table gps-sub-table" id="mytable">
+                            <thead>
+                                <tr>
+                                    <td role="gridcell"></td>
+                                    <td role="gridcell">Product Name</td>
+                                    <td role="gridcell">Product Type</td>
+                                </tr>
+                            </thead>
+                            <aura:iteration var="product" items="{!v.products}" indexVar="indx">
+                                <tr>
+                                    <td role="gridcell">
+                                        <input type="checkbox" name="checkbox" data-productid="{!product.Id}" />
+                                    </td>
+                                    <td role="gridcell">
+                                        <a href="{! '/' + product.Id}" target="_blank">{!product.Name}</a>
+                                    </td>
+                                    <td role="gridcell">{!product.Product_Type_vod__c}</td>
+                                </tr>
+                            </aura:iteration>
+                        </table>
+                    </aura:set>
+                </c:modal>
+                <lightning:button label="Add Products" class="gps-primary-action" onclick="{!c.toggleAddProducts}" disabled="{!v.assessmentId == null}" />
+
+                <table class="gps-table gps-sub-table">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td><c:fieldLabel sobjectName="Product_vod__c" fieldName="Name" /></td>
+                            <td><c:fieldLabel sobjectName="Product_vod__c" fieldName="Product_Type_vod__c" /></td>
+                            <td><c:fieldLabel sobjectName="Product_vod__c" fieldName="External_ID_vod__c" /></td>
+                        </tr>
+                    </thead>
+                    <aura:iteration items="{!v.assessmentProducts}" var="assessmentProduct">
+                        <tr>
+                            <td>
+                                <div>
+                                    <lightning:buttonIcon iconName="utility:delete" variant="destructive" class="delete" onclick="{!c.deleteAssessmentProduct}" value="{!assessmentProduct.Id}"/>
+                                </div>
+                            </td>
+                            <td><a href="{! '/' + assessmentProduct.Product_AGN__c}" target="_blank">{!assessmentProduct.Product_AGN__r.Name}</a></td>
+                            <td>{!assessmentProduct.Product_AGN__r.Product_Type_vod__c}</td>
+                            <td>{!assessmentProduct.Product_AGN__r.External_ID_vod__c}</td>
+                        </tr>
+                    </aura:iteration>
+                </table>
+            </div>
+            
+            <!-- PMO 3408: GPS Assessment: Start: Removed Market Data, Dosage Data, Visit/Treatment Frequency Data -->
+            <!--
+            <div class="gps-header"><h2>Market Data</h2></div>
+            <lightning:layout horizontalAlign="space">
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="slds-form slds-form_horizontal">
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Use_Market_Data_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Indication_Therapy_Area_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Share_Capture_AGN__c" />
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="slds-form slds-form_horizontal">
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Secondary_Brand_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Secondary_Brand_Name_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Secondary_Brand_Indication_AGN__c" />
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <div class="gps-header"><h2>Dosage Data</h2></div>
+            <lightning:layout horizontalAlign="space">
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="slds-form slds-form_horizontal">
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Use_Dosage_Data_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Value_Per_Dosage_Unit_AGN__c" />
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="slds-form slds-form_horizontal">
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Default_Dosage_PP_AGN__c" />
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Dosage_Unit_AGN__c" />
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <div class="gps-header"><h2>Visit/Treatment Frequency Data</h2></div>
+            <lightning:layout horizontalAlign="space">
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="slds-form slds-form_horizontal">
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Use_Frequency_Data_AGN__c" />
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="slds-form slds-form_horizontal">
+                        <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Default_Frequency_AGN__c" />
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            -->
+            <!-- PMO 3408: GPS Assessment: End: Removed Market Data, Dosage Data, Visit/Treatment Frequency Data -->
+            
+        </lightning:tab>
+        <aura:if isTrue="{!v.assessmentId != null}">
+            <lightning:tab title="Questions" id="questions">
+                <aura:set attribute="label">Questions</aura:set>
+                <div class="gps-header"><h2>Standard Questions</h2></div>
+                <table class="gps-table gps-sub-table">
+                    <thead>
+                        <!-- PMO 3408: GPS Assessment: Start: Modified questions -->
+                        <tr>
+                            <!-- <td style="width:20%">Question Type</td> -->
+                            <td style="width:10%">{!$Label.c.AGN_Select}</td>
+                            <td style="width:10%">Question Type</td>
+                            <td style="width:40%">Question Text</td>
+                            <!-- <td style="width:40%">Question Override</td> -->
+                            <td style="width:40%">{!$Label.c.AGN_Question_Translation}</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Business_Size_Question_Mandatory_AGN__c" disabled="True" variant="label-hidden" /></td>
+                        <td class="gps gps-business-size">Business Size</td>
+                        <td>{!v.assessment.Business_Size_Question_AGN__c}</td>
+                        <td><ui:inputTextArea value="{!v.assessment.Business_Size_Question_Override_AGN__c}" /></td>
+                    </tr>
+                    <!-- <aura:if isTrue="{!v.assessment.Share_Capture_AGN__c == 'Absolute'}"> -->
+                        <tr>
+                            <td><c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="AGN_Share_Absolute_QSTN_Mandatory_AGN__c" variant="label-hidden" /></td>
+                            <!-- <td class="gps gps-agn-share">AGN Share (Absolute)</td> -->
+                            <td class="gps gps-business-size">{!$Label.c.AGN_Usage}</td>
+                            <td>{!v.assessment.AGN_Share_Absolute_Question_AGN__c}</td>
+                            <td><ui:inputTextArea value="{!v.assessment.AGN_Share_Absolute_Question_Override_AGN__c}" /></td>
+                        </tr>
+                    <!-- </aura:if> -->
+                    <!-- PMO 3408: GPS Assessment: End: Modified questions -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: AGN Share (Percentage) removal -->
+                    <!--<aura:if isTrue="{!v.assessment.Share_Capture_AGN__c == 'Percentage'}">
+                        <tr>
+                            <td class="gps gps-agn-share">AGN Share (Percentage)</td>
+                            <td>{!v.assessment.AGN_Share_Percentage_Question_AGN__c}</td>
+                            <td><ui:inputTextArea value="{!v.assessment.AGN_Share_Percent_Question_Override_AGN__c}" /></td>
+                        </tr>
+                    </aura:if>-->
+                    <!-- PMO 3408: GPS Assessment: Start: AGN Share (Percentage) removal -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Modified questions -->
+                    <!--
+                    <aura:if isTrue="{!v.assessment.Use_Dosage_Data_AGN__c == true}">
+                        <tr>
+                            <td class="gps gps-treatment">Dosage Per Treatment</td>
+                            <td>{!v.assessment.Dose_Per_Treatment_Question_AGN__c}</td>
+                            <td><ui:inputTextArea value="{!v.assessment.Dose_Per_Treatment_Question_Override_AGN__c}" /></td>
+                        </tr>
+                    </aura:if>
+                    -->
+                    <!-- PMO 3408: GPS Assessment: End: Modified questions -->
+                    <!-- PMO 3408: GPS Assessment: Start:Frequency and Secondary Brand Removal -->
+                    <!--
+                    <aura:if isTrue="{!v.assessment.Use_Frequency_Data_AGN__c == true}">
+                        <tr>
+                            <td class="gps gps-treatment">Frequency Of Treatment</td>
+                            <td>{!v.assessment.Freq_Of_Treatment_Question_AGN__c}</td>
+                            <td><ui:inputTextArea value="{!v.assessment.Freq_Of_Treatment_Question_Override_AGN__c}" /></td>
+                        </tr>
+                    </aura:if>
+                    <aura:if isTrue="{!v.assessment.Secondary_Brand_AGN__c == true}">
+                        <tr>
+                            <td class="gps gps-secondary-brands">Secondary Brand</td>
+                            <td>{!v.assessment.Secondary_Brand_Question_AGN__c}</td>
+                            <td><ui:inputTextArea value="{!v.assessment.Secondary_Brand_Question_Override_AGN__c}" /></td>
+                        </tr>
+                    </aura:if> -->
+                    <!-- PMO 3408: GPS Assessment: End:Frequency and Secondary Brand Removal -->
+                </table>
+                <div class="gps-header"><h2>Custom Questions</h2></div>
+                <table class="gps-table gps-sub-table">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Question Type</td>
+                            <td>Question Text</td>
+                            <td>Question List of Values</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td class="gps gps-custom-question"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Custom_Question_1_AGN__c" /></td>
+                        <td><c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_1_Type_AGN__c" variant="bare" /></td>
+                        <td>
+                            <aura:if isTrue="{!not(empty(v.assessment.Custom_Question_1_Type_AGN__c))}">
+                                <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_1_AGN__c" variant="bare" />
+                            </aura:if>
+                        </td>
+                        <td>
+                            <aura:if isTrue="{!v.assessment.Custom_Question_1_Type_AGN__c == 'PICKLIST'}">
+                                <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_1_List_Of_Values_AGN__c" variant="bare" />
+                            </aura:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="gps gps-custom-question"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Custom_Question_2_AGN__c" /></td>
+                        <td><c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_2_Type_AGN__c" variant="bare" /></td>
+                        <td>
+                            <aura:if isTrue="{!not(empty(v.assessment.Custom_Question_2_Type_AGN__c))}">
+                                <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_2_AGN__c" variant="bare" />
+                            </aura:if>
+                        </td>
+                        <td>
+                            <aura:if isTrue="{!v.assessment.Custom_Question_2_Type_AGN__c == 'PICKLIST'}">
+                                <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_2_List_Of_Values_AGN__c" variant="bare" />
+                            </aura:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="gps gps-custom-question"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Custom_Question_3_AGN__c" /></td>
+                        <td><c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_3_Type_AGN__c" variant="bare" /></td>
+                        <td>
+                            <aura:if isTrue="{!not(empty(v.assessment.Custom_Question_3_Type_AGN__c))}">
+                                <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_3_AGN__c" variant="bare" />
+                            </aura:if>
+                        </td>
+                        <td>
+                            <aura:if isTrue="{!v.assessment.Custom_Question_3_Type_AGN__c == 'PICKLIST'}">
+                                <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_3_List_Of_Values_AGN__c" variant="bare" />
+                            </aura:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="gps gps-custom-question"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Custom_Question_4_AGN__c" /></td>
+                        <td><c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_4_Type_AGN__c" variant="bare" /></td>
+                        <td>
+                            <aura:if isTrue="{!not(empty(v.assessment.Custom_Question_4_Type_AGN__c))}">
+                                <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_4_AGN__c" variant="bare" />
+                            </aura:if>
+                        </td>
+                        <td>
+                            <aura:if isTrue="{!v.assessment.Custom_Question_4_Type_AGN__c == 'PICKLIST'}">
+                                <c:inputField sobjectName="GPS_Assessment__c" record="{!v.assessment}" fieldName="Custom_Question_4_List_Of_Values_AGN__c" variant="bare" />
+                            </aura:if>
+                        </td>
+                    </tr>
+                </table>
+            </lightning:tab>
+        </aura:if>
+        <aura:if isTrue="{!and(v.assessmentId != null, v.assessmentProducts.length > 0)}">
+            <lightning:tab title="{!v.assessment.Assessment_Type_AGN__c}" id="accounts" onactive="{!c.fetchAccountGPSAssessmentsByOwner}">
+                <aura:set attribute="label">Users and {!v.assessment.Assessment_Type_AGN__c}</aura:set>
+
+                <lightning:buttonGroup >
+                    <lightning:button label="Select Managers and Sales Reps" onclick="{!c.toggleSelectUsers}" />
+                    <lightning:button label="{! 'Add ' + v.assessment.Assessment_Type_AGN__c}" onclick="{!c.toggleAddAccounts}" /> <!--TODO show list of accounts in user's territories-->
+                    <lightning:button label="{! 'Bulk Upload ' + v.assessment.Type_AGN__c}" onclick="{!c.toggleUpload}" />
+                </lightning:buttonGroup>
+
+                <c:modal title="Select Managers and Sales Reps" isOpen="{!v.showSelectUsers}" class="slds-modal_large"
+                    primaryAction="{!c.addSelectedUsers}" primaryActionClass="gps-primary-action" primaryActionLabel="Add Selected Users"
+                >
+                    <aura:set attribute="body">
+                        <p>Any target accounts owned by the selected users below with matching products will be added</p>
+                        <table class="gps-table gps-sub-table">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td>User</td>
+                                    <td>Email</td>
+                                    <td>Role</td>
+                                </tr>
+                            </thead>
+                            <aura:iteration items="{!v.usersWithMatchingProducts}" var="manager">
+                                <tr>
+                                    <td>
+                                        <input name="checkbox" type="checkbox" data-userid="{!manager.Id}" data-managerid="" onclick="{!c.selectDirectReports}" />
+                                    </td>
+                                    <td><a href="{! '/' + manager.Id}" target="_blank">{!manager.Name}</a></td>
+                                    <td>{!manager.Email}</td>
+                                    <td>{!manager.UserRole.Name}</td>
+                                </tr>
+                                <aura:iteration items="{!manager.ManagedUsers}" var="directReport">
+                                    <tr>
+                                        <td>
+                                            <input name="checkbox" type="checkbox" data-userid="{!directReport.Id}" data-managerid="{!directReport.ManagerId}" />
+                                        </td>
+                                        <td aura:id="{!directReport.ManagerId}" class="nested-td"><span>
+                                            <a href="{! '/' + directReport.Id}" target="_blank">{!directReport.Name}</a>
+                                        </span></td>
+                                        <td>{!directReport.Email}</td>
+                                        <td>{!directReport.UserRole.Name}</td>
+                                    </tr>
+                                </aura:iteration>
+                            </aura:iteration>
+                        </table>
+                    </aura:set>
+                </c:modal>
+                <c:modal title="{!'Add ' + v.assessment.Assessment_Type_AGN__c + ' With Matching Products'}" class="slds-modal_large" isOpen="{!v.showAddAccounts}"
+                    primaryAction="{!c.addSelectedAccounts}" primaryActionRenderIf="{!v.newAssessmentOwnerId != null}" primaryActionClass="gps-primary-action" primaryActionLabel="{!'Assign Selected ' + v.assessment.Assessment_Type_AGN__c + ' to ' + v.newAssessmentOwnerName}"
+                >
+                    <aura:set attribute="body">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label">
+                                <abbr class="slds-required" title="required">*</abbr>
+                                Assign Assessments To:
+                            </label>
+                            <div class="slds-form-element__control">
+                                <ui:inputSelect aura:id="newAssessmentOwnerPicklist" class="slds-select" change="{!c.updateNewAssessmentOwner}">
+                                    <ui:inputSelectOption />
+                                    <aura:iteration items="{!v.accountAssessmentStatsByOwner}" var="accountAssessment">
+                                        <ui:inputSelectOption text="{!accountAssessment.OwnerId}" label="{!accountAssessment.OwnerName}" />
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                            </div>
+                        </div>
+                        <hr />
+                        <aura:if isTrue="{!v.newAssessmentOwnerId != null}">
+                            {!v.assessment.Assessment_Type_AGN__c} To Assess:
+                            <ui:inputText value="{!v.accountSearchString}" class="slds-input" placeholder="{!'Search ' + v.assessment.Assessment_Type_AGN__c}" />
+                            <lightning:button label="{!'Search ' + v.assessment.Assessment_Type_AGN__c}" onclick="{!c.searchAccounts}" />
+
+                            <table class="gps-table gps-sub-table">
+                                <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td><c:fieldLabel sobjectName="Account" fieldName="Name" /></td>
+                                        <aura:if isTrue="{!v.assessment.Assessment_Type_AGN__c == 'Customers'}">
+                                            <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account" fieldName="Primary_Parent_vod__c" showHelpText="true" /></td>
+                                        </aura:if>
+                                        <td><c:fieldLabel sobjectName="Account" fieldName="Target__c" /></td>
+                                    </tr>
+                                </thead>
+                                <aura:iteration items="{!v.accountsToAdd}" var="accountToAdd">
+                                    <tr>
+                                        <td><input name="checkbox" type="checkbox" data-accountid="{!accountToAdd.Id}" /></td>
+                                        <td><a href="{! '/' + accountToAdd.Id}" target="_blank">{!accountToAdd.Name}</a></td>
+                                        <aura:if isTrue="{!v.assessment.Assessment_Type_AGN__c == 'Customers'}">
+                                            <td align="left" class="gps-row-general-info">
+                                                <a href="{! '/' + accountToAdd.Primary_Parent_vod__c}" target="_blank">{!accountToAdd.Primary_Parent_vod__r.Name}</a>
+                                            </td>
+                                        </aura:if>
+                                        <td><ui:outputCheckbox value="{!accountToAdd.Target__c}" /></td>
+                                    </tr>
+                                </aura:iteration>
+                            </table>
+                        </aura:if>
+                    </aura:set>
+                </c:modal>
+                <c:modal title="Bulk Upload" isOpen="{!v.showUpload}">
+                    <aura:set attribute="body">
+                        <div class="slds-form-element">
+                            <!-- <span class="slds-form-element__label" id="file-selector-primary-label">Attachment</span> -->
+                            <div class="slds-form-element__control">
+                                <div class="slds-file-selector slds-file-selector_files">
+                                    <div class="slds-file-selector__dropzone">
+                                  <!--  <input type="file" aura:id="fileUpload" class="slds-file-selector__input slds-assistive-text" accept=".csv" aria-labelledby="file-selector-primary-label file-selector-secondary-label" />
+                                    <label class="slds-file-selector__body" for="file-upload-input-01" id="file-selector-secondary-label">
+                                        <span class="slds-file-selector__button slds-button slds-button_neutral">
+                                        <lightning:icon class="slds-button__icon slds-button__icon_left" iconName="utility:upload" size="x-small" />
+                                        Upload File
+                                        </span>
+                                         <span class="slds-file-selector__text slds-medium-show">or Drop Files</span>
+                          </label> -->
+                                    <lightning:input aura:id="fileId" onchange="{!c.handleFilesChange}" type="file" name="file" label="Upload Attachment" multiple="false"/>
+                                       <div class="slds-text-body_small slds-text-color_error">{!v.fileName} </div>
+
+                                     <!--use aura:if for show-hide the loading spinner image-->
+                                       <aura:if isTrue="{!v.showLoadingSpinner}">
+                                          <div class="slds-text-body_small slds-text-color_error">Uploading...
+                                             <img src="/auraFW/resources/aura/images/spinner.gif" class="spinner-img" alt="Loading"/>'
+                                          </div>
+                                       </aura:if>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                      <!--     <input type="file" class="file" aura:id="fileUpload"/> -->
+                        <br />
+                        <br />
+                        <div style="float:right;">
+                            <a style="margin-right:8px;" class="downloadTemplate" onclick="{!c.downloadImportTemplate}">Download Template</a>
+                         <!--   <lightning:button class="gps-primary-action" label="Upload" onclick="{!c.uploadBulkFile}"/>-->
+
+							<button class="slds-button slds-button_brand" onclick="{!c.doSave}">Upload</button>
+                        </div>
+                    </aura:set>
+                </c:modal>
+                <c:modal title="Account Assessments" isOpen="{!v.showAccountAssessments}" class="slds-modal_large">
+                    <aura:set attribute="body">
+                        <table class="gps-table gps-sub-table">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td><c:fieldLabel sobjectName="Account" fieldName="Veeva_Id_AGN__c" /></td>
+                                    <td><c:fieldLabel sobjectName="Account" fieldName="Name" /></td>
+                                    <td><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Assessment_Type_AGN__c" /></td>
+                                    <td><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Assessment_Started_AGN__c" /></td>
+                                    <td><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Assessment_Completed_AGN__c" /></td>
+                                </tr>
+                            </thead>
+                            <aura:iteration items="{!v.accountAssessmentsByOwner}" var="accountAssessment">
+                                <tr>
+                                    <td>
+                                        <lightning:buttonIcon iconName="utility:delete" variant="destructive" class="delete" onclick="{!c.deleteAccountAssessment}" value="{!accountAssessment.Id}"/>
+                                    </td>
+                                    <td><ui:outputText value="{!accountAssessment.Account_AGN__r.Veeva_Id_AGN__c}" /></td>
+                                    <td><a href="{! '/' + accountAssessment.Account_AGN__c}" target="_blank">{!accountAssessment.Account_AGN__r.Name}</a></td>
+                                    <td><ui:outputText value="{!accountAssessment.Assessment_Type_AGN__c}" /></td>
+                                    <td><ui:outputCheckbox value="{!accountAssessment.Assessment_Started_AGN__c}" /></td>
+                                    <td><ui:outputCheckbox value="{!accountAssessment.Assessment_Completed_AGN__c}" /></td>
+                                </tr>
+                            </aura:iteration>
+                        </table>
+                    </aura:set>
+                </c:modal>
+                <table class="gps-table gps-sub-table">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <th class="slds-is-sortable" scope="col" data-fieldname="Owner.Name" onclick="{!c.accountAssessmentStatsByOwnerSortByField}">
+                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                                    <span class="slds-assistive-text">Sort</span>
+                                    <span class="slds-truncate"><c:sobjectLabel sobjectName="User" variant="label" /></span>
+                                    <aura:if isTrue="{!v.accountAssessmentStatsByOwnerSortField == 'Owner.Name'}">{!v.sortArrow}</aura:if>
+                                </a>
+                            </th>
+                            <td>Number of Completed Assessments</td>
+                            <td>Total Accounts to Assess</td>
+                        </tr>
+                    </thead>
+                    <aura:iteration items="{!v.accountAssessmentStatsByOwner}" var="accountAssessment">
+                        <tr>
+                            <td>
+                                <div>
+                                    <lightning:buttonIcon iconName="utility:expand_alt" onclick="{!c.viewAccountAssessments}" value="{!accountAssessment.OwnerId}"/>
+                                </div>
+                            </td>
+                            <td><a href="{! '/' + accountAssessment.OwnerId}" target="_blank">{!accountAssessment.OwnerName}</a></td>
+                            <td>{!accountAssessment.CompletedAssessments}</td>
+                            <td>{!accountAssessment.TotalAssessments}</td>
+                        </tr>
+                    </aura:iteration>
+                </table>
+                <div class="slds-page-header" role="banner">
+                    <ui:inputSelect aura:id="recordsPerPage" label="{!$Label.c.records_Per_Page + ': '}" change="{!c.fetchAccountGPSAssessmentsByOwner}">
+                        <ui:inputSelectOption text="25" label="25" value="true"/>
+                        <ui:inputSelectOption text="50" label="50"/>
+                        <ui:inputSelectOption text="100" label="100"/>
+                    </ui:inputSelect>
+                    <aura:if isTrue="{!v.accountAssessmentStatsByOwnerPageNumber &gt; 1}">
+                       <ui:button press="{!c.accountAssessmentStatsByOwnerPreviousPage}" label="{!$Label.c.Previous_Page}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.accountAssessmentStatsByOwnerPageNumber &lt; v.accountAssessmentStatsByOwnerTotalPages}">
+                       <ui:button aura:id="nextbtn" press="{!c.accountAssessmentStatsByOwnerNextPage}" label="{!$Label.c.Next_Page}"/>
+                    </aura:if>
+
+                    &nbsp;{!v.accountAssessmentStatsByOwnerTotalRecords}&nbsp;{!$Label.c.total_records} • {!$Label.c.page_number}&nbsp; {!v.accountAssessmentStatsByOwnerPageNumber} / {!v.accountAssessmentStatsByOwnerTotalPages}
+                </div>
+            </lightning:tab>
+        </aura:if>
+    </lightning:tabset>
+
+</aura:component>

@@ -1,0 +1,28 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="bgColor" type="String" default="#ffffff" />
+    
+    <aura:if isTrue = "{!v.renderMode == 'COMMUNITY'}">
+        <div style="{!'background-color:'+v.bgColor}">
+            <div style = "height: 75px;"> 
+                <div align="center" style="padding: 20px;">
+                    <p class="footerText">
+                        © 2018 Cognizant Technology Solutions Limited, All Rights Reserved
+                    </p>                
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue = "{!v.renderMode == 'DESIGNER'}">
+        <div style="{!'background-color:'+v.bgColor}">
+            <div style = "height: 75px;"> 
+                <div align="center" style="padding: 20px;">
+                    <p class="footerText">
+                        © 2018 Cognizant Technology Solutions Limited, All Rights Reserved (D)
+                    </p>                
+                </div>
+            </div>
+        </div>
+    </aura:if>    
+    
+</aura:component>

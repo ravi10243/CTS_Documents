@@ -1,0 +1,6 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}" />-->
+    <c:AGN_CustAccountHeader_CA/>
+    <c:AGN_CustAccountAddDetails/> 
+</aura:component>

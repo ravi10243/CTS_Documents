@@ -1,0 +1,42 @@
+<!--
+@FileName:          agnAccountHierarchyDatatable.html 
+@Version:           1.0
+@Author:            Ayush Basak (ayush.basak@cognizant.com)
+@Purpose:           This component is to display related records of the accounts on individual account nodes
+@ Change history:   04.01.2021 / Ayush Basak / Created the file.
+-->
+<template>
+    <!-- Hidden display of accountId, this is to ensure rendered callback is triggered on accountId is 
+        set from parent component-->
+    <div class="slds-hide">{sObjectType}</div>
+    
+    <!-- Spinner to display before server side data is recieved -->
+    <template if:false={rendered}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+    <!-- Once data is recieved, display the table -->
+    <template if:true={rendered}>
+        <div class="slds-m-around_xx-small container">
+            <!-- Check if data returned has atleast one case record --> 
+            <template if:true={recordsReturned}>
+                <div class="table">
+                    <!-- Datatable displaying record set -->
+                    <lightning-datatable key-field="Id"
+                                    data={records}
+                                    columns={columns} 
+                                    class="slds-table slds-table_cell-buffer slds-table_bordered" 
+                                    hide-checkbox-column 
+                                    resize-column-disabled> 
+                                    <!--column-widths-mode="auto"-->
+                    </lightning-datatable>
+                </div>
+            </template>
+            <!-- Message to be displayed if no cases returned -->
+            <template if:false={recordsReturned}>
+                <div class="slds-box slds-box_xx-small slds-theme--shade slds-align_absolute-center">
+                    {label.noRecords}
+                </div>
+            </template>
+        </div>
+    </template>
+</template>

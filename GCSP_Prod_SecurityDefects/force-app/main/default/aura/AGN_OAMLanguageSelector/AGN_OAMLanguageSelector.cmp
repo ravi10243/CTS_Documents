@@ -1,0 +1,33 @@
+<aura:component controller="AGN_OAMLanguageSelectorController"  implements="forceCommunity:availableForAllPageTypes,forceCommunity:themeLayout,forceCommunity:profileMenuInterface">
+    <aura:attribute name="ls" type="String"/>
+    <aura:attribute name="selectedLang" type="String"/>
+    <!--<aura:attribute name="languageOptions" type="List" default="[
+                                                                {'label': 'English', 'value': 'en_US'},
+                                                                {'label': 'Español', 'value': 'es'},
+                                                                {'label': 'Italiano', 'value': 'it'},
+                                                                {'label': 'Français', 'value': 'fr'},
+                                                                {'label': 'Deutsch', 'value': 'de'},
+                                                                ]"/> -->
+    
+    <aura:attribute name="languageOptions" type="List" default="[]" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:layout multipleRows="true">
+    <div class="lang_select_container">
+        <lightning:layoutItem padding="around-small" size="5" flexibility="auto" class="lang_select_1">
+         <!--
+            <lightning:select name="languageSelection" label="" aura:id="languageList" value="{!v.selectedLang}"
+                              onchange="{!c.reloadPageForLanguage}" class="select-auto-width">
+                <aura:iteration items="{!v.languageOptions}" var="item">
+                    <option text="{!item.label}" value="{!item.value}" selected="{!item.value==v.selectedLang}"/>
+                </aura:iteration>
+            </lightning:select>           
+                                -->
+            <br/>
+            <aura:iteration items="{!v.languageOptions}" var="item" indexVar="index">        
+                <a onclick="{!c.reloadPageForLanguage}" style="width:100%;" class="lang_select_box" data-index="{!index}">{!item.label}</a>  &nbsp; &nbsp;         
+            </aura:iteration>    
+        </lightning:layoutItem>        
+    </div>
+    </lightning:layout> 
+</aura:component>

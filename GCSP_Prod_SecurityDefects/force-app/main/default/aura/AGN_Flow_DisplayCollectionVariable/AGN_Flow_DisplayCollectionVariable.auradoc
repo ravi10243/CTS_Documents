@@ -1,0 +1,8 @@
+<aura:documentation>
+	<aura:description>Documentation</aura:description>
+	<aura:example name="Description" ref="AGN_Flow_DisplayCollectionVariable" label="Label">
+		This component will help to view and modify collection variable in visual flow.
+        Author:Suman Banerjee
+        Date:22 Aug 2019
+	</aura:example>
+</aura:documentation>

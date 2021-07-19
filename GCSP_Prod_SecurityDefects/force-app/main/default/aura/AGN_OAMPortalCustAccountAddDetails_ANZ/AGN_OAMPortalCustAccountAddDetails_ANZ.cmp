@@ -1,0 +1,146 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="AGN_OAMPortalAccountDetailController" access="global" >
+    <aura:attribute name="addresses" type="AGN_OAMPortalAccountDetailController.AddressWrapper[]"/>
+    <aura:attribute name="shipToCount" type="integer"/>
+    <aura:attribute name="billToCount" type="integer"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <aura:attribute name="gcspSettings" type="AGN_GCSP_Settings__c" access="private"/>
+    <aura:attribute name="isShipToVisible" type="boolean"/>
+    <aura:attribute name="isBillToVisible" type="boolean"/>
+    <aura:attribute name="shipToSameAsSoldTo" type="boolean" default="false"/>
+    <aura:attribute name="billToSameAsSoldTo" type="boolean" default="false"/>
+    <div class="basic_details">
+			<div class="hd">
+                <b>{!$Label.c.AGN_OAM_UpdateAddTimeDuration}</b>
+                <br/>
+                <br/>
+                {!$Label.c.AGN_OAM_Body_Sold_To}
+            </div>
+			<li class="sold_to" style="width:100%;">                
+                <aura:iteration items="{!v.addresses}" var="soldTo">
+                <aura:If isTrue="{!soldTo.accountType == 'SoldTo'}">
+				<div class="sold">
+					<div class="sold_p">
+						<p>{!soldTo.accountName}</p>
+						<div class="sold_text wordwrap">{!soldTo.accountAddress.Address_line_2_vod__c}, {!soldTo.accountAddress.Name}, {!soldTo.accountAddress.City_vod__c} <br/>
+                        	<aura:if isTrue="{!soldTo.accountAddress.State_vod__c!=null}">{!soldTo.accountAddress.State_vod__c}, </aura:if>{!soldTo.accountAddress.Zip_vod__c}</div>
+						<div class="acc_details">
+							<div class="phone_acc"></div>
+							<div class="div_acc"></div>
+							<div class="text_acc">{!soldTo.accountAddress.Phone_vod__c}</div>
+						</div>
+						<div class="acc_details">
+							<div class="msg_acc"></div>
+							<div class="div_acc"></div>
+							<div class="text_acc">{!soldTo.accountAddress.Email_AGN__c}</div>
+						</div>
+					</div>
+					<div class="sold_btm">                       
+                        <div class="edit_acc"><a href="" onclick="{!c.gotoURL}" data-address="{!soldTo.accountAddress.Id}" data-type="SoldTo" data-activity = "edit" >{!$Label.c.AGN_OAM_Body_Edit_Address}</a></div>
+						<!--<div class="delete_acc">Delete</div>-->
+					</div>
+				</div>
+                </aura:If>
+                </aura:iteration>
+			</li> 
+        	<div class="hd">{!$Label.c.AGN_OAM_Body_Ship_To}</div>
+			<li class="sold_to sold_to_thumb" style="width:100%;">
+				<div class="fixed-bar">
+                    <div class="elastislide-wrapper elastislide-horizontal">
+                        <div class="elastislide-carousel">
+					<!-- Elastislide Carousel -->
+                    <ul id="carousel" class="elastislide-list">	                        
+                        <aura:If isTrue="{!and(v.shipToCount == 1, v.shipToSameAsSoldTo)}">
+                            {!$Label.c.AGN_OAM_Body_SameAsSoldTo_ShipTo}
+                        </aura:If>
+                        <aura:iteration items="{!v.addresses}" var="shipTo">                            
+                        <aura:If isTrue="{!and(shipTo.accountType == 'ShipTo', !shipTo.accountAddress.Account_vod__r.SAP_Sold_To_AGN__c)}">
+						<li>
+							<div class="sold sold_first">
+								<div class="sold_p">
+									<p>{!shipTo.accountName}</p>
+                                    <div class="sold_text wordwrap">{!shipTo.accountAddress.Address_line_2_vod__c}, {!shipTo.accountAddress.Name}, {!shipTo.accountAddress.City_vod__c} <br/>
+                                        <aura:if isTrue="{!shipTo.accountAddress.State_vod__c!=null}">{!shipTo.accountAddress.State_vod__c},</aura:if> {!shipTo.accountAddress.Zip_vod__c}</div>
+                                    <div class="acc_details">
+                                        <div class="phone_acc"></div>
+                                        <div class="div_acc"></div>
+                                        <div class="text_acc">{!shipTo.accountAddress.Phone_vod__c}</div>
+                                    </div>
+                                    <div class="acc_details">
+                                        <div class="msg_acc"></div>
+                                        <div class="div_acc"></div>
+                                        <div class="text_acc">{!shipTo.accountAddress.Email_AGN__c}</div>
+                                    </div>
+								</div>
+								<div class="sold_btm">
+                                    <div class="edit_acc"><a href="" onclick="{!c.gotoURL}" data-address="{!shipTo.accountAddress.Id}" data-type="ShipTo" data-activity = "edit">{!$Label.c.AGN_OAM_Body_Edit_Address}</a></div>
+
+                                    <div class="delete_acc"><a href="" onclick="{!c.gotoURL}" data-address="{!shipTo.accountAddress.Id}" data-type="ShipTo" data-activity = "delete">{!$Label.c.AGN_OAM_Body_Deactivate_Address}</a></div>
+									<!-- <div class="delete_acc"><ui:outputURL label="Delete" click="{!c.gotoURL}" /></div> -->
+								</div>
+							</div>
+						</li>
+                        </aura:If>
+                        </aura:iteration>
+					</ul>
+                    </div>
+                        </div>
+					<!-- End Elastislide Carousel -->
+                   <!-- <aura:if isTrue="{!lessthan(v.shipToCount,v.gcspSettings.Number_Of_ShipTo_Allowed_AGN__c)}"> -->
+                    <aura:if isTrue="{! !v.isShipToVisible}">
+                        <ui:button aura:id="button" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Add_New_Address}" press="{!c.newShipTo}" disabled="{!v.isShipToVisible}"/>
+                    </aura:if>                     
+                  <!--  </aura:if>  -->                   	
+                    
+			</div>
+			</li>
+			<div class="hd">{!$Label.c.AGN_OAM_Body_Bill_To}</div>
+			<li class="sold_to sold_to_thumb" style="width:100%;">
+				<div class="fixed-bar">
+                    <div class="elastislide-wrapper elastislide-horizontal">
+                        <div class="elastislide-carousel">
+					<!-- Elastislide Carousel -->
+					<ul id="carousel1" class="elastislide-list">
+                        <aura:If isTrue="{!and(v.billToCount == 1, v.billToSameAsSoldTo)}">
+                            {!$Label.c.AGN_OAM_Body_SameAsSoldTo}
+                        </aura:If>
+                        <aura:iteration items="{!v.addresses}" var="billTo">
+                        <aura:If isTrue="{!and(billTo.accountType == 'BillTo', !billTo.accountAddress.Account_vod__r.SAP_Sold_To_AGN__c)}">
+						<li>
+							<div class="sold sold_first">
+								<div class="sold_p">
+									<p>{!billTo.accountName}</p>
+                                    <div class="sold_text wordwrap">{!billTo.accountAddress.Address_line_2_vod__c}, {!billTo.accountAddress.Name}, {!billTo.accountAddress.City_vod__c} <br/>
+                                        {!billTo.accountAddress.State_vod__c}, {!billTo.accountAddress.Zip_vod__c}</div>
+                                    <div class="acc_details">
+                                        <div class="phone_acc"></div>
+                                        <div class="div_acc"></div>
+                                        <div class="text_acc">{!billTo.accountAddress.Phone_vod__c}</div>
+                                    </div>
+                                    <div class="acc_details">
+                                        <div class="msg_acc"></div>
+                                        <div class="div_acc"></div>
+                                        <div class="text_acc">{!billTo.accountAddress.Email_AGN__c}</div>
+                                    </div>
+								</div>
+								<div class="sold_btm">
+									<div class="edit_acc"><a href="" onclick="{!c.gotoURL}" data-address="{!billTo.accountAddress.Id}" data-type="BillTo" data-activity = "edit">{!$Label.c.AGN_OAM_Body_Edit_Address}</a></div>
+                                    <div class="delete_acc"><a href="" onclick="{!c.gotoURL}" data-address="{!billTo.accountAddress.Id}" data-type="BillTo" data-activity = "delete">{!$Label.c.AGN_OAM_Body_Deactivate_Address}</a></div>
+									<!-- <div class="delete_acc"><ui:outputURL label="Delete" click="{!c.gotoURL}" /></div> -->
+								</div>
+							</div>
+						</li>
+                        </aura:If>
+                        </aura:iteration>
+					</ul>
+                        </div>
+                    </div>
+					<!-- End Elastislide Carousel -->
+                    <aura:if isTrue="{! !v.isBillToVisible}"> 
+                    <ui:button aura:id="button" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Add_New_Address}" press="{!c.newBillTo}" disabled="{!v.isBillToVisible}"/>	
+                    </aura:if> 
+			</div>
+			</li>
+    </div>    
+    <!-- <ltng:require styles="{!$Resource.AGN_CustomerAccount + '/css/elastislide.css'}" scripts="{!join(',',
+								$Resource.AGN_CustomerPortalModernizr, $Resource.AGN_CustomerPortalJQuery)}" afterScriptsLoaded="{!c.scriptsLoaded}"/>  -->
+</aura:component>

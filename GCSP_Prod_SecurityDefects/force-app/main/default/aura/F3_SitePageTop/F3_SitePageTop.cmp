@@ -1,0 +1,27 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="application" type="object" />
+    <aura:attribute name="applicationId" type="String"/>
+    
+    <aura:if isTrue = "{!v.renderMode == 'COMMUNITY'}">
+       <div class="slds-grid slds-wrap slds-p-around_small"  >
+           
+            <div style="border-bottom: 3px solid rgb(0, 112, 210); width: 100%;">
+                <div style = "height: 50px;"> 
+                    <div align="center" style="padding: 20px;">
+                        Site Page Top
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>    
+    <aura:if isTrue = "{!v.renderMode == 'DESIGNER'}">
+        <div style="border-bottom: 3px solid rgb(0, 112, 210); width: 100%;">
+            <div style = "height: 50px;"> 
+                <div align="center" style="padding: 20px;">
+                    Site Page Top - Designer
+                </div>
+            </div>
+        </div>
+    </aura:if>    
+</aura:component>

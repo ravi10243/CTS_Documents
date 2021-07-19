@@ -1,0 +1,339 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 06-09-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   01-20-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <div hidden={hidemaindiv}>
+        <!-- **************************Country Header*********************************-->
+        <div class="outer_wrapper">
+            <div class="reg_step2">
+                <!--- *************** Steps Banner Code Starts********************************-->
+                    <div class="StepsBanner">
+                        <div class="Banner notranslate">
+                            <div class="stepcomplete"> </div> 
+                            <!--<div class="stepcomplete"> </div> -->
+                            <div class="line"></div>
+                            <div class="Step">{label.AGN_GCSP_STEP2}</div>
+                            <div class="line"></div>
+                            <div class="Step">{label.AGN_GCSP_STEP3}</div>
+                            <div class="line"></div>
+                            <div class="Step">{label.AGN_GCSP_STEP4}</div>
+                            <template if:true={isCS}>
+                                <div class="line"></div>
+                                <div class="Step">{label.AGN_GCSP_STEP5}</div>
+                            </template>
+                        </div>
+
+                        
+                        <!--<div class="Bannertext">
+                            <div class="Step1text">Basic Information</div>								
+                            <div class="Step2text">Address Details</div>							
+                            <div class="Step3text">Document Upload</div>			
+                            <div class="Step4text">Confirmation</div>								
+                        </div>-->
+                        <div class="Bannertext">
+                            <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                            <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                            <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                            <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>
+                            <template if:true={isCS}>
+                                <div class="Steptext">{label.AGN_OAM_Contact_Affiliation}</div> 
+                            </template> 
+                        </div>
+                    </div> 
+            <!--- *************** Steps Banner Code Ends ********************************-->
+                <!--<div class="heading"></div> --> <!-- {label.AGN_CP_AMIAboutYourAddress} -->
+               
+                <!--<div class="instruction">{label.AGN_OAM_Fields_Mandatory}</div>--> <!-- {label.AGN_CP_AMIAllFieldMandatory} -->
+                <div class="hd">{label.AGN_OAM_Header_CustomerRegistration} - {label.AGN_OAM_Address_Details_Heading}</div>
+                <div class="content_center">
+                    <div class="show-toast">
+                        <c-agn_gcsp_custom-toast title="" message={error} variant={variant} auto-close="true">
+                        </c-agn_gcsp_custom-toast>
+                    </div>
+                    <div class="slds-scope">
+                        <div class="scope_container"> 
+                            <template if:true={isProvience}> 
+                                <lightning-input type="text" read-only='true' label={label.AGN_OAM_Body_Province} name={label.AGN_OAM_CustomerType}
+                                    value={provienceShow} class={header_css1}>
+                                </lightning-input>
+                            </template>
+                            <lightning-input type="text" read-only='true' label={label.AGN_OAM_CustomerType} name={label.AGN_OAM_CustomerType}
+                                value={custypeshow} class={header_css2}>
+                            </lightning-input>
+                            <lightning-input type="text" read-only='true' label={label.AGN_OAM_CustomerSubType} name={label.AGN_OAM_CustomerSubType}
+                                value={cusSubtypeshow} class={header_css3}>
+                            </lightning-input>
+                        </div> 
+                    </div>
+                    <!-- **************************Country Header*********************************-->
+                    <!-- existing soldto section    -->
+                    <!--disabled={disableSoldToFields}-->
+                        <br/><br/> 
+                        <!--template if:true={shipToSameAsSoldTo}-->
+                        <div class="registered_address"> 
+                            <div class="cheading cheadingbold1">{label.AGN_OAM_Body_RegisteredAddress}</div>  
+                                <div class="reg_add">
+                                    <template for:each={soldToAddressFields} for:item='fieldvalue'> 
+                                        <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id} 
+                                            instancetype='old'
+                                            index='1' 
+                                            objecttype='soldto' 
+                                            sobjectname={fieldvalue.SObject_Name_AGN__c}
+                                            fieldname={fieldvalue.Field_Name_AGN__c} 
+                                            required={fieldvalue.Required_AGN__c}
+                                            record={soldToAddr} 
+                                            record-value='{soldToAddr}'
+                                            regex={fieldvalue.Field_Regex_AGN__c}
+                                            customlabel={fieldvalue.Field_Custom_Label_AGN__c} 
+                                            country={country}
+                                            picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                            helptext={fieldvalue.Help_Text_AGN__c}
+                                            objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                            iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                            rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                            oncontrollingfieldevent={handleControllingFieldEvent}
+											onzipcodevalue={handleZipCodeValueChange}
+                                            class="">
+                                        </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                    </template>
+                                </div>
+                        </div>
+                     
+                        <!--/template-->
+                        <br/>
+                    <!-- existing shipto section -->
+                    <div class="Address_container">
+                        <div class="cheading cheadingboldnew">{label.AGN_OAM_Shipping_Address}</div><br /> <!-- {label.AGN_CP_Shipping_Addresses} -->
+                            <div class="slds-grid">
+                                <lightning-input type="checkbox" onchange={checkboxHandler}
+                                    label={label.AGN_OAM_Same_Name_Address} value={shipToSameAsSoldTo}
+                                    checked={shipToSameAsSoldTo} name="sameassoldto" class="sameadd_checkbox" disabled={IsAddShipByDefault} ></lightning-input>
+                            </div>                                        
+                            <template if:true={isExistingShipToAddr}>
+                                <!--<div key={record}>-->
+                                    <div class="cheading cheadingboldnew">{label.AGN_OAM_NewShippingAddresses}</div> 
+                                <!--</div>-->
+                                    <template for:each={shipToAddr} for:item='record' for:index="indx">                                        
+                                        
+                                        <!-- delete button-->
+                                                                            
+                                        <div class="existing_address" key={record}>
+                                            <c-agn_gcsp_address-delete key={record} record-id={record.Id} onshiptoaddressdelete={deleteShipTo}
+                                            index={indx} shipping-map-counter={shippingMapCounter} instancetype='old' class="deletebtn btn1">
+                                            </c-agn_gcsp_address-delete>  
+                                            <template for:each={shipToAddressFields} for:item='fieldvalue'>
+                                                <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id} instancetype='old' objecttype='shipto'
+                                                    sobjectname={fieldvalue.SObject_Name_AGN__c} fieldname={fieldvalue.Field_Name_AGN__c}
+                                                    required={fieldvalue.Required_AGN__c} 
+                                                    record={record}
+                                                    record-value='{record}'
+                                                    regex={fieldvalue.Field_Regex_AGN__c} 
+                                                    customlabel={fieldvalue.Field_Custom_Label_AGN__c}
+                                                    country={country}
+                                                    helptext={fieldvalue.Help_Text_AGN__c}
+                                                    picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                                    objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                                    iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                                    rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                                    oncontrollingfieldevent={handleControllingFieldEvent}
+													onzipcodevalue={handleZipCodeValueChange}	
+                                                    class="">
+                                                </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                            </template>
+                                        </div>                                       
+                                    </template>
+                                
+                            </template>
+                          
+                        <!-- new shipto section -->                       
+                        <template if:true={showNewShipto}>
+                            <template for:each={shippingMap} for:item='set' for:index="indx">
+                              <!--  <div key={set.key}>
+                                    <div class="cheading cheadingboldnew">{label.AGN_OAM_New_Shipping}</div> -->
+                                     <!--{label.AGN_CP_ADD_NEW_SHIPPING}-->
+                              <!--  </div><br key={set.key} /> -->
+                                <!-- delete button -
+                                <c-agn_gcsp_address-delete key={set.key} onshiptoaddressdelete={deleteShipTo} index={indx}
+                                    shipping-map-counter={shippingMapCounter} instancetype='new' class="deletebtn">
+                                </c-agn_gcsp_address-delete> -->                               
+                                <!-- input component -->
+                                <div class="newshipto_address" key={set.key}>
+                                    <c-agn_gcsp_address-delete key={set.key} onshiptoaddressdelete={deleteShipTo} index={indx}
+                                    shipping-map-counter={shippingMapCounter} instancetype='new' class="deletebtn">
+                                    </c-agn_gcsp_address-delete>
+                                    <div class="cheading cheadingboldnew1">{label.AGN_OAM_New_Shipping}</div>
+                                <template for:each={set.value} for:item="fieldvalue" for:index="index">
+                                    <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id} instancetype='new'
+                                        objecttype='shipto' 
+                                        index={indx} 
+                                        sobjectname={fieldvalue.SObject_Name_AGN__c}
+                                        fieldname={fieldvalue.Field_Name_AGN__c} 
+                                        required={fieldvalue.Required_AGN__c}
+                                        record='' 
+                                        regex={fieldvalue.Field_Regex_AGN__c}
+                                        customlabel={fieldvalue.Field_Custom_Label_AGN__c} 
+                                        country={country}
+                                        picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                        helptext={fieldvalue.Help_Text_AGN__c}
+                                        objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                        iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                        rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                        oncontrollingfieldevent={handleControllingFieldEvent}
+										onzipcodevalue={handleZipCodeValueChange}
+                                        class="">
+                                    </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                </template>
+                                </div>                                                                
+                            </template>
+                        </template>
+                        <!--<template if:true={enableShipTo}>-->
+                            <template if:true={showNewShiptoButton}>
+                                <div class="newshipto_info">
+                                    {label.AGN_OAM_AdditionalShippingHelpTxt}
+                                </div>
+                            </template>
+                            <template if:true={showNewShiptoButton}>
+                                <div  class="btn_container addShipAddr">
+                                    <lightning-button variant="brand" label={label.AGN_OAM_New_ShipTo}
+                                        title={label.AGN_OAM_New_ShipTo} onclick={addNewShipTo} class="gradient_border_btn">
+                                    </lightning-button> <!-- {label.AGN_CP_ADD_NEW_SHIPTO_BTN} -->
+                                </div>
+                            </template>
+                        <!--</template>-->
+						<template if:true={isCountryBR}>
+							<div class="checkbox_text"  onchange={openModal}>		
+                                <template if:true={isOnlineRegistration}>		
+                                    <!-- <lightning-input type="checkbox" onchange={checkboxHandler} label=""		
+                                            name="termsncondns" class="checkbox">		
+                                        </lightning-input>-->		
+                                    <!-- <div class="totalchkbox" onchange={openModal}>  -->		
+                                    <lightning-input type="checkbox"  label=""		
+                                    name="termsncondns" data-id="tncCheckBox" class="checkbox tncchkbox">		
+                                    </lightning-input>		
+                                		
+                                    <div class="chktxt">		
+                                        <template if:true={ShowTermsAndConditions}>		
+                                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">		
+                                            <div class="slds-modal__container">		
+                                                <!-- modal header start -->		
+                                                <header class="slds-modal__header">		
+                                                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeAccModal}>		
+                                                        <lightning-icon icon-name="utility:close"		
+                                                        alternative-text="close"		
+                                                        variant="inverse"		
+                                                        size="small" ></lightning-icon>		
+                                                        <span class="slds-assistive-text">{label.AGN_OAM_Body_Cancel}</span>		
+                                                    </button>		
+                                                    <!--h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.AGN_OAM_TnC_Header}</h2-->		
+                                                </header>		
+                                                <!-- modal body start -->		
+                                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">		
+                                                    <p>  <lightning-formatted-rich-text		
+                                                        value={label.AGN_OAM_Body_ClickOkToAgree}></lightning-formatted-rich-text>		
+                                                    </p>		
+                                                    <!--button class="slds-button slds-button_neutral acceptbtn" onclick={acceptTNC}>{label.AGN_OAM_Body_Ok}</button-->		
+                                                </div>		
+                                                		
+                                                <!-- modal footer start-->		
+                                                <footer class="slds-modal__footer">		
+                                                    <button class="slds-button slds-button_neutral" onclick={acceptTNC}>{label.AGN_OAM_Body_Ok}</button>		
+                                                    <button class="slds-button slds-button_neutral" onclick={closeAccModal}>{label.AGN_OAM_Body_Cancel}</button>		
+                                                </footer>		
+                                            </div>		
+                                            </section>		
+                                            <div class="slds-backdrop slds-backdrop_open"></div>		
+                                        </template>		
+                                        {label.AGN_OAM_Body_Agree} <a href={label.AGN_OAM_TermsConditions_Link} target="_blank">{label.AGN_OAM_Body_TermsConditions}</a>                                        		
+                                    </div>		
+                             <!--</div> -->		
+								</template>		
+							</div>
+						</template>
+                    </div>
+                       <!-- added for KB Article 23 addition:  Start-->
+                       <br/>
+                       <template if:false={isCS}>
+                           <template if:true={showArticle23Declaration}>
+                               <div class="Article_Declaration">
+                                   <div class="cheading cheadingbold1">{label.AGN_Article_23_declaration}</div>
+                                   <!--{label.AGN_CP_COMMUNICATION}-->
+                                       <div class="declaration_legal_info">
+                                           <p>{label.AGN_Article_23_Text}
+                                               <br/><br/>
+                                               <!--https://ec.europa.eu/health/human-use/falsified_medicines_en--> 
+                                               <lightning-formatted-url value={formatedURL}> 
+                                                </lightning-formatted-url>
+                                            </p>
+                                       </div>          
+                                       <div class="slds-grid">
+                                       <lightning-radio-group name="article23Consent" label={label.AGN_Article_23_Text_2}
+                                           options={options} value={article23ConsentValue} type="radio"
+                                           onchange={radiogroupHandler} required class="declaration_legal_text">
+                                       </lightning-radio-group>
+                                                   
+                                         <!-- <lightning-input type="checkbox" onchange={checkboxHandler}
+                                               label={label.AGN_OAM_Accept} title={label.AGN_OAM_Accept}
+                                               name="banktermsncondns" class="li_width">
+                                           </lightning-input>  -->
+                                       </div>
+                               </div> 
+                           </template>
+                           <template if:true={isArticleFR}>
+                            <div class="Article_Declaration">
+                                <div class="cheading cheadingbold1">{label.AGN_ArticleDeclaration_Heading}</div>
+                                <div class="declaration_legal_info">
+                                    <p>{label.AGN_ArticleDeclaration1}</p>
+                                    <br/>
+                                    <p>{label.AGN_ArticleDeclaration2}</p>
+                                    <br/>
+                                    <p>{label.AGN_ArticleDeclaration3}</p>
+                                    <br/>
+                                    <p>{label.AGN_ArticleDeclaration4}{label.AGN_ArticleDeclaration5}</p>
+                                    <br/>
+                                    <p>{label.AGN_ArticleDeclaration6}</p>
+                                    <br/>
+                                </div>
+                                    <div class="slds-grid">
+                                        <lightning-radio-group name="article23ConsentFrance" label={label.AGN_ArticleDeclarationLabel}
+                                        options={options} value={article23ConsentValue} type="radio"
+                                        onchange={radiogroupHandler} required class="declaration_legal_text">
+                                    </lightning-radio-group>
+                                    </div>
+                                    <br/>
+                            </div>
+                            </template>
+                       </template>
+                       <!-- added for KB Article 23 addition:  End-->
+                        <div class="btn_container btn_margin">
+                            <lightning-button-group class="btn_group">
+                                <template if:false={isOnlineRegistration}>
+                                    <lightning-button variant="brand" label={label.AGN_OAM_Previous} title={label.AGN_OAM_Previous} onclick={handlePrevious}
+                                        class="gradient_border_btn prev">
+                                    </lightning-button>
+                                </template>
+                                <lightning-button variant="brand" label={label.AGN_OAM_Save} title={label.AGN_OAM_Save}
+                                    onclick={handleSave} class="gradient_border_btn saveCont">
+                                </lightning-button> <!-- {label.AGN_CP_SAVE_CONTINUE} -->
+                                <div class="btn_next">
+                                <lightning-button variant="brand" label={label.AGN_OAM_Next} title={label.AGN_OAM_Next} onclick={handleNext}
+                                    class="gradient_btn next"></lightning-button><!--{label.AGN_CP_AMINext} -->
+                                    </div>
+                            </lightning-button-group>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div if:true={showLoader}>
+        <div class="spinnnerdiv" style="height:10rem;">                    
+            <lightning-spinner  class="slds-is-absolute" alternative-text={label.AGN_OAM_Loading} variant="brand" size="large" ></lightning-spinner>
+        </div> 
+    </div>   
+</template>

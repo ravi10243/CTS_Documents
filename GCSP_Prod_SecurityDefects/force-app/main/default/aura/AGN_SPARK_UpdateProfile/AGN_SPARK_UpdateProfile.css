@@ -1,0 +1,149 @@
+.THIS input:focus{
+    background: transparent !important;
+}
+.THIS .edit_choode {
+    margin: 5% 0% ;
+}
+.THIS #merrSpan {
+    color: red;
+}
+.THIS #priSpan {
+    color: red;
+}
+.THIS #evSpan {
+    color: red;
+}
+.THIS #phone {
+    color: red;
+}
+.THIS #mdno {
+    color: red;
+}
+
+.THIS .slds-select{
+    height: 30px;
+}
+
+.THIS .slds-form-element__label{
+    font-size: 1.75rem;
+    border: none !important;
+    display:none !important;
+}
+
+.THIS .slds-radio .slds-form-element__label {
+    display: inline;
+    vertical-align: middle;
+    font-size: 14px;
+    font-style: normal;
+    font-family: SourceSansPro-Regular;
+    font-weight: normal;
+    color: #6c6c6c;
+}
+.THIS .asteic_label{
+    color: #c73995;
+}
+.THIS .slds-dueling-list__options [aria-selected=true]{
+	font-size: 13px;
+}
+
+.THIS .slds-media__body{
+    font-size: 13px;
+    /*margin-left: -6vw;*/
+}
+
+.THIS .slds-button_icon-container{ 
+    padding-top: 47px !important;
+}
+
+.THIS .slds-button{ 
+    padding-top: 47px !important;
+}
+
+.THIS .aestheticsCls{
+    color: #3e51b4;
+    text-align: center;
+}
+
+.THIS .errorMessage{
+    font-weight: bold;
+    color: red;
+    margin-left: 38%;
+    padding-bottom: 2%;
+}
+.THIS .regNumber .slds-assistive-text{
+   display: none;
+}
+
+.THIS .regNumber .slds-no-flex{
+   display: none;
+}
+
+.THIS .regNumber .slds-input{
+    width: 99%;
+    padding: 1.5% 1% 1.5% 1%;
+}
+
+.THIS .slds-dropdown {
+   /*margin-left: 5%;*/
+    width: 90%;
+}
+
+.THIS.slds-dropdown_fluid {
+   margin-left: 5%;
+    width: 90%;
+}
+
+.THIS .slds-dropdown_left .slds-listbox_vertical{
+   margin-left: 5%;
+    width: 100%;
+}
+
+.THIS .slds-listbox_vertical{
+  /* margin-left: 5%;*/
+    width: 100%;
+}
+
+.THIS .slds-input[disabled]{
+    background-color: transparent;
+}
+
+.THIS .slds-radio .slds-radio_faux{
+    width: 1.7rem;
+    height: 1.7rem;
+}
+
+.THIS .slds-radio .slds-radio--faux{
+    width: 1.7rem;
+    height: 1.7rem;
+}
+.THIS lightning-radio-group{
+    margin-top:3%;
+}
+
+.THIS .yn_line{
+    width: 9% !important; 
+}
+
+.THIS .slds-checkbox_faux{
+    position: absolute;
+    top: 0.1vw;
+    right: 0.5vw;
+    height: 18px;
+    width: 18px;
+    border-radius: 12px;
+    background-color: #eee;
+}
+.THIS .slds-form-element {
+    display: block;
+    width: 91%;
+    margin: 0px;
+}
+
+.THIS .edit_check_tick .slds-form-element {
+    display: inline-block;
+}
+
+/*.THIS .slds-checkbox--faux {
+    height: 0.45rem !important;
+    width: 0.9rem !important;
+}*/

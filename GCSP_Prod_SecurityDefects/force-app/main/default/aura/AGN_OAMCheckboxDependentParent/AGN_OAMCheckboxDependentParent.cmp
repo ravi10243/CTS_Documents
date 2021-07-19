@@ -1,0 +1,43 @@
+<aura:component >
+    <aura:attribute name="USLicenseDependantFields" type="List" access="public" />
+    <aura:attribute name="record" type="SObject" required="true" />
+    <aura:attribute name="selectedCountryCode" type="String"/>
+    <aura:attribute name="required" type="Boolean" default = "false" access="public" />
+    <aura:attribute name="isRequired" type="Boolean" default = "false" access="public" />
+    <aura:attribute name="fieldValue" type="Object" access="public" />
+    <aura:attribute name="clearValues" type="boolean" default="false"/>
+    <aura:attribute name="isFormatValid" type="Boolean" default="true" access="public" />
+    <aura:attribute name="isRequiredAdded" type="Boolean" default="true" access="public" />
+    <aura:attribute name="notFormattedFields" type="String" />
+    <aura:attribute name="clearRequiredFields" type="Boolean" access="public" />
+    <aura:attribute name="step" type="Integer" />
+    
+    
+    <aura:handler name="change" value="{!v.clearValues}" action="{!c.clearValues}"/>
+    <aura:handler name="change" value="{!v.isRequiredAdded}" action="{!c.handleRequiredFields}"/>
+    <aura:handler name="change" value="{!v.isFormatValid}" action="{!c.handleNonFormattedFields}"/>
+    <aura:handler name="change" value="{!v.clearRequiredFields}" action="{!c.removeRequiredFields}"/>
+    
+    
+    <aura:iteration items="{!v.USLicenseDependantFields}" var="fieldValue" indexVar="key">
+        
+        <c:AGN_OAMCheckboxDependentCmp
+                                       aura:id="fieldId" 
+                                       sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                       record="{!v.record}" 
+                                       fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                       customLabel="{!fieldValue.Field_Custom_Label_AGN__c}" 
+                                       fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                       customCountryCode = "{!v.selectedCountryCode}"
+                                       cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"
+                                       displayRequiredInput = "{!v.isDoctorOverseeAccount}" 
+                                       required = "{!fieldValue.Required_AGN__c}" 
+                                       fieldValue = "{!fieldValue.FieldValue_AGN__c}" 
+                                       isFormatValid = "{!fieldValue.Is_Format_Valid_AGN__c}" 
+                                       fieldValueMissing = "{!fieldValue.FieldValue_Missing_AGN__c}"
+                                       />
+        
+    </aura:iteration>
+    <br/>
+    
+</aura:component>

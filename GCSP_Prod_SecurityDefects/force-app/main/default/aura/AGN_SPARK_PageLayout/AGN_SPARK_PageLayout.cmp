@@ -1,0 +1,66 @@
+<aura:component implements="forceCommunity:themeLayout" access="global" controller="AGN_SPARK_LoginController">
+<!--AGN_SPARK_PageLayoutController-->    
+  	<aura:attribute name="registerForm" type="Aura.Component[]" access="global"/>
+    <aura:attribute name="pageHeader" type="Aura.Component[]" access="global"/>    
+    <aura:attribute name="pageFooter" type="Aura.Component[]" access="global"/> 
+    <aura:attribute name="bodyAbove" type="Aura.Component[]" access="global"/>
+    <aura:attribute name="isSiteUnderMaintenance" type="Boolean" default="false"/>
+    <aura:attribute name="body" type="Aura.Component[]" access="global"/>
+    
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    
+   <ltng:require styles="{!join(',', 
+                          $Resource.AGN_SPARK_Theme + '/fonts/font-awesome/css/font-awesome.min.css',
+                         $Resource.SPARK_Rebranding_PageLayout + '/lib/bootstrap.min.css', 
+                         $Resource.SPARK_Rebranding_PageLayout + '/css/TermsOfUse.css',
+                         $Resource.SPARK_Rebranding_PageLayout + '/css/Contacts.css',
+                         $Resource.SPARK_Rebranding_PageLayout + '/css/common.css'
+                          )}"
+              />
+  
+    <ltng:require scripts="{!($Resource.SPARK_Rebranding_PageLayout + '/lib/Jquery.min.js')}" afterScriptsLoaded="{!c.scriptsLoaded}" />
+    <aura:html tag="style">    
+       	#mainPage{
+        max-width: 1980px;
+   	 	margin: 0 auto;
+        padding:0px;
+        }  
+        .marquee {
+            width: 100%;
+            line-height: 50px;
+            color: black;
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+            background-color: #DBA39A;
+        }
+         
+        .marquee p {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 40s linear infinite;
+            font-size:25px;
+        }
+         
+        @keyframes marquee {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+    </aura:html>
+    
+	<div class="container-fluid"  id="mainPage">
+        <!--Suman Start-->
+        <aura:if isTrue="{!v.isSiteUnderMaintenance}">
+            <div id="divUnderMaintenance" class="marquee">
+              <p>  {!$Label.c.AGN_Spark_Maintenance_Message} {!$Label.c.AGN_Spark_Maintenance_Message2} </p>
+            </div>
+        </aura:if>
+        <!--Suman End-->
+          {!v.pageHeader}
+          {!v.body}
+    	<div id="footerContainerDiv" style="display:none"> 
+          {!v.pageFooter}
+           </div>  
+    </div>
+     
+</aura:component>

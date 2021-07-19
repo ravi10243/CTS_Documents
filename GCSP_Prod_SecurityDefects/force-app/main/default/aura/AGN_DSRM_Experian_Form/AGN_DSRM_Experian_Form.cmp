@@ -1,0 +1,138 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global"
+    controller="AGN_DSRM_ExperianController">
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="questionAnswerMap" type="List" default="[]" />
+    <aura:attribute name="showQuestion" type="boolean" default="false" />
+    <aura:attribute name="showOTP" type="boolean" default="false" />
+    <aura:attribute name="experianSessionId" type="String" />
+    <aura:attribute name="experianFinalDecision" type="String" default="NODECISION"/>
+    <aura:attribute name="displayDialog" type="boolean" default="false" />
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    <!-- Case Info -->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="caseRecord" type="Case" />
+    <aura:attribute name="recordError" type="String" />
+    <aura:attribute name="caseFieldstoQuery" type="List" default="Id, CaseNumber, First_Name_GDPR_AGN__c, Last_Name_GDPR_AGN__c, Status" />
+
+    <force:recordData aura:id="caseInfo" recordId="{!v.recordId}" targetFields="{!v.caseRecord}"
+        recordUpdated="{!c.handleRecordChanged}" targetError="{!v.recordError}" fields="{!v.caseFieldstoQuery}" />
+
+    <!-- End of Case Info -->
+    
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.showSpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container slds-is-fixed">
+            <div class="slds-spinner--brand slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+                <p style="transform: translate(-32%, -50%) rotate(-90deg);width: 320px;text-align: center;">{!$Label.c.AGN_CCPA_Page_Loading_Message}</p>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end-->
+    
+    <div class="slds-p-around_medium">
+        <!-- show OTP form -->
+        <aura:if isTrue="{!v.showOTP}">
+            <div class="slds-m-top_x-small slds-m-bottom_x-small">
+                <p style="text-align: right;"><b style="color: rgb(234, 6, 6);">{!$Label.c.Mark_Indicates_Required_Field_AGN}
+                    </b></p>
+            </div>
+            <div class="slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small">
+                <div id="parentDiv">
+                    <div>
+                        <div class="lex-form-actionpanel slds-p-around_small backgroundSectionHeader"
+                            style="font-style:italic;font-size:12px;background-color:#213D89;color:#FFFFFF">
+                            <strong>
+                                &nbsp;{!$Label.c.One_Time_Passcode_AGN}
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <div
+                    class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-col slds-size_12-of-12 slds-m-top_x-small slds-p-left_x-large slds-p-right_x-large slds-m-bottom_x-small' : 'slds-hide'}">
+                    <div class="outer_padding">
+                        <lightning:input aura:id="inputFieldOTP" label="{!$Label.c.AGN_CCPA_Enter_OTP}" required="true"
+                            maxlength="10" />
+                        <br /><br />
+                    </div>
+                </div>
+                <lightning:button class="slds-button slds-button_brand slds-m-right_x-small submit_btn" label="Submit"
+                    variant="brand" onclick="{!c.otpSubmit}" />
+            </div>
+        </aura:if>
+        <!-- End show OTP form -->
+
+        <!-- show question & answer form -->
+        <aura:if isTrue="{!v.showQuestion}">
+            <div class="slds-m-top_x-small slds-m-bottom_x-small">
+                <p style="text-align: right;"><b style="color: rgb(234, 6, 6);">{!$Label.c.Mark_Indicates_Required_Field_AGN}
+                    </b></p>
+            </div>
+            <div class="slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small">
+                <div id="parentDiv">
+                    <div>
+                        <div class="lex-form-actionpanel slds-p-around_small backgroundSectionHeader"
+                            style="font-style:italic;font-size:12px;background-color:#213D89;color:#FFFFFF">
+                            <strong>
+                                &nbsp;{!$Label.c.Identify_your_personal_information_AGN}
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <aura:iteration items="{!v.questionAnswerMap}" var="fieldValue">
+                    <c:AGN_DSRMExpCommonInputField aura:id="fieldId" questionId="{!fieldValue.questionId}"
+                        questionName="{!fieldValue.question}" required="{!fieldValue.required}"
+                        readonly="{!fieldValue.readonly}" questionDisplayType="{!fieldValue.questionDisplayType}"
+                        answerChoices="{!fieldValue.answerChoices}" />
+                </aura:iteration>
+                <br /><br />
+                <lightning:button class="slds-button slds-button_brand slds-m-right_x-small submit_btn"
+                    onclick="{!c.questionAnswerSubmit}" label="Submit" variant="brand" />
+            </div>
+        </aura:if>
+        <!-- End of show question & answer form -->
+    </div>
+    <!-- Display Success message -->
+    <aura:if isTrue="{!v.displayDialog}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">        
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p><b>
+                        <!--{!$Label.c.Dear_AGN}&nbsp;{!v.caseRecord.First_Name_GDPR_AGN__c}&nbsp;{!v.caseRecord.Last_Name_GDPR_AGN__c},<br></br><br></br>-->
+                        <aura:if isTrue="{!v.experianFinalDecision == 'ACCEPT'}">
+                            <aura:unescapedHtml value="{!$Label.c.AGN_CCPA_DS_Exp_Verify_Accept}" />
+                            <aura:set attribute="else">
+                                <aura:if isTrue="{!v.experianFinalDecision == 'REFER'}">
+                                    <aura:unescapedHtml value="{!$Label.c.AGN_CCPA_DS_Exp_Verify_Refer}" />
+                                    <aura:set attribute="else">
+                                        <aura:unescapedHtml value="{!$Label.c.AGN_CCPA_DS_Exp_Verify_Else}" />
+                                    </aura:set>
+                                </aura:if>
+                            </aura:set>
+                        </aura:if>
+                        </b>
+                    </p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button class="slds-align_absolute-center" variant="brand" label="OK" title="OK"
+                        onclick="{!c.navigateToHome }" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <!-- Display Lightning Data Service errors, if any -->
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <p style="text-align: center;"><b style="color: rgb(234, 6, 6);">ERROR: {!v.recordError}</b></p>
+    </aura:if>
+</aura:component>

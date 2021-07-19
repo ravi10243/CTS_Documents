@@ -1,0 +1,15 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="DetailController">
+ <!-- attributes to populate when Component is used -->
+ <aura:attribute name="fieldsToShow" type="String" description="The comma separated field values"/>
+ <aura:attribute name="recordId" type="Id" description="The Id of the record"/>
+<!-- Below are the attributes populated from Controller -->
+<aura:attribute name="detailRecord" type="SObject" description="The detail record to display values"/>  
+<aura:attribute name="fieldList" type="String[]" description="the list of fields to show"/>
+  
+ <!-- Init -->
+ <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+ <h1><ui:outputText value="{!v.detailRecord.Name}"/></h1>
+    <lightning:accordion aura:id="accordion" activeSectionName="0">
+ {!v.body}
+    </lightning:accordion>
+</aura:component>

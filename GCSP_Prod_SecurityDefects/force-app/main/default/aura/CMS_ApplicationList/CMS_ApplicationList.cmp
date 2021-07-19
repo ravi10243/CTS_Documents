@@ -1,0 +1,53 @@
+<aura:component controller="CMS_Applications" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="applicationId" type="String"/>
+    <aura:attribute name="applicationList" type="Object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <div class="outer_div">
+        <div style="padding: 0.3rem;"></div>
+        <div class="content_div ">
+            <div class="slds-page-header " style="background-color:#FDFFFF;">
+                <div style="padding: 0.7rem;" >
+                        <h1 class="section_font">
+                            My Applications          
+                        </h1>
+                    </div>
+                </div>
+            <div class="slds-grid slds-wrap">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead >
+                        <tr class="slds-text-title_caps slds-grid slds-wrap">
+                            <th class="lex-app-header slds-size_1-of-3" scope="col">
+                                <div class="slds-truncate" title="Application Number">Application Number</div>
+                            </th>
+                            <th class="lex-app-header slds-size_1-of-3" scope="col">
+                                <div class="slds-truncate" title="Name">Name</div>
+                            </th>
+                            <!--vijosh-->
+                            <th class="lex-app-header slds-size_1-of-3" scope="col">
+                                <div class="slds-truncate" title="Status">Status</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       <aura:iteration items="{!v.applicationList}" var="app">
+                            <tr class="slds-grid slds-wrap">
+                                <td class="lex-app-body slds-size_1-of-3" scope="col">
+                                    <div class="slds-truncate" title="{!app.ApplicationNumber__c}"><a href="{!'/'+'nessy/s/app?recordId='+app.Id}" target="_blank">{!app.ApplicationNumber__c}</a></div>
+                                </td>
+                                <td class="lex-app-body slds-size_1-of-3" scope="col">
+                                    <div class="slds-truncate" >{!app.Name}</div>
+                                </td>
+                                <td class="lex-app-body slds-size_1-of-3" scope="col">
+                                    <div class="slds-truncate" >{!app.Status__c}</div>
+                                </td>
+                           </tr>     
+                       </aura:iteration>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</aura:component>

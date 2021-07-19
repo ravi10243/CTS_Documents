@@ -1,0 +1,40 @@
+<aura:component  access="global">
+    <!-- Attributes -->
+    <aura:attribute name="isCurrentStep" type="Boolean" default="false"/>
+    <aura:attribute name="box" type="Object" default=""/>
+    <aura:attribute name="boxtitle" type="Object" default=""/>
+    <aura:attribute name="boxaction" type="Object" default=""/>
+    <aura:attribute name="isProperty" type="Boolean" default="false"/>
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Component Body -->
+    <div style="{!v.isCurrentStep ? 'background-color:#f1f1f1' : ''}">
+        <div class="slds-clearfix">
+            <div class="slds-clearfix">
+                <div class="slds-float_left box">
+                    <aura:if isTrue="{!v.box}">
+                        {!v.box}
+                    </aura:if>
+                </div>
+                <div class="{! 'slds-float_left slds-align_absolute-center ' +  (v.isProperty ? 'boxtitle_property' : 'boxtitle')}" >
+                    <div class="slds-clearfix">
+                        <div style="width: 150px;">
+                            <div class="slds-truncate">
+                                <aura:if isTrue="{!v.boxtitle}">
+                                    {!v.boxtitle}
+                                </aura:if>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="{! 'slds-float_right slds-align_absolute-center ' +  (v.isProperty ? 'boxaction_property' : 'boxaction')}">
+                    <aura:if isTrue="{!v.boxaction}">
+                        {!v.boxaction}
+                    </aura:if>                
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

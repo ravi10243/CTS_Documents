@@ -1,0 +1,112 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >	
+    <!-- Attributes Starts -->
+    <aura:attribute name="hasError" type="Boolean" default="false" />
+    <aura:attribute name="currentStep" type="String" default="start" />
+    
+    <aura:attribute name="showWizard" type="Boolean" default="false" />
+    <!--Attributes Ends-->
+    
+    <!-- aura Handler starts -->
+    <aura:handler name = "init" value = "{!this}" action = "{!c.doInit}"/>
+    <!-- aura Handler ends -->
+    
+    <!--Display Launching wizard screen -->
+    <div class="slds-grid slds-wrap slds-border_bottom slds-border_top slds-border_left slds-border_right">
+        <!-- display Header-->
+        <div class="modal-header slds-modal__header slds-size_1-of-1">
+        	<h4 class="title slds-text-heading--medium" >Form Wizard</h4>
+    	</div>
+        
+        <!-- this condition is to show Launch Wizard button-->
+        <aura:if isTrue = "{!!v.showWizard}">
+            <c:CMS_StartWizard aura:id="startWizard" renderMode="WIZARD"
+                                               recordId = "{!v.recordId}"/>
+            <div class = "slds-align_absolute-center">
+                <center>
+                    <lightning:button 
+                                  variant="success" 
+                                  label="LAUNCH WIZARD"
+                                  title="launch wizard to build forms"
+                                  onclick="{! c.launch }"/>
+                </center>
+            </div> 
+        </aura:if>
+        
+        <!-- Wizard starts -->
+        <aura:if isTrue = "{!v.showWizard}">
+            <div class="slds-col slds-size_12-of-12 slds-p-around_medium ">
+                <!-- Progress indicator/Bar components start-->
+                <lightning:progressIndicator currentStep="{!v.currentStep}" type="base" hasError="{!v.hasError}" variant="base">
+                    <lightning:progressStep label="Form Details" value="form" />
+                    <lightning:progressStep label="Properties" value="properties"/>
+                    <lightning:progressStep label="Languages" value="languages"/>
+                    <lightning:progressStep label="Branding" value="branding"/>
+                    <lightning:progressStep label="Finish" value="finish" />
+                </lightning:progressIndicator>
+                <!-- Progress indicator/Bar components ends-->
+            </div>
+            <div class="slds-col slds-size_12-of-12 lex-form-actionpanel slds-border_top">
+                <div class="slds-clearfix slds-p-around_small">
+                    <div class="slds-float_right">
+                        <lightning:button disabled="{!v.currentStep != 'start' ? '' : 'disabled'}"
+                                          variant="brand" 
+                                          label="Back"
+                                          title="Back"
+                                          onclick="{! c.moveBack }"/>
+                        <lightning:button variant="brand" 
+                                          label="{!v.currentStep != 'finish' ? 'Next' : 'Finish'}"
+                                          title="{!v.currentStep != 'finish' ? 'Next' : 'Finish'}"
+                                          onclick="{! c.moveNext }"/>
+                    </div>    
+                </div>
+            </div>
+            <div class="slds-col slds-size_12-of-12 slds-border_bottom slds-border_top">
+                <div class="slds-p-around_small">
+                    <aura:if isTrue="{!v.currentStep=='form'}">
+                        <c:CMSWStep_FormDetail aura:id="formDetailChild" renderMode="WIZARD"
+                                               recordId = "{!v.recordId}"/> 
+                    </aura:if>
+                    <!--
+					<aura:if isTrue="{!v.currentStep=='object'}">
+                        <c:CMSWStep_FormObject aura:id="formObjectChild" renderMode="WIZARD"
+                                               recordId="{!v.recordId}"/>
+                    </aura:if>
+					-->
+                    <aura:if isTrue="{!v.currentStep=='properties'}">
+                        <c:CMSWStep_FormProperties aura:id="formPropertyChild" renderMode="WIZARD"
+                                                   recordId="{!v.recordId}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentStep=='languages'}">
+                        <c:CMSWStep_FormLanguages aura:id="formLangChild" renderMode="WIZARD"
+                                                  recordId = "{!v.recordId}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentStep=='branding'}">
+                        <c:CMSWStep_FormBranding aura:id="formBrandChild" renderMode="WIZARD"
+                                                 recordId="{!v.recordId}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentStep=='finish'}">
+                        <c:CMS_FinishWizard aura:id="finishWizard" renderMode="WIZARD"
+                                               recordId = "{!v.recordId}"/> 
+                    </aura:if>
+                    
+                </div>    
+            </div>
+            <div class="slds-col slds-size_12-of-12 lex-form-actionpanel">
+                <div class="slds-clearfix slds-p-around_small">
+                    <div class="slds-float_right">
+                        <lightning:button disabled="{!v.currentStep != 'start' ? '' : 'disabled'}"
+                                          variant="brand" 
+                                          label="Back"
+                                          title="Back"
+                                          onclick="{! c.moveBack }"/>
+                        <lightning:button variant="brand" 
+                                          label="{!v.currentStep != 'finish' ? 'Next' : 'Finish'}"
+                                          title="{!v.currentStep != 'finish' ? 'Next' : 'Finish'}"
+                                          onclick="{! c.moveNext }"/>
+                    </div>    
+                </div>
+            </div>
+        </aura:if>
+    </div>
+       
+</aura:component>

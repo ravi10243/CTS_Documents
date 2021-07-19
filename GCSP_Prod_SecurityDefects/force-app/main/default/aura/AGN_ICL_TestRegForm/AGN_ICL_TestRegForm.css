@@ -1,0 +1,425 @@
+.THIS.registration_wrapper {
+    background-color: #f5f5f5;
+}  
+.THIS.registration_wrapper .container .section-text{
+    margin-bottom: 0;
+    color: #2c5596;
+    font-weight: 600;
+    text-align: CENTER;
+}
+
+.THIS .container .list-group-item {
+    padding: 10px 28px !important;
+}
+.THIS .container .form-group-cta{
+    display:flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+}
+.THIS .container .reg-submit, 
+.THIS .container .edit-det,
+.THIS .container .back,
+.THIS .container .add-clinic, 
+.THIS .container .save, 
+.THIS .container .cancel {
+    width: auto !important;
+    position: relative;
+    margin:0 5px;
+}
+.THIS .container .btn_hide{
+  visibility: hidden;  
+}
+.THIS .container .reg-submit span,
+.THIS .container .edit-det span, 
+.THIS .container .back span, 
+.THIS .container .add-clinic span, 
+.THIS .container .save span, 
+.THIS .container .cancel span{
+    padding:0 ;
+	top: 0;
+}
+.THIS .header {
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px 10px;
+}
+.THIS .header-right {
+    float: right;
+}
+.THIS .container {
+    margin: 150px auto;
+}
+.THIS div[data-acc-content] {
+    display: none;
+}
+.THIS div[data-acc-step]:not(.open) {
+    background: #f2f2f2;
+    visibility: hidden;
+}
+.THIS div[data-acc-step]:not(.open) h5 {
+    color: #777;
+}
+.THIS div[data-acc-step]:not(.open) .badge-primary {
+    background: #ccc;
+}
+.THIS  -webkit-input-container:not( .webkit-input-has-value) input:not(:focus) {
+    color: transparent;
+}
+.THIS .timelabeldisplay {
+    display : none;
+}
+.THIS .col-md-3{
+    min-height: 95px !important;
+}
+.THIS .time-field{
+    margin-top: 0;
+}
+.THIS .cAGN_ICLAllInputFields select{
+    min-height: 37px !important;    
+}
+.THIS .time-field .slds-input{
+    border: 0;
+    padding: 4px 0;
+	border-bottom: 1px solid #ccc;
+	background-color: transparent;
+	z-index: 1;
+	position: absolute;
+}
+.THIS .time-field .slds-input > label {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	top: 9px;
+	color: #fff;
+	transition: 0.3s;
+	z-index: 0;
+	letter-spacing: 0.5px;
+	padding-left: 10%;
+	font-weight: 300;
+	font-size: 15px;
+}
+.THIS .checkboxgroup .slds-checkbox__label .slds-form-element__label{
+    font-size: 14px;
+}
+.THIS .time-field .slds-input:focus > label,
+.THIS .time-field .slds-input > label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS .time-field .slds-input:empty{}
+.THIS .time-field .slds-input:focus {box-shadow: none;}
+.THIS input[type="text"]:disabled, 
+.THIS input[type="url"]:disabled, 
+.THIS input[type="tel"]:disabled {
+    opacity: 1;
+}
+.THIS .form-group-email-edit input[type="text"]:disabled,
+.THIS .form-group-country-edit input[type="text"]:disabled{
+    opacity: .6;
+}
+
+.THIS .input-effect{margin:0;}
+.THIS .cAGN_ICL_TestRegForm .col-md-3 {
+    min-height: 100px!important;
+}
+.THIS .check-input{
+    margin-top: 10px;
+}
+.THIS .checkpad{
+    padding:0px !important;
+}
+.THIS .has-content.effect-16 ~ label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS .slds-form-element__control .slds-checkbox{float: left;}
+.THIS .slds-form-element__label.slds-form-element__legend{    
+    border-bottom: none;
+    font-size: 14px;
+    color: #2c5596;
+    font-weight: normal;}
+.THIS lightning-checkbox-group fieldset{   
+    margin-left: 0;
+}
+.THIS .slds-form-element__label{
+    font-size: 14px;
+    font-weight: normal;
+	color: #2c5596;
+}
+.THIS .slds-checkbox__label{
+    margin-top: 7px;
+    font-size: 14px;
+}
+.THIS .slds-button+.slds-button {
+    margin-left: 0;
+}
+.THIS .list-group-item{
+    overflow: auto;
+}
+.THIS .slds-size_3-of-12 {
+    width: 45%;
+}
+.THIS .weekday .col-md-4 .form-group {
+    margin-top: 0;
+}
+.THIS .slds-input__icon-group {
+    margin-top: 0;
+}
+.THIS input[type=checkbox]:checked {
+    background-color: rgb(21, 137, 238) !important;
+	width: 16px;
+	height: 16px;
+	margin: 0;
+}
+.THIS .glyphicon{
+    color: #fff;
+}
+.THIS fieldset::before {
+  /* content: "* ";
+    float: left;
+    padding-right: 2px;
+    color: red;
+    font-weight: 700;
+	position: relative;
+	top: 2.5px; */
+}
+.THIS .slds-form-element__legend{    
+    display: inline-block;
+    width: auto;
+}
+.THIS .slds-form-element__legend::after{
+    position: absolute;
+    content: "*";
+    color: red;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 1px;
+    margin-left: 2px;
+}
+.THIS lightning-checkboxgroup_checkboxgroup{
+    margin-top: 30px;
+}
+.THIS .checkboxgroup .slds-checkbox__label font{
+    font-size: 14px;
+}
+.THIS .clinic_image_file{
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ccc;
+    padding: 2px;
+}
+.THIS .custom-file-label {
+    position: absolute;
+    top: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    width: 150px;
+    height: 150px;
+    margin: 0;
+    display: none;
+}
+.THIS .slds-file-selector__body .slds-file-selector__text{
+    display: none;
+}
+.THIS .slds-file-selector__dropzone{
+    border: 0;
+}
+.THIS #img_contain:hover .custom-file-label {
+    display: block;
+}
+.THIS .edit-txt{
+    display: block;
+    text-align: center;
+    top: 45%;
+    position: relative;
+}
+.THIS .weekday .col-md-5 {
+    /* width: 41%;
+    padding-left: 6%; */
+}
+.THIS .practioner-details-wrapper{
+    margin: 0 0 30px;
+	padding: 20px 0;
+	background-color: #fff;
+}
+.THIS .gradeout{
+    opacity:0.5;
+}
+.THIS .slds-assistive-text,
+.THIS .form-group .slds-form-element__label{
+	display:none;
+}
+.THIS .slds-form-element__label.slds-form-element__legend {
+    display:block !important;
+}
+.THIS .slds-dueling-list__column.slds-dueling-list__column_responsive .slds-form-element__label{
+     display:block !important;
+     font-size: 12px !important;
+}
+.THIS .section-timing{
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+}
+.THIS .section-timing,
+.THIS .form-group,
+.THIS .form-group .day-label{
+	margin: 0;
+}
+.THIS .slds-form-element__control input.slds-input{
+	padding: 0;
+}
+.THIS .weekday{
+	margin: 15px 0;
+}
+.THIS .weekday .col-md-6,
+.THIS .weekday .col-sm-6{
+	padding: 0 10px;
+}
+.THIS .weekday .col-md-6 .col-md-2{
+	padding: 0 !important;
+}
+.THIS .hint-blk p{
+    margin-top: 5px; 
+    position: relative; 
+    font-size: 10px; 
+    margin-left: 10px;
+}
+.THIS.registration_wrapper .container .list-group .my-3 .row-section-clinic .columns.checkboxgroup{
+    width: 50%;
+}
+.THIS .slds-dueling-list__options.slds-is-disabled, 
+.THIS .slds-picklist__options.slds-is-disabled{
+    background-color: white;
+}
+.THIS .slds-dueling-list__column_responsive .slds-dueling-list__options{
+    max-height: 100px;
+}
+.THIS .slds-dueling-list__column_responsive .slds-dueling-list__options ul{
+    font-size: 12px;
+}
+.THIS .slds-dueling-list__column {
+    justify-content: center;
+    margin: 0 5px 0 0;
+}
+.THIS .slds-dueling-list__column .slds-button:first-of-type {
+    margin-top: 5px;
+}
+.THIS .slds-dueling-list__column .slds-button {
+    border: 1px solid #dddbda;
+}
+/* Media Queries */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {  
+    .THIS .registration_wrapper .container .list-group-item {
+        padding: 10px 0px;
+    }
+    .THIS .practioner-details-wrapper {
+        border: 1px solid #ddd;
+        margin-left: 3%;
+        margin-right: 3%;
+	}
+}
+@media only screen and (min-device-width : 300px) and (max-device-width : 900px) {  
+    .THIS .mobileview{
+        min-height: 40px!important;
+        padding-left: 30px!important;
+    }
+   
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {  
+    /* .THIS .weekday .col-md-5 {
+        width: 41%;
+        padding-left: 12%;
+    }
+    .THIS .col-md-3 {
+    min-height: 115px!important;
+} */
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {  
+	.THIS .weekday .form-group{
+        margin-bottom:0;
+    }
+    .THIS .slds-no-flex {
+    	display: none;
+	}
+	.THIS .weekday .col-sm-6{
+		padding: 0 10px 5px;
+	}
+    /* .THIS .weekday .col-sm-6 {
+    	min-height: 100px;
+	} */
+    .THIS .timing-label{
+        padding-bottom: 25px;
+    }
+	.THIS .time-field .slds-input{
+		position: relative;
+		margin-left: 0;
+	}
+	.THIS .time-field label{
+        margin-left: 0;
+        display: inline-block;
+        margin-bottom: 0;
+    }
+    .THIS.registration_wrapper .container .weekday .col-sm-6 .col-sm-5{
+        padding: 0 10px 0 0;
+    }
+}
+@media only screen and (max-device-width: 500px) and (min-device-width: 100px) and (orientation: portrait){
+	.THIS .weekday{
+		margin: 0;
+	}	
+    .THIS .logo-txt-tcl span:nth-child(2) {
+       top:0px;        
+     }
+	.THIS .weekday .col-sm-6{
+		padding: 0 10px;
+	}
+	.THIS .allergan-logo {
+		width: 135px;
+		background-size: contain;
+	}
+	.THIS .logo-txt {
+		font-size: 13px;
+		margin: 0 16px;
+	}
+    .THIS .header-right .dropdown{
+        padding-top: 20px;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+    }
+	.THIS .header-right .dropdown ul{
+		margin:0 0 0 10px;
+    }
+    .THIS.registration_wrapper .container .weekday .col-xs-12 .col-xs-6 {
+        padding: 0 10px 10px 0;
+    }
+    .THIS .slds-form-element__control input.slds-input{
+        position: relative;
+    }
+	.THIS .time-field input.slds-input{
+		position: relative;
+		margin-left: 0;
+	}
+	.THIS .time-field label{
+		margin-left: 0;
+    }
+    .THIS .timelabeldisplay {
+        display : inline-block;
+    }
+    .THIS.registration_wrapper .container .list-group .my-3 .row-section-clinic .columns.checkboxgroup{
+        width: 100%;
+    }
+     .THIS .mobileview{       
+        padding-left: 10px!important;
+    }
+   .THIS .slds-dueling-list__column.slds-dueling-list__column_responsive .slds-form-element__label {
+    display: block!important;
+    font-size: 10px!important;
+    }
+}

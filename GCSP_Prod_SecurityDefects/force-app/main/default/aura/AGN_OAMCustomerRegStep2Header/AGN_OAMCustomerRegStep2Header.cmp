@@ -1,0 +1,40 @@
+<aura:component>
+
+    <aura:attribute name="selectedCountry" type="String"/>
+    <aura:attribute name="selectedCustomerType" type="String"/>
+    <aura:attribute name="selectedSubType" type="String"/>
+    <!-- Province for Canada  -->
+    <aura:attribute name="selectedProvince" type="String"/>    
+    
+    <div class="cus_details acc_det">
+        <section class="content bgcolor-7" >
+            <span class="input input--nariko inputtextValue">
+                <aura:if isTrue="{!or(v.selectedCountry == 'Canada',v.selectedCountry == 'CA')}"><!-- Canada -->
+                    <ui:outputText value="{!v.selectedProvince}" class="input__field input__field--nariko inputtextValue" aura:id="province" />               
+                    <label class="input__label input__label--nariko" for="input_account">
+                        <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Province}</span>
+                    </label>
+                    <aura:set attribute="else">
+                        <ui:outputText value="{!v.selectedCountry}" class="input__field input__field--nariko inputtextValue" aura:id="country" />               
+                        <label class="input__label input__label--nariko" for="input_account">
+                            <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Country}</span>
+                        </label>
+                    </aura:set>
+                </aura:if>   
+            </span>
+            <span class="input input--nariko inputtextValue">
+                <ui:outputText value="{!v.selectedCustomerType}" class="input__field input__field--nariko inputtextValue" aura:id="type"/>                
+                <label class="input__label input__label--nariko" for="input_cus_type">
+                    <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_CustomerType}</span>
+                </label>
+            </span>
+            <span class="input input--nariko inputtextValue">
+                <ui:outputText value="{!v.selectedSubType}" class="input__field input__field--nariko inputtextValue" aura:id="subtype"/>               
+                <label class="input__label input__label--nariko" for="input_cus_sub_type">
+                    <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_SubType}</span>
+                </label>
+            </span>          
+           
+        </section>
+    </div>	
+</aura:component>

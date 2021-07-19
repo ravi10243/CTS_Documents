@@ -1,0 +1,6 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+	<aura:attribute name="urlPrivacy" type="String" default="http://www.google.com"/>
+    <aura:attribute name="urlConditionUse" type="String" default="http://www.google.com"/>
+	{!$Label.c.AGN_OAM_Footer_Copyright} | <span class="privacy-statement"><ui:outputURL value="{!v.urlPrivacy}" label="{!$Label.c.AGN_OAM_Footer_Privacy}" target="_blank"/>
+</span> |  <span class="condition-use"><ui:outputURL value="{!v.urlConditionUse}" label="{!$Label.c.AGN_OAM_Footer_ConditionOfUse}" target="_blank"/></span>
+</aura:component>

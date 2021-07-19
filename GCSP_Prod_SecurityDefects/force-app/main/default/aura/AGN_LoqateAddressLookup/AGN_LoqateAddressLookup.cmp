@@ -1,0 +1,49 @@
+<aura:component controller="AGN_LoqateAddressLookupController" implements="force:hasRecordId,force:lightningQuickActionWithoutHeader">
+
+    <!-- Public Attributes -->
+    <aura:attribute name="searchTerm" type="String" />
+
+    <!-- Private Attributes -->
+    <aura:attribute name="response" type="Object" access="private" />
+    <aura:attribute name="selectedRowId" type="String" access="private" />
+    <aura:attribute name="selectedRowType" type="String" access="private" />
+    <aura:attribute name="showResult" type="Boolean" access="private"/>
+    <!--Event-->
+    <aura:registerEvent name="selectAddress" type="c:AGN_SelectAddress" />
+
+    <!-- Markup -->    
+    <lightning:input type="search" aura:id="search" placeholder="Search (e.g. Post Code)" value="{!v.searchTerm}" class="slds-p-horizontal-medium" />
+    <div class="slds-p-horizontal-medium slds-m-top_small slds-m-bottom_large">
+        <lightning:button label="Search" onclick="{!c.getResults}" class="full-width" variant="brand" />
+    </div>
+
+    <aura:if isTrue="{!and(not(empty(v.response.Results.Items)), v.showResult)}">
+        <lightning:datatable
+            class="slds-p-vertical--medium"
+            columns="{! v.response.Columns }"
+            data="{!v.response.Results.Items}"
+            keyField="Id"
+            maxRowSelection="1"
+            onrowselection="{!c.handleRowSelection}"
+        />
+    </aura:if>
+    <aura:if isTrue="{!and(not(empty(v.selectedRowType)), v.selectedRowType != 'Address', v.showResult)}">
+        <lightning:button
+            class="slds-m-vertical--medium slds-float--right"
+            disabled="{!v.selectedRowId == null}"
+            label="Refine"
+            onclick="{!c.refineSelection}"
+            variant="brand"
+        />
+    </aura:if>
+    <aura:if isTrue="{!and(not(empty(v.selectedRowType)), v.selectedRowType == 'Address', v.showResult)}">
+        <lightning:button
+            class="slds-m-vertical--medium slds-float--right"
+            disabled="{!v.selectedRowId == null}"
+            label="Select"
+            onclick="{!c.saveSelection}"
+            variant="brand"
+        />
+    </aura:if>
+
+</aura:component>

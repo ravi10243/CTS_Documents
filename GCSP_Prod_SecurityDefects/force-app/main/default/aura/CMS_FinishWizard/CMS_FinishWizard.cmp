@@ -1,0 +1,16 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name = "renderMode" type = "String"/>
+    <aura:attribute name = "recordId" type = "String"/>
+    
+    <div>
+        <ui:message title="Congratulations" severity="confirm" closable="false">
+            Start designing now !!    
+        </ui:message>
+        <div class="slds-p-around_medium">
+            <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="MDForm__c">
+                <lightning:outputField fieldName="Name" /> 
+                <lightning:outputField fieldName="URLKey__c" /> 
+            </lightning:recordViewForm>
+        </div>
+    </div>
+</aura:component>

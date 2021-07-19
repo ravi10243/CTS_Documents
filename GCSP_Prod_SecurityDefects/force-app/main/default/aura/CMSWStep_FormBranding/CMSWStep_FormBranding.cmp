@@ -1,0 +1,102 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="MDFormBuilderController">
+    
+    <!-- Attributes -->
+    <aura:attribute name="listFormArea" type="Object[]" />
+    
+    <aura:attribute name="json" type="Object" />
+    
+    <aura:attribute name = "renderMode" type = "String" default = "Detail"/>
+    <aura:attribute name = "recordId" type = "String"/>
+    <aura:attribute name = "saveBtnLabel" type = "string" default = "Save"/>
+    <aura:attribute name = "saveBtnVariant" type = "string" default = "brand"/>
+    <aura:attribute name = "saveBtnTitle" type = "string" default = "Save Branding details"/>
+    
+    <!-- Aura Method -->
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    <!-- Component Body -->
+    <aura:if isTrue ="{!v.listFormArea != null}" >
+        <lightning:card iconName="standard:brand" title="Apply your companies branding to the form?">
+            <aura:set attribute="actions">
+                <aura:if isTrue="{!v.renderMode=='DETAIL'}">
+                    <lightning:button variant="brand" label="Save Branding" title="Save Branding" onclick="{!c.doSaveFormBranding}"/>
+                </aura:if>
+            </aura:set>
+            <p class="slds-p-around_small">
+                <lightning:accordion allowMultipleSectionsOpen="true">
+                    <lightning:accordionSection label = "Page Header" name="PageHeader">
+                        <div class="slds-grid slds-grid_vertical" >
+                            <aura:iteration items = "{!v.json.ListElement[0].ListProperty}" var="prop">
+                                <div class="slds-col slds-m-top_xx-small">
+                                    <span>
+                                        <aura:if isTrue="{!prop.PropertyType=='String' || prop.PropertyType=='Color'}">
+                                            <lightning:input type="{!prop.PropertyType}" name="{!prop.PropertyKey}" label="{!prop.ScreenLabel}" value="{!prop.PropertyValue}" />
+                                        </aura:if>
+                                    </span>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                    </lightning:accordionSection>
+                    <lightning:accordionSection label = "Page Title" name="PageTitle">
+                        <div class="slds-grid slds-grid_vertical" >
+                            <aura:iteration items = "{!v.json.ListElement[2].ListProperty}" var="prop">
+                                <div class="slds-col slds-m-top_xx-small">
+                                    <span>
+                                        <aura:if isTrue="{!prop.PropertyType=='String' || prop.PropertyType=='Color'}">
+                                            <lightning:input type="{!prop.PropertyType}" name="{!prop.PropertyKey}" label="{!prop.ScreenLabel}" value="{!prop.PropertyValue}" />
+                                        </aura:if>
+                                        <aura:if isTrue="{!prop.PropertyType=='FontSize'}">
+                                            <lightning:slider label="Font Size" value="{!prop.PropertyValue}"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!prop.PropertyType=='FontStyle'}">
+                                            <lightning:select name="FontStyle" label="Font Style" value="{!prop.PropertyValue}">
+                                                <option value="Normal">Normal</option>
+                                                <option value="Italic">Italic</option>
+                                                <option value="Bold">Bold</option>
+                                                <option value="Underline">Underline</option>
+                                            </lightning:select>
+                                        </aura:if> 
+                                    </span>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                    </lightning:accordionSection>
+                    <lightning:accordionSection label = "Page Description" name="PageDescription">
+                        <div class="slds-grid slds-grid_vertical" >
+                            <aura:iteration items = "{!v.json.ListElement[1].ListProperty}" var="prop">
+                                <div class="slds-col slds-m-top_xx-small">
+                                    <span>
+                                        <aura:if isTrue="{!prop.PropertyType=='String' || prop.PropertyType=='Color'}">
+                                            <lightning:input type="{!prop.PropertyType}" name="{!prop.PropertyKey}" label="{!prop.ScreenLabel}" value="{!prop.PropertyValue}" />
+                                        </aura:if>
+                                        <aura:if isTrue="{!prop.PropertyType=='FontSize'}">
+                                            <lightning:slider label="Font Size" value="{!prop.PropertyValue}"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!prop.PropertyType=='FontStyle'}">
+                                            <lightning:select name="FontStyle" label="Font Style" value="{!prop.PropertyValue}">
+                                                <option value="Normal">Normal</option>
+                                                <option value="Italic">Italic</option>
+                                                <option value="Bold">Bold</option>
+                                                <option value="Underline">Underline</option>
+                                            </lightning:select>
+                                        </aura:if> 
+                                    </span>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                    </lightning:accordionSection>
+                </lightning:accordion>
+            </p>
+            <div class="slds-align_absolute-center slds-p-top_small">
+            	<button class="slds-button slds-button_brand" onclick="{!c.saveComponentData}">Save</button>
+            </div>
+            
+        </lightning:card>
+    </aura:if>
+</aura:component>

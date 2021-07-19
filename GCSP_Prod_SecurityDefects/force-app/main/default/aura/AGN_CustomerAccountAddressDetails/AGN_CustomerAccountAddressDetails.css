@@ -1,0 +1,96 @@
+.THIS .add_btn{
+    width: 255px ;
+    height: inherit ;
+    text-align: center ;
+    text-transform: uppercase ;
+    float: right ;
+    border: 1px solid #bfbfbf ;
+    padding: 13px ;
+	  position:relative ;
+    border-radius: 0rem ;
+    font-size: inherit ;
+    line-height: inherit ;
+}
+.THIS .continue_btn{
+  	background:#43af2a ;
+  	color:#FFF ;
+    margin-left: 30px ;
+  	/*top: 20px ;*/
+}
+.THIS .elastislide-wrapper {
+    margin: 0 auto 11px;
+}
+
+.THIS .wordwrap { 
+    white-space: pre-wrap;      /* CSS3 */   
+    white-space: -moz-pre-wrap; /* Firefox */    
+    white-space: -pre-wrap;     /* Opera <7 */   
+    white-space: -o-pre-wrap;   /* Opera 7 */    
+    word-wrap: break-word;      /* IE */
+}
+
+.THIS .elastislide-horizontal ul {
+    white-space: nowrap;
+    overflow-x: scroll;   
+}
+.THIS .elastislide-horizontal ul li{
+    margin-bottom: 15px
+}
+.THIS .sold_to_thumb .sold_first {
+    margin: 0;
+}
+.THIS .elastislide-horizontal ul::-webkit-scrollbar-track
+{
+  /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.THIS .elastislide-horizontal ul::-webkit-scrollbar
+{
+  height:5px;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+.THIS .elastislide-horizontal ul::-webkit-scrollbar-thumb
+{ 
+  height:5px;
+  top:5px;
+  border-radius: 5px;
+  /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*/
+  background-color: #e0e0e0;
+}
+
+@-moz-document{
+  .THIS ::scrollbar {
+     -moz-appearance: none !important;
+     background: rgb(0,255,0) !important;
+  }
+  .THIS ::thumb,scrollbarbutton {
+     -moz-appearance: none !important;
+     background-color: rgb(0,0,255) !important;
+  }
+   
+  .THIS ::thumb:hover,scrollbarbutton:hover {
+     -moz-appearance: none !important;
+     background-color: rgb(255,0,0) !important;
+  }
+   
+  .THIS ::scrollbarbutton {
+     display: none !important;
+  }
+   
+  .THIS ::scrollbar[orient="horizontal"] {
+    min-width: 15px !important;
+  }
+}
+@media only screen and (max-device-width: 1250px) and (min-device-width: 100px){
+  .THIS .continue_btn{
+    float: none;
+    display: block;
+    margin: 0 auto;
+    width: 95%;
+    max-width: 240px;
+  }
+}

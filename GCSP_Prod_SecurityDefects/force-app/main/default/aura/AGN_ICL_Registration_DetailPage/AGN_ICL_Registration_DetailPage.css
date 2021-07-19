@@ -1,0 +1,300 @@
+.THIS.registration_wrapper {
+    background-color: #f5f5f5;
+}   
+.THIS.registration_wrapper .container .section-text{
+    margin-bottom: 0;
+    color: #2c5596;
+    font-weight: 600;
+    text-align: CENTER;
+}
+.THIS.registration_wrapper .container{    
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.THIS.registration_wrapper .container .list-group-item {
+    padding: 10px 30px;
+}
+.THIS .log-btn{
+    padding:0 !important;
+}
+.THIS .header {
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px 10px;
+}
+.THIS .header-right {
+    float: right;
+}
+.THIS .container {
+    margin: 150px auto;
+}
+.THIS .container .reg-submit{
+    float: right;
+    padding: 2px!important;
+    border-radius: 6px!important;
+}
+.THIS div[data-acc-content] {
+    display: none;
+}
+.THIS div[data-acc-step]:not(.open) {
+    background: #f2f2f2;
+    visibility: hidden;
+}
+.THIS div[data-acc-step]:not(.open) h5 {
+    color: #777;
+}
+.THIS div[data-acc-step]:not(.open) .badge-primary {
+    background: #ccc;
+}
+.THIS  -webkit-input-container:not( .webkit-input-has-value) input:not(:focus) {
+    color: transparent;
+}
+.THIS .col-md-3{
+    min-height: 105px !important;
+}
+.THIS .time-field{
+    
+    margin-top: 0;
+}
+.THIS .cAGN_ICLAllInputFields select{
+    min-height: 37px !important; 
+}
+.THIS lightning-timepicker .slds-input{
+    border: 0;
+    padding: 4px 0;
+	border-bottom: 1px solid #ccc;
+	background-color: transparent;
+	z-index: 1;
+	position: absolute;
+}
+.THIS lightning-timepicker .slds-input > label {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	top: 9px;
+	color: #fff;
+	transition: 0.3s;
+	z-index: 0;
+	letter-spacing: 0.5px;
+	padding-left: 10%;
+	font-weight: 300;
+	font-size: 15px;
+}
+
+.THIS lightning-timepicker .slds-input:focus > label,
+.THIS lightning-timepicker .slds-input > label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS lightning-timepicker .slds-input:empty{}
+.THIS lightning-timepicker .slds-input:focus {box-shadow: none;}
+.THIS input[type="text"]:disabled, .THIS input[type="url"]:disabled, .THIS input[type="tel"]:disabled {opacity: 0.6;margin: 0;padding-left: 8px;}
+.THIS .input-effect{margin:0;}
+.THIS .cAGN_ICL_TestRegForm .col-md-3 {
+    min-height: 100px!important;
+}
+.THIS .time-field .slds-input{
+    border: 0;
+    padding: 4px 0;
+	border-bottom: 1px solid #ccc;
+	background-color: transparent;
+	z-index: 1;
+	position: absolute;
+}
+.THIS .time-field .slds-input > label {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	top: 9px;
+	color: #fff;
+	transition: 0.3s;
+	z-index: 0;
+	letter-spacing: 0.5px;
+	padding-left: 10%;
+	font-weight: 300;
+	font-size: 15px;
+}
+
+.THIS .time-field .slds-input:focus > label,
+.THIS .time-field .slds-input > label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS .time-field .slds-input:empty{}
+.THIS .time-field .slds-input:focus {box-shadow: none;}
+
+.THIS .check-input{
+    margin-top: 10px;
+}
+.THIS .has-content.effect-16 ~ label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS .slds-form-element__control .slds-checkbox{float: left;}
+.THIS .slds-form-element__legend{    
+    border-bottom: none;
+    font-size: 15px;
+    color: #2c5596;
+    font-weight: normal;}
+.THIS lightning-checkbox-group fieldset{   
+    margin-left: 14px;
+}
+.THIS .slds-form-element__label{
+    font-size: 14px;
+    font-weight: normal;
+	color: #2c5596;
+}
+.THIS .slds-checkbox__label{
+    margin-top: 7px;
+}
+
+.THIS .slds-button+.slds-button {
+    margin-left: 0;
+}
+.THIS .list-group-item{
+    overflow: auto;
+}
+.THIS .slds-size_3-of-12 {
+    width: 45%;
+}
+.THIS .weekday .col-md-4 .form-group {
+    margin-top: 0;
+}
+.THIS .weekday .time-field{
+   margin-top: 10px; 
+}
+.THIS .weekday .col-md-2 .form-group {
+    margin-top: 20px;
+}
+.THIS .slds-input__icon-group {
+    margin-top: 0.5rem;
+}
+.THIS input[type=checkbox]:checked {
+    background-color: rgb(21, 137, 238) !important;
+}
+
+.THIS .glyphicon{
+    color: #fff;
+}
+.THIS fieldset::before {
+  content: "* ";
+    float: left;
+    padding-right: 2px;
+    color: rgb(194, 57, 52);
+    font-weight: 700;
+}
+.THIS .slds-form-element__legend{
+    position: absolute;
+}
+.THIS lightning-checkboxgroup_checkboxgroup{
+        margin-top: 30px;
+}
+.THIS .add-prac{
+    margin-top: 10px;
+    border-radius: 6px!important;
+}    
+.THIS .input-effect .form-control{
+     margin-top: 0 !important;
+    max-width: 100%;
+        margin: 0;
+}
+.THIS .btn_navig .col-md-3{
+        min-height: 0px !important;
+}
+.THIS .clinic_image_file{
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ccc;
+    padding: 2px;
+}
+.THIS .custom-file-label {
+    position: absolute;
+    top: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    width: 150px;
+    height: 150px;
+    margin: 0;
+    display: none;
+    margin-top: inherit;
+}
+.THIS .slds-file-selector__body .slds-file-selector__text{
+    display: none;
+}
+.THIS .slds-file-selector__dropzone{
+    border: 0;
+}
+.THIS #img_contain:hover .custom-file-label {
+    display: block;
+}
+.THIS .edit-txt{
+    display: block;
+    text-align: center;
+    top: 45%;
+    position: relative;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 500px) {
+.THIS .col-md-3 {
+    min-height: 80px!important;
+}
+    .THIS .empty{
+        display: none;
+    }
+      .THIS .day-label{
+        margin:0 !important;
+    }
+    .THIS .weekday .col-md-5{
+        padding-left: 0;
+    }
+}
+
+/* Media Queries */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {  
+    .THIS .registration_wrapper .container .list-group-item {
+        padding: 10px 0px;
+    }
+    .THIS .practioner-details-wrapper {
+        border: 1px solid #ddd;
+        margin-left: 3%;
+        margin-right: 3%;
+	}
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {  
+    .THIS .weekday .col-md-5 {
+        width: 41%;
+        padding-left: 12%;
+    }
+    .THIS .col-md-3 {
+    min-height: 115px!important;
+}
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {  
+	.THIS .weekday .form-group{
+        margin-bottom:0;
+    }
+    .THIS .weekday .col-sm-6 {
+    	min-height: 100px;
+	}
+    .THIS .timing-label{
+        padding-bottom: 25px;
+    }
+    .THIS .weekday .col-md-5 {
+    padding-left: 0;
+	}
+}
+@media only screen and (max-device-width: 500px) and (min-device-width: 100px) and (orientation: portrait){
+.THIS .day-label{
+    position: absolute;
+    margin-top: 12%;
+}
+}

@@ -1,0 +1,41 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <!-- Attributes -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+    
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    
+    <aura:attribute name="fontStyle" type="String"/>
+    <aura:attribute name="color" type="String"/>
+    <aura:attribute name="fontSize" type="String"/>
+    <aura:attribute name="backgroundColor" type="String"/>
+    
+    <aura:attribute name="bodyBackground" type="String" />
+    <aura:attribute name="textStyle" type="String" />
+    
+    
+    
+    <!-- Component Body -->
+    <div class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small' : 'slds-hide'}" 
+         name="{!v.elementWrapper.PageElement.Name}" style="{!v.bodyBackground}">
+        <div class="slds-grid slds-wrap">
+            <!--
+            <div class="slds-col slds-size_12-of-12 lex_infopanel_header slds-p-around_small" >
+                &nbsp;<strong>{!v.elementWrapper.PortalLabel}</strong>
+            </div> -->
+            <aura:if isTrue="{!v.elementWrapper.ContainerHtmlText != null}">
+                <div class="slds-col slds-size_12-of-12 slds-p-around_x-small" >
+                    <div class="slds-grid slds-wrap"  >
+                        <div align="center" class="slds-col slds-size_2-of-12" style="max-width: 4em;">
+                            <lightning:icon size="x-small" iconName="action:info" title="" />
+                        </div>
+                        <div class="slds-col slds-size_10-of-12">
+                            <lightning:formattedRichText value="{!v.elementWrapper.ContainerHtmlText}" style="{!v.textStyle}" />
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+        </div>      
+    </div>    
+</aura:component>

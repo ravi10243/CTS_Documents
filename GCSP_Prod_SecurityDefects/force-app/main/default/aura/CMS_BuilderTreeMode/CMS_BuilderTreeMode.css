@@ -1,0 +1,8 @@
+.THIS .selectedtreenode{
+    border: 1px solid #DDDDDD;
+    color:red;
+}
+.THIS .treenode{
+    border: 0px;
+    color:#000;
+}

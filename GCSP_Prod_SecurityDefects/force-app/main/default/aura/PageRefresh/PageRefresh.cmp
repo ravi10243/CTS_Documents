@@ -1,0 +1,4 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+        <lightning:workspaceAPI aura:id="workspace"/>
+       <!-- <lightning:button label="Refresh Focused Tab" onclick="{!c.refreshFocusedTab}"/> -->
+    </aura:component>

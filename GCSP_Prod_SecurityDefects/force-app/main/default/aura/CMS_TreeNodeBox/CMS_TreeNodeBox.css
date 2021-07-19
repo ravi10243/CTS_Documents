@@ -1,0 +1,34 @@
+.THIS{
+    background: white; 
+    border-bottom: 1px solid #f1f1f1;
+}
+.THIS .box{
+    background: #f1f1f1;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    padding: 0.1em;
+    padding-bottom: 8px;
+    width: 40px;	
+}
+.THIS .boxtitle{
+    padding:10px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+    font-weight: 100;
+}
+.THIS .boxaction{
+    height:40px;
+    padding:10px;
+}
+
+.THIS .box_property {
+
+}
+
+.THIS .boxtitle_property{
+
+}
+.THIS .boxaction_property {
+
+}

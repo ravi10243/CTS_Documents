@@ -1,0 +1,16 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 05-26-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   05-13-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+     <template for:each={AttachmentList} for:item='attachment'>
+      <c-agn_gcsp_file-upload key={attachment.file} onshiptoattachmentupload={onupload} parentid={registrationId}
+            attachment={attachment} source={source} class="upload_sec" countrycode={countryCode} is-shipto-doc={isshiptoDoc}></c-agn_gcsp_file-upload>
+    </template>
+</template>

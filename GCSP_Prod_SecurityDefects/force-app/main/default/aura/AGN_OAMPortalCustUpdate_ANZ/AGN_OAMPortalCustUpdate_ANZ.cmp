@@ -1,0 +1,4 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">  
+    <c:AGN_OAMPortalCustAccountHeader_ANZ/>    
+	<c:AGN_OAMPortalCustAccountAddDetails_ANZ/> 
+</aura:component>

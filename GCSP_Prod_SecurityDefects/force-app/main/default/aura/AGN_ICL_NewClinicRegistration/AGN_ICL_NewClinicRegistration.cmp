@@ -1,0 +1,577 @@
+<!-- **AGN_ICL_NewClinicRegistration** -->
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="AGN_ICL_NewClinicRegistrationController">
+    <ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}"/>
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    <!--<ltng:require scripts="{!$Resource.AGN_ICL_CSS+'/ICL/js/bootstrap.js'}"/>-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+    <link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+    <!--<link href="{!$Resource.AGN_ICL_TempScripts+'/AGN_ICL_TEST_CSS/mystyle.css'}" rel="stylesheet"/>-->
+    <aura:attribute name="Locator_Listing" type="Locator_Listing_AGN__c" default="{'sobjectType':'Locator_Listing_AGN__c'}"/>
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    <aura:attribute name="pageLoaded" type="Boolean" default="false"/>
+    <aura:attribute name="BrandValues1" type="String[]"/>
+    <aura:attribute name="CountryWiseFieldsMap" type="Map"/>
+    <aura:attribute name="selectedBrandvalues" type="List" default=""/>
+    <aura:attribute name="Clinic_details" type="Account" default="{'sobjectType':'Account'}"/>
+    <aura:attribute type="String" name="UserName"/>
+    <aura:attribute name="RegistrationComplete" type="Boolean" default="false"/>
+    <aura:attribute name="clinicConsent" type="Boolean" default="false"/>
+    <aura:attribute name="clinicConsentPopup" type="Boolean" default="false"/>
+    <aura:attribute name="showCTDisclmr" type="Boolean" default="false"/>
+    <aura:attribute name="showClinicConsent" type="Boolean" default="false"/>
+     <aura:attribute name="IsMobileDevice" type="Boolean" default="false"/>
+     <!--Duallist Box Logic added for Brand-->
+    <aura:attribute name="showMultiselect" type="Boolean" default="false"/>
+    <aura:attribute name="brandSize" type="Integer" default="false"/>
+     <!--Duallist Box Logic added for Brand-->
+    <!-- Two Column Layout for Canada -->
+    <aura:attribute name="twoLayerLayout" type="Boolean" />
+    <!-- Two Column Layout for Canada -->
+    <!--UK Disclaimer requirement-->
+    <aura:attribute name="iclCountry" type="String"/>
+    <!--UK Disclaimer requirement-->
+    <aura:attribute name="showClinicTiming" type="Boolean" default="false"/>
+    <aura:handler name="change" value="{!v.clinicConsent}" action="{!c.ClinicConsentCheck}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="ICL_page_content registration_wrapper">
+        <div class="header">
+            <div class="allergan-logo"/>
+            <div class="{! v.twoLayerLayout ? 'logo-txt logo-txt-tcl' : 'logo-txt' }" >
+                <span/>
+                <span>{!$Label.c.AGN_ICL_CUSTOMER_PORTAL}</span>
+            </div>
+            <div class="header-right">
+                <p>
+                    <div class="dropdown closed">
+                        <span class="profile_img">
+                            <img src="{!v.userDetail.SmallPhotoUrl}"/>
+                        </span>
+                        <div class="title">{!$Label.c.AGN_ICL_Login_Greeting}&nbsp;<span>{!v.UserName}</span>
+                        </div>
+                        <ul>
+                            <ui:button label="{!$Label.c.AGN_ICL_Logut}" class="log-btn button" press="{!c.logout}"/>
+                        </ul>
+                    </div>
+                </p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <form id="form" autocomplete="off">
+                    <aura:if isTrue="{!v.spinner == true}">
+                        <div class="spinnerLoad">
+                            <lightning:spinner alternativeText="Loading" size="medium"/>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.pageLoaded == true}">
+                        <div class="list-group list-group-bottom">
+                            <aura:if isTrue="{!!v.RegistrationComplete == true}">
+                                <div class="list-group-item py-3 open">
+                                    <div class="my-3">
+                                        <div class="row">
+                                            <div class="col-md-12 col-xs-12">
+                                                <div class="form-group form-group-cta btn-left">
+                                                    <ui:button class="reg-submit newreg-back btnSubmit" aura:id="editBtnId" label="{!$Label.c.AGN_ICL_Back}" press="{!c.backButton}"/>
+                                                    <ui:button class="reg-submit btn_hide cancel btnSubmit" aura:id="" label="" press=""/>
+                                                    <ui:button class="reg-submit btn_hide cancel btnSubmit" aura:id="" label="" press=""/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 col-xs-12">
+                                                <h4 class="section-text">{!$Label.c.AGN_ICL_Clinic_Information}</h4>
+                                            </div>
+                                        </div>
+                                        <aura:iteration items="{!v.CountryWiseFieldsMap}" var="fieldMap" indexVar="mapindex">
+                                            <div class="section-clinic">
+                                                <div style="width: 100%; margin-top: 15px;" class="section-label">
+                                                    <c:AGN_ICL_SectionHeader SectionHeaderCustomLabel="{!fieldMap.key}"/>
+                                                </div>
+                                           <!-- Duallist Box Logic added for Brand-->
+                                                <div class="row-section-clinic">
+                                                    <aura:if isTrue="{!mapindex == 0}">
+                                                        <div class="columns columns-listbox">
+                                                            <div class="form-group input-effect">
+                                                                <aura:if isTrue="{!v.showMultiselect}">
+                                                                    <lightning:dualListbox aura:id="mygroup" name="checkboxGroup" label="{!$Label.c.AGN_ICL_Brand}" sourceLabel="{!$Label.c.AGN_ICL_AvailableBrands}" selectedLabel="{!$Label.c.AGN_ICL_SelectedBrands}" options="{!v.BrandValues1 }" value="{!v.selectedBrandvalues}" onchange="{!c.handleBrandChange }"/>
+                                                                    <aura:set attribute="else">
+                                                                        <!-- <div class="columns checkboxgroup">-->
+                                                                        <!--<c:AGN_ICL_MultiSelectInput options_="{!v.BrandValues}"/>-->
+                                                                        <lightning:checkboxGroup aura:id="mygroup" name="checkboxGroup" label="{!$Label.c.AGN_ICL_Brand}" options="{!v.BrandValues1 }" value="{!v.selectedBrandvalues }" onchange="{!c.handleBrandChange }"/>
+                                                                        <span class="required">{!v.required ? '*' : ''}</span>
+                                                                        <!-- </div>-->
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </div>
+                                                        </div>
+                                                    </aura:if>
+                                                </div>
+                                          <!-- Duallist Box Logic added for Brand-->
+                                                <div class="row-section-clinic">
+                                                    <aura:iteration items="{!fieldMap.value}" var="fieldList">
+                                                        <c:AGN_ICL_NewRegistrationInputFields aura:id="fieldId" twoLayerLayout = "{!v.twoLayerLayout}" sobjectName="{!fieldList.Field_Sobject_API_Name_AGN__c}" fieldName="{!fieldList.Field_API_Name_AGN__c}" displayType="{!fieldList.Field_Type_AGN__c}" isPicklist="{!fieldList.IsPicklist_AGN__c}" required="{!fieldList.Required_AGN__c}" customLabel="{!fieldList.Field_Label_AGN__c}" TypeofAccount="{!fieldList.Field_for_AGN__c}" fieldRegex="{!fieldList.Field_Regex_AGN__c}"/>
+                                                    </aura:iteration>
+                                                </div>
+                                            </div>
+                                        </aura:iteration>
+                                        <aura:if isTrue="{!v.showClinicTiming}">
+                                        <div class="section-timing">
+                                            <h5 class="section-label">{!$Label.c.AGN_ICL_Clinic_Timings}</h5>
+                                            <aura:if isTrue="{!v.showCTDisclmr}">
+                                                <div class="hint-blk">
+                                                    <p>
+                                                        *{!$Label.c.AGN_ICL_Clinic_Timings_Disclaimer}
+                                                    </p>
+                                                </div>
+                                            </aura:if>                                            
+                                            <div class="row weekday">
+                                                 <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									            <div  aura:id="timeDiv" class="{! v.twoLayerLayout ? 'col-md-12 col-sm-12 col-xs-12' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-2 col-sm-12 col-xs-12 mobv' : 'col-md-2 col-sm-12 col-xs-12' }">
+                                                        <div class="form-group">
+                                                            <label>{!$Label.c.AGN_ICL_Monday}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="monstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="monstart"
+                                                                       aura:id="monstartid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="monstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Monday_Open_Hours_AGN__c}"/>
+                                                                    <label aura:id="monstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="monend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="monend"
+                                                                       aura:id="monendid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="monend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Monday_Close_Hours_AGN__c}"/>
+                                                                    <label aura:id="monend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									            <div  aura:id="timeDiv" class="{! v.twoLayerLayout ? 'col-md-12 col-sm-12 col-xs-12 weekpadding' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                                    <!-- <div class="col-md-2 col-sm-12 col-xs-12">-->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-2 col-sm-12 col-xs-12 mobv' : 'col-md-2 col-sm-12 col-xs-12' }">
+                                                        <div class="form-group">
+                                                            <label class="mob_label">{!$Label.c.AGN_ICL_Tuesday}</label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="tuestart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="tuestart"
+                                                                       aura:id="tuestartid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="tuestart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Tuesday_Open_Hours_AGN__c}"/>
+                                                                    <label aura:id="tuestart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                           
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">  
+                                                                <label aura:id="tueend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                <input class="slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="tueend"
+                                                                       aura:id="tueendid"
+                                                                       placeholder="Close"
+                                                                       step="0"                                                             
+                                                                       time-style="short"
+                                                                       onchange="{!c.timeBlurHandle}" 
+                                                                       value=""></input>
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="tueend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Tuesday_Close_Hours_AGN__c}"/>
+                                                                    <label aura:id="tueend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row weekday weekmargin">
+                                                <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									            <div  aura:id="timeDiv" class="{! v.twoLayerLayout ? 'col-md-12 col-sm-12 col-xs-12' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                                   <!-- <div class="col-md-2 col-sm-12 col-xs-12"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-2 col-sm-12 col-xs-12 mobv' : 'col-md-2 col-sm-12 col-xs-12' }">
+                                                        <div class="form-group">
+                                                            <label>{!$Label.c.AGN_ICL_Wednesday}</label>
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="wedstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="wedstart"
+                                                                       aura:id="wedstartid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="wedstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Wednesday_Open_Hours_AGN__c}"/>
+                                                                    <label aura:id="wedstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                           
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="wedend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="wedend"
+                                                                       aura:id="wedendid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="wedend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Wednesday_Close_Hours_AGN__c}"/>
+                                                                    <label aura:id="wedend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                           
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									            <div  aura:id="timeDiv" class="{! v.twoLayerLayout ? 'col-md-12 col-sm-12 col-xs-12 weekpadding' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                                    <!-- <div class="col-md-2 col-sm-12 col-xs-12">-->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-2 col-sm-12 col-xs-12 mobv' : 'col-md-2 col-sm-12 col-xs-12' }">
+                                                        <div class="form-group">
+                                                            <label class="mob_label">{!$Label.c.AGN_ICL_Thursday}</label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="thusstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="thusstart"
+                                                                       aura:id="thusstartid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="thusstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Thursday_Open_Hours_AGN__c}"/>
+                                                                    <label aura:id="thusstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                           
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="thusend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="thusend"
+                                                                       aura:id="thusendid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="thusend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Thursday_Close_Hours_AGN__c}"/>
+                                                                    <label aura:id="thusend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row weekday weekmargin">
+                                                <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									            <div  aura:id="timeDiv" class="{! v.twoLayerLayout ? 'col-md-12 col-sm-12 col-xs-12' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                                   <!-- <div class="col-md-2 col-sm-12 col-xs-12"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-2 col-sm-12 col-xs-12 mobv' : 'col-md-2 col-sm-12 col-xs-12' }">
+                                                        <div class="form-group">
+                                                            <label>{!$Label.c.AGN_ICL_Friday}&nbsp;&nbsp;</label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="fristart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="fristart"
+                                                                       aura:id="fristartid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="fristart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Friday_Open_Hours_AGN__c}"/>
+                                                                    <label aura:id="fristart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                           
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="friend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="friend"
+                                                                       aura:id="friendid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="friend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Friday_Close_Hours_AGN__c}"/>
+                                                                    <label aura:id="friend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                           
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									            <div  aura:id="timeDiv" class="{! v.twoLayerLayout ? 'col-md-12 col-sm-12 col-xs-12 weekpadding' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                                    <!-- <div class="col-md-2 col-sm-12 col-xs-12">-->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-2 col-sm-12 col-xs-12 mobv' : 'col-md-2 col-sm-12 col-xs-12' }">
+                                                        <div class="form-group">
+                                                            <label class="mob_label">{!$Label.c.AGN_ICL_Saturday}</label>
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="satstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="satstart"
+                                                                       aura:id="satstartid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="satstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Saturday_Open_Hours_AGN__c}"/>
+                                                                    <label aura:id="satstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                           
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="satend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="satend"
+                                                                       aura:id="satendid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="satend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Saturday_Close_Hours_AGN__c}"/>
+                                                                    <label aura:id="satend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row weekday weekmargin">
+                                                <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									            <div  aura:id="timeDiv" class="{! v.twoLayerLayout ? 'col-md-12 col-sm-12 col-xs-12' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                                    <!-- <div class="col-md-2 col-sm-12 col-xs-12">-->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-2 col-sm-12 col-xs-12 mobv' : 'col-md-2 col-sm-12 col-xs-12' }">
+                                                        <div class="form-group">
+                                                            <label>{!$Label.c.AGN_ICL_Sunday}</label>
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="sunstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="sunstart"
+                                                                       aura:id="sunstartid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="sunstart" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Sunday_Open_Hours_AGN__c}"/>
+                                                                    <label aura:id="sunstart" class="open">{!$Label.c.AGN_ICL_Start_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                            
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="col-md-5 col-sm-12 col-xs-6 mobileview"> -->
+                                                    <div class="{! v.twoLayerLayout ? 'col-md-5 col-sm-12 col-xs-6 mobileview' : 'col-md-5 col-sm-12 col-xs-6 mobileview' }">
+                                                        <div class="{! v.twoLayerLayout ? 'form-group input-effect time-field input-effect-timer' : 'form-group input-effect time-field' }">
+                                                            <aura:if isTrue="{!v.IsMobileDevice}">
+                                                                <label aura:id="sunend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                <input class="clinic-time slds-input slds-combobox__input .slds-is-open"
+                                                                       type="time"
+                                                                       name="sunend"
+                                                                       aura:id="sunendid" 
+                                                                       value=""
+                                                                       step = "0"
+                                                                       />                                                         
+                                                                <aura:set attribute="else">
+                                                                    <lightning:input type="time" name="sunend" onchange="{!c.timeBlurHandle}" value="{!v.Locator_Listing.Sunday_Close_Hours_AGN__c}"/>
+                                                                    <label aura:id="sunend" class="open">{!$Label.c.AGN_ICL_End_Time}</label>
+                                                                </aura:set>
+                                                            </aura:if>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.showClinicConsent}">
+                                            <div class="row" style="min-height: 75px;">
+                                                <div class="col-md-4"/>
+                                                <div class="col-md-4"/>
+                                                <div class="col-md-4">
+                                                    <div class="col-sm-12 terms_wrapper">
+                                                       <aura:if isTrue="{!v.iclCountry == 'GB'}">    
+                                            <ui:inputCheckbox label="{!$Label.c.AGN_ICL_Clinic_Consent_ChkBx_Txt_GB}" value="{!v.clinicConsent}" class="terms_check"/>
+                                        </aura:if>
+                                            <aura:if isTrue="{!v.iclCountry !='GB'}">    
+                                            <ui:inputCheckbox label="{!$Label.c.AGN_ICL_Clinic_Consent_ChkBx_Txt}" value="{!v.clinicConsent}" class="terms_check"/>
+                                        </aura:if>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </aura:if>
+                                        <div class="row">
+                                            <div class="col-md-4"/>
+                                            <div class="col-md-4">
+                                                <div class="form-group form-group-cta btn-center">
+                                                    <ui:button class="reg-submit btnSubmit newreg-submit" aura:id="btnNext" label="{!$Label.c.AGN_ICL_Submit}" press="{!c.ValidateAndSaveRecords}"/>
+                                                    <br/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <aura:if isTrue="{!v.clinicConsentPopup == true}">
+                                                    <div class="demo-only" style="height: 640px; width: 400px;">
+                                                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                                            <div class="slds-modal__container">
+                                                                <aura:if isTrue="{!v.iclCountry == 'GB'}"> 
+                                                            <header class="slds-modal__header">                         
+                                                            <h4 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.AGN_ICL_Clinic_Consent_ChkBx_Txt_GB}</h4>
+                                                        </header>
+                                                        </aura:if>
+                                                        <aura:if isTrue="{!v.iclCountry !='GB'}"> 
+                                                        <header class="slds-modal__header">
+                                                            <h4 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.AGN_ICL_Clinic_Consent_ChkBx_Txt}</h4>
+                                                        </header>
+                                                        </aura:if>
+                                                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                           <aura:if isTrue="{!v.iclCountry == 'GB'}"> 
+                                                            <form id="formId">
+                                                                <!--Clinic Consent-->
+                                                                <p>
+                                                                <lightning:formattedRichText value="{!$Label.c.AGN_ICL_ClinicConsent_DisclaimerTxt_GB}"/>
+                                                                </p>
+                                                                <p>
+                                                                <lightning:formattedRichText value="{!$Label.c.AGN_ICL_ClinicConsent_DisclaimerTxt_GB1}"/>
+                                                                </p>
+                                                                <p>
+                                                                <lightning:formattedRichText value="{!$Label.c.AGN_ICL_ClinicConsent_DisclaimerTxt_GB2}"/>
+                                                                </p>
+                                                                   
+                                                            </form>
+                                                           </aura:if>
+                                                          <aura:if isTrue="{!v.iclCountry !='GB'}"> 
+                                                            <form id="formId">
+                                                                <!--Clinic Consent-->
+                                                                <p>
+                                                                    {!$Label.c.AGN_ICL_ClinicConsent_DisclaimerTxt}
+                                                                    
+                                                                </p>
+                                                            </form>
+                                                         </aura:if>
+                                                                </div>
+                                                                <footer class="slds-modal__footer">
+                                                                    <lightning:button class="slds-button slds-button_neutral" label="{!$Label.c.AGN_ICL_Cancel}" onclick="{!c.cancelClinicConsent}"/>
+                                                                    <lightning:button label="{!$Label.c.AGN_ICL_Save}" onclick="{!c.saveClinicConsent}"/>
+                                                                </footer>
+                                                            </div>
+                                                        </section>
+                                                        <div class="slds-backdrop slds-backdrop_open"/>
+                                                    </div>
+                                                </aura:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:if>
+                        </div>
+                        <aura:set attribute='else'>
+                            <div class="spinnerLoad">
+                                <lightning:spinner alternativeText="Loading" size="medium"/>
+                            </div>                             
+                        </aura:set>                        
+                    </aura:if>
+                    <aura:if isTrue="{!v.RegistrationComplete == true}">
+                        <div style="display: block; min-height: 350px; padding: 40px; background-color: #ffffff;
+                                    border: 1px solid #dddddd; border-radius: 4px;">
+                            <div class="alert alert-success">
+                                <!--<p>{!$Label.c.AGN_ICL_Registration_Congrts}</p>
+                                <hr />-->
+                                <p>{!$Label.c.AGN_ICL_Registration_Thank_You}</p>
+                            </div>
+                            <div>
+                                <lightning:button onclick="{!c.backButton}">{!$Label.c.AGN_ICL_Back}</lightning:button>
+                            </div>
+                        </div>                        
+                    </aura:if>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer-wrapper">
+        <c:AGN_ICL_FooterLoggedIn/>
+    </div>
+</aura:component>

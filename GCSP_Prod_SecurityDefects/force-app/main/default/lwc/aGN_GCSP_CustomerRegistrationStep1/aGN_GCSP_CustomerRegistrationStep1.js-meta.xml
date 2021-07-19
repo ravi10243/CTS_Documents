@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="sourceOAM" type="String" label="Registration Source Label"/>
+            <property name="source" type="String" label="Registration Source"/>
+        </targetConfig>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="sourceCS" type="String" label="Registration Source"/>
+            <property name="RegistrationStepNo" type="String"/>
+            <property name="caseId" type="String"/>
+            <property name="accountId" type="String"/>
+                     
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,485 @@
+.THIS .input__Checkboxlabel--nariko {
+    font-size: 15px;
+    margin-right: 5%;
+}
+.THIS .buying_group span.inputtextValue{
+    bottom: 20px;
+    vertical-align: bottom;
+}
+.THIS .buying_group span.inputtextValue:not(:last-child):last-of-type{
+        margin-top: 35px;
+}
+/*.THIS .input{
+vertical-align: bottom;
+}*/
+/*.THIS .input__field{
+    padding-left:5px!important;
+}*/
+.THIS .input__field.required{
+    padding-left: 0px !important;
+}
+.THIS .add_btn{
+    padding: 9px 13px ;
+}
+.THIS .infr_det{
+    margin-top:0px !important;
+}
+.THIS .uiButton .label{
+    padding-top: 4px;
+}
+.THIS .slds-section-title--divider:first-child{
+    margin: 30px 0 -20px 0;
+}
+.THIS .slds-section-title--divider{
+    margin: 40px 0 -10px 0;
+    padding: .5rem 1.2rem;
+}
+.THIS .check_box_btn{
+    word-break: break-word;
+    width: 35%;
+    position:relative;
+    display: inline-block;
+    padding: 10px;
+    box-sizing: border-box;
+    padding:12px;
+    border: 1px solid #bbbaba;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin: 5% auto 5%;
+    margin-left: 2%;
+    /* margin: 30px 0 0 22px;
+    border: 1px solid #bbbaba;
+    padding: 12px;
+    font-size: 15px;
+    text-transform: uppercase;
+    width: 35%;
+    margin: 30px 0 0 15px;*/
+}
+.THIS .myCheckbox{
+    float:right;
+    position:relative;
+    padding-left: 55px;
+    width: 100%;
+    /* width: 80%;
+    position: relative;
+    left: 70px;
+    display: inline-block;
+    vertical-align: middle;
+    word-break: break-word;
+    word-wrap: break-word;
+    font-size: 14px;*/
+}
+.THIS .uiInput--checkbox input{
+    position: absolute;
+    right:0;
+    left:0px;
+    top: 10px;
+    transform: translateY(-50%) translateX(100%);
+    /*position: relative;
+    left: -260px;
+    vertical-align: middle;
+    display: inline-block;*/
+}
+/*.THIS .check_box_btn{
+border: 1px solid #bbbaba;
+padding: 12px;
+font-size: 15px;
+text-transform: uppercase;
+width: 35%;
+text-align: center;
+margin: 30px 0 0 15px;
+}
+.THIS .uiInput--checkbox input{
+position: relative;
+margin: 3px 10px;
+float: left;
+}
+.THIS .check_box_btn span.slds-checkbox_faux {
+cursor: pointer;
+}*/
+.THIS .modalDialog {
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /*z-index: 99999999;*/
+    z-index: 9;
+    opacity:1;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: auto;
+}
+.THIS .verify_btn{
+    display: inline-block;
+    float: right;
+    margin: -40px 25px 0px 0;
+}
+.THIS .slds-modal{
+    width: 80%;
+    position: fixed;
+    transform: translateX(15%) translateY(15%);
+}
+.THIS .slds-modal__container{
+    background: #fff;
+    height: 350px;
+    margin: 10% auto;
+    padding: 30px;
+}
+.THIS .slds-modal__content{
+    height: 300px;
+    text-overflow: ellipsis;
+    white-space: initial;
+    /* border-radius: 0; */
+    box-shadow: none;
+}
+.THIS .loqate_address_label_span{
+    margin-left: 10px;
+    font-size: 12px;
+    top: -2px;
+    position: relative;
+}
+.THIS .loqate_address_modal_close{
+    color: rgb(107, 109, 112);
+    border: 1px solid rgb(217, 219, 221);
+    transition: border .15s linear;
+    border-color: #d4d4d4;
+    background-color: white;
+}
+.THIS .captcha-hide{
+    opacity:0!important;
+    pointer-events: none !important;
+    z-index: -99999999;
+}
+/*.THIS .slds-button_neutral,.THIS .slds-button_brand{
+margin: 35px 25px 0 0;
+float: right;
+border-radius: 0;
+}*/
+.THIS .GDPRConsent{
+    display: none;
+}
+.THIS .down_click{
+    text-align: center;
+}
+.THIS .modalDialog>div{
+    height: 90% ;
+    margin: 3% auto;
+    border: 1px solid #4b98df ;
+    box-shadow: 0px 0px 5px 1px #4b98df;
+    background-color: #ffffff;
+    width: 30%;
+    padding: 10px 50px 50px 45px;
+    border-radius: 0px;
+    
+    width: 430px;
+    height: 510px;
+    position: relative;
+    margin: 10% auto;
+    /*padding: 5px 20px 13px 20px;
+    border-radius: 10px;*/
+}
+.THIS .slds-button_outline-brand{
+    background-color: #43af2a;
+    border-color: #43af2a;
+    color: #fff;
+    border-radius: 0px;
+}
+.THIS .slds-form-element>span>.input__CheckBoxlabel{
+    padding-left: 25px;
+}
+/*Added by SB */
+.THIS .slds-button_neutral {
+    margin: 35px 25px 0 0;
+    float: right;
+    border-radius: 0;
+}
+
+.THIS .slds-button_brand {
+    margin: 35px 25px 0 0;
+    float: right;
+    border-radius: 0;
+}
+.THIS .slds-text-heading_small{
+    text-align: center;
+}
+.THIS .slds-modal__close{
+    right: 0;
+}
+/*.THIS .loqate_footer_okbtn, .THIS .loqate_footer_cancelbtn{
+    margin: 5px 25px 0 0;
+    min-width: 15%;
+}*/
+/*spinner css */
+.THIS.slds-spinner_container {  
+    z-index: 10000;
+    position: fixed;   
+}
+/* Media Query */
+
+/*Mobile Portrait*/
+@media only screen
+    and (max-device-width: 500px) and (min-device-width: 100px) {
+    .THIS .no_det{
+        left: 0px;
+    }
+    .THIS .basic_details li .no_det_text{
+        left: 13px;
+    }
+    .THIS .basic_details .divider{
+        left: 20px;
+    }
+    .THIS .myCheckbox{
+        padding-left: 55px;
+    }
+    .THIS .check_box_btn{
+        width: 90%;
+        margin: 10% 7% 5% 7%;
+    }
+    .THIS .slds-section-title--divider:first-child{
+        margin: 10% 0% 0% 1%;
+        padding-left: 7%;
+    }
+    .THIS .slds-section-title--divider{
+        margin: 10% 0% 0% 1%;
+        padding-left: 7%;
+    }
+    .THIS .input{
+        margin: 10px 8%;
+    }
+    .THIS .slds-button_neutral, .THIS .slds-button_brand{
+        margin: 10% auto 5% auto;
+        float: none;
+        border-radius: 0;
+        display: block;
+    }
+    .THIS .modalDialog>div{
+        padding: 2%;
+        width: 95%;
+    }
+    .THIS .btn_container{
+        text-align: center;
+    }
+    .THIS .slds-modal__container {
+        padding: 10px;
+    }
+    /* scrollbar*/
+    .THIS .slds-modal__content::-webkit-scrollbar {
+        width: 7px;
+    }
+    
+    /* Track */
+    .THIS .slds-modal__content::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+    
+    /* Handle */
+    .THIS .slds-modal__content::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: #555; 
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    }
+    .THIS .slds-modal__content::-webkit-scrollbar-thumb:window-inactive {
+        background: rgba(255,0,0,0.4); 
+    }
+    .THIS .buying_group span.inputtextValue{
+        bottom: 0px;
+    }
+    .THIS .uiInput--checkbox input{
+        top: 30px;
+        transform: translateY(-50%) translateX(50%);
+    }
+}
+@media only screen
+    and (max-device-width: 750px) and (min-device-width: 501px) {
+    .THIS .no_det{
+        left: 0px;
+    }
+    .THIS .basic_details li .no_det_text{
+        left: 13px;
+    }
+    .THIS .basic_details .divider{
+        left: 20px;
+    }
+    .THIS .myCheckbox{
+        padding-left: 55px;
+    }
+    .THIS .check_box_btn{
+        width: auto;
+        margin: 10%;
+        float: none;
+    }
+    .THIS .slds-section-title--divider:first-child{
+        margin: 10% 0% 0% 1%;
+        padding-left: 7%;
+    }
+    .THIS .slds-section-title--divider{
+        margin: 10% 0% 0% 1%;
+        padding-left: 7%;
+    }
+    .THIS .input{
+        margin: 10px 8%;
+    }
+    .THIS .slds-button_neutral, .THIS .slds-button_brand{
+        margin: 10% auto 5% auto;
+        float: none;
+        border-radius: 0;
+        display: block;
+    }
+    .THIS .slds-modal {
+        width: 80%;
+        position: fixed;
+        transform: translateX(15%) translateY(5%);
+    }
+    .THIS .slds-modal__container {
+        background: #fff;
+        height: 280px;
+        margin: 0% auto;
+        padding: 10px;
+    }
+    .THIS .btn_container{
+        text-align: center;
+        width: 50%;
+        margin: auto;
+    }
+    .THIS .btn_container>.cancel_btn, .THIS .btn_container>.continue_btn{
+        width: auto;
+        float: none;
+        margin: 5% auto;
+    }
+    /* scrollbar*/
+    .THIS .slds-modal__content::-webkit-scrollbar {
+        width: 7px;
+    }
+    
+    /* Track */
+    .THIS .slds-modal__content::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+    
+    /* Handle */
+    .THIS .slds-modal__content::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: #555; 
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    }
+    .THIS .slds-modal__content::-webkit-scrollbar-thumb:window-inactive {
+        background: rgba(255,0,0,0.4); 
+    }
+    .THIS .buying_group span.inputtextValue{
+        bottom: 0px;
+    }
+}
+@media only screen
+    and (max-device-width: 1200px) and (min-device-width: 751px) {
+    
+    .THIS .slds-section-title--divider{
+        margin:20px 0 -5px 0;
+    }
+    .THIS .infr_details {
+        padding: 0 5% 0 5%;
+        margin:0 0% 10% 0%;
+    }
+    .THIS .check_box_btn{
+        width: 45%;
+    }
+    .THIS .input{
+        width: 100%;
+        max-width: 40%;
+    }
+    .THIS .slds-modal{
+        transform: translateX(11%) translateY(15%);
+    }
+    .THIS .slds-modal__container {
+        background: #fff;
+        height: 450px;
+        margin: 10% auto;
+        padding: 25px;
+        width: auto;
+    }
+    .THIS .slds-modal__content {
+        height: 80%;
+        text-overflow: ellipsis;
+        white-space: initial;
+        box-shadow: none;
+        padding: 35px;
+        overflow-y: scroll;
+    }
+    .THIS .btn_container{
+        display: inline-block;
+        margin: 5% 5% 5% 0;
+        float: right;
+        top: 0;
+        left: 0;
+        width: 90%;
+    }
+    
+   /* .THIS .slds-button_neutral, .THIS .slds-button_brand {
+        margin: 5% 5% 5% auto;
+        float: none;
+        border-radius: 0;
+        padding: 3% 5%;
+        width: 50%;
+        display: block; 
+        float: left;
+    }*/
+    
+    .THIS .modalDialog>div{
+        width: 80%;
+        height: 80%;
+        padding: 5%;
+        overflow: auto;
+    }
+    .THIS .uiButton .label{
+        display: inline-block;
+    }
+    /* scrollbar*/
+    .THIS .slds-modal__content::-webkit-scrollbar {
+        width: 12px;
+    }
+    
+    /* Track */
+    .THIS .slds-modal__content::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+    
+    /* Handle */
+    .THIS .slds-modal__content::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: #555; 
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    }
+    .THIS .slds-modal__content::-webkit-scrollbar-thumb:window-inactive {
+        background: rgba(255,0,0,0.4); 
+    }
+    .THIS .buying_group span.inputtextValue{
+        bottom: 0px; 
+    }
+    .THIS .buying_group .input:first-child{
+        max-width: 60%;
+    }
+    .THIS .uiInput--checkbox input{
+        top: 20px;
+    }
+    .THIS .myCheckbox{
+        padding-left: 65px;
+    }
+}
+@media only screen
+    and (max-device-width: 1200px) and (min-device-width: 751px) and (orientation : landscape){
+    .THIS .uiInput--checkbox input{
+        top: 10px;
+    }
+}

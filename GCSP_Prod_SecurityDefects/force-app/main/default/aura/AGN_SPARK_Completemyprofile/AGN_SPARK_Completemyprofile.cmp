@@ -1,0 +1,141 @@
+<aura:component implements="force:appHostable,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" controller="AGN_Spark_Registration_Controller" access="global" >
+    <!--Attributes Starts-->
+    <aura:attribute name="custDetail" type="sObject" default="{'sobjectType': 'Allergan_Customer_Registration_AGN__c'}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="acrId" type="string"/>
+    <aura:attribute name="profession" type="object" default="[]"/>
+    <aura:attribute name="aestheticPat" type="object" default="[]"/>
+    <aura:attribute name="daysPerWeek" type="object" default="[]"/>
+    <aura:attribute name="planDays" type="object" default="[]"/>
+    <aura:attribute name="currLoc" type="object" default="[]"/>
+    <aura:attribute name="currentPracticing" type="string"/>
+    <aura:attribute name="isPopUp" type="boolean" default="true"/>
+    <aura:attribute name="showError" type="Boolean" required="true" description="" default="false" access="private"/>
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="private"/>
+    <!--Attributes Ends-->
+    <aura:registerEvent name="ModalCloseEvent" type="c:AGN_SPARK_CloseModal"/>
+    <!--
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/> 
+    <ltng:require styles="{!join(',', 
+                          $Resource.AGN_SPARK_Theme + '/fonts/font-awesome/css/font-awesome.min.css',
+                          $Resource.AGN_SPARK_Theme + '/css/home-page.css'
+                          )}"
+                  />-->
+     <aura:html tag="style">
+        .log_header_popup_stageseven h3 {
+            font-family: 'Beatrice-light';
+            font-size: 42px;
+            font-weight: bold;
+            font-style: normal;
+            color: rgba(167,117,110,1);
+            text-align: center;
+        }
+         .asteic_label {
+            display: block;
+         	padding-top:40px;
+            color: #000000;
+            font-family: Neue_Haas_Unica_Pro-light;
+            font-size: 24px;
+        }
+         .login-stage_seven input.slds-input.slds-combobox__input {
+            font-size: 18px;
+            font-color: #000000;
+            text-indent: 4px;
+            border-color: black;
+            width: 483px;
+         	height:40px;
+            background: none;
+            font-weight: bolder;
+            padding-left: 20px;
+        }
+		.login-stage_seven .slds-form-element {
+            width: 100%;
+            margin: 0 auto;
+        }
+         .login-stage_seven .slds-dropdown {
+            font-size: 18px;
+        }
+         .edit_myasthetic .slds-radio {
+            font-size: 18px;
+        }
+         .edit_myasthetic .slds-radio__label {
+            font-size: 18px;
+        }
+         .log_header_popup_stageseven .login_close {
+            
+            width: 35px !important;
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            height: 35px !important;
+
+        }
+         .slds-radio .slds-form-element__label {
+    display: inline;
+    vertical-align: middle;
+    font-size: 21px;}
+         .update_my_profile {
+            padding: 1% 3% 1% 3%;
+            color: #fff;
+            background: linear-gradient(to right, #000000 41%,#000000 100%,#000000 100%);
+            border: none;
+            font-size: 24px;
+            font-family: helvetica;
+            text-transform: capitalize;
+            margin-top: 5%;
+            margin-bottom: 5%;
+            margin-right: 10%;
+            float: right;
+            box-shadow: -3px 4px 11px -1px #635E62;
+        }
+         </aura:html>
+    <div class="full-container-login-stage_seven ">
+        <div class="login-stage_seven ">
+            <div class="log_header_popup_stageseven">
+                <h3>{!$Label.c.AGN_SPARK_My_Aesthetics_Journey}</h3>
+                <span><img src="{!$Resource.SPARK_Rebranding_LoginLayout +'/images/popupClose.png'}" class="login_close" alt="close" onclick="{!c.closeModal}"/></span>
+            </div>
+            <div class="edit_myasthetic">
+                <div class="asthetic_content">
+                    <aura:renderIf isTrue="{!v.showError}">
+                        <div id="error" class="errorMessage">
+                            <ui:outputRichText  value="{!v.errorMessage}"/>
+                        </div>
+                    </aura:renderIf>
+                    <div class="edit_query">
+                        <label class="asteic_label">{!$Label.c.AGN_SPARK_Stage_in_Aesthetics}
+                        </label>
+                        <lightning:combobox class="selectBox" name="progress" placeholder="Select stage" options="{! v.profession }" value="{!v.custDetail.Aesthetics_Stage_Spark_AGN__c}"/>
+                    </div>
+                    <div class="edit_query">
+                        <label class="asteic_label">{!$Label.c.AGN_SPARK_Aesthetics_treated}
+                        </label>
+                        <lightning:combobox class="selectBox" name="progress" placeholder="Select aesthetic patients" options="{! v.aestheticPat }" value="{!v.custDetail.Number_Of_Aesthetics_Patients_Spark_AGN__c}"/>   
+                    </div>
+                    <div class="edit_query">
+                        <label class="asteic_label">{!$Label.c.AGN_SPARK_Days_Spend_Aesthetics}
+                        </label>
+                        <lightning:combobox class="selectBox" name="progress" placeholder="Select days per week" options="{! v.daysPerWeek }" value="{!v.custDetail.Days_Per_Week_Spark_AGN__c}"/>  
+                    </div>
+                    <div class="edit_query">
+                        <label class="asteic_label">{!$Label.c.AGN_SPARK_Weeks_Plan_to_Spend_Aesthetics}
+                        </label>
+                        <lightning:combobox class="selectBox" name="progress" placeholder="Select plan days" options="{! v.planDays }" value="{!v.custDetail.Planed_Days_Per_Week_Spark_AGN__c}"/>
+                    </div>
+                    <label class="asteic_label">{!$Label.c.AGN_SPARK_Current_Practicing}
+                    </label>
+                    <div class="radio_selection">
+                    <lightning:radioGroup name="radioGroup"
+                                          options="{!v.currLoc}"
+                                          value="{!v.custDetail.Current_Practice_Locations_Spark_AGN__c}"
+                                          type="radio"/>
+                   </div>
+                </div>
+            </div>
+            <div>
+                <button class="update_my_profile" onclick="{!c.updateProfile}">{!$Label.c.AGN_SPARK_Update_my_Profile}</button>
+            </div>
+        </div>
+    </div>
+    <c:AGN_SPARK_ZincCode pageName="EditMyProfilePage"/>
+</aura:component>

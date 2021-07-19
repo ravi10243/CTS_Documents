@@ -1,0 +1,101 @@
+.THIS .input__field--nariko{
+    color:#ffffff;
+    position: relative;
+    float: inherit;
+    top: 5px;
+    padding: 0;
+    border: none;
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
+    max-width: 100%;
+}
+/*.THIS .input-select{
+   color:#333333;
+    position: relative;
+    float: inherit;
+    top: 5px;
+    padding: 0;
+    border: none;
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
+    max-width: 100%;
+} */
+
+.THIS .uiInputSelectOption{
+    color:#333333;
+}
+.THIS .select{
+    background-color: transparent;
+    background: none !important;
+}
+/*.THIS .uiInput{
+    background-color: transparent;
+       position: relative;
+    float: inherit;
+    top: 5px;
+    padding: 0;
+    border: none;
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
+    max-width: 100%;
+}*/
+/*.THIS .uiInputSelect{
+	background-color: transparent;  
+       position: relative;
+    float: inherit;
+    top: 5px;
+    padding: 0;
+    border: none;
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
+    max-width: 100%;
+}*/
+/*.THIS .uiInput--default{
+    background-color: transparent;
+       position: relative;
+    float: inherit;
+    top: 5px;
+    padding: 0;
+    border: none;
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
+    max-width: 100%;
+}*/
+.THIS .uiInput--select{
+    background-color: transparent;
+    position: relative;
+    float: inherit;
+    top: 5px;
+    padding-left: 0em!important;
+    border: none;
+    display: block;
+    box-shadow: none;
+    margin: 0 0 .5em 5px;
+    max-width: 100%;
+}
+.THIS .input__label--nariko{
+    padding: 0 4px;
+}
+.THIS .input__label--nariko::after{
+    margin-left: 4px;
+}
+.THIS .uiInput--select.select:focus{
+	box-shadow: none;
+    outline: 0;
+    border: none;
+}
+@media only screen and (max-device-width:500px) and (min-device-width:100px){
+    .THIS .uiInput--select{
+         padding-left: 0em!important;
+    }
+}

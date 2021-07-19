@@ -1,0 +1,7 @@
+<aura:documentation>
+	<aura:description>
+        Extend Case aura component is being used to provide the extend case functionality to the DPO/PO Users.
+        Aura Component is called by the Quick Action Extend_Case_AGN on Case Object.
+        Created to facilitate the Req:DSRM 119 in Release 2
+    </aura:description>
+</aura:documentation>

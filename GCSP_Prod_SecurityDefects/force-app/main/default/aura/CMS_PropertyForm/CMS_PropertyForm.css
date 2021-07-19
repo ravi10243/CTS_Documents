@@ -1,0 +1,14 @@
+.THIS .slds-panel__header{
+    background: #2fa1a1;
+    color: white;
+}
+.THIS .slds-panel__body{
+    background: azure;
+}
+.THIS .slds-panel__close{
+    color: white;
+    font-size: 20px;
+}
+.THIS .slds-panel{
+    border-radius: 0px; 
+}

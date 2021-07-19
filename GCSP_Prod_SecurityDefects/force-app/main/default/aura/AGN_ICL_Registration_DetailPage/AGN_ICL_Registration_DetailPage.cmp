@@ -1,0 +1,499 @@
+<!-- **AGN_ICL_Registration_DetailPage** -->
+<aura:component controller="AGN_ICL_DetailController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}" /> 
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="Clinic_Admin_details" type="Account" default="{'SobjectType': 'Account',
+                                                                        'Salutation':'','FirstName':'','LastName':'','Email':''}"/>
+    <aura:attribute name="clinicID" type="Id" />
+    <aura:attribute name="LocatorListingID" type="String"/>
+    <aura:attribute name="Clinic_details" type="Account" default="{'sobjectType':'Account'}"/>
+    <aura:attribute name="Locator_Listing" type="Locator_Listing_AGN__c" default="{'sobjectType':'Locator_Listing_AGN__c'}"/>
+    
+    <aura:attribute name="mon_open" type="time"/>
+    
+    <aura:attribute name="CountryWiseFieldsMap" type="Map" />
+    <aura:attribute name="DiffObjects" type="sObject" access="private" default="{'sobjectType': 'sObject'}"/>
+    
+    <aura:attribute name="editBtn" type="boolean" default="true" access="public"/>
+    
+    <aura:attribute name="openModal" type="boolean" default="false"/>
+    
+    <aura:attribute name="BrandValues1" type="String[]"/>
+    <aura:attribute name="selectedBrandvalues" type="List" default=""/>
+    
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    
+    <aura:attribute name="btnLabel" type="String" default="Edit" />
+    <aura:attribute name="SelectedSalutation" type="String"/>
+    <aura:attribute name="CountryWiseFields" type="AGN_ICL_Layout_Field__mdt" />
+    
+    <aura:attribute name="SalutationList" type="String[]" default=""/>
+    <aura:attribute name="RequiredFieldMissing" type="Boolean" default="true"/>
+    <aura:attribute name="Clinic_Next" type="Boolean" default="false"/>
+    <aura:attribute name="isCaptchaValid" type="Boolean" default="false"/>
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit1}" /> -->
+    <!--<aura:handler name="ClosePopup" event="c:AGN_ICL_CloseModel" action="{!c.HandlePopup}"/>-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+    <link href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+  <ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}"  />
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS+'/ICL/js/bootstrap.js'}"/>
+    
+    <aura:attribute name="imageurl" type="String" />
+    
+    
+    <!--  <div class="adm-sign-up">-->
+    <div class="ICL_page_content registration_wrapper">
+        
+        <div class="container">
+            <form id="form">
+                <aura:if isTrue="{!v.spinner == true}">
+                    <div class="spinnerLoad">
+                        <lightning:spinner alternativeText="Loading" size="medium" />
+                    </div>
+                </aura:if>
+                
+                
+                <div class="list-group">
+                    
+                    <div class = "list-group-item py-3 open">
+                        <h4 class="section-text">{!$Label.c.AGN_ICL_Clinic_Information}</h4><br/>
+                        <div class="col-md-2">
+                            
+                            <div id='img_contain'>
+                                <!-- <img id="clinic_image" class="clinic_image_file" align='middle' src="{!$Resource.AGN_ICL_CSS+'/ICL/images/clinic-img.png'}" style="width:150px; height:150px;" />
+
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" id="clinic_upload" class="imgInp custom-file-input" aria-describedby="inputGroupFileAddon01" />
+                            <label class="custom-file-label" for="clinic_upload"><span class="edit-txt">Profile Picture</span>
+                            </label>
+                        </div>
+      
+                    </div>
+     <p style="text-align: center;font-size: 10px;">Maximum Upload File Size 3MB(allowed extensions: .png, .jpeg, .jpg)</p>
+     
+                </div>
+
+            </div>-->
+                                <aura:If isTrue="{!v.editBtn}">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <!-- <input type="file" id="clinic_upload" class="imgInp custom-file-input" aria-describedby="inputGroupFileAddon01" />
+                            <label class="custom-file-label" for="clinic_upload"><span class="edit-txt">Profile Picture</span>
+                            </label>-->
+                                            
+                                            <!--AWS--> 
+                                            <aura:if isTrue="{!(v.imageurl==undefined)}">
+                                                <img id="clinic_image" class="clinic_image_file" align='middle' src="{!$Resource.AGN_ICL_CSS+'/ICL/images/clinic-img.png'}" style="width:150px; height:150px;" />
+                                                <aura:set attribute="else">
+                                                    <img  id="clinic_image1" class="clinic_image_file" align='middle'  src="{!v.imageurl}" height="100" width="150" />              
+                                                </aura:set>
+                                            </aura:if>
+                                            <!--AWS-->  
+                                            
+                                        </div>
+                                    </div>
+                                    <aura:set attribute="else">
+                                        <!--AWS--> 
+                                        <aura:if isTrue="{!(v.imageurl==undefined)}">
+                                            <img id="clinic_image" class="clinic_image_file" align='middle' src="{!$Resource.AGN_ICL_CSS+'/ICL/images/clinic-img.png'}" style="width:150px; height:150px;" />
+                                            <aura:set attribute="else">
+                                                <img  id="clinic_image1" class="clinic_image_file" align='middle'  src="{!v.imageurl}" />              
+                                            </aura:set>
+                                        </aura:if>
+                                        <!--AWS-->  
+                                        <!--<lightning:input aura:id="fileId" class="custom-file-label" type="file" name="file"  multiple="false" onchange="{!c.handleFilesChange}" />-->
+                                        <input type="file" id="clinic_upload"  name="file" aura:id="fileId" multiple="false" onchange="{!c.handleFilesChange}"/>
+                                        <label class="custom-file-label" for="clinic_upload"><span class="edit-txt">Upload Picture</span>
+                                        </label>
+                                        
+                                        <p style="text-align: center;font-size: 10px;    width: 150px;">{!$Label.c.AGN_ICL_fileextensions}</p>
+                                    </aura:set>
+                                </aura:If>
+                                <!--<p style="text-align: center;font-size: 10px;">Maximum Upload File Size 3MB(allowed extensions: .png, .jpeg, .jpg)</p>-->
+                            </div>
+                        </div>
+                        <div class="col-md-10 clinic-details" style="display: block;">
+                            <div class="my-3">
+                                <div class="row btn_navig" style="padding: 0;">
+                                    <div class="col-md-6 col-sm-0"></div>
+                                    <div class="col-md-3 col-sm-4">
+                                        <ui:button class="reg-submit edit-det btnSubmit" aura:id="editBtnId" label="Back" press="{!c.backButton}"/></div>
+                                    <div class="col-md-3 col-sm-4">
+                                            <!-- Edit Save Button  -->
+                                            
+                                            <aura:if isTrue="{!v.editBtn}">
+                                                <ui:button class="reg-submit edit-det btnSubmit" aura:id="editBtnId" label="Edit" press="{!c.editButton}"/>
+                                               
+                                                <aura:set attribute="else">
+                                                    <lightning:layout>
+                                                        
+                                                        <ui:button class="reg-submit btnSubmit" aura:id="cancelBtnId" label="Cancel" press="{!c.cancelButton}"/>
+                                                        
+                                                        <ui:button class="reg-submit btnSubmit" aura:id="saveBtnId" label="Save" press="{!c.saveButton}" />
+                                                        
+                                                    </lightning:layout>
+                                                </aura:set> 
+                                            </aura:if> 
+                                            <!-- <br/>
+                                            <ui:button class="reg-submit add-prac btnSubmit" aura:id="practBtn" label="Add New Practitioner" press="{!c.addPractitioner}"/> -->
+                                       
+                                    </div>
+                                    
+                                </div>
+                                
+                                <aura:iteration items="{!v.CountryWiseFieldsMap}" var="fieldMap" indexVar="mapindex">
+                                    <div style="width: 100%; margin-left: 0;" class="section-label"><c:AGN_ICL_SectionHeader SectionHeaderCustomLabel="{!fieldMap.key}"/></div>
+                                    <div style="width: 100%;">
+                                        <aura:if isTrue="{!mapindex == 0}">
+                                            
+                                            <div class="row checkboxgroup">
+                                                <lightning:checkboxGroup
+                                                                         aura:id="mygroup"
+                                                                         name="checkboxGroup"
+                                                                         label="{!$Label.c.AGN_ICL_Brand}"
+                                                                         options="{!v.BrandValues1 }"
+                                                                         value="{!v.selectedBrandvalues }"
+                                                                         onchange="{!c.handleBrandChange }" 
+                                                                         disabled="{!v.editBtn}"/>
+                                            </div>
+                                        </aura:if>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <aura:iteration items="{!fieldMap.value}" var="fieldList"> 
+                                            <c:AGN_ICL_RegisterDetail_AllInputFields aura:id="fieldId" sobjectName="{!fieldList.Field_Sobject_API_Name_AGN__c}" fieldName="{!fieldList.Field_API_Name_AGN__c}" displayType="{!fieldList.Field_Type_AGN__c}" isPicklist="{!fieldList.IsPicklist_AGN__c}"
+                                                                                     required="{!fieldList.Required_AGN__c}" editBtn="{!v.editBtn}" customLabel="{!fieldList.Field_Label_AGN__c}"  TypeofAccount="{!fieldList.Field_for_AGN__c}" Clinic_details="{!v.Clinic_details}" Clinic_Admin_details="{!v.Clinic_Admin_details}" Locator_Listing="{!v.Locator_Listing}" fieldRegex="{!fieldList.Field_Regex_AGN__c}"/>
+                                            
+                                        </aura:iteration>
+                                        
+                                    </div>   
+                                    <!--<div style="width: 100%;">
+                                        <aura:if isTrue="{!mapindex == 2}">
+                                            
+                                            <div class="row checkboxgroup">
+                                                <lightning:checkboxGroup
+                                                                         aura:id="mygroup"
+                                                                         name="checkboxGroup"
+                                                                         label="Brand"
+                                                                         options="{!v.BrandValues1 }"
+                                                                         value="{!v.selectedBrandvalues }"
+                                                                         onchange="{!c.handleBrandChange }" 
+                                                                         disabled="{!v.editBtn}"/>
+                                            </div>
+                                        </aura:if>
+                                    </div>-->
+                                </aura:iteration> 
+                                <br/>
+                                
+                                <h5 class="section-label">{!$Label.c.AGN_ICL_Clinic_Timings}</h5>
+                                <div class="row weekday">
+                                    
+                                     <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+  									 <div  aura:id="timeDiv" class="{! v.URLCountry=='CA' ? 'col-md-12 col-sm-12 col-xs-12' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                        <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label class="empty" style="width: 100%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="day-label">{!$Label.c.AGN_ICL_Monday}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field" >
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Monday_Open_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time" aura:id="dateId" value="{!v.Locator_Listing.Monday_Open_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If>
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_Start_Time}</label>                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field">
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Monday_Close_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time"  aura:id="dateId" value="{!v.Locator_Listing.Monday_Close_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If> 
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_End_Time}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+  									 <div  aura:id="timeDiv" class="{! v.URLCountry=='CA' ? 'col-md-12 col-sm-12 col-xs-12 weekpadding' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                        <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label  class="empty" style="width: 100%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="day-label">{!$Label.c.AGN_ICL_Tuesday}</label>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field" >
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Tuesday_Open_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time" aura:id="dateId" value="{!v.Locator_Listing.Tuesday_Open_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If>
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_Start_Time}</label>                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field">
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Tuesday_Close_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time"  aura:id="dateId" value="{!v.Locator_Listing.Tuesday_Close_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If> 
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_End_Time}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
+                                 <div class="row weekday">
+                                    <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									 <div  aura:id="timeDiv" class="{! v.URLCountry=='CA' ? 'col-md-12 col-sm-12 col-xs-12' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                         <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label  class="empty" style="width: 100%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="day-label">{!$Label.c.AGN_ICL_Wednesday}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field" >
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Wednesday_Open_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time" aura:id="dateId" value="{!v.Locator_Listing.Wednesday_Open_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If>
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_Start_Time}</label>                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field">
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Wednesday_Close_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time"  aura:id="dateId" value="{!v.Locator_Listing.Wednesday_Close_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If> 
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_End_Time}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                     <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									 <div  aura:id="timeDiv" class="{! v.URLCountry=='CA' ? 'col-md-12 col-sm-12 col-xs-12 weekpadding' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                        <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label  class="empty" style="width: 100%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="day-label">{!$Label.c.AGN_ICL_Thursday}</label>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field" >
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Thursday_Open_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time" aura:id="dateId" value="{!v.Locator_Listing.Thursday_Open_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If>
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_Start_Time}</label>                               
+                                            </div>
+                                        </div>
+                                         <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field">
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Thursday_Close_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time"  aura:id="dateId" value="{!v.Locator_Listing.Thursday_Close_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If> 
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_End_Time}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>  
+                                 <div class="row weekday">
+                                    
+                                   <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									 <div  aura:id="timeDiv" class="{! v.URLCountry=='CA' ? 'col-md-12 col-sm-12 col-xs-12' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                        <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label class="empty" style="width: 100%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="day-label">{!$Label.c.AGN_ICL_Friday}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field" >
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Friday_Open_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time" aura:id="dateId" value="{!v.Locator_Listing.Friday_Open_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If>
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_Start_Time}</label>                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field">
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Friday_Close_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time"  aura:id="dateId" value="{!v.Locator_Listing.Friday_Close_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If> 
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_End_Time}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									 <div  aura:id="timeDiv" class="{! v.URLCountry=='CA' ? 'col-md-12 col-sm-12 col-xs-12 weekpadding' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                        <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label class="empty" style="width: 100%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label  class="day-label">{!$Label.c.AGN_ICL_Saturday}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field" >
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Saturday_Open_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time" aura:id="dateId" value="{!v.Locator_Listing.Saturday_Open_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If>
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_Start_Time}</label>                               
+                                            </div>
+                                        </div>
+                                         <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field">
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Saturday_Close_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time"  aura:id="dateId" value="{!v.Locator_Listing.Saturday_Close_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If> 
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_End_Time}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     </div>
+                                <div class="row weekday">
+                                     <!-- <div class="col-md-6 col-sm-6 col-xs-12">-->
+ 									 <div  aura:id="timeDiv" class="{! v.URLCountry=='CA' ? 'col-md-12 col-sm-12 col-xs-12' : 'col-md-6 col-sm-6 col-xs-12' }">
+                                        <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label  class="empty" style="width: 100%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="day-label">{!$Label.c.AGN_ICL_Sunday}</label>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field" >
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Sunday_Open_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time" aura:id="dateId" value="{!v.Locator_Listing.Sunday_Open_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If>
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_Start_Time}</label>                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-group input-effect time-field">
+                                                <aura:If isTrue="{!v.editBtn}">
+                                                    <lightning:input type="time" name="input1" value="{!v.Locator_Listing.Sunday_Close_Hours_AGN__c}" disabled="true"/>
+                                                    <br/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="time"  aura:id="dateId" value="{!v.Locator_Listing.Sunday_Close_Hours_AGN__c}" disabled="false"/>
+                                                        <br/>
+                                                    </aura:set>
+                                                </aura:If> 
+                                                <label style="margin-top: 10px;">{!$Label.c.AGN_ICL_End_Time}</label>
+                                            </div>
+                                        </div>
+                                    </div>                                   
+                                    
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">	
+                                        
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <!-- Edit Save Button  -->
+`											 <aura:if isTrue="{!v.editBtn}">
+                                                <ui:button class="reg-submit edit-det btnSubmit" aura:id="editBtnId" label="Edit" press="{!c.editButton}"/>
+                                                <aura:set attribute="else">
+                                                    <lightning:layout>
+                                                        
+                                                        <ui:button class="reg-submit btnSubmit" aura:id="cancelBtnId" label="Cancel" press="{!c.cancelButton}"/>
+                                                        
+                                                        <ui:button class="reg-submit btnSubmit" aura:id="saveBtnId" label="Save" press="{!c.saveButton}" />
+                                                        
+                                                    </lightning:layout>
+                                                </aura:set> 
+                                            </aura:if> 
+                                            <!--<ui:button class="reg-submit add-prac btnSubmit" aura:id="practBtn" label="Add New Practitioner" press="{!c.addPractitioner}"/>-->
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div> 
+    
+    <!--<aura:if isTrue="{!v.openModal == true}">
+        <c:AGN_ICL_OAMAddPractitionerDetails/> 
+    </aura:if> -->
+    <div class="ICL_page_content registration_wrapper ">
+        <c:AGN_ICL_OAMAllPractitioner/>
+    </div>
+    
+    <div class="ICL_page_content registration_wrapper ">
+        <c:AGN_ICL_OAM_SendEmail />
+    </div>
+    
+</aura:component>

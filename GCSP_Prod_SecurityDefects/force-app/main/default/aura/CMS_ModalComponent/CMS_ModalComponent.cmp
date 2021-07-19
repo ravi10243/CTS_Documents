@@ -1,0 +1,93 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" >
+    
+    <!-- Attributes -->
+    <aura:attribute name="componentType" type="String" />
+    <aura:attribute name="componentTypeLabel" type="String" />
+    <aura:attribute name="componentTypeIcon" type="String" />
+    <aura:attribute name="formStepId" type="String" />
+    <aura:attribute name="formStepDeveloperName" type="String" />
+    <aura:attribute name="dataFieldAPIName" type="String" />
+    <aura:attribute name="dataFieldLabel" type="String" />
+    
+    <aura:attribute name="recordMode" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    
+    <aura:attribute name="currentProgressStage" type="String" default="component" />
+    <aura:attribute name="hasError" type="Boolean" default="false" />
+    
+    <!-- RegisterEvent -->
+    <aura:registerEvent name="CMS_BuilderRefreshEvent" type="c:CMS_BuilderRefreshEvent"/>
+    
+    <!-- Component Body --> 
+    <div class="demo-only" style="height: auto;">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" 
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <aura:if isTrue="{!v.recordId==null}">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add {!v.dataFieldLabel} ({!v.componentType}) to {!v.formStepDeveloperName}</h2>
+                    </aura:if>
+                    <aura:if isTrue="{!v.recordId!=null}">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit Component Details - {!v.componentType}</h2>
+                    </aura:if>    
+                    <div class="slds-grid slds-wrap slds-border_top"> 
+                        <div class="slds-col slds-size_12-of-12 slds-p-around_small">
+                            <lightning:progressIndicator currentStep="{!v.currentProgressStage}" type="path" hasError="{!v.hasError}" variant="base">
+                                <lightning:progressStep label="Details" value="component" />
+                                <!-- Added by Mona end -->
+                                <lightning:progressStep label="Finish" value="finish"/>
+                            </lightning:progressIndicator>
+                        </div>
+                    </div>
+                </header>
+                <!-- Main Body of Modal -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <aura:if isTrue="{!v.currentProgressStage=='component'}">
+                        <aura:if isTrue="{!v.componentType}">
+                            <aura:if isTrue="{!v.recordId==null}">
+                                <c:CMSWStep_StepComponentDetail aura:id="componetDetailChild"
+                                                                componentType="{!v.componentType}"
+                                                                componentTypeLabel="{!v.componentTypeLabel}"
+                                                                componentTypeIcon="{!v.componentTypeIcon}"
+                                                                formStepId="{!v.formStepId}"
+                                                                formStepDeveloperName="{!v.formStepDeveloperName}"
+                                                                dataFieldAPIName="{!v.dataFieldAPIName}"
+                                                                dataFieldLabel="{!v.dataFieldLabel}"
+                                                                renderMode="WIZARD" /> 
+                            </aura:if>
+                            <aura:if isTrue="{!v.recordId!=null}">
+                                <c:CMSWStep_StepComponentDetail aura:id="componetDetailChild"
+                                                                componentType="{!v.componentType}"
+                                                                recordId="{!v.recordId}"
+                                                                renderMode="WIZARD" /> 
+                            </aura:if>
+                        </aura:if>    
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentProgressStage=='finish'}">
+                        <lightning:card iconName="standard:endorsement" title="Success">
+                            <div class="slds-box" style = "background-color: #f1f1f1;">
+                                Component Details modified succesfully!
+                            </div>
+                        </lightning:card>    
+                    </aura:if>
+                </div>
+                <!-- Footer of Modal -->
+                <footer class="slds-modal__footer">
+                    <lightning:button disabled="{!v.currentProgressStage != 'component' ? '' : 'disabled'}"
+                                      variant="brand" 
+                                      label="Back"
+                                      title="Back"
+                                      onclick="{!c.moveBack}"/>
+                    <lightning:button variant="brand" 
+                                      label="{!v.currentProgressStage != 'finish' ? 'Next' : 'Finish'}"
+                                      title="{!v.currentProgressStage != 'finish' ? 'Next' : 'Finish'}"
+                                      onclick="{!c.moveNext}"/>
+                    <lightning:button variant="brand" label="Cancel" title="Cancel" onclick="{!c.closeComponentModal}" />   
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    
+</aura:component>

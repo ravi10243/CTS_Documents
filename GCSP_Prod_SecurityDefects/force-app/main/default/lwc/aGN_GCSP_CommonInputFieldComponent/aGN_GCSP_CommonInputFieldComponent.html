@@ -1,0 +1,142 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 04-19-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   01-12-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <div class={showhide}>
+        <template if:true={isString}>
+            
+            <lightning-input disabled={disabled} autocomplete="off" onchange={handleChange} onblur={handleBlur} class="commoninputcmp"
+                required={required} type="text" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}></lightning-input>
+
+        </template>
+        <template if:true={isEmail}>
+
+            <lightning-input disabled={disabled}  autocomplete="off" onchange={handleChange} onblur={handleBlur} class="commoninputcmp"
+                required={required} type="text" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}></lightning-input>
+
+        </template>
+        <template if:true={isPhone}>
+
+            <lightning-input disabled={disabled} autocomplete="off" onchange={handleChange} onblur={handleBlur} class="commoninputcmp"
+                required={required} type="text" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}></lightning-input>
+
+
+        </template>
+        <template if:true={isUrl}>
+
+            <lightning-input disabled={disabled} autocomplete="off" onchange={handleChange} onblur={handleBlur} class="commoninputcmp"
+                required={required} type="text" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}></lightning-input>
+
+
+        </template>
+        <template if:true={isPercent}>
+
+            <lightning-input disabled={disabled} onchange={handleChange} onblur={handleBlur} class="commoninputcmp"
+                required={required} type="number" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}></lightning-input>
+
+
+        </template>
+        <template if:true={isNumber}>
+
+            <lightning-input disabled={disabled} autocomplete="off" onchange={handleChange} onblur={handleBlur} class="commoninputcmp"
+                required={required} type="number" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}></lightning-input>
+
+
+        </template>
+        <template if:true={isCurrency}>
+
+            <lightning-input disabled={disabled} onchange={handleChange} onblur={handleBlur} class="commoninputcmp"
+                required={required} type="number" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}></lightning-input>
+
+
+        </template>
+        <template if:true={isDate}>
+
+            <lightning-input disabled={disabled} onfocus={handleKeyUp} onkeyup={handleKeyUp} onchange={handleChange} onblur={handleBlur} class="commoninputcmp commoninputcmp-date"
+                required={required} type="date" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}></lightning-input>
+
+
+        </template>
+        <template if:true={isDateTime}>
+
+            <lightning-input disabled={disabled} onchange={handleChange} onblur={handleBlur} class="commoninputcmp"
+                required={required} type="datetime" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}>
+            </lightning-input>
+
+
+        </template>
+        <template if:true={isBoolean}>
+
+            <lightning-input disabled={disabled} onchange={handleChange} onblur={handleBlur} class="commoninputcmp boolean_chkbox"
+                required={required} type="checkbox" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext} checked ={fieldValue}>
+            </lightning-input>
+
+
+        </template>
+        <template if:true={isPicklist}>
+
+            <lightning-combobox autocomplete="off" disabled={disabled} onchange={handleChange} name={labelVal} label={labelVal}
+                value={fieldValue} options={picklistOptions} required={required} class="commoninputcmp"
+                field-level-help={helptext}>
+            </lightning-combobox>
+
+
+        </template>
+        <template if:true={isTextArea}>
+            <lightning-textarea disabled={disabled} onchange={handleChange} onblur={handleBlur} class="commoninputcmp"
+                required={required} type="text" label={labelVal} name={labelVal} value={fieldValue}
+                field-level-help={helptext}>
+            </lightning-textarea>
+        </template>
+
+        <template if:true={isMultiSelect}>
+            <template if:true={isMultiSelectNR}>
+                <lightning-dual-listbox id="selectOptions"
+                    name={labelVal}
+                    disabled={disabled}
+                    field-level-help={helptext}
+                    label={labelVal}
+                    class="commoninputcmp"
+                    source-label="Available Options"
+                    selected-label="Selected Options"
+                    options={picklistOptions}
+                    value={fieldValue}
+                    required={required}               
+                    onchange={handleChange}>
+                </lightning-dual-listbox>
+            </template> 
+        </template>
+        <template if:true={isProductOfinterest}>
+            <div class="productint">
+                <lightning-checkbox-group  name={labelVal} 
+                disabled={disabled}
+                field-level-help={helptext}
+                label={labelVal}
+                options={optionList}
+                value={chkBoxVal}
+                onchange={handleChange}
+                class="commoninputcmp"
+                variant="label-inline"
+                required={required}>
+                </lightning-checkbox-group>
+            </div>
+        </template>  
+    </div>
+</template>

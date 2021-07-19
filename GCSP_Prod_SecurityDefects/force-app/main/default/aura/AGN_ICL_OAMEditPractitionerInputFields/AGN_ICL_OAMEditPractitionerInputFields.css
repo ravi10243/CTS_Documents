@@ -1,0 +1,28 @@
+.THIS .check-input{
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: #2c5596;
+}
+.THIS .check-input label{
+	font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+.THIS .col-md-3{
+    min-height: 57px !important;
+}
+.THIS .Test{
+    color: #FFFF00;
+}
+.THIS .required{
+    color: red;
+}
+.THIS .input-effect .effect-16{    
+    box-shadow: none;}
+.THIS .input-effect .effect-16 ~ label{
+    color: #2c5596;
+    padding-left: 0;
+}
+.THIS .input-effect .effect-16:focus ~ label, .THIS .effect-16 ~ label{
+    color: #2c5596;
+}

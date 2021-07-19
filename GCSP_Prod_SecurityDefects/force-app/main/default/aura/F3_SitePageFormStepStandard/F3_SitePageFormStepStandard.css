@@ -1,0 +1,34 @@
+.THIS .lex-actionpanel{
+    background: #f1f1f1 ;
+    background-color: #f1f1f1
+}
+
+.THIS.main-border {
+	border-top: 1px solid rgb(249, 249, 250);
+    border-bottom: 1px solid rgb(249, 249, 250);
+    border-left: 1px solid rgb(249, 249, 250);
+    border-right: 1px solid rgb(249, 249, 250);
+}
+/* Added by Lavanya */
+.THIS .captcha_wrapper{
+    /*display: block;*/ /*commented*/
+    display:flex;		/*added*/
+}
+.THIS .captcha_container{
+    display: inline-block;
+}
+.THIS .submit_btn{
+    width: 150px;
+   /* display: inline-block;*/ /*commented*/
+   /* top: -200px;*/ /*commented*/
+    top: 0px;		/*added*/
+    position: relative;
+    min-height: 40px;
+    font-size: 16px !important;
+    /*margin-left: 30%;*/ /*commented*/
+    margin-left: 26%;		/*added*/
+    display:flex;		/*added*/
+}
+.THIS .uiMessage.error, .THIS .slds-notify-container, .THIS .slds-notify_container{
+    display: none !important;
+}

@@ -1,0 +1,30 @@
+.manage_acc1{
+    /*display: flex;
+    flex-wrap: wrap;*/
+    padding: 30px 0px;
+    width: 100%;
+    margin: 0 auto;
+}
+.manage_acc2 {
+    padding: 0px 26px 20px;
+    width: 100%;
+    margin: 0 auto;
+}
+.manage_acc3  { 
+    padding: 0px 26px 30px;
+    width: 100%;
+    margin: 0 auto;
+}
+.cheading{
+    font-size: 1rem;             
+    font-family: Arial,sans-serif;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 5px;
+}
+.cheadingboldnew2{
+    width: 95%;
+    font-size: 1rem;
+    padding-bottom:1%;
+    font-weight: 700; 
+}

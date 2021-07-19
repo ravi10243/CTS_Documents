@@ -1,0 +1,8 @@
+.THIS .myCheckbox{
+  display: inline-block;
+  float: left;
+}
+/*.THIS .slds-spinner_container {  
+  z-index: 10000;
+  position: fixed;   
+}*/

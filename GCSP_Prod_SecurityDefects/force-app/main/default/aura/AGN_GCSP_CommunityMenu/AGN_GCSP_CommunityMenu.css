@@ -1,0 +1,18 @@
+.THIS button {
+    font-size: inherit;
+    line-height: inherit;
+    border: none;
+    padding-left: inherit;
+    color: inherit;
+    background-color: transparent;
+    width: 100%;
+}
+.THIS div ul {
+	width: 220px;
+    height: 35px;
+    font-size: 15px;
+}
+
+.THIS .div.dropdown ul li{
+	border-bottom: 1px solid #b4dbff;
+}

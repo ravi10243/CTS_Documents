@@ -1,0 +1,676 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="AGN_OAMPortalCustomerRegStep2Controller" access="global">    
+    <ltng:require scripts="{!$Resource.AGN_CustomerPortalJQuery}" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    <aura:attribute name="customerAddressList" type="Allergan_Customer_Address_AGN__c[]" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}" access="private" />
+    <aura:attribute name="objSoldTo" type="Allergan_Customer_Address_AGN__c" access="private"/> 
+    <aura:attribute name="objBillTo" type="Allergan_Customer_Address_AGN__c[]" access="private" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}"/>
+    <aura:attribute name="objShipTo" type="Allergan_Customer_Address_AGN__c[]" access="private" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}"/>
+    <aura:attribute name="objAddr" type="Allergan_Customer_Address_AGN__c[]" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}"/>
+    <aura:attribute name="objBillToSectionHdr" type="String" access="private"/>
+    <aura:attribute name="objShipToSectionHdr" type="String" access="private"/>
+
+    <aura:attribute name="obj_addNewBillTo" type="Allergan_Customer_Address_AGN__c[]" access="private" />
+
+    <aura:attribute name="obj_addNewShipTo" type="Allergan_Customer_Address_AGN__c[]" access="private"/>
+    
+    <aura:attribute name="gcspSettings" type="AGN_GCSP_Settings__c" access="private"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="formSubmitAddress" type="c:AGN_CustRegStep2_Evt" />
+    <aura:registerEvent name="notifyRegStepChange" type="c:AGN_Reg_Step_Chg_Evt" />
+    <aura:attribute name="sectionHeaderMapSoldTo" type="Map" />
+    <aura:attribute name="sectionHeaderMapBillTo" type="Map" />
+    <aura:attribute name="sectionHeaderMapShipTo" type="Map" />
+    <aura:attribute name="requireFieldMissing" type="boolean" default="false"/>
+    <aura:attribute name="fieldWellFormated" type="boolean" default="true"/>
+    <aura:attribute name="countryCode" type="String"/>
+    <aura:attribute name="customerType" type="String"/>
+    <aura:attribute name="customerSubType" type="String"/>
+    <aura:attribute name="customerGroup" type="String"/>
+    <aura:attribute name="custRegID" type="String"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="shipToSameAsSoldTo" type="boolean" default="false"/>
+    <aura:attribute name="billToSameAsSoldTo" type="boolean" default="false"/>
+    
+    <!--<aura:handler event="aura:doneRendering" action="{!c.doneRendering}"/>-->
+    <aura:attribute name="selectedval" type="String"/>
+    <aura:attribute name="isOpenSelectAddres" type="boolean" default="false"/> 
+    <aura:attribute name="NewAddresPopup" type="boolean" default="false"/> 
+    <aura:attribute name="isUSLicensedHCP" type="boolean" default="false"/>
+    <aura:attribute name="showUSLicensedHCP" type="boolean" default="false"/>
+    <aura:attribute name="USLicenseDependantFields" type="List" />
+    <aura:attribute name="usLicenseLabel" type="String"/>
+    <aura:attribute name="objMixType" type="sObject" access="private" default="{'sobjectType': 'sObject'}"/>
+    <aura:attribute name="selectedProvince" type="String"/>
+    <aura:attribute name="activeAddressFound" type="boolean" default="false"/>
+    <aura:attribute name="addressOps" type="String[]" />
+    <aura:attribute name="selectedActiveAddress" type="String" />
+    <aura:attribute name="currentShipToIndex" type="Integer" />
+    <aura:attribute name="selectedButtontype" type="String" />
+    <aura:attribute name="selectedIndex" type="Integer" />
+    <aura:attribute name="addressLength" type="Integer" />
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    
+    <aura:attribute name="isBuyingGroup" type="boolean" default="false"/>
+    <aura:attribute name="BuyingGroupDependantFields" type="List" />
+    <aura:attribute name="buyingGroupLabel" type="String"/>
+    <aura:attribute name="addressType" type="String"/>
+    
+    <aura:attribute name="isSoldToVerified" type="boolean" default="false"/> 
+    <aura:attribute name="doValidate" type="boolean" default="true" />
+    <aura:attribute name="showError" type="boolean" default="false"/>
+    
+    <aura:attribute name="uploadAccountOwnerDocument" type="boolean" default="false"  />
+    <aura:attribute name="clearUsLicense" type="boolean" default="false"/>
+    <aura:attribute name="clearBuyingGroup" type="boolean" default="false"/>
+    
+    <aura:attribute name="isAccountOwner" type="boolean" default="false"/>
+    <aura:attribute name="showAccountOwner" type="boolean" default="true"/>
+    <aura:attribute name="AccountOwnerDependantFields" type="List" />
+    <aura:attribute name="clearAccountOwner" type="boolean" default="false"/>
+    
+    <aura:attribute name="isSaved" type="boolean" default="false"/>
+    <aura:attribute name="clearBuyingGroupRequiredFields" type="Boolean" default="false" />
+    <aura:attribute name="clearUSLicenseRequiredFields" type="Boolean" default="false" />
+    <aura:attribute name="clearAccountOwnerRequiredFields" type="Boolean" default="false" />
+          
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.showSpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end--> 
+    
+    <div class="col-3 input-effect">
+        <div class="regi_add_1"> 
+                 <div id="modalBackground" class=""></div>	<!-- Grey BG for modal -->
+            <aura:iteration items="{!v.sectionHeaderMapSoldTo}" var="set" indexVar="key">
+                
+                <div id="Registered_Address" class="displ_reg_addr">
+                    <div class="Registered">
+                    <b>
+                        <!--{!set.value[0].Section_Header_Label_AGN__c}-->
+                        <c:AGN_OAMCustomerRegSectionHeader sectionHeaderLabel="{!set.value[0].Section_Header_Custom_Label_AGN__c}" />
+                    </b>
+                </div> 
+                    <div class="edit_icons">
+                        <span class="edit_addr" onclick="{!c.show_hide_SoldTo_Address}" title="Edit">
+                            <lightning:icon iconName="action:edit" size="xx-small" alternativeText="Edit"/>
+                        </span>
+                        <!-- <span class="edit_addr" onclick="{!c.sectionValidateAndUpdate}" title="Save" data-value="fieldSoldTo" data-set-name="v.objSoldTo"><lightning:icon iconName="action:update_status" size="xx-small" variant="success" alternativeText="Save"/></span>-->
+                    </div>                     
+                    <aura:if isTrue="{!not(empty(v.objSoldTo))}">                        
+                        <div aura:id="Registered_add_Show_FlatView" class="reg_address">                                            
+                            <c:AGN_OAMCustomerAddressFlatView aura:id="soldToFlatView" addressData="{!v.objSoldTo}" addressFields="{!set.value}"/>                                          
+                        </div>  
+                    </aura:if>
+                    <div aura:id="Registered_add_Show" class="Registered_add">
+                        
+                        <section class="content bgcolor-7"> 
+                            <aura:iteration items="{!set.value}" var="fieldValue">
+                                <c:AGN_OAMCommunityInputFieldWrapperCmp 
+                                                              aura:id="fieldSoldTo" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!v.objSoldTo}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}" 
+                                                              customLabelName = "{!fieldValue.Field_Label_AGN__c}" 
+                                                              addressType = "SOLDTO" 
+                                                              isSoldToVerified = "{!v.isSoldToVerified}" 
+                                                              doValidate = "{!v.doValidate}"
+                                                              uploadAccountOwnerDocument = "{!v.uploadAccountOwnerDocument}"
+                                                              /> 
+                                <aura:renderIf isTrue="{!fieldValue.Field_Name_AGN__c == 'Zip_AGN__c'}">
+                                      <div class="addr_modal_det_btns">
+                                        <ui:button aura:id="soldToBtn" class="add_btn continue_btn" press="{!c.verifyAddress}">{!$Label.c.AGN_OAM_Verify_Address}</ui:button>
+                                      </div>
+                                </aura:renderIf>
+                            </aura:iteration>
+                            <aura:renderIf isTrue="{!key == 0}">
+                            <!-- *************US Licensed HCP **************** -->
+                               <aura:renderIf isTrue="{!v.countryCode == 'CA'}" >
+                                   <!-- <aura:renderIf isTrue="{!or(v.customerType == 'Healthcare Practitioners' , 
+                                                                v.customerType == 'Optician' ,
+                                                                v.customerType == 'Optometry' ,
+                                                                v.customerType == 'Drug Wholesaler')}"> -->
+                                        <c:auraIfContains_AGN items="AN,SP,DN,RH,EM,SG,GP,GV,OM,OR,IN,OT,PE,NF,NE,OB,OC,R,PM,PS,PL,RD,U,UR,SK,NP,NA,CA,DI,W,G,WC,FW,OP,OW,Q,X,V"  element="{!v.customerGroup}">
+                                        <div class="slds-form-element">
+                                                  <span class="input input--nariko inputCheckboxValue" data-inputFiedlValue="{!v.isUSLicensedHCP}" >
+                                                            <label class="slds-checkbox_toggle slds-grid"> 
+                                                                   <span class="slds-form-element__label input__Checkboxlabel--nariko">
+                                                                         {!v.usLicenseLabel}
+                                                                   </span> 
+                                                                   <ui:inputCheckbox aura:id="ctrlChkBox" change="{!c.handleCheckBoxChange}" value="{!v.showUSLicensedHCP}" class="slds-input slds-checkbox uiInput--checkbox"/>               
+                                                                   <span id="toggle-desc" class="slds-checkbox_faux_container " aria-live="assertive">                     
+                                                                         <span class="slds-checkbox_faux"></span>
+                                                                   </span>
+                                                            </label> 
+                                                 </span>
+                                        <aura:renderIf isTrue="{!v.isUSLicensedHCP}" >
+                                                  <c:AGN_OAMCheckboxDependentParent aura:id="licenseField"
+                                                                                        USLicenseDependantFields= "{!v.USLicenseDependantFields}"  
+                                                                                        record = "{!v.objMixType}"
+                                                                                        selectedCountryCode = "{!v.country}" 
+                                                                                        required = "{!v.isUSLicensedHCP}" 
+                                                                                        clearValues = "{!v.clearUsLicense}"
+                                                                                        clearRequiredFields = "{!v.clearUSLicenseRequiredFields}" 
+                                                                                        step = "2" />
+                                        </aura:renderIf>
+                                        </div>
+                                        </c:auraIfContains_AGN>
+                                   <!-- </aura:renderIf> -->
+                                </aura:renderIf>
+                 
+                          <!-- *************US Licensed HCP **************** -->
+                          
+                           <!-- ********************Buying Group************** -->                              
+                                                          
+                               <aura:If isTrue="{!or(or(v.customerGroup == 'OP', v.customerGroup == 'OW'),or(v.customerGroup == 'Q',v.customerGroup == 'X'))}" >                                  
+                                    <div class="slds-form-element buying_group">
+                                        <span class="input input--nariko inputCheckboxValue" data-inputFiedlValue="{!v.isBuyingGroup}" >
+                                            <label class="slds-checkbox_toggle slds-grid"> 
+                                                <span class="slds-form-element__label input__Checkboxlabel--nariko">
+                                                    {!v.buyingGroupLabel}
+                                                </span> 
+                                                <ui:inputCheckbox aura:id="ctrlChkBoxBG" change="{!c.handleBGCheckBoxChange}" class="slds-input slds-checkbox uiInput--checkbox"/>               
+                                                <span id="toggle-desc" class="slds-checkbox_faux_container " aria-live="assertive">                     
+                                                    <span class="slds-checkbox_faux"></span>
+                                                </span>
+                                            </label> 
+                                        </span>
+                                        
+                                        <aura:renderIf isTrue="{!v.isBuyingGroup}" >
+                                            <c:AGN_OAMCheckboxDependentParent aura:id="buyingGrpField"
+                                                                              USLicenseDependantFields= "{!v.BuyingGroupDependantFields}"  
+                                                                              record = "{!v.objMixType}"
+                                                                              selectedCountryCode = "{!v.selectedCountryCode}" 
+                                                                              required = "{!v.isBuyingGroup}" 
+                                                                              clearValues = "{!v.clearBuyingGroup}" 
+                                                                              clearRequiredFields = "{!v.clearBuyingGroupRequiredFields}" 
+                                                                              step = "2" /> 
+                                        </aura:renderIf>
+                                    </div>                               
+                                </aura:If>
+                            
+                            <!-- ********************Buying Group************** -->
+                                <!-- ********************Account Owner************** -->
+                                
+                                <div class="slds-form-element buying_group">
+                                        <span class="input input--nariko inputCheckboxValue" data-inputFiedlValue="{!v.showAccountOwner}" >
+                                            <label class="slds-checkbox_toggle slds-grid"> 
+                                                <span class="slds-form-element__label input__Checkboxlabel--nariko">
+                                                    {!$Label.c.AGN_OAM_ARE_YOU_ACCOUNT_OWNER}
+                                                </span> 
+                                                <ui:inputCheckbox aura:id="ctrlChkBox" value="{!v.showAccountOwner}" change="{!c.handleAccountOwnerCheckBoxChange}" class="slds-input slds-checkbox uiInput--checkbox"/>               
+                                                <span id="toggle-desc" class="slds-checkbox_faux_container " aria-live="assertive">                     
+                                                    <span class="slds-checkbox_faux"></span>
+                                                </span>
+                                            </label> 
+                                        </span>
+                                        <aura:renderIf isTrue="{!v.isAccountOwner}" >
+                                            <c:AGN_OAMCheckboxDependentParent aura:id="accountOwnerField"
+                                                                              USLicenseDependantFields= "{!v.AccountOwnerDependantFields}"  
+                                                                              record = "{!v.objMixType}"
+                                                                              selectedCountryCode = "{!v.selectedCountryCode}" 
+                                                                              required = "{!v.isAccountOwner}" 
+                                                                              clearValues = "{!v.clearAccountOwner}" 
+                                                                              clearRequiredFields = "{!v.clearAccountOwnerRequiredFields}" 
+                                                                              step = "2" />
+                                        </aura:renderIf>
+                                </div>
+                                <!-- ********************Account Owner************** -->
+                           </aura:renderIf>
+                            
+                        </section>  
+                        
+                    </div> 
+                    
+                </div>
+            </aura:iteration>
+            
+            <br/>
+            <dl class="slds-list_horizontal slds-wrap">
+                <!-- Display Checkbox fo Shipping-->
+                <div id="copy_reg_addr_checkbox_holder" style="width: 50%;position: relative;top: 10px;margin-bottom: 25px;">
+                    <div class="slds-form-element">
+                        <label class="slds-checkbox_toggle slds-grid">
+                            <span class="slds-form-element__label">{!$Label.c.AGN_OAM_Same_As_Shipping_Address}
+                            </span>
+                            <ui:inputCheckbox aura:id="chkboxSameAsSoldTo" value ="{!v.shipToSameAsSoldTo}" change="{!c.updateSoldToForSameShiptoBillTo}"/>
+                            <span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux">
+                                </span>
+                                <span class="slds-checkbox_on">Yes
+                                </span>
+                                <span class="slds-checkbox_off">No
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <!-- End of Display Checkbox for Ship To-->
+                
+                <!-- Display Checkbox for bill to -->
+                <div id="copy_reg_addr_checkbox_holder" style="width: 50%;position: relative;top: 10px;margin-bottom: 25px;">
+                    <div class="slds-form-element">
+                        <label class="slds-checkbox_toggle slds-grid">
+                            <span class="slds-form-element__label slds-m-bottom_none">{!$Label.c.AGN_OAM_Same_As_Billing_Addess}
+                            </span> 
+                            <ui:inputCheckbox aura:id="chkboxSameAsSoldToforBillTo" value ="{!v.billToSameAsSoldTo}" change="{!c.updateSoldToForSameShiptoBillTo}"/>
+                            <span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux">
+                                </span>
+                                <span class="slds-checkbox_on">Yes
+                                </span>
+                                <span class="slds-checkbox_off">No
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <!-- End of Display Checkbox for bill to -->
+            </dl>
+        </div>
+        <!-- ============== Existing ShipTo =================== -->
+        
+        <div class="regi_add_1 delivery_add">              
+            <aura:if isTrue="{!v.objShipTo.length == 0}"> 
+                <aura:if isTrue="{!not(empty(v.objShipToSectionHdr))}">
+                    <div class="Registered">
+                        <b>{!v.objShipToSectionHdr}
+                        </b>
+                    </div>
+                </aura:if>
+            </aura:if> 
+            <!-- ======== Exesting ShipTo same as SoldTo ==> Start ====== -->            
+            <aura:iteration items="{!v.objShipTo}" var="shiptoData" indexVar="shipToKey"> 			 
+                <aura:iteration items="{!v.sectionHeaderMapShipTo}" var="set" indexVar="key"> 
+                    <div class="Registered">
+                        <aura:if isTrue="{!shipToKey == 0}">
+                            <b>
+                                <!--{!set.value[0].Section_Header_Label_AGN__c}-->
+                                <c:AGN_OAMCustomerRegSectionHeader sectionHeaderLabel="{!set.value[0].Section_Header_Custom_Label_AGN__c}" />
+                            </b>                  
+                            <aura:set attribute="else">  
+                                <b>
+                                </b>  
+                            </aura:set>
+                        </aura:if>                          
+                    </div> 
+                    <div id="Delivery_Address" class="displ_reg_addr">
+                        <aura:if isTrue="{!shiptoData.Sold_To_AGN__c}">
+                            <aura:if isTrue="{!not(empty(v.objShipTo))}">
+                                <aura:if isTrue="{!or(!shiptoData.Sold_To_AGN__c , v.shipToSameAsSoldTo)}">
+                                    <div id="{!'shipTo_addr_Show_Small_View-' + shipToKey}" class="reg_address">
+                                        <c:AGN_OAMCustomerAddressFlatView aura:id="shipToFlatView" index="{!shipToKey}"  addressData="{!shiptoData}" addressFields="{!set.value}"/>
+                                    </div>
+                                </aura:if>
+                            </aura:if>
+                        </aura:if>
+                    </div> 
+                </aura:iteration>				
+            </aura:iteration> 
+            <!-- ======== Exesting ShipTo same as SoldTo ==> End ====== -->   
+            
+            <!-- ======== Exesting ShipTo does not same as SoldTo ==> Start ====== -->             
+            <aura:iteration items="{!v.objShipTo}" var="shiptoData" indexVar="shipToKey"> 
+                <aura:iteration items="{!v.sectionHeaderMapShipTo}" var="set" indexVar="key">                    
+                    <aura:if isTrue="{!shiptoData.Id != v.objSoldTo.Id}">
+                        <div id="Delivery_Address" class="displ_reg_addr">
+                            
+                            <!-- Start of edit icons --> 
+                            <div class="edit_icons">                            
+                                <span class="edit_addr" onclick="{!c.show_hide_Ship_Bill_To_Address}" data-value="{!shipToKey}" data-address-type="SHIPTO" title="Edit">
+                                    <lightning:icon iconName="action:edit" size="xx-small" alternativeText="Edit"/>
+                                </span>
+                                <!--<span class="edit_addr" data-address-type="SHIPTO" title="Save" onclick="{!c.sectionValidateAndUpdate}" data-value="fieldShipTo" data-set-name="v.objShipTo"> -->
+                                <!-- <lightning:icon iconName="action:update_status" size="xx-small" variant="success" alternativeText="Save"/>  </span> -->
+                                <span class="edit_addr" onclick="{!c.deleteExistingShip_Bill_To}" data-value="{!shipToKey}" data-address-type="SHIPTO" title="Delete">
+                                    <lightning:icon iconName="action:delete" size="xx-small" alternativeText="Delete"/>
+                                </span>
+                            </div>
+                            <!-- End of Edit icons -->  
+                            
+                            <aura:if isTrue="{!not(empty(v.objShipTo))}">
+                                <!--Suite:{!shiptoData.Suite_AGN__c}:-->
+                                <aura:if isTrue="{!or(!shiptoData.Sold_To_AGN__c , v.shipToSameAsSoldTo)}">
+                                    <div id="{!'shipTo_addr_Show_Small_View-' + shipToKey}" class="reg_address">
+                                        <c:AGN_OAMCustomerAddressFlatView aura:id="shipToFlatView" index="{!shipToKey}" addressData="{!shiptoData}" addressFields="{!set.value}"/>
+                                    </div>
+                                </aura:if>
+                            </aura:if> 
+                            
+                            <div id="{!'shipTo_addr_Show_Full_View-' + shipToKey}" class="Registered_add">
+                                <section class="content bgcolor-7"> 
+                                    <aura:iteration items="{!set.value}" var="fieldValue">
+                                        <c:AGN_OAMCommunityInputFieldWrapperCmp 
+                                                              aura:id="fieldShipTo" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!shiptoData}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}" 
+                                                              customLabelName = "{!fieldValue.Field_Label_AGN__c}"  
+                                                              index = "{!shipToKey}"  
+                                                              addressType = "SHIPTOEDIT" 
+                                                              objShipTo = "{!v.objShipTo}" 
+                                                              doValidate = "{!v.doValidate}"
+                                                              />
+                                        <aura:renderIf isTrue="{!fieldValue.Field_Name_AGN__c == 'Zip_AGN__c'}">
+                                              <div class="addr_modal_det_btns">
+                                                <button type="button" onclick="{!c.verifyNewAddress}" name="shipToEditBtn" class="add_btn continue_btn" id="{!shipToKey}">{!$Label.c.AGN_OAM_Verify_Address}</button>
+                                              </div>
+                                        </aura:renderIf>
+                                    </aura:iteration>                                 
+                                    
+                                </section>
+                            </div>
+                        </div> 
+                    </aura:if>
+                </aura:iteration> 
+            </aura:iteration>  
+            <!-- ======== Exesting ShipTo does not same as SoldTo ==> End ====== -->
+        </div>
+        
+        <!-- ============== Add New ShipTo ===================  -->
+        <div class="regi_add_1 delivery_add add_addr_btn">
+            <div id="modalBackground_NewShipTo" class=""></div>
+            <div id="Delivery_Address_new" class="{!v.obj_addNewShipTo.length > 0 ? 'displ_reg_addr':''}">
+                <aura:iteration items="{!v.obj_addNewShipTo}" var="shiptoData_New" indexVar="newShipToKey">
+                    <aura:iteration items="{!v.sectionHeaderMapShipTo}" var="set" indexVar="key">
+                        <div id="Delivery_Address" class="">
+                            <div class="edit_icons" onclick="{!c.removeNewShip_Bill_To}" data-value="{!newShipToKey}" data-address-type="SHIPTO">
+                                <span class="edit_addr">
+                                    <lightning:icon iconName="utility:ban" variant="error" size="small" alternativeText="Remove"/>
+                                </span>
+                            </div> 
+                            <section class="content bgcolor-7"> 
+                                <aura:iteration items="{!set.value}" var="fieldValue">
+                                    
+                                    <c:AGN_OAMCommunityInputFieldWrapperCmp 
+                                                              aura:id="newShipTo" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!shiptoData_New}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"   
+                                                              customLabelName = "{!fieldValue.Field_Label_AGN__c}" 
+                                                              index = "{!newShipToKey}" 
+                                                              addressType = "SHIPTONEW" 
+                                                              obj_addNewShipTo = "{!v.obj_addNewShipTo}" 
+                                                              doValidate = "{!v.doValidate}"
+                                                              />
+                                        <aura:renderIf isTrue="{!fieldValue.Field_Name_AGN__c == 'Zip_AGN__c'}">
+                                              <div class="addr_modal_det_btns" data-value="{!newShipToKey}">
+                                                <button type="button" onclick="{!c.verifyNewAddress}" name="shipToNewBtn" class="add_btn continue_btn" id="{!newShipToKey}">{!$Label.c.AGN_OAM_Verify_Address}</button>
+                                              </div>
+                                        </aura:renderIf>
+                                </aura:iteration>                              
+                            </section>
+                        </div>
+                    </aura:iteration>  
+                </aura:iteration>
+            </div>
+            
+            
+            <aura:if isTrue="v.objShipTo.length == 0">           
+               <aura:if isTrue="{!lessthan(v.obj_addNewShipTo.length,v.gcspSettings.Number_Of_ShipTo_Allowed_AGN__c)}">
+                    <div id="first" class="add_delivery_btn" onclick="{!c.addAnotherShipTo}">{!$Label.c.AGN_OAM_Add_New_Delivery_Address}
+                        <span>
+                            <lightning:icon iconName="utility:add" alternativeText="Add" size="small"/>
+                        </span>
+                    </div>
+                </aura:if>
+                <aura:set attribute="else">
+                    <aura:if isTrue="{!lessthan(v.obj_addNewShipTo.length,subtract(v.gcspSettings.Number_Of_ShipTo_Allowed_AGN__c,v.objShipTo.length ))}">
+                        <div id="second" class="add_delivery_btn" onclick="{!c.addAnotherShipTo}">{!$Label.c.AGN_OAM_Add_New_Delivery_Address}
+                            <span>
+                                <lightning:icon iconName="utility:add" alternativeText="Add" size="small"/>
+                            </span>
+                        </div>
+                    </aura:if>
+                </aura:set> 
+            </aura:if>
+            <!--  <button class="add_btn addmore_address" onclick="{!c.addAnotherShipTo}"> Add New Delivery Address </button>-->
+        </div>
+        <!-- ============== Existing BillTo =================== -->
+        
+        <div class="regi_add_1 delivery_add">
+            <aura:if isTrue="{!v.objBillTo.length == 0}">
+                <aura:if isTrue="{!not(empty(v.objBillToSectionHdr))}">
+                    <div class="Registered">
+                        <b>{!v.objBillToSectionHdr}
+                        </b>
+                    </div>
+                </aura:if>
+            </aura:if>
+            
+            <!-- ======== Exesting BillTo same as SoldTo ==> Start ====== -->  
+            <aura:iteration items="{!v.objBillTo}" var="billtoData" indexVar="billToKey">
+                <aura:iteration items="{!v.sectionHeaderMapBillTo}" var="set" indexVar="key">
+                    <div class="Registered">
+                        <aura:if isTrue="{!billToKey == 0}">                             
+                            <b>
+                                <!--{!set.value[0].Section_Header_Label_AGN__c}-->
+                                <c:AGN_OAMCustomerRegSectionHeader sectionHeaderLabel="{!set.value[0].Section_Header_Custom_Label_AGN__c}" />
+                            </b>                         
+                            <aura:set attribute="else">  
+                                <b>
+                                </b>  
+                            </aura:set>
+                        </aura:if>                      
+                    </div>
+                    <div id="Delivery_Address" class="displ_reg_addr">
+                        <aura:if isTrue="{!billtoData.Sold_To_AGN__c}"> 
+                            <aura:if isTrue="{!not(empty(v.objBillTo))}">                           
+                                <aura:if isTrue="{!or(!billtoData.Sold_To_AGN__c , v.billToSameAsSoldTo)}"> 
+                                    <div id="{!'billTo_addr_Show_Small_View-' + billToKey}" class="reg_address"> 
+                                        <c:AGN_OAMCustomerAddressFlatView aura:id="billToFlatView" index="{!billToKey}" addressData="{!billtoData}" addressFields="{!set.value}"/> 
+                                    </div> 
+                                </aura:if>
+                            </aura:if> 
+                        </aura:if>						
+                    </div>
+                </aura:iteration>  
+            </aura:iteration>
+            
+            <!-- ======== Exesting BillTo same as SoldTo ==> End ====== -->  
+            
+            <!-- ======== Exesting BillTo does not same as SoldTo ==> Start ====== --> 
+            
+            <aura:iteration items="{!v.objBillTo}" var="billtoData" indexVar="billToKey">
+                <aura:iteration items="{!v.sectionHeaderMapBillTo}" var="set" indexVar="key">                   
+                    <div id="Delivery_Address" class="displ_reg_addr"> 
+                        <div class="edit_icons">
+                            <aura:if isTrue="{!billtoData.Id != v.objSoldTo.Id}">
+                                <span class="edit_addr" title="Edit" onclick="{!c.show_hide_Ship_Bill_To_Address}" data-value="{!billToKey}" data-address-type="BILLTO">
+                                    <lightning:icon iconName="action:edit" size="xx-small" alternativeText="Edit"/>
+                                </span>
+                                <!--  <span class="edit_addr" title="Save" data-address-type="BILLTO">
+                                    <lightning:icon iconName="action:update_status" size="xx-small" variant="success" alternativeText="Save"/>
+                                </span> -->
+                                <span class="edit_addr" onclick="{!c.deleteExistingShip_Bill_To}" data-value="{!billToKey}" data-address-type="BILLTO" title="Delete">
+                                    <lightning:icon iconName="action:delete" size="xx-small" alternativeText="Delete"/>
+                                </span>
+                            </aura:if>
+                        </div>
+                        <aura:if isTrue="{!billtoData.Id != v.objSoldTo.Id}">
+                            <aura:if isTrue="{!not(empty(v.objBillTo))}">                           
+                                <aura:if isTrue="{!or(!billtoData.Sold_To_AGN__c , v.billToSameAsSoldTo)}"> 
+                                    <div id="{!'billTo_addr_Show_Small_View-' + billToKey}" class="reg_address"> 
+                                        <c:AGN_OAMCustomerAddressFlatView aura:id="billToFlatView" index="{!billToKey}" addressData="{!billtoData}" addressFields="{!set.value}"/> 
+                                    </div> 
+                                </aura:if>
+                            </aura:if>
+                            
+                            <div id="{!'billTo_addr_Show_Full_View-' + billToKey}" class="Registered_add">
+                                <section class="content bgcolor-7"> 
+                                    <aura:iteration items="{!set.value}" var="fieldValue">
+                                         <c:AGN_OAMCommunityInputFieldWrapperCmp 
+                                                              aura:id="fieldBillTo" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!billtoData}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"  
+                                                              customLabelName = "{!fieldValue.Field_Label_AGN__c}"  
+                                                              index = "{!billToKey}" 
+                                                              objBillTo = "{!v.objBillTo}" 
+                                                              addressType = "BILLTOEDIT" 
+                                                              doValidate = "{!v.doValidate}"                   
+                                                              />
+                                         <aura:renderIf isTrue="{!fieldValue.Field_Name_AGN__c == 'Zip_AGN__c'}">
+                                              <div class="addr_modal_det_btns">
+                                                <button type="button" onclick="{!c.verifyNewAddress}" name="billToEditBtn" class="add_btn continue_btn" id="{!billToKey}">{!$Label.c.AGN_OAM_Verify_Address}</button>
+                                              </div>
+                                        </aura:renderIf>
+
+                                    </aura:iteration>
+                                </section>
+                            </div>
+                        </aura:if>
+                    </div>
+                </aura:iteration>  
+            </aura:iteration>
+            <!-- ======== Exesting BillTo does not same as SoldTo ==> End ====== -->
+        </div>
+        
+        <!-- ============== Add New Bill ===================  -->
+        <div class="regi_add_1 delivery_add add_addr_btn">
+            <div id="modalBackground_NewBillTo" class=""></div>
+            <div id="Delivery_Address_BillTo" class="{!v.obj_addNewBillTo.length > 0 ? 'displ_reg_addr':''}">
+                <aura:iteration items="{!v.obj_addNewBillTo}" var="billtoData_New" indexVar="newBillToKey">
+                    <aura:iteration items="{!v.sectionHeaderMapBillTo}" var="set" indexVar="key">
+                        <div id="Delivery_Address">
+                            <div class="edit_icons" onclick="{!c.removeNewShip_Bill_To}" data-value="{!newBillToKey}" data-address-type="BILLTO">
+                                <span class="edit_addr">
+                                    <lightning:icon iconName="utility:ban" variant="error" size="small" alternativeText="Remove"/>
+                                </span>
+                            </div> 
+                            <section class="content bgcolor-7"> 
+                                <aura:iteration items="{!set.value}" var="fieldValue">
+                                    
+                                    <c:AGN_OAMCommunityInputFieldWrapperCmp 
+                                                              aura:id="newBillTo" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!billtoData_New}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"  
+                                                              customLabelName = "{!fieldValue.Field_Label_AGN__c}" 
+                                                              index = "{!newBillToKey}" 
+                                                              addressType = "BILLTONEW" 
+                                                              obj_addNewBillTo = "{!v.obj_addNewBillTo}" 
+                                                              doValidate = "{!v.doValidate}"
+                                                              />
+                                        <aura:renderIf isTrue="{!fieldValue.Field_Name_AGN__c == 'Zip_AGN__c'}">
+                                              <div class="addr_modal_det_btns">
+                                                <button type="button" onclick="{!c.verifyNewAddress}" name="billToNewBtn" class="add_btn continue_btn" id="{!newBillToKey}">{!$Label.c.AGN_OAM_Verify_Address}</button>
+                                              </div>
+                                        </aura:renderIf>
+                                </aura:iteration>
+                            </section>
+                        </div>
+                    </aura:iteration>  
+                </aura:iteration>
+            </div>
+            <aura:if isTrue="v.objBillTo.length == 0">           
+                <aura:if isTrue="{!lessthan(v.obj_addNewBillTo.length,v.gcspSettings.Number_Of_BillTo_Allowed_AGN__c)}">
+                    <div class="add_BillAddr_btn" onclick="{!c.addAnotherBillTo}">{!$Label.c.AGN_OAM_Add_New_Billing_Address}
+                        <span>
+                            <lightning:icon iconName="utility:add" alternativeText="Add" size="small"/>
+                        </span>
+                    </div>
+                </aura:if>
+                <aura:set attribute="else">
+                    <aura:if isTrue="{!lessthan(v.obj_addNewBillTo.length,subtract(v.gcspSettings.Number_Of_BillTo_Allowed_AGN__c,v.objBillTo.length ))}">
+                        <div class="add_BillAddr_btn" onclick="{!c.addAnotherBillTo}">{!$Label.c.AGN_OAM_Add_New_Billing_Address}
+                            <span>
+                                <lightning:icon iconName="utility:add" alternativeText="Add" size="small"/>
+                            </span>
+                        </div>
+                    </aura:if>
+                </aura:set>  
+            </aura:if>
+            <!--  <button class="add_btn addmore_address" onclick="{!c.addAnotherBillTo}"> Add New Billing Address </button> -->
+        </div>
+        <div class="det_btn">
+            <div class="det_btns">                                 
+                <ui:button aura:id="buttonSave" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Save_Continue}" press="{!c.validateAndUpsert}" disabled="{!v.isSaved}"/>
+                <ui:button aura:id="button" class="add_btn cancel_btn" label="{!$Label.c.AGN_OAM_Body_Cancel}" press="{!c.resetBlock}"/>
+            </div>
+        </div>
+    </div>
+    <!--###### MODAL BOX Start######    -->                 
+                    
+                   
+                        <div class="slds-modal_medium"> 
+                            <aura:if isTrue="{!v.isOpen}">
+                                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                    <div class="slds-modal__container">
+                                        <!-- ###### MODAL BOX HEADER Start ######-->
+                                        <header class="slds-modal__header">
+                                            <lightning:buttonIcon iconName="utility:close"
+                                                                  onclick="{! c.closePopup }"
+                                                                  alternativeText="close"
+                                                                  variant="bare-inverse"
+                                                                  class="slds-modal__close"/>
+                                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.AGN_OAM_Available_Address}</h2>
+                                        </header>
+                                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                            <!-- <div aura:id="addressModal" class="slds-hide">	 -->							
+                                            <aura:renderIf isTrue="{!v.activeAddressFound}">
+                                                 <aura:renderIf isTrue="{!v.showError}">
+                                                    <span style="color:red">{!$Label.c.AGN_OAM_LOQATE_ERROR}</span>
+                                                </aura:renderIf><br />
+                                                <aura:iteration items="{!v.addressOps}" var="addr">
+                                                    <label class="uiLabel-left form-element__label uiLabel loqate_address_label">
+                                                    <ui:inputRadio name="address" label="" text="{!addr}" change="{!c.assignAddress}" class="loqate_address_radiobtn"/>
+                                                        <span class="loqate_address_label_span">{!addr}</span>
+                                                    </label><br />
+                                                </aura:iteration>
+                                                <label class="uiLabel-left form-element__label uiLabel loqate_address_label" >
+                                                    <ui:inputRadio name="address" label="" text="{!$Label.c.AGN_OAM_CONTINUE_WITH_CURRENT_ADDRESS}" change="{!c.assignAddress}" class="loqate_address_radiobtn"/>
+                                                    <span class="loqate_address_label_span">{!$Label.c.AGN_OAM_CONTINUE_WITH_CURRENT_ADDRESS}</span>
+                                                </label><br />
+                                                <aura:set attribute="else">
+                                                    {!$Label.c.AGN_OAM_NO_ADDRESS_FOUND}
+                                                </aura:set>
+                                            </aura:renderIf>
+                                            
+                                            <!-- </div> -->
+                                            
+                                        </div>
+                                        <!--###### MODAL BOX FOOTER Part Start ######-->
+                                        <footer class="slds-modal__footer">
+                                            <ui:button  label="{!$Label.c.AGN_OAM_Body_Ok}" press="{!c.submitRequest}" /> 
+                                            <ui:button  label="{!$Label.c.AGN_OAM_Cancel}" press="{!c.closePopup}" />
+                                        </footer>
+                                    </div>
+                                </section>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                            </aura:if>
+                        </div>
+                    
+                    <!--###### MODAL BOX Part END Here ######-->
+</aura:component>

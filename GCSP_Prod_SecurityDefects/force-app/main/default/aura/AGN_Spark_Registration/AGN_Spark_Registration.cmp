@@ -1,0 +1,2238 @@
+<aura:component implements="force:appHostable,forceCommunity:availableForAllPageTypes"  
+                controller="AGN_Spark_Registration_Controller" access="global" > 
+    <!--Spark registration attributes starts-->
+    <aura:attribute name="custDetail" type="sObject" default="{'sobjectType': 'Allergan_Customer_Registration_AGN__c'}"/>
+    <aura:attribute name="addressDetail" type="sObject" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}" />
+    <aura:attribute name="accountDetail" type="sObject" default="{'sobjectType': 'Account'}" />
+    <aura:attribute name="multiChannelConsent" type="sObject" default="{'sobjectType': 'Multichannel_Consent_vod__c'}" />
+    <aura:attribute name="multiChannelEvent" type="sObject" default="{'sobjectType': 'Multichannel_Consent_vod__c'}" />
+    <aura:attribute name="multiChannelPhone" type="sObject" default="{'sobjectType': 'Multichannel_Consent_vod__c'}" />
+    <aura:attribute name="salutation" type="String"/> 
+    <aura:attribute name="userName" type="String"/>
+    <aura:attribute name="userEmail" type="String"/>
+    <aura:attribute name="emailLabel" type="String" required="false" default="Email"/>
+    <aura:attribute name="includePasswordField" type="Boolean" required="false" default="true" description="Whether to include password"/>
+    <aura:attribute name="showRegisterForm" type="boolean" default="false"/>
+    <aura:attribute name="togglePage" type="integer" default="1"/>
+    <aura:attribute name="boolean" type="boolean" default="true"/>
+    <aura:attribute name="showMarketingcont" type="boolean" default="false"/>
+    <aura:attribute name="showEventcont" type="boolean" default="false"/>
+    <aura:attribute name="showPhonecont" type="boolean" default="false"/>
+    <aura:attribute name="firstCheck" type="boolean" default="false"/>
+    <aura:attribute name="welcomePage" type="boolean" default="false"/>
+    <aura:attribute name="userEmailValidation" type="Boolean"/>
+    <aura:attribute name="userNameValidation" type="Boolean" default ="false"/>
+    <aura:attribute name="userNameFormatValidation" type="Boolean" />
+    <aura:attribute name="allerganCustId" type="String"/>
+    <aura:attribute name="custCountry" type="String"/>
+    <aura:attribute name="addCountry" type="String"/>
+    <aura:attribute name="options" type="object" default="[]"/>
+    <aura:attribute name="countryOptions" type="object" default="[]"/>
+    <aura:attribute name="showError" type="Boolean" required="true" description="" default="false" access="private"/>
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="private"/>
+    <!--Spark registration attributes ends-->
+    
+    <!--Event section startrs-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:AGN_SPARK_RegisterEvent" action="{!c.displayRegisterForm}"/>
+   <!--<aura:handler event="c:AGN_Spark_RegisterEvent_New" action="{!c.displayRegisterFormNew}"/>-->
+    <!--Event section ends-->
+    <aura:html tag="style">
+        .clear{
+        clear:both;
+        }
+        .login-form-wrapper h3 {
+            text-align: center;
+            padding-top: 10%;
+            /* padding-right: 1%; */
+            text-align: center;
+            font-size: 60px;
+            width: 100%;
+            font-family: Beatrice-light;
+            padding-top: 102px;
+            color: rgba(167,117,110,1);
+            display: block;
+        }
+		.login-form-wrapper .row{
+        margin: 0 auto !important;
+        }               
+      .form_wrapper lightning-combobox.Forename {
+          	width: 483px;
+            /* display: inline-block; */
+                padding-bottom: 40px;
+            float: left;
+            margin-left: 0%;
+        }
+       .form_wrapper lightning-input.Forename {
+          	width: 483px;
+            float: left;
+            padding-bottom: 40px;
+            margin-right: 0%;
+            margin-left: 40px;
+        }
+        .first_forename{
+        margin-left:0px !important;
+        }
+        .input_row_div{
+                width: 1008px;
+            margin: 0 auto;
+        }
+.form_wrapper label.slds-form-element__label {
+    	color: #000000;
+          
+    font-size: 25px;
+         
+}
+        .form_wrapper input.slds-input.slds-combobox__input {
+                font-size: 18px;
+                font-color: #000000;
+                text-indent:4px;
+                border-color: black;
+                width: 483px;
+                background: none;
+                font-weight: bolder;
+        		padding-left:40px;
+        }
+      .form_wrapper  input.slds-input {
+            padding: 3%;
+            font-size: 18px;
+            font-color: #000000;
+            text-indent:4px;
+            width: 483px;
+            border-color: black;
+        	padding-left:40px;
+        	background-color:#F5F5F5;
+       }
+        
+        .slds-icon_xx-small, .slds-icon--xx-small{
+        	width: 20px !important;
+    		height: 17.58px !important;
+        	margin-top:-7px;
+        }
+        .slds-form-element__control{
+        width:483px
+        }
+        .slds-icon-utility-down slds-input__icon slds-input__icon_right slds-icon_container{
+        margin-top:-16px;
+        }
+        .edit_choose{
+                width: 621px;
+    			margin: 0 auto;
+        }
+        
+        .second_combobox{
+        	margin-left:40px !important;
+        }
+        
+        /* CSS for 4th Page */
+        .edit_category {
+            float: left;
+            color: #000;
+            padding: 17px 52px;
+            border-radius: 1%;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 21px;
+            border: none;
+            outline: none;
+        }
+		.empty_margin{
+        
+      	  margin-right:0px !important;
+       	 }
+        
+        
+         .medical_reg_no{
+            margin-top : 5% !important;
+        }
+        .confirm_question p {
+            font-family: helvetica;
+            font-size: 24px;
+            /* font-weight: bold; */
+            /* font-style: italic; */
+            color: #000000;
+            text-align: center;
+            /* padding-top: 3%; */
+            /* padding-left: 15%; */
+            /* width: 83%; */
+            /* float: left; */
+        }
+        .yes, .no {
+            padding: 17px 70px;
+            color: #000000;
+            background-color: #F5F5F5;
+            border: 1px solid;
+            font-size: 21px;
+            font-family: helvetica;
+            text-transform: capitalize;
+            margin-top: 3%;
+            margin-right: 34px;
+            float: left;
+            text-align: center;
+        }
+        .your_profession{
+        	font-size:24px;
+        	font-family: 'Neue_Haas_Unica_Pro-light';
+        }
+        /* Screen 5 work Started */
+        
+        .product_service h3, .event_invite h3 {
+
+        	font-family: 'Beatrice-light'; 
+            font-size: 16px; 
+            text-align: left;
+            padding-top: 40px;
+            padding-left: 40px; 
+        }
+        .product_service p, .event_invite p {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            color: #000000;
+            text-align: left;
+            padding-left: 4%;
+            padding-right: 4%;
+        	padding-top:19px;
+            background: -webkit-linear-gradient(#333, #eee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .view_all, .view_all_content {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            color: #000000;
+            text-align: left;
+            padding-left: 40px;
+            padding-right: 40px;
+        	padding-top:19px;
+            padding-bottom: 21px;
+
+        }
+        .view_all_next img {
+            padding-right: 20px;
+        }
+        .view_all_next span {
+            font-family: helvetica;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000;
+        }
+        .view_all_next_one img{
+            padding-right: 20px;
+        }
+        .view_all_next_one span{
+        	font-family: helvetica;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000;
+        }
+        .view_next{
+        	margin-bottom: -2px;
+        	border-top: 0px;
+        }
+        .view_all_next, .view_all_next_one{
+            float: left;
+            padding-left: 4%;
+            padding-top: 9px;
+            width: 35%;
+            cursor: pointer;
+            padding-bottom: 22px;
+        }
+        .fifth_content accept_button{
+        margin-left:8.4%!important
+        }
+        .accept_button, .accept_button_second{
+            font-family: helvetica;
+            font-weight: bold;
+            font-size: 18px;
+            color: #fff;
+            text-align: center;
+            background-color: #000000;
+            border: none;
+            padding: 10px 21px;
+            /* margin-left: 36%; */
+            /* float: left; */
+            outline: none;
+            width: 254px;
+            padding-left: -3px 4px 11px -1px #635E62;
+            cursor: pointer;
+        
+            float: right;
+           
+           }
+        .accept_button_third{
+            font-family: helvetica;
+            font-weight: bold;
+            font-size: 18px;
+            color: #fff;
+            text-align: center;
+            background-color: #000000;
+            border: none;
+            padding: 0.5% 2% 1% 5%;
+            /* margin-left: 36%; */
+            /* float: left; */
+            outline: none;
+            width: 254px;
+            padding-left: -3px 4px 11px -1px #635E62;
+            cursor: pointer;
+        
+            float: right;
+           
+           }
+        .product_service, .event_invite{
+              width: 1054px;
+                margin: 0 auto;
+                border: 1px solid #000000;
+                margin-bottom: 2.5%;
+        }
+           
+        .privacy_text{
+            width: 42%;
+            position: absolute;
+                font-size: 18px;
+            color: #000000 !important;
+            left: 3%
+                }
+    	  .errorMessageClass {
+                font-weight: bold;
+                color: #800000;
+                text-align: center;
+                font-size: 21px;
+            }
+     
+         .privacy .privacy_policy_link{
+                font-size: 21px;
+        		padding-left:0px;
+                color: #000000 !important;
+            }
+       
+        .screenSubHead {
+        	    color: black;
+    			font-size: 21px;
+            	margin-top: 20px;
+
+        }
+        
+        .please_note {
+            font-family: Neue_Haas_Unica_Pro-bold;
+            font-size: 21px;
+            font-weight: bolder;
+            color: #000000;
+            text-align: center;
+        	text-transform: uppercase;
+            padding-top: 109px;
+        }
+        .checkmark {
+            position: absolute;
+            top: 7px;
+            left: 0;
+            height: 30px;
+            width: 30px;
+            background-color: #000000;
+            border: 2px solid #ffffff;
+            border-radius: 100px;
+        }
+		.accept_button_text{
+        	padding-bottom:7px;
+        	display:inline-block;
+        }        
+        .confirm_button {
+            font-family: helvetica;
+            font-weight: bold;
+            font-size: 18px;
+            color: #fff;
+            text-align: center;
+            background-color: #000000;
+            border: none;
+            padding: 0.5% 2% 1% 5%;
+            /* margin-left: 36%; */
+            /* float: left; */
+            outline: none;
+            width: 21%;
+            margin: 0 auto;
+            padding-left: -3px 4px 11px -1px #635E62;
+            cursor: pointer;
+        }
+        .note_service {
+            font-family: Neue_Haas_Unica_Pro-light;
+            font-size: 21px;
+            color: #000000;
+            text-align: center;
+            width: 100%; 
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+          color: black;
+          font-weight: bold;
+          padding-left: 0%;
+          opacity: 1; /* Firefox */
+        }
+		.patient, .dentist {
+            background: linear-gradient(to left, #f5f5f5 20%,#f5f5f5 100%,#f5f5f5 10%);
+            border: 1px solid;
+            border-color: black;
+            font-family: inherit;
+            font-weight: bold;
+            color: black;
+         }
+        .medical_reg_no p label {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 24px;
+            font-weight: normal;
+            color: #000000;
+            text-align: center;
+            padding-left: 0%;
+        }
+        .yes_no{
+        	margin: 0 auto;
+    		width: 383px;
+        }
+
+        .regNumber .slds-input {
+            width: 783px;
+            background-color: #F5F5F5;
+            font-weight: bold;
+            padding-left: 15%;
+            padding: 17px 34px;
+            border-color: black;
+            font-size: 21px;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+        }
+        .slds-form-element{
+        	width: 783px;
+    		margin: 0 auto;
+
+        }
+        
+        .doctor {
+            background: linear-gradient(to left, #000000 26%,#000000 80%,#000000 80%,#000000 90%,#000000 100%);
+            border: 1px solid;
+            border-color: black;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            color: #FFFFFF;
+        }
+        
+        .cAGN_Spark_Registration .privacy {
+        	
+			width:1054px;
+        	margin: 0 auto;
+       		margin-bottom:30px;	
+        }
+        
+        .login_footer_text p {
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 14px;
+            color: #000000;
+            text-align: center;
+            font-weight: bold;
+            line-height: 22px;
+            margin: 0 auto;
+            width: 39%;
+            padding: 0px;
+        }
+        .button_text {
+            margin-top: 4%;
+            margin-bottom: 51px;
+        }
+        .cAGN_Spark_Registration .slds-form-element__help {
+            font-weight: bold;
+            font-size: 20px;
+            color: #800000;
+            margin-left: 2px;
+            position: absolute;
+        }
+        .next_button_stagetwo, .next_button_stagethree, .next_button_stagefour {
+            padding: 1% 7% 1% 7%;
+            color: #fff;
+            background: linear-gradient(to right, #000000 41%,#000000 100%,#000000 100%);
+            border: none;
+            font-size: 17px;
+            font-family: helvetica;
+            text-transform: capitalize;
+            margin-top: 0%;
+            margin-bottom: 5%;
+            margin-right: 5%;
+            float: right;
+            box-shadow: -3px 4px 11px -1px #635E62;
+        }
+        .next_button_stagefive {
+            padding: 15px 23px;
+            color: #fff;
+            background: linear-gradient(to right, #000000 41%,#000000 100%,#000000 100%);
+            border: none;
+            font-size: 17px;
+            font-family: helvetica;
+            text-transform: capitalize;
+            margin-top: 0px;
+            margin-bottom: 5%;
+            margin-right: 2.5%;
+            float: right;
+            box-shadow: -3px 4px 11px -1px #635E62;
+        }
+        .next_button_stagetwo, .next_button_stagethree, .next_button_stagefour[]disabled] {
+       		 background-color:#d4d4d4!important;
+        }
+        #nextBtn[disabled]
+        {
+        	    background: linear-gradient(to right, gray 41%,gray 100%,gray 100%);
+        }
+        .pagination {
+            margin-top: 0% !important;
+            margin-left: 5%;
+            font-size: 21px;
+            color: #000000;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            padding-top: 1% !important;
+            padding-left: 0px !important;
+        }
+        .login-form-wrapper {
+            width: 70%;
+            position: absolute;
+            /* top: 20% !important; */
+            left: 15%;
+            /* right: 15%; */
+            z-index: 150;
+            /* margin-top: -160px; */
+            background-color: #F5F5F5;
+            height: 90%;
+            overflow-y: scroll;
+            box-shadow: 0 0 5px 2px #eee;
+        }
+        .first_content,.second_content,.third_content{
+         	min-height:639px;
+        }
+        .formtsix_p {
+            font-size: 21px;
+            text-align: center;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+        }
+        .formsix{
+        margin-top:30px;
+        }
+        .full-container {
+            position: fixed;
+            z-index: 9999;
+            padding-top: 4vw;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+        .login_close {
+            
+            width: 35px;
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            height: 35px;
+
+        }
+        .header_mobile_overlay{
+        	display:none;
+        }
+ 
+@media screen and (max-width: 1620px) and (min-width: 1280px) {
+        .confirm_button .container{
+        	width:300px !important;
+        }
+       .login-form-wrapper h3{
+        font-size:42px;
+        padding-top: 75px;
+        }
+        .screenSubHead {
+            font-size: 15px;
+            margin-top: 5px;
+        }
+        .please_note {
+            font-size: 15px;
+            padding-top: 54px;
+            }
+        .note_service {
+            font-size: 15px;            
+        }
+        .confirm_button {
+            font-size: 15px;         
+            padding: 0.5% 2% 1% 4%;           
+            width: 200px;
+           
+		}
+        .login_footer_text p {
+            font-size: 11px;
+            line-height: 13px;
+            width: 457px;
+        }
+        .button_text{
+        	margin-bottom:28px;
+        }
+        .first_content, .second_content, .third_content{
+       		 min-height:360px;
+        }
+        .login-form-wrapper{
+        	 height:90%;
+        }
+        .checkmark {
+            height: 20px;
+            width: 20px;
+            top: 10px;
+        }
+        .confirm_button {
+            font-size: 15px;
+            width: 189px;
+        }
+        .confirm_button_text {
+            display: inline-block;
+            margin-top: -3px;
+            vertical-align: super;
+        }
+        .container .checkmark:after {
+            left: 9px;
+            top: -14px;
+            width: 11px;
+            /* font-size: 40px; */
+            height: 28px;
+        }
+        .login_close {
+            width:25px;
+            height: 25px;
+                top: 15px;
+            right: 14px;
+        }
+        
+       .form_wrapper input.slds-input.slds-combobox__input {
+            font-size: 13px;
+            width: 400px;
+            padding-left: 28px;
+        }
+        .slds-form-element__control {
+            width: 400px;
+        }
+        .form_wrapper lightning-combobox.Forename {
+            width: 400px;
+            padding-bottom: 28px;
+        }
+        .cAGN_Spark_Registration .slds-dropdown {
+            font-size: 13px;
+        }
+        .form_wrapper input.slds-input{
+            font-size: 13px;
+            width: 400px;
+            padding-left: 28px;
+        }
+        .form_wrapper lightning-input.Forename{
+        	width: 400px;
+            float: left;
+            padding-bottom: 28px;
+            margin-right: 0%;
+            margin-left: 28px;
+        }
+        .input_row_div {
+            width: 829px;
+            margin: 0 auto;
+        }
+        .second_combobox {
+            margin-left: 28px !important;
+        }
+        .errorMessageClass {
+            font-size: 15px;
+        }
+        .cAGN_Spark_Registration .slds-form-element__help {
+            font-weight: bold;
+            font-size: 14px;
+            color: #800000;
+            margin-left: 2px;
+            position: absolute;
+        }
+        .second_content{
+        	padding-top:16px !important;
+        }
+        .formthree_p {
+            font-size: 14px;
+            padding-top: 2%;
+        }
+        .your_profession {
+            font-size: 18px;
+        }
+        .edit_category {
+            padding: 11px 36px;
+            font-size: 15px;
+        	margin-right:28px !important;
+        }
+        .edit_choose {
+            width: 450px;
+        }
+        .medical_reg_no {
+            margin-top: 3.5% !important;
+        }
+        .medical_reg_no p label {
+            font-size: 18px;
+            padding-left: 0%;
+        }
+        .regNumber .slds-input {
+            width: 600px;
+            padding: 11px 26px;
+            font-size: 16px;
+        }
+        .slds-form-element {
+            width: 600px;
+            margin: 0 auto;
+        }
+        .confirm_question p {
+            font-family: helvetica;
+            font-size: 18px;
+            color: #000000;
+            text-align: center;
+        }
+		.confirm_question {
+            position: relative;
+            margin-top: 4%;
+            margin-bottom: 3%;
+        }
+		.yes, .no {
+            padding: 11px 48px;
+            font-size: 15px;
+            margin-top: 1%;
+            margin-right: 26px;
+        }
+        .yes_no {
+            width: 267px;
+        }
+        .product_service h3, .event_invite h3 {
+            font-size: 12px !important;
+            padding-top: 28px !important;
+            padding-left: 28px;
+        }
+        .product_service p, .event_invite p {
+            font-size: 11px;
+            padding-left: 28px;
+            padding-right: 28px;
+            padding-top: 11px;
+        }
+        .product_service, .event_invite {
+            width: 810px;
+            margin-bottom: 1.5%;
+        }
+		.accept_button, .accept_button_second {
+            font-size: 13px;
+            padding:3px 11px;
+            width: 190px;
+        }
+        .view_all_next span, .view_all_next_one span {
+            font-size: 13px;
+        }
+        .view_all_next img{
+        	width: 35px;
+            height: 15px;
+		}
+        .view_all_next, .view_all_next_one {
+            padding-left: 28px;
+            padding-top: 9px;
+            width: 17%;
+            padding-bottom: 10px;
+        }
+        .view_all, .view_all_content {
+            font-size: 12px;
+            padding-left: 28px;
+            padding-top: 12px;
+        }
+        .privacy .privacy_policy_link {
+            font-size: 15px;
+            padding-left: 0px;
+        }
+        .cAGN_Spark_Registration .privacy {
+    		width: 810px;
+        }
+		.next_button_stagefive {
+        	font-size:15px;
+        } 
+        .formtsix_p {
+    		font-size: 15px;
+        }
+        
+        }
+        
+    @media screen and (max-width: 1279px) and (min-width: 992px) {
+        
+         .confirm_button .container{
+        	width:300px !important;
+        }
+       .login-form-wrapper h3{
+        	font-size: 34px;
+   			padding-top: 54px;
+        }
+        .screenSubHead {
+            font-size: 13px;
+    		margin-top: 3px;
+        }
+        .please_note {
+            font-size: 13px;
+   			padding-top: 44px;
+            }
+        .note_service {
+            font-size: 13px; 
+        	line-height:14px;
+        }
+        .confirm_button {
+            font-size: 13px;         
+            padding: 0.5% 2% 1% 4%;           
+            width: 200px;
+           
+		}
+        .login_footer_text p {
+            font-size: 9px;
+            line-height: 11px;
+            width: 374px;
+        }
+        .next_button_stagetwo, .next_button_stagethree, .next_button_stagefour {
+            padding: 1% 6% 1% 6%;
+            font-size: 13px;
+        }
+        .pagination {
+            font-size: 17px;
+        }
+        .button_text{
+        	margin-bottom:28px;
+        }
+        .first_content, .second_content, .third_content{
+       		 min-height:360px;
+        }
+        .login-form-wrapper{
+        	 height:90%;
+        }
+        .checkmark {
+            height: 20px;
+            width: 20px;
+        }
+        .confirm_button {
+            font-size: 13px;
+            width: 160px;
+        }
+        .confirm_button_text {
+            display: inline-block;
+            margin-top: -3px;
+            vertical-align: super;
+        }
+        .container .checkmark:after {
+            left: 9px;
+            top: -10px;
+            width: 9px;
+            /* font-size: 40px; */
+            height: 24px;
+        }
+         .login_close {
+            width:25px;
+            height: 25px;
+                top: 15px;
+            right: 14px;
+        }
+        
+       .form_wrapper input.slds-input.slds-combobox__input {
+            font-size: 11px;
+            width: 310px;
+            padding-left: 20px;
+        }
+        .slds-form-element__control {
+            width: 310px;
+        }
+        .cAGN_Spark_Registration .slds-dropdown {
+            font-size: 11px;
+        }
+        .form_wrapper lightning-combobox.Forename {
+            width:310px;
+            padding-bottom: 20px;
+        }
+        .form_wrapper input.slds-input{
+            font-size: 11px;
+            width: 310px;
+            padding-left: 20px;
+        }
+        .form_wrapper lightning-input.Forename{
+        	width: 310px;
+            float: left;
+            padding-bottom: 20px;
+            margin-right: 0%;
+            margin-left: 20px;
+        }
+        .input_row_div {
+            width: 642px;
+            margin: 0 auto;
+        }
+        .second_combobox {
+            margin-left: 20px !important;
+        }
+        .errorMessageClass {
+            font-size: 12px;
+        }
+        .cAGN_Spark_Registration .slds-form-element__help {
+            font-weight: bold;
+            font-size: 11px;
+            color: #800000;
+            margin-left: 2px;
+            position: absolute;
+        } 
+        .second_content{
+        	padding-top:16px !important;
+        }
+        .formthree_p {
+            font-size: 14px;
+            padding-top: 2%;
+        }
+        .your_profession {
+            font-size: 15px;
+        }
+        .edit_category {
+            padding: 7px 28px;
+    		font-size: 11px;
+    		margin-right: 20px !important;
+        }
+        .empty_margin{
+	        margin-right: 0px !important;
+        }
+        .edit_choose {
+            width: 320px;
+        }
+        .medical_reg_no {
+            margin-top: 3.5% !important;
+        }
+        .medical_reg_no p label {
+            font-size: 15px;
+            padding-left: 0%;
+        }
+        .regNumber .slds-input {
+            width: 480px;
+            padding: 8px 19px;
+            font-size: 12px;
+        }
+        .slds-form-element {
+            width: 480px;
+            margin: 0 auto;
+        }
+        .confirm_question p {
+            font-family: helvetica;
+            font-size: 15px;
+            color: #000000;
+            text-align: center;
+        }
+		.confirm_question {
+            position: relative;
+            margin-top: 4%;
+            margin-bottom: 3%;
+        }
+		.yes, .no {
+            padding: 8px 36px;
+            font-size: 11px;
+            margin-top: 1%;
+            margin-right: 20px;
+        }
+        .yes_no {
+            width: 202px;
+        }
+        .product_service h3, .event_invite h3 {
+            font-size: 10px !important;
+            padding-top: 20px !important;
+            padding-left: 20px;
+        }
+        .product_service p, .event_invite p {
+            font-size: 9px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 8px;
+        }
+        .product_service, .event_invite {
+            width: 600px;
+            margin-bottom: 1.5%;
+        }
+		.accept_button, .accept_button_second {
+            font-size: 11px;
+            padding:1px 8px;
+            width: 145px;
+        }
+        .view_all_next span, .view_all_next_one span {
+            font-size: 11px;
+        }
+        .view_all_next img{
+        	width: 30px;
+            height: 13px;
+		}
+        .view_all_next, .view_all_next_one {
+            padding-left: 20px;
+            padding-top: 5px;
+            width: 162px;
+            padding-bottom: 7px;
+        }
+        .view_all, .view_all_content {
+            font-size: 9px;
+            padding-left: 20px;
+            padding-top: 9px;
+        }
+        .privacy .privacy_policy_link {
+            font-size: 11px;
+            padding-left: 0px;
+        }
+        .cAGN_Spark_Registration .privacy {
+    		width: 600px;
+        }
+		.next_button_stagefive {
+        	font-size:11px;
+        } 
+        .formtsix_p {
+    		font-size: 11px;
+        }
+        }
+         
+      @media screen and (max-width: 992px) and (min-width: 600px) {
+        @media screen and (min-height: 768px) {
+         .checkmark {
+            height: 20px;
+            width: 20px;
+            top: 12px;
+            left: 39px !important;
+        }
+         .forth_content .checkmark, .privacy_policy_link .checkmark {
+            height: 20px;
+            width: 20px;
+            top: 12px;
+            left: 19px !important;
+        }
+            .yes, .no {
+            padding: 8px 59px;
+            color: #000000;
+            background-color: #F5F5F5;
+            border: 1px solid;
+            font-size: 18px;
+            font-family: helvetica;
+            text-transform: capitalize;
+            margin-top: 3%;
+            margin-right: 7px !important;
+            float: left;
+            text-align: center;
+}
+        .yes_no {
+    margin: 0 auto;
+    width: 356px !important;
+    margin-top: 20px;
+}
+        
+        }
+        .login-form-wrapper {
+            width: 100%;
+            position: absolute;
+            top: 93px !important;
+            z-index: 150;
+            height: 100%;
+        	left:0%;
+        }
+        .login-form-wrapper h3{
+        	font-size: 40px;
+        	padding-top: 64px;
+        }
+		.screenSubHead {
+            color: black;
+            font-size: 18px;
+            margin-top: 14px;
+        }
+        .login_close {
+            width: 35px;
+            position: fixed;
+            top: 25px;
+            right: 23px;
+            height: 35px;
+            z-index: 999;
+        }
+        .first_content, .second_content, .third_content {
+		    min-height: 409px;
+        }
+        .please_note {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 18px;
+            font-weight: normal;
+            padding-top: 44px;
+        	margin-bottom:0px;
+        }
+        .note_service {
+            font-family: Neue_Haas_Unica_Pro-light;
+            font-size: 18px;
+            color: #000000;
+            text-align: center;
+            width: 350px;
+            padding-left: 0px;
+            padding-right: 0px;
+            margin: 0 auto;
+        }
+       .confirm_button {
+            font-size: 16px;
+            padding: 1.5% 3% 2% 4%;
+            width: 234px;
+        }
+       .checkmark {
+            height: 20px;
+            width: 20px;
+            top: 12px;
+            left: 15px;
+        }
+         .forth_content .checkmark, .privacy_policy_link .checkmark {
+            height: 20px;
+            width: 20px;
+            top: 12px;
+            left: 0px;
+        }
+        .confirm_button_text{
+        	padding-bottom: 0px;
+            display: inline-block;
+            vertical-align: super;
+        }
+        .container .checkmark:after {
+            left: 5px;
+            top: -17px;
+            width: 15px;
+            height: 32px;
+		}
+        .login_footer_text p {
+            font-size: 14px;
+            line-height: 15px;
+            width: 330px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+        }
+        .next_button_stagetwo, .next_button_stagethree, .next_button_stagefour {
+            padding: 1% 6% 1% 6%;
+            font-size: 17px;
+        }
+        .pagination {
+            position: fixed;
+            top: 22px;
+            left: 10px;
+            font-size: 21px;
+        	z-index:999;
+		}
+        .login_close {
+            width: 35px;
+            position: fixed;
+            top: 25px;
+            right: 23px;
+            height: 35px;
+            z-index: 999;
+        }
+        .full-container {
+            position: fixed;
+            z-index: 9999;
+            padding-top: 4vw;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: #fff;
+		}
+        .next_button_stagetwo, .next_button_stagethree, .next_button_stagefour {
+            padding: 15px 82px;
+            font-size: 17px;
+            /* margin: 40px auto; */
+            margin-top: 7%;
+            margin-bottom: 0%;
+            margin-right: 0%;
+            float: none;
+            clear: both;
+            width: 231px;
+            display: block;
+            margin: 40px auto;
+            }
+
+        .form_wrapper lightning-combobox.Forename {
+            width: 420px;
+            padding-bottom: 15px;
+            float: none;
+            margin: 0 auto !important;
+        }
+        .input_row_div {
+            width: 100%;
+            margin: 0 auto;
+        } 
+        .form_wrapper input.slds-input.slds-combobox__input {
+            font-size: 17px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-color: #000000;
+            text-indent: 4px;
+            border-color: black;
+            width: 420px;
+            background: none;
+            font-weight: bolder;
+            padding-left: 0px;
+        	padding-right:0px;
+            text-align: center;
+        }
+        .cAGN_Spark_Registration .slds-form-element__help {
+            font-weight: bold;
+            font-size: 14px;
+            color: #800000;
+            margin-left: 2px;
+            position: absolute;
+		}
+        .cAGN_Spark_Registration .slds-dropdown {
+            font-size: 19px;
+        }
+        .slds-form-element__control {
+            width: 420px;
+        	margin: 0 auto;
+        }
+        .form_wrapper input.slds-input {
+            padding:11px 21px ;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            font-color: #000000;
+            text-indent: 4px;
+            width: 420px;
+            border-color: black;
+            padding-left: 0px;
+            background-color: #F5F5F5;
+            text-align: center;
+        }
+        .form_wrapper lightning-input.Forename {
+            width: 420px;
+            /* float: none; */
+            float: none;
+            padding-bottom: 15px;
+            margin-right: 0%;
+            margin-left: 0px;
+            margin: 0 auto !important;
+        }
+         .header_mobile_overlay{
+            display: block;
+            width: 100%;
+            height: 72px;
+            position: fixed;
+            background-color: #fff;
+            top: 0px;
+        	z-index:900;
+            left: 0px;
+        }
+        .your_profession {
+    		font-size: 19px;
+        	margin-bottom:16px;
+        }
+        .formthree_p {
+            font-family: helvetica;
+            font-size: 17px;
+            color: #6d6d6d;
+            text-align: center;
+            padding-top: 0%;
+        }
+		.edit_category {
+			float: left;
+            color: #000;
+            padding: 11px 66px;
+            border-radius: 1%;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 18px;
+            border: 1px solid #000;
+            outline: none;
+            margin-right: 11px !important;
+            margin-bottom: 18px;
+        } 
+        .errorMessageClass {
+            font-weight: bold;
+            color: #800000;
+            text-align: center;
+            font-size: 13px;
+        }
+        .form_reg_stage3 .empty_margin {
+            float: none;
+            clear: both;
+            margin: 18px auto !important;
+            display: block;
+        }
+        .medical_reg_no p label {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 18px;
+            font-weight: normal;
+            color: #000000;
+            text-align: center;
+            padding-left: 0%;
+        }
+        .edit_choose {
+            width: 400px;
+            margin: 0 auto;
+        }
+        .regNumber .slds-input {
+            width: 420px;
+            background-color: #F5F5F5;
+            font-weight: bold;
+            /* padding-left: 15%; */
+            text-align: center;
+            padding: 8px 0px;
+            border-color: black;
+            font-size: 18px;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            margin: 0 auto;
+		}
+        .doctor {
+            background: linear-gradient(to left, #000000 26%,#000000 80%,#000000 80%,#000000 90%,#000000 100%);
+            border: 1px solid #000000 !important;
+            border-color: black;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            color: #FFFFFF !important;
+        }
+        .slds-form-element {
+            width: 100%;
+            margin: 0 auto;
+		}
+        .confirm_question p {
+            font-family: helvetica;
+            font-size: 18px;
+            /* font-weight: bold; */
+            /* font-style: italic; */
+            color: #000000;
+            text-align: center;
+            /* padding-top: 3%; */
+            /* padding-left: 15%; */
+            width: 74%;
+            margin: 0 auto;
+            /* float: left; */
+		}
+        .yes, .no {
+            padding: 8px 59px;
+            color: #000000;
+            background-color: #F5F5F5;
+            border: 1px solid;
+            font-size: 18px;
+            font-family: helvetica;
+            text-transform: capitalize;
+            margin-top: 3%;
+            margin-right: 31px;
+            float: left;
+            text-align: center;
+		}
+        .yes_no {
+            margin: 0 auto;
+            width: 330px;
+       		margin-top:20px;
+		}
+        .product_service h3, .event_invite h3 {
+            font-family: 'Beatrice-light';
+            font-size: 16px !important;
+            text-align: left;
+            padding-top: 15px;
+            padding-left: 15px;
+        }
+        .product_service, .event_invite {
+            width: 507px;
+            margin: 0 auto;
+            border: 1px solid #000000;
+            margin-bottom: 2.5%;
+		}
+        .product_service p, .event_invite p {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            color: #000000;
+            text-align: left;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 10px;
+            background: -webkit-linear-gradient(#333, #eee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .view_all, .view_all_content {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            color: #000000;
+            text-align: left;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+		}
+        .view_all_next span {
+            font-family: helvetica;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000000;
+        }
+        .view_all_next_one span {
+            font-family: helvetica;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000000;
+		}
+        .view_all_next img {
+            padding-right: 8px;
+        }
+        .view_all_next_one img {
+            padding-right: 6px;
+        }
+        .accept_button, .accept_button_second {
+            font-family: helvetica;
+            font-weight: bold;
+            font-size: 16;
+            color: #fff;
+            text-align: center;
+            background-color: #000000;
+            border: none;
+            padding: 2px 11px;
+            /* margin-left: 36%; */
+            /* float: left; */
+            outline: none;
+            width: 167px;
+            padding-left: -3px 4px 11px -1px #635E62;
+            cursor: pointer;
+            float: right;
+        }
+        .view_all_next, .view_all_next_one {
+            float: left;
+            padding-left: 14px;
+            padding-top: 9px;
+            width: 35%;
+            cursor: pointer;
+            padding-bottom: 14px;
+        }
+        .privacy p {
+            padding-left: 10%;
+            margin-top: 8% !important;
+            float: none;
+            width: 100%;
+            margin-bottom: 0px;
+            font-family: helvetica;
+            font-size: 32px;
+            color: #6c6c6c;
+        }
+        .privacy .privacy_policy_link {
+            font-size: 18px;
+            padding-left: 0px;
+            color: #000000 !important;
+            text-align: center;
+        }
+        .cAGN_Spark_Registration .privacy {
+            width: 100%;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
+       .privacy .accept_button, .privacy .accept_button_second  {
+            font-family: helvetica;
+            font-weight: bold;
+            font-size: 16;
+            color: #fff;
+            text-align: center;
+            background-color: #000000;
+            border: none;
+            padding: 2px 11px;
+            /* margin-left: 36%; */
+            /* float: left; */
+            outline: none;
+            width: 167px;
+            padding-left: -3px 4px 11px -1px #635E62;
+            cursor: pointer;
+            float: none;
+        }
+        .medical_reg_no p{
+       		 margin-bottom:16px;
+        }
+        .next_button_stagefive {
+            padding: 15px 30px;
+            color: #fff;
+            background: linear-gradient(to right, #000000 41%,#000000 100%,#000000 100%);
+            border: none;
+            display: inherit;
+            font-size: 16px;
+            font-family: helvetica;
+            text-transform: capitalize;
+            /* margin: 0 auto !important; */
+            margin-top: 40px;
+            margin-bottom: 5%;
+            margin-right: 2.5%;
+            margin: 40px auto !important;
+            float: none;
+            box-shadow: -3px 4px 11px -1px #635E62;
+        }
+        .formtsix_p {
+            font-size: 16px;
+            text-align: center;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+       		margin-bottom:10px;
+        }
+  }  
+  @media screen and (max-width: 600px) {
+        .login-form-wrapper {
+            width: 100%;
+            position: absolute;
+            top: 93px !important;
+            z-index: 150;
+            height: 100%;
+        	left:0%;
+        }
+        .login-form-wrapper h3{
+        	font-size: 35px;
+        	padding-top: 64px;
+        }
+		.screenSubHead {
+            color: black;
+            font-size: 16px;
+            margin-top: 14px;
+        }
+          .login_close {
+            width: 25px;
+            position: fixed;
+            top: 25px;
+            right: 23px;
+            height: 25px;
+            z-index: 999;
+        }
+        .first_content, .second_content, .third_content {
+		    min-height: 409px;
+        }
+        .please_note {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            font-weight: normal;
+            padding-top: 44px;
+        	margin-bottom:0px;
+        }
+        .note_service {
+            font-family: Neue_Haas_Unica_Pro-light;
+            font-size: 16px;
+            color: #000000;
+            text-align: center;
+            width: 300px;
+            padding-left: 0px;
+            padding-right: 0px;
+            margin: 0 auto;
+        }
+       .confirm_button {
+            font-size: 16px;
+            padding: 1.5% 3% 2% 4%;
+            width: 234px;
+        }
+        .checkmark {
+            height: 20px;
+            width: 20px;
+            top: 11px;
+            left: 33px;
+        }
+         .forth_content .checkmark, .privacy_policy_link .checkmark {
+            height: 20px;
+            width: 20px;
+            top: 12px;
+            left: 0px !important;
+        }
+        .confirm_button_text{
+        	padding-bottom: 0px;
+            display: inline-block;
+            vertical-align: super;
+        }
+        .container .checkmark:after {
+            left: 5px;
+            top: -17px;
+            width: 15px;
+            height: 32px;
+		}
+        .login_footer_text p {
+            font-size: 12px;
+            line-height: 11px;
+            width: 280px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+        }
+        .next_button_stagetwo, .next_button_stagethree, .next_button_stagefour {
+            padding: 1% 6% 1% 6%;
+            font-size: 17px;
+        }
+        .pagination {
+            position: fixed;
+            top: 22px;
+            left: 10px;
+            font-size: 21px;
+        	z-index:999;
+		}
+        .login_close {
+            width: 35px;
+            position: fixed;
+            top: 25px;
+            right: 23px;
+            height: 35px;
+            z-index: 999;
+        }
+        .full-container {
+            position: fixed;
+            z-index: 9999;
+            padding-top: 4vw;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: #fff;
+		}
+        .next_button_stagetwo, .next_button_stagethree, .next_button_stagefour {
+            padding: 15px 82px;
+            font-size: 17px;
+            /* margin: 40px auto; */
+            margin-top: 7%;
+            margin-bottom: 0%;
+            margin-right: 0%;
+            float: none;
+            clear: both;
+            width: 231px;
+            display: block;
+            margin: 40px auto;
+            }
+
+        .form_wrapper lightning-combobox.Forename {
+            width: 300px;
+            padding-bottom: 15px;
+            float: none;
+            margin: 0 auto !important;
+        }
+        .input_row_div {
+            width: 100%;
+            margin: 0 auto;
+        } 
+        .form_wrapper input.slds-input.slds-combobox__input {
+            font-size: 17px;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-color: #000000;
+            text-indent: 4px;
+            border-color: black;
+            width: 300px;
+            background: none;
+            font-weight: bolder;
+            padding-left: 0px;
+        	padding-right:0px;
+            text-align: center;
+        }
+        .cAGN_Spark_Registration .slds-form-element__help {
+            font-weight: bold;
+            font-size: 13px;
+            color: #800000;
+            margin-left: 2px;
+            position: absolute;
+		}
+        .cAGN_Spark_Registration .slds-dropdown {
+            font-size: 17px;
+        }
+        .slds-form-element__control {
+            width: 300px;
+        	margin: 0 auto;
+        }
+        .form_wrapper input.slds-input {
+            padding: 3% 0%;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            font-color: #000000;
+            text-indent: 4px;
+            width: 300px;
+            border-color: black;
+            padding-left: 0px;
+            background-color: #F5F5F5;
+            text-align: center;
+        }
+        .form_wrapper lightning-input.Forename {
+            width: 300px;
+            /* float: none; */
+            float: none;
+            padding-bottom: 15px;
+            margin-right: 0%;
+            margin-left: 0px;
+            margin: 0 auto !important;
+        }
+         .header_mobile_overlay{
+            display: block;
+            width: 100%;
+            height: 72px;
+            position: fixed;
+            background-color: #fff;
+            top: 0px;
+        	z-index:900;
+            left: 0px;
+        }
+        .your_profession {
+    		font-size: 17px;
+        	margin-bottom:16px;
+        }
+        .formthree_p {
+            font-family: helvetica;
+            font-size: 17px;
+            color: #6d6d6d;
+            text-align: center;
+            padding-top: 0%;
+        }
+		.edit_category {
+            float: left;
+            color: #000;
+            padding: 8px 49px;
+            border-radius: 1%;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            font-size: 16px;
+            border: 1px solid #000;
+            outline: none;
+            margin-right: 11px !important;
+            margin-bottom: 18px;
+        } 
+        .errorMessageClass {
+            font-weight: bold;
+            color: #800000;
+            text-align: center;
+            font-size: 11px;
+        }
+        .form_reg_stage3 .empty_margin {
+            float: none;
+            clear: both;
+            margin: 18px auto !important;
+            display: block;
+        }
+        .medical_reg_no p label {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            font-weight: normal;
+            color: #000000;
+            text-align: center;
+            padding-left: 0%;
+        }
+        .edit_choose {
+            width: 320px;
+            margin: 0 auto;
+        }
+        .regNumber .slds-input {
+            width: 300px;
+            background-color: #F5F5F5;
+            font-weight: bold;
+            /* padding-left: 15%; */
+            text-align: center;
+            padding: 8px 0px;
+            border-color: black;
+            font-size: 16px;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            margin: 0 auto;
+		}
+        .doctor {
+            background: linear-gradient(to left, #000000 26%,#000000 80%,#000000 80%,#000000 90%,#000000 100%);
+            border: 1px solid #000000 !important;
+            border-color: black;
+            font-family: 'Neue_Haas_Unica_Pro-bold';
+            color: #FFFFFF !important;
+        }
+        .slds-form-element {
+            width: 100%;
+            margin: 0 auto;
+		}
+        .confirm_question p {
+            font-family: helvetica;
+            font-size: 16px;
+            /* font-weight: bold; */
+            /* font-style: italic; */
+            color: #000000;
+            text-align: center;
+            /* padding-top: 3%; */
+            /* padding-left: 15%; */
+            width: 74%;
+            margin: 0 auto;
+            /* float: left; */
+		}
+        .yes, .no {
+            padding: 8px 59px;
+            color: #000000;
+            background-color: #F5F5F5;
+            border: 1px solid;
+            font-size: 16px;
+            font-family: helvetica;
+            text-transform: capitalize;
+            margin-top: 3%;
+            margin-right: 11px;
+            float: left;
+            text-align: center;
+		}
+        .yes_no {
+            margin: 0 auto;
+            width: 301px;
+       		margin-top:20px;
+		}
+        .product_service h3, .event_invite h3 {
+            font-family: 'Beatrice-light';
+            font-size: 16px !important;
+            text-align: left;
+            padding-top: 15px;
+            padding-left: 15px;
+        }
+        .product_service, .event_invite {
+            width: 304px;
+            margin: 0 auto;
+            border: 1px solid #000000;
+            margin-bottom: 2.5%;
+		}
+        .product_service p, .event_invite p {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            color: #000000;
+            text-align: left;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 10px;
+            background: -webkit-linear-gradient(#333, #eee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .view_all, .view_all_content {
+            font-family: 'Neue_Haas_Unica_Pro-light';
+            font-size: 16px;
+            color: #000000;
+            text-align: left;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+		}
+        .view_all_next span {
+            font-family: helvetica;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000000;
+        }
+        .view_all_next_one span {
+            font-family: helvetica;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000000;
+		}
+        .view_all_next img {
+            padding-right: 8px;
+        }
+        .view_all_next_one img {
+            padding-right: 6px;
+        }
+        .accept_button, .accept_button_second {
+            font-family: helvetica;
+            font-weight: bold;
+            font-size: 16;
+            color: #fff;
+            text-align: center;
+            background-color: #000000;
+            border: none;
+            padding: 2px 11px;
+            /* margin-left: 36%; */
+            /* float: left; */
+            outline: none;
+            width: 146px;
+            padding-left: -3px 4px 11px -1px #635E62;
+            cursor: pointer;
+            float: right;
+        }
+        .view_all_next, .view_all_next_one {
+            float: left;
+            padding-left: 14px;
+            padding-top: 9px;
+            width: 35%;
+            cursor: pointer;
+            padding-bottom: 14px;
+        }
+        .privacy p {
+            padding-left: 10%;
+            margin-top: 8% !important;
+            float: none;
+            width: 100%;
+            margin-bottom: 0px;
+            font-family: helvetica;
+            font-size: 32px;
+            color: #6c6c6c;
+        }
+        .privacy .privacy_policy_link {
+            font-size: 16px;
+            padding-left: 0px;
+            color: #000000 !important;
+            text-align: center;
+        }
+        .cAGN_Spark_Registration .privacy {
+            width: 100%;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
+       .privacy .accept_button, .privacy .accept_button_second  {
+            font-family: helvetica;
+            font-weight: bold;
+            font-size: 16;
+            color: #fff;
+            text-align: center;
+            background-color: #000000;
+            border: none;
+            padding: 2px 11px;
+            /* margin-left: 36%; */
+            /* float: left; */
+            outline: none;
+            width: 146px;
+            padding-left: -3px 4px 11px -1px #635E62;
+            cursor: pointer;
+            float: none;
+        }
+        .medical_reg_no p{
+       		 margin-bottom:16px;
+        }
+        .next_button_stagefive {
+            padding: 15px 30px;
+            color: #fff;
+            background: linear-gradient(to right, #000000 41%,#000000 100%,#000000 100%);
+            border: none;
+            display: inherit;
+            font-size: 16px;
+            font-family: helvetica;
+            text-transform: capitalize;
+            /* margin: 0 auto !important; */
+            margin-top: 40px;
+            margin-bottom: 5%;
+            margin-right: 2.5%;
+            margin: 40px auto !important;
+            float: none;
+            box-shadow: -3px 4px 11px -1px #635E62;
+        }
+        .formtsix_p {
+            font-size: 16px;
+            text-align: center;
+            font-family: 'Neue_Haas_Unica_Pro-light';
+       		margin-bottom:10px;
+        }
+        
+  }
+    </aura:html>
+    <!--Loader Starts-->
+    
+    <div class="loaderHolder">
+        <div aura:id="siteSpinner" class="hideEl siteforceSpinnerManager siteforcePanelsContainer"  data-aura-class="siteforceSpinnerManager siteforcePanelsContainer">
+            <div class="mask" ></div>
+            <div class="loadingCon global siteforceLoadingBalls"  data-aura-class="siteforceLoadingBalls">
+                <span class="loadingBall first" ></span>
+                <span class="loadingBall second" ></span>
+                <span class="loadingBall third" ></span>
+                <span class="assistiveText" >Loading</span>
+            </div>
+        </div>
+    </div>
+    <!--Loader Ends-->
+    
+    <!--signup stage 1 starts-->
+    <div id="Registration" role="dialog"  data-backdrop="static">
+	<div >
+	
+    <aura:if isTrue="{!(v.showRegisterForm == True)}">
+        <div class="full-container" id="regScroll">
+            <div class="login-form-wrapper">
+                <!--<div class="log_header_popup">
+                    <h3><span class="screenSubHead" ></span></h3>
+                    <span><img src="{!$Resource.AGN_SPARK_Theme +'/images/home/close_icon.png'}" class="login_close" alt="close" onclick="{!c.closeModal}"/></span>
+                </div>-->
+                <div class="log_header_popup row" style="width:100% ; margin:0px;">
+					<h3 class="screenHead row" >Sign up to Spark</h3>
+					<div class="screenSubHead col-sm-12">
+                        <aura:if isTrue="{!(v.togglePage == 1)}">
+                        Just a few steps to get you started
+                        </aura:if>
+                        <div class="header_mobile_overlay"></div>
+                        <aura:if isTrue="{!(v.togglePage == 2) ||(v.togglePage == 3) || (v.togglePage == 6)}">
+                        {!$Label.c.AGN_SPARK_Healthcare_Professional_Confirm}
+                        </aura:if>
+                    </div>
+                    <span ><img id="modalClose" data-dismiss="modal" class="login_close" alt="close" onclick="{!c.closeModal}" src="{!$Resource.SPARK_Rebranding_LoginLayout +'/images/popupClose.png'}"/></span>
+				</div>
+                <aura:renderIf isTrue="{!v.showError}">
+                    <div id="error" class="errorMessageClass">
+                        <ui:outputRichText  value="{!v.errorMessage}"/>
+                    </div>
+                </aura:renderIf>
+                <div class="slds-scrollable_y" id="nxtScroll">
+                    <aura:if isTrue="{!(v.togglePage == 1)}">
+                        <div class="first_content" id="Screen1"	> 
+                            <div class="pop_up_content">
+                                <p class="please_note">{!$Label.c.AGN_SPARK_Register_Pleasenote}</p>
+                                <p class="note_service">
+                                    Please click this box to confirm you are a registered Healthcare <br/> Professional* registered within the UK or Ireland.
+                                   <!-- {!$Label.c.AGN_SPARK_Register_HealthCare_Professional}--></p>
+                                <div></div>
+                                <div class="button_text" >
+                                    <div class="confirm_button" onclick="{!c.confirmHealthCare}">
+                                        <label class="container">
+                                            <input id="confirmCb" type="checkbox" onclick="{!c.confirmHealthCare}"/>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        &nbsp;&nbsp;&nbsp;<span class="confirm_button_text">{!$Label.c.AGN_SPARK_I_Confirm}</span>
+                                    </div>
+                                    
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="login_footer_text">
+                                <p>{!$Label.c.AGN_SPARK_Register_Note}</p>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                    </aura:if> 
+                    
+                    <aura:if isTrue="{!(v.togglePage == 2) || (v.togglePage == 6)}">
+                        <div class="second_content" style="padding-top: 40px;">
+                            <div class="form">
+                                
+                                <div class="form_wrapper">
+                                    <div class="input_row_div"><lightning:combobox  class="Forename" id="TitleDropdown1" aura:id="field" name="title" placeholder="Title*" options="{!v.options}" value="{!v.custDetail.Salutation_AGN__c}" onchange="{!c.titleChange}" required="true" messageWhenValueMissing="Title is required"/>                                      
+                                    <lightning:input  Name="Firstname" aura:id="field" class="Forename" placeholder="{!$Label.c.AGN_SPARK_Reg_Firstname+'*'}" value="{!v.accountDetail.FirstName}" required="true" messageWhenValueMissing="First name is required"/> 
+                                    <div class="clear"></div>
+                                    </div>   
+                                    <div class="input_row_div"><lightning:input  	 Name="Surname" aura:id="field" class="Forename first_forename" placeholder="{!$Label.c.AGN_SPARK_Reg_Surname+'*'}" value="{!v.accountDetail.LastName}" required="true" messageWhenValueMissing="Surname is required"/>
+                                        <lightning:input  Name="Email" type="email" class="Forename" aura:id="field" placeholder="{!$Label.c.AGN_SPARK_Reg_Email+'*'}" value="{!v.userEmail}" onblur="{!c.getEmailId}" required="true" messageWhenValueMissing="Email is required" messageWhenTypeMismatch="Please enter a valid Email"/> 
+                                    <div class="clear"></div>
+                                    </div> 
+                                   <div class="input_row_div"> <lightning:input  Name="User Name"   class="Forename first_forename" placeholder="{!$Label.c.AGN_SPARK_Reg_UserName+'*'}" aura:id="uname" value="{!v.userName}" onblur="{!c.getUserName}" required = "true" messageWhenValueMissing="User Name is required"/>
+                                       <lightning:input  Name="Phone" type="tel" aura:id="field" placeholder="{!$Label.c.AGN_SPARK_Reg_Phone+'*'}" class="Forename" value="{!v.accountDetail.Phone}" required="true" pattern="^[0-9_ ]*$" messageWhenPatternMismatch="Please remove the special character" messageWhenValueMissing="Phone is required" onblur="{!c.checkValidityOfphone}"/>
+                                    <div class="clear"></div>
+                                    </div> 
+                                       <div class="input_row_div"> <lightning:combobox  class="Forename" aura:id="field" placeholder="{!$Label.c.AGN_SPARK_Reg_Country+'*'}" name="country"  options="{!v.countryOptions}" value="{!v.custDetail.Country_AGN__c}" onchange="{!c.custCountryChange}" required="true" messageWhenValueMissing="Country is required"/>
+                                    <div class="clear"></div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!(v.togglePage == 6)}">
+                        <div>
+                        </div>
+                    </aura:if>     
+                    <aura:if isTrue="{!(v.togglePage == 3) || (v.togglePage == 6)}">
+                        <div class="second_content" style="padding-top: 40px;">
+                            <div class="form">
+                                <aura:if isTrue="{!(v.togglePage == 3)}">
+                                    <!--<p>{!$Label.c.AGN_SPARK_Healthcare_Professional_Confirm}</p>-->
+                                </aura:if>  
+                                <div class="form_wrapper">
+                                      <div class="input_row_div">
+                                        <lightning:input Name="Business Name" aura:id="field" class="Forename first_forename" placeholder="{!$Label.c.AGN_SPARK_Reg_BusinessName+'*'}" value="{!v.addressDetail.Company_Name_AGN__c}" required="true" messageWhenValueMissing="Business Name is required"/>
+                                        <lightning:input Name="Business Address 1" aura:id="field" class="Forename" placeholder="{!$Label.c.AGN_SPARK_Reg_BusinessAddress1+'*'}" value="{!v.addressDetail.Address_Line_1_AGN__c}" required="true" messageWhenValueMissing="Business Address 1 is required"/>    
+                                         <div class="clear"></div>
+                                      </div>
+                                    <div class="input_row_div">
+                                        <lightning:input Name="Business Address 2" aura:id="field" class="Forename first_forename" placeholder="{!$Label.c.AGN_SPARK_Reg_BusinessAddress2}" value="{!v.addressDetail.Address_Line_2_AGN__c}"/>
+                                        <lightning:input Name="City" class="Forename" placeholder="{!$Label.c.AGN_SPARK_Reg_City}" value="{!v.addressDetail.City_AGN__c}" required="true" messageWhenValueMissing="City is required" pattern="^((([0-9]+)?[a-z A-Z\s]+([0-9]+)?)+)$" messageWhenPatternMismatch="Please enter valid city name"/>
+                                        <div class="clear"></div>
+                                      </div> 
+                                    <div class="input_row_div">
+                                        <lightning:input Name="Postalcode" aura:id="field" class="Forename first_forename" placeholder="{!$Label.c.AGN_SPARK_Reg_PostalCode+'*'}" value="{!v.addressDetail.Zip_AGN__c}" onblur="{!c.checkValidityOfZip}" required="true" messageWhenValueMissing="Postalcode is required" pattern="^([0-9 a-z A-Z\s]+)$" messageWhenPatternMismatch="Please enter valid Postal code"/>
+                                        <lightning:combobox class="Forename second_combobox"  aura:id="field" placeholder="{!$Label.c.AGN_SPARK_Reg_Country+'*'}" name="country" options="{!v.countryOptions}" value="{!v.addressDetail.Country_AGN__c}" onchange="{!c.addCountryChange}" required="true" messageWhenValueMissing="Country is required"/>
+                                        <div class="clear"></div>
+                                      </div>   
+                                    <div class="input_row_div">
+                                        <lightning:input Name="Business Phone" type="tel" aura:id="field" placeholder="{!$Label.c.AGN_SPARK_Reg_BusinessPhone+'*'}" class="Forename first_forename" required="true" messageWhenValueMissing="Business Phone is required" pattern="^[0-9_ ]*$" messageWhenPatternMismatch="Please remove the special character." value="{!v.addressDetail.Phone_AGN__c}" onblur="{!c.checkValidityOfphone}"/>
+                                    <div class="clear"></div>
+                                      </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!(v.togglePage == 4) || (v.togglePage == 6)}">
+                        <div class="third_content">
+                            <div class="form_profession">
+                                <div class="form_reg_stage3">
+                                    <div class="formthree">
+                                        <aura:if isTrue="{!(v.togglePage == 4)}">
+                                            <p class="formthree_p"><!--{!$Label.c.AGN_SPARK_Healthcare_Professional_Confirm}--></p>
+                                        </aura:if>
+                                        <p class="your_profession">{!$Label.c.AGN_SPARK_Your_Profession}</p>
+                                    </div>
+                                    
+                                    <div class="edit_choose">
+                                        <button style="margin-right: 50px ;" class="{!if(v.custDetail.Profession_Spark_AGN__c == 'Doctor', 'doctor edit_category', 'patient edit_category' )}" id="selDoc" onclick="{!c.clickDoctor}">Doctor</button>
+                                        <button style="margin-right: 50px ;" class="{!if(v.custDetail.Profession_Spark_AGN__c == 'Nurse', 'doctor edit_category', 'patient edit_category' )}" id="selNur" onclick="{!c.clickNurse}">Nurse</button>
+                                        <button class="{!if(v.custDetail.Profession_Spark_AGN__c == 'Dentist', 'doctor edit_category empty_margin', 'dentist edit_category empty_margin' )}" id="selDent" onclick="{!c.clickDent}">Dentist</button>
+                                        <div class="clear" ></div>
+                                    </div> 
+                                </div>
+                                
+                                <div class="medical_reg_no">
+                                    <p style="text-align: center;"><label>{!$Label.c.AGN_SPARK_Medical_Reg_No}</label></p>
+                                    <lightning:input Name="MedRegNumber" class="regNumber"  value="{!v.custDetail.Registration_License_Number_AGN__c}" required="true" messageWhenValueMissing="Registration number is required" pattern="^([0-9 a-z A-Z\s]+)$" messageWhenPatternMismatch="Please enter valid Registration number" maxlength="12"/>
+                                </div>
+                                <div class="confirm_question">
+                                    <div>
+                                        <p>
+                                           <!-- {!$Label.c.AGN_SPARK_Legally_Prescribe}-->
+                                            Can you legally prescribe medicine under your own initiative <br/>
+											(i.e. as an independent prescriber)?*
+                                        </p>
+                                    </div>
+                                    <div class="yes_no">
+                                        <button class="{!if(v.custDetail.Independent_Prescriber_Spark_AGN__c == 'Yes', 'doctor yes', 'yes')}" onclick="{!c.clickYes}">Yes</button>
+                                        <button class="{!if(v.custDetail.Independent_Prescriber_Spark_AGN__c == 'No', 'doctor no empty_margin', 'yes empty_margin')}" onclick="{!c.clickNo}">No</button>
+                                       <div class="clear"></div>
+                                    </div>
+                                 
+                                </div>
+                            </div> 
+                        </div>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!(v.togglePage == 5) || (v.togglePage == 6)}">
+                        <div class="forth_content" style="padding-top: 40px;">
+                            <div class="formfoue">
+                                <aura:if isTrue="{!(v.togglePage == 5)}">
+                                   <!-- <p class="formfour_p">{!$Label.c.AGN_SPARK_Healthcare_Professional_Confirm}</p>-->
+                                </aura:if>
+                            </div>
+                            <div class="form_service">
+                                <div class="product_service" >
+                                    <div class="first_service">
+                                        <h3>{!$Label.c.AGN_SPARK_Product_Service_Marketing_Consent}</h3>
+                                        <aura:if isTrue="{!(v.showMarketingcont == false)}">
+                                            <p>
+                                                {!$Label.c.AGN_SPARK_Product_Service_Marketing_half_Consent}
+                                            </p>
+                                        </aura:if>    
+                                    </div>
+                                    <aura:if isTrue="{!(v.showMarketingcont == True)}">
+                                        <div class="view_all">
+                                            {!$Label.c.AGN_SPARK_Product_and_Service_Marketing_Content}
+                                        </div>
+                                    </aura:if>
+                                   
+                                    <div class="view_next">
+                                        <div  class="view_all_next" onclick="{!c.showFullMarkCont}"> <span><img src="{!$Resource.AGN_SPARK_Theme +'/images/home/down_arrow.png'}" class="down_arrow" alt="downarrow"/>View all</span></div>
+                                        <button class="{!if(v.multiChannelConsent.Opt_Type_vod__c, 'accept_button_second', 'accept_button')}"> 
+                                            <label class="container">
+                                                <!--<ui:inputCheckbox aura:id="checkboxMark" value="{!v.custDetail.Accepted_Spark_Marketing_Consent_AGN__c}" />-->
+                                                <ui:inputCheckbox aura:id="checkboxMark" value="{!v.multiChannelConsent.Opt_Type_vod__c}" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            &nbsp;&nbsp;<span class="accept_button_text">{!$Label.c.AGN_SPARK_I_Accept}</span></button>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                <div class="event_invite">
+                                    <div class="first_service">
+                                        <h3>{!$Label.c.AGN_SPARK_Event_Invite_Registration_Consent}</h3>
+                                        <aura:if isTrue="{!(v.showEventcont == false)}">
+                                            <p>
+                                                {!$Label.c.AGN_SPARK_Event_Invite_Registration_half_Content}
+                                            </p>
+                                        </aura:if> 
+                                    </div>
+                                    <aura:if isTrue="{!(v.showEventcont == True)}">
+                                        <div class="view_all_content">
+                                            {!$Label.c.AGN_SPARK_Event_Invite_Registration_Content}
+                                        </div>
+                                    </aura:if>
+                                    
+                                    <div class="view_next">
+                                        <div  class="view_all_next_one" onclick="{!c.showFullEvtCont}"> <span><img src="{!$Resource.AGN_SPARK_Theme +'/images/home/down_arrow.png'}" class="down_arrow" alt="downarrow"/>View all</span></div>
+                                        <button class="{!if(v.multiChannelEvent.Opt_Type_vod__c, 'accept_button_second', 'accept_button')}"> 
+                                            <label class="container">
+                                                <!--<ui:inputCheckbox aura:id="checkboxEvent" value="{!v.custDetail.Accepted_Spark_Event_Consent_AGN__c}"/>-->
+                                                <ui:inputCheckbox aura:id="checkboxEvent" value="{!v.multiChannelEvent.Opt_Type_vod__c}"/>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            &nbsp;&nbsp;<span class="accept_button_text">{!$Label.c.AGN_SPARK_I_Accept}</span></button>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                <div class="event_invite">
+                                    <div class="first_service">
+                                        <h3>{!$Label.c.AGN_SPARK_Phone_Consent}</h3>
+                                        <aura:if isTrue="{!(v.showPhonecont == false)}">
+                                                <p>
+                                                    {!$Label.c.AGN_SPARK_Phone_Consent_Half}
+                                                </p>
+                                        </aura:if> 
+                                    </div>
+                                    <aura:if isTrue="{!(v.showPhonecont == True)}">
+                                        <div class="view_all_content">
+                                            {!$Label.c.AGN_SPARK_Phone_Consent_Full}
+                                        </div>
+                                    </aura:if>
+                                    <div class="view_next">
+                                        <div  class="view_all_next_one" onclick="{!c.showFullPhoneCont}"> <span><img src="{!$Resource.AGN_SPARK_Theme +'/images/home/down_arrow.png'}" class="down_arrow" alt="downarrow"/>View all</span></div>
+                                        <button class="{!if(v.multiChannelPhone.Opt_Type_vod__c, 'accept_button_second', 'accept_button')}"> 
+                                            <label class="container">
+                                                <!--<ui:inputCheckbox aura:id="checkboxEvent" value="{!v.custDetail.Accepted_Spark_Event_Consent_AGN__c}"/>-->
+                                                <ui:inputCheckbox aura:id="checkboxEvent" value="{!v.multiChannelPhone.Opt_Type_vod__c}"/>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            &nbsp;&nbsp;<span class="accept_button_text">{!$Label.c.AGN_SPARK_I_Accept}</span>
+                                        </button>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!(v.togglePage == 6)}">
+                        <div class="fifth_content">
+                            <div class="privacy_policy">
+                                <div class="privacy">
+                                    <div class="privacy_policy_link">
+                                       <p class="privacy_policy_link" style="width:auto">{!$Label.c.AGN_SPARK_Understand}
+                                            <a class="privacy_policy_link" onclick="{!c.acceptPolicy}" style="padding-left:5px;" target="_blank">
+                                                {!$Label.c.AGN_SPARK_Privacy_Policy}
+                                            </a>
+                                        </p>
+                                        <button class="{!if(v.custDetail.Accepted_Spark_privacy_policy_AGN__c, 'accept_button_second', 'accept_button')}" style="margin-top: 5%;"> 
+                                            <label class="container">
+                                                <ui:inputCheckbox aura:id="checkboxAccept" value="{!v.custDetail.Accepted_Spark_privacy_policy_AGN__c}"/>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            &nbsp;&nbsp;<span class="accept_button_text">{!$Label.c.AGN_SPARK_I_Accept}</span>
+                                    </button>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aura:id="completeProfile">
+                        </div>
+                    </aura:if>
+                    
+                    
+                    <div class="footer_stagefour">
+                        <span class="pagination">{!v.togglePage} / 6</span>
+                        <aura:if isTrue="{!(v.togglePage != 6)}">
+                            <aura:if isTrue="{!(v.togglePage == 1) }">
+                                <button class="{!if(v.firstCheck == false, 'next_button_stagefour', 'next_button_stagefour')}" id="nextBtn" disabled="{!if(v.firstCheck == false, 'true', 'false')}" aura:id="nextBtn" onclick="{!c.next}">Next ></button>
+                                <aura:set attribute="else">
+                                    <button class="next_button_stagefour" id="nextBtn" aura:id="nextBtn" onclick="{!c.next}">Next ></button>
+                                </aura:set>
+                            </aura:if>  
+                            <aura:set attribute="else">
+                                	<button aura:id="newButtonDiv" class="next_button_stagefive" onclick="{!c.createAccount}">Create your Account</button>
+                            </aura:set>
+                        </aura:if>           
+                        <div class="clear"></div>
+                    </div>    
+                </div> 
+            </div>
+        </div>
+        <aura:if isTrue="{!(v.welcomePage == true)}">
+            <div class="full-container">
+                <div class="login-form-wrapper">    
+                    <div class="log_header_popup row" style="width:100%; margin:0px;">
+                        <h3 class="screenHead row" >Sign up to Spark</h3>
+                        <div class="screenSubHead col-sm-12">
+                            <aura:if isTrue="{!(v.togglePage == 1)}">
+                            Just a few steps to get you started
+                            </aura:if>
+                            <aura:if isTrue="{!(v.togglePage == 2) ||(v.togglePage == 3) || (v.togglePage == 6)}">
+                            {!$Label.c.AGN_SPARK_Healthcare_Professional_Confirm}
+                            </aura:if>
+                        </div>
+                        <span ><img id="modalClose" data-dismiss="modal" class="login_close" alt="close" onclick="{!c.closeModal}" src="{!$Resource.SPARK_Rebranding_LoginLayout +'/images/popupClose.png'}"/></span>
+                    </div>
+                    <div class="formsix" aura:id="welcomePage">
+                       <!-- <div class="log_header_popup">
+                            <h3><span class="sign_up">{!$Label.c.AGN_SPARK_Register_SignUp}</span>{!$Label.c.AGN_SPARK_Register_To_Spark}</h3>
+                            <span ><img  class="login_close" alt="close" onclick="{!c.closeModal}" src="{!$Resource.SPARK_Rebranding_LoginLayout +'/images/popupClose.png'}"/></span>
+                        </div>-->
+                        
+                        <p class="formtsix_p">{!format($Label.c.AGN_SPARK_RegistratinThankyoumessage,  v.accountDetail.Salutation+' '+v.accountDetail.FirstName+' '+v.accountDetail.LastName )}</p>
+                        <p class="formtsix_p">Please check your email to complete the sign up process <!-- {!$Label.c.AGN_SPARK_Registration_Resettingpasswordalert}--></p>
+                        <!--<button class="next_button_stagefive" onclick="{!c.completeMyProfile}">Complete my profile</button>-->
+                    </div>
+                </div>
+            </div>
+        </aura:if> 
+        
+    </aura:if> 
+    </div>
+    </div>
+</aura:component>

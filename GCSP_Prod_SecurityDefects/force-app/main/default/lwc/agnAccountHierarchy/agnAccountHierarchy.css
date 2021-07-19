@@ -1,0 +1,13 @@
+/************************************************************************************************************
+@FileName:          agnAccountHierarchy.css
+@Version:           1.0
+@Author:            Ayush Basak (ayush.basak@cognizant.com)
+@Purpose:           This is the account hierarchy component, to be displayed on Account page layout.
+                    This components gets the top most parent node for a given account and creates the 
+                    account tree by the hierarchy node component 
+-------------------------------------------------------------------------------------------------------------
+@ Change history: 04.01.2021 / Ayush Basak / Created the file.
+*************************************************************************************************************/
+
+/* Importing common styling component */
+@import 'c/agnAccountHierarcyCssLib';

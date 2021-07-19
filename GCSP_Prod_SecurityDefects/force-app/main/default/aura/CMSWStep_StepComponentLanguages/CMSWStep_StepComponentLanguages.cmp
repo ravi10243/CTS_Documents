@@ -1,0 +1,192 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="MDFormBuilderController">
+    <!-- Attributes -->
+    <aura:attribute name="componentType" type="String" />
+    <aura:attribute name="renderMode" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="saveBtnLabel" type="string" default="Save"/>
+    <aura:attribute name="saveBtnVariant" type="string" default="brand"/>
+    <aura:attribute name="saveBtnTitle" type="string" default="Save language details"/>
+    
+    <aura:attribute name="listLocalisedMDStepComponent" type="Object" />
+    <aura:attribute name="selectedLocalisedStepComponentId" type="Object" />
+    <aura:attribute name="newLocalisedStepComponent" type="Object" />
+    <aura:attribute name="addNewMode" type="Boolean" default="false" />
+    <aura:attribute name="recordIdToDelete" type="String" />
+    
+    <!--For child object"-->
+    <aura:attribute name="listFieldConfig" type="List" />
+    
+    <!-- Aura Method -->
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Lightning Data Service for Record Deletion -->
+    <aura:if isTrue="{!v.recordIdToDelete}">
+        <force:recordData aura:id="recordtoDelete"
+                          recordId="{!v.recordIdToDelete}"
+                          fields="Id"
+                          recordUpdated="{!c.handleRecordUpdated}" 
+                          />
+    </aura:if>
+    
+    <!-- Componennt Body -->
+    <lightning:card iconName="custom:custom15" title="Show your component in multiple languages..">
+        <div class="slds-p-around_small">
+            <!-- For Already Created Records -->
+            <aura:iteration items="{!v.listLocalisedMDStepComponent}" var="localRecord">
+                <div class="slds-p-top_small">
+                    <!-- Show Record Title -->
+                    <c:CMS_RecordTitleBox>
+                        <aura:set attribute="box">
+                            L
+                        </aura:set>
+                        <aura:set attribute="boxtitle">
+                            {!localRecord.Language__c}
+                        </aura:set>
+                        <aura:set attribute="boxaction">
+                            <lightning:buttonIcon variant="bare" iconName="utility:edit"  size="small" name="{!localRecord}"  value="{!localRecord.Id}" title="Edit Language" onclick="{!c.OnEdit}"/>
+                            <lightning:buttonIcon variant="bare" iconName="utility:delete"  size="small" value="{!localRecord.Id}" title="Delete Language" onclick="{!c.OnDelete}"/>
+                        </aura:set>
+                    </c:CMS_RecordTitleBox>
+                    
+                    
+                    
+                    <div class="slds-p-around_small">
+                        <!-- Show Record Edit Form when selected -->
+                        <aura:if isTrue="{!v.selectedLocalisedStepComponentId == localRecord.Id}">
+                            <lightning:recordEditForm aura:id="editStepComponent"
+                                                      onsuccess="{!c.OnFormSubmitSuccess}"
+                                                      onerror="{!c.OnSubmitFormError}"
+                                                      onsubmit="{!c.OnFormSubmit}"
+                                                      recordId="{!localRecord.Id}"
+                                                      objectApiName="MDLocalisedComponent__c">
+                                <!-- the messages component is for error messages --> 
+                                <lightning:messages />
+                                <lightning:inputField fieldName="Language__c" value="{!v.localRecord.Language__c}" />
+                                <lightning:inputField style="display:none" disabled="true" fieldName="MDComponent__c" value="{!v.localRecord.MDComponent__c}" />
+                                <aura:if isTrue="{!v.componentType=='SectionHeader'}">
+                                    <lightning:inputField value="{!v.PortalLabel__c}" fieldName="PortalLabel__c" />
+                                </aura:if> 
+                                <aura:if isTrue="{!v.componentType=='HTMLControl'}">
+                                    <lightning:inputField fieldName="ContainerTextHtml__c" value="{!v.localRecord.ContainerTextHtml__c}" />
+                                </aura:if> 
+                                <aura:if isTrue="{!v.componentType=='ImportantInfo'}">
+                                    <lightning:inputField value="{!v.PortalLabel__c}" fieldName="PortalLabel__c" />
+                                    <lightning:inputField fieldName="ContainerTextHtml__c" value="{!v.localRecord.ContainerTextHtml__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='SuccessMessage'}">
+                                    <lightning:inputField value="{!v.PortalLabel__c}" fieldName="PortalLabel__c" />
+                                    <lightning:inputField fieldName="ContainerTextHtml__c" value="{!v.localRecord.ContainerTextHtml__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='InlineHelp'}">
+                                    <lightning:inputField fieldName="ContainerTextHtml__c" value="{!v.localRecord.ContainerTextHtml__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='PlainText'}">
+                                    <lightning:inputField fieldName="ContainerTextHtml__c" value="{!v.localRecord.ContainerTextHtml__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='RichTextControl'}">
+                                    <lightning:inputField fieldName="ContainerRichText__c" value="{!v.localRecord.ContainerRichText__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='ChildObjectOne'}">
+                                    <lightning:inputField fieldName="PortalLabel__c" value="{!v.localRecord.PortalLabel__c}" />
+                                    <lightning:inputField fieldName="PortalQuickHelpText__c" value="{!v.localRecord.PortalQuickHelpText__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='ObjectField'}">
+                                    <lightning:inputField fieldName="PortalLabel__c" value="{!v.localRecord.PortalLabel__c}" />
+                                    <lightning:inputField fieldName="PortalQuickHelpText__c" value="{!v.localRecord.PortalQuickHelpText__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='TranslatedPicklist'}">
+                                    <lightning:inputField fieldName="PortalLabel__c" value="{!v.localRecord.PortalLabel__c}" />
+                                    <lightning:inputField fieldName="PortalQuickHelpText__c" value="{!v.localRecord.PortalQuickHelpText__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='SurveyIconPicklist'}">
+                                    <lightning:inputField fieldName="PortalLabel__c" value="{!v.localRecord.PortalLabel__c}" />
+                                    <lightning:inputField fieldName="PortalQuickHelpText__c" value="{!v.localRecord.PortalQuickHelpText__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='SurveyRadioPicklist'}">
+                                    <lightning:inputField fieldName="PortalLabel__c" value="{!v.localRecord.PortalLabel__c}" />
+                                    <lightning:inputField fieldName="PortalQuickHelpText__c" value="{!v.localRecord.PortalQuickHelpText__c}" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.componentType=='SurveyCheckboxPicklist'}">
+                                    <lightning:inputField fieldName="PortalLabel__c" value="{!v.localRecord.PortalLabel__c}" />
+                                    <lightning:inputField fieldName="PortalQuickHelpText__c" value="{!v.localRecord.PortalQuickHelpText__c}" />
+                                </aura:if>
+                            </lightning:recordEditForm>
+                            <div class="slds-align_absolute-center slds-p-top_small">
+                                <lightning:button label="Cancel" title="Cancel" onclick="{!c.OnCloseProperty}" />
+                                <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.OnSubmitFormClick}" />
+                            </div>
+                        </aura:if>    
+                    </div>
+                </div>    
+            </aura:iteration>
+            <!-- Add new localised record -->
+            <div class="slds-p-top_small">
+                <c:CMS_RecordTitleBox>
+                    <aura:set attribute="box">
+                        L 
+                    </aura:set>
+                    <aura:set attribute="boxtitle">
+                        New Language - {!v.componentType}
+                    </aura:set>
+                    <aura:set attribute="boxaction">
+                        <lightning:buttonIcon variant="bare" iconName="utility:edit"  size="small"  title="Edit Language" onclick="{!c.OnAddNew}"/>
+                    </aura:set>
+                </c:CMS_RecordTitleBox>
+                <aura:if isTrue="{!v.addNewMode}">
+                    <div class="slds-p-around_small">
+                        <lightning:recordEditForm aura:id="editStepComponent"
+                                                  onsuccess="{!c.OnFormSubmitSuccess}"
+                                                  onerror="{!c.OnSubmitFormError}"
+                                                  onsubmit="{!c.OnFormSubmit}"
+                                                  objectApiName="MDLocalisedComponent__c">
+                            <!-- the messages component is for error messages -->
+                            <lightning:messages />
+                            <lightning:inputField fieldName="Name" value="{!v.newLocalisedStepComponent.Name}" />
+                            <lightning:inputField fieldName="Language__c" value="{!v.newLocalisedStepComponent.Language__c}" />
+                            <lightning:inputField style="display:none" disabled="true" fieldName="MDComponent__c" value="{!v.recordId}" />
+                            <aura:if isTrue="{!v.componentType=='SectionHeader'}">
+                                <lightning:inputField value="{!v.PortalLabel__c}" fieldName="PortalLabel__c" />
+                            </aura:if> 
+                            <aura:if isTrue="{!v.componentType=='HTMLControl'}">
+                                <lightning:inputField fieldName="ContainerTextHtml__c" value="{!v.newLocalisedStepComponent.ContainerTextHtml__c}" />
+                            </aura:if> 
+                            <aura:if isTrue="{!v.componentType=='ImportantInfo'}">
+                                <lightning:inputField value="{!v.PortalLabel__c}" fieldName="PortalLabel__c" />
+                                <lightning:inputField fieldName="ContainerTextHtml__c" value="{!v.newLocalisedStepComponent.ContainerTextHtml__c}" />
+                            </aura:if>
+                            <aura:if isTrue="{!v.componentType=='InlineHelp'}">
+                                <lightning:inputField fieldName="ContainerTextHtml__c" value="{!v.newLocalisedStepComponent.ContainerTextHtml__c}" />
+                            </aura:if>
+                            <aura:if isTrue="{!v.componentType=='PlainText'}">
+                                <lightning:inputField fieldName="ContainerTextHtml__c" value="{!v.newLocalisedStepComponent.ContainerTextHtml__c}" />
+                            </aura:if>
+                            <aura:if isTrue="{!v.componentType=='RichTextControl'}">
+                                <lightning:inputField fieldName="ContainerRichText__c" value="{!v.newLocalisedStepComponent.ContainerRichText__c}" />
+                            </aura:if>
+                            <aura:if isTrue="{!v.componentType=='ObjectField'}">
+                                <lightning:inputField fieldName="PortalLabel__c" value="{!v.newLocalisedStepComponent.PortalLabel__c}" />
+                                <lightning:inputField fieldName="PortalQuickHelpText__c" value="{!v.newLocalisedStepComponent.PortalQuickHelpText__c}" />
+                            </aura:if>
+
+                            <aura:if isTrue="{!v.componentType=='TranslatedPicklist'}">
+                                <lightning:inputField fieldName="PortalLabel__c" value="{!v.localRecord.PortalLabel__c}" />
+                                <lightning:inputField fieldName="PortalQuickHelpText__c" value="{!v.localRecord.PortalQuickHelpText__c}" />
+                            </aura:if>                            
+                        </lightning:recordEditForm>
+                        <div class="slds-align_absolute-center slds-p-top_small">
+                            <lightning:button label="Cancel" title="Cancel" onclick="{!c.OnCloseProperty}" />
+                            <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.OnSubmitFormClick}" />
+                        </div>
+                    </div>    
+                </aura:if>    
+            </div>    
+        </div>
+    </lightning:card>
+</aura:component>

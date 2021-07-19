@@ -1,0 +1,33 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 05-22-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   05-18-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <template if:true={showComponent}>
+        <template if:true={showLoadingSpinner}>
+            <lightning-spinner alternative-text="Uploading......" size="medium"></lightning-spinner>
+        </template>
+        <div class="label_heading"> 
+            <template if:true={isRequired}><abbr class="slds-required">*</abbr> </template>
+            {attachmentLabel}      
+            <!-- Document DownLoad  button -->
+            <div if:true={isDownload} class="btn_wrapper">
+                <a class="download_btn" href={downloadlink} download={downloadLabel}>{label.AGN_OAM_Download_Button}</a>
+            </div>
+        </div>
+        <lightning-input label="" name="file uploader"
+        onchange={onFileUpload} type="file" class="upload_box" required={isRequired}></lightning-input>
+
+        <template if:true={showDelete}>
+            <div class="attachment_name">{fileName}</div>
+            <lightning-button-icon icon-name="utility:delete" size="x-small" variant="Error" onclick={deleteAttachment} class="del_btn">
+            </lightning-button-icon>        
+        </template>
+    </template>
+</template>

@@ -1,0 +1,72 @@
+<aura:component >
+    <aura:attribute name="checkBoxLabel" type="String" />  
+    
+    <aura:attribute name="displayRequiredInput" type="Boolean" default="false" />
+    <aura:attribute name="fieldList" type="List" />
+    
+    <!-- AGN_CommunityInputFieldCmp attributes -->
+    <aura:attribute name="sobjectName" type="String" required="true" />
+    <aura:attribute name="fieldName" type="String" required="true" />
+    <aura:attribute name="record" type="SObject" required="true" />
+    <aura:attribute name="displayType" type="String" />
+    <aura:attribute name="picklistOptions" type="Object[]" />
+    <aura:attribute name="variant" type="String" default="form" description="Options: form (default) and bare" />
+    <aura:attribute name="render" type="Boolean" default="true" />
+    <aura:attribute name="disabled" type="Boolean" />
+    <aura:attribute name="required" type="Boolean" default="false" />
+    <aura:attribute name="addRequiredCSS" type="Boolean" default="false"/>
+    <aura:attribute name="fieldValueMissing" type="Boolean" default="false"/>
+    <aura:attribute name="currencyIsoCode" type="String" />
+    <aura:attribute name="customLabel" type="String" />
+    <aura:attribute name="isFormatValid" type="Boolean" default="true" />
+    <aura:attribute name="fieldRegex" type="String"  access="public" />
+    <aura:attribute name="fieldMetadata" type="Object" access="private" />
+    <aura:attribute name="fieldValue" type="Object" access="public" />
+    <aura:attribute name="customLabelName" type="String" access="public"/>
+    <aura:attribute name="customCountryCode" type="String" access="public"/>
+    <aura:attribute name="cmpHelpText" type="String" access="public" default=''/>
+     
+    <aura:attribute name="isControllingParent" type="Boolean" access="public" default="false" />
+    <aura:attribute name="isDependantField" type="Boolean" access="public" default="false" />
+    <aura:attribute name="controllingField" type="String" access="public" default=''/>
+    <aura:attribute name="uploadAccountOwnerDocument" type="Boolean" default="false" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!--<aura:handler name="change" value="{!v.uploadAccountOwnerDocument}" action="{!c.handleAccountOwnerChange}" />-->
+    
+    <div class="slds-form-element">
+     
+          <span class="input input--nariko inputCheckboxValue input-identifier" data-inputFiedlValue="{!v.isDoctorOverseeAccount}" >             
+              <label class="slds-checkbox_toggle slds-grid"> 
+                           <span class="slds-form-element__label input__Checkboxlabel--nariko">
+                                 {!v.checkBoxLabel} 
+                           </span> 
+                               <ui:inputCheckbox aura:id="ctrlChkBox" change="{!c.handleCheckBoxChange}" class="slds-input slds-checkbox uiInput--checkbox"/>               
+                           <span id="toggle-desc" class="slds-checkbox_faux_container " aria-live="assertive">                     
+                                 <span class="slds-checkbox_faux"></span>
+                           </span>
+               </label> 
+          </span> 
+        
+         <aura:renderIf isTrue="{!v.displayRequiredInput}">
+             
+              <c:AGN_CommunityInputFieldCmp
+                                                              sobjectName="{!v.sobjectName}" 
+                                                              record="{!v.record}" 
+                                                              fieldName="{!v.fieldName}"
+                                                              customLabel="{!v.customLabel}"
+                                                              required="{!v.required}"
+                                                              fieldRegex="{!v.fieldRegex}"
+                                                              customCountryCode = "{!v.customCountryCode}"
+                                                              cmpHelpText = "{!v.cmpHelpText}"
+                                                              fieldValue = "{!v.fieldValue}" 
+                                                              fieldValueMissing = "{!v.fieldValueMissing}" 
+                                                              isFormatValid = "{!v.isFormatValid}" 
+                                                              customLabelName = "{!v.customLabelName}" 
+                                                              />  
+                                      
+    </aura:renderIf>  
+    </div> 
+   
+	
+</aura:component>

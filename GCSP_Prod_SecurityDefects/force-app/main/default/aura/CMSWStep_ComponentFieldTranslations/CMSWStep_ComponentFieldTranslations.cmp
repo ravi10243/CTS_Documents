@@ -1,0 +1,52 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="MDFormBuilderController" >
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- ATTRIBUTES -->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="listLocalisedMDStepComponent" type="Object" />
+    <aura:attribute name="selectedLocalisedStepComponentId" type="Object" />
+    <aura:attribute name="listFieldConfig" type="List" />
+    <aura:attribute name="listLocalisedFieldConfig" type="List" />
+    
+	<!-- COMPONENT BODY -->
+    <div>
+        <aura:iteration items="{!v.listLocalisedMDStepComponent}" var="localRecord">
+            <div class="slds-p-around_small">
+                <c:CMS_RecordTitleBox>
+                    <aura:set attribute="box">
+                        L
+                    </aura:set>
+                    <aura:set attribute="boxtitle">
+                        {!localRecord.Language__c}
+                    </aura:set>
+                    <aura:set attribute="boxaction">
+                        <lightning:buttonIcon variant="bare" iconName="utility:edit"  size="small" name="{!localRecord}"  value="{!localRecord.Id}" title="Edit Language" onclick="{!c.onEdit}" />
+                    </aura:set>
+                </c:CMS_RecordTitleBox>
+                <aura:if isTrue="{!v.selectedLocalisedStepComponentId == localRecord.Id}">
+                    <div style="border: 1px solid rgb(236, 235, 234); border-top: 0px;">
+                        <aura:iteration items="{!v.listLocalisedFieldConfig}" var="config">
+                            <div class="slds-p-around_small" style="padding-bottom: 0px">
+                                <div class="slds-box">
+                                    {!config.FieldAPIName}
+                                    <lightning:input label="Display Label" value="{!config.DisplayLabel}" />
+                                    <lightning:input label="Quick Help Text" value="{!config.QuickHelpText}" />
+                                </div> 
+                            </div>
+                        </aura:iteration>
+                        <div class="slds-align_absolute-center slds-p-around_small">
+                            <button onclick="{!c.saveConfig}" class="slds-button slds-button_brand" title="Save">
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+                </aura:if>
+            </div>
+        </aura:iteration>
+        
+    </div>
+</aura:component>

@@ -1,0 +1,19 @@
+.THIS {
+    clear: both;
+}
+.THIS input, .THIS select {
+    min-width: 100px;
+}
+.THIS .slds-checkbox_faux_container {
+    padding: 5px;
+}
+.THIS .datePicker-openIcon {
+    display: none;
+}
+.THIS .slds-icon {
+    height: 1rem;
+    width: 1rem;
+}
+.THIS .help-icon {
+    padding: 0 4px;
+}

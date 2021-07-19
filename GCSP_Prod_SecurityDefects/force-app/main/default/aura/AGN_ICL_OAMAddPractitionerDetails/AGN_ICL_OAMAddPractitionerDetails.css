@@ -1,0 +1,175 @@
+.THIS .AddNewPractitioner{
+    display: none;
+}
+.THIS .slds-modal__content{
+    padding: 25px;
+}
+.THIS.practitioner_wrapper {
+    background-color: #f5f5f5;
+}
+.THIS  .header {
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px 10px;
+}
+.THIS  .header-right {
+    float: right;
+}
+.THIS #img_contain:hover .custom-file-label {
+    display: block;
+}
+.THIS  #img_contain1:hover .custom-file-label {
+    display: block;
+}
+.THIS .clinic_image_file{
+    width: 150px;
+    height: 150px;
+}
+.THIS .custom-file-label {
+    position: absolute;
+    top: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    width: 150px;
+    height: 150px;
+    margin: 0;
+    display: none;
+}
+.THIS .slds-file-selector__body .slds-file-selector__text{
+    display: none;
+}
+.THIS .slds-file-selector__dropzone{
+    border: 0;
+}
+.THIS #img_contain:hover .custom-file-label {
+    display: block;
+}
+.THIS #img_contain1:hover .custom-file-label {
+    display: block;
+}
+.THIS .opt_out_instruction{
+    border: 1px solid #ddd;
+    margin-left: 7%;
+    margin-right: 7%;
+    min-height: 100px;
+    padding: 10px 0;
+}
+.THIS .opt_out_instruction .btnSubmit{
+    background-color: #43af2a;
+    float: right;
+    color: #fff;
+    font-weight: 600;
+    margin: 10% 3%;
+    border-radius: initial;
+    width: 100%;
+    padding: 7px;
+}
+.THIS .opt_out_instruction .opt-email-label{
+    color: #2c5596;
+    font-weight: 600;
+    font-size: 15px;
+    float: right;
+    padding: 25px;
+}
+.THIS .brand-info{
+    margin-top: 25px;
+    position: relative;
+    float: left;
+    font-size: 10px;
+    margin-left: 10px;
+}
+.THIS .brand span{
+    background-color: #bfbdbd;
+    padding: 3px 9PX;
+    border-radius: 50%;
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+}
+.THIS #myModal .check{
+    margin-top: 30px;
+    color: #2c5596;
+    font-weight: 300;
+}
+
+.THIS .slds-modal__container{
+    max-width: 50%;
+}
+
+.THIS .slds-modal__header h4{
+    float: left;
+    font-size: 20px;
+}
+.THIS .slds-modal__container #img_contain1{
+    width: 175px;
+    margin: 0 auto;
+}
+.THIS .slds-modal__container select{
+    color: #59585b;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.THIS .slds-modal__container .col-md-3{
+    width: 50%
+}
+.THIS .slds-modal__container select ~ label{
+    margin-top: -14px;
+}
+
+.THIS .col-md-3{
+    min-height: 57px !important;
+}
+.THIS .Test{
+    color: #FFFF00;
+}
+.THIS .required{
+    color: red;
+}
+.THIS .input-effect .effect-16{    
+    box-shadow: none;    
+    background-color: transparent;
+}
+.THIS .input-effect select{    padding-bottom: 23px;}
+.THIS .input-effect .effect-16 ~ label{
+    color: #2c5596;
+    padding-left: 0;
+}
+.THIS .input-effect .effect-16:focus ~ label, .THIS .effect-16 ~ label{
+    color: #2c5596;
+}
+.THIS .slds-modal__container .slds-modal__footer button{
+    font-weight: 600;
+    color: #fff;
+    background: #43af2a;
+    font-size: 14px;
+    text-shadow: none;
+    padding: 7px;
+    margin-right: 1%; 
+    width: 12%;
+}
+
+.THIS fieldset::before {
+  content: "* ";
+    float: left;
+    padding-right: 2px;
+    color: rgb(194, 57, 52);
+    font-weight: 700;
+}
+.THIS .slds-form-element__legend{
+    position: absolute;
+}
+.THIS .checkboxgroup{
+    min-height: 92px !important;
+}
+.THIS lightning-checkbox-group fieldset{   
+    margin-left: 0px;
+}
+.THIS lightning-checkboxgroup_checkboxgroup{
+        margin-top: 30px;
+}
+.THIS .input-effect input{
+    max-width: none;
+    margin: 20px 0;
+}

@@ -1,0 +1,24 @@
+<aura:component >
+    <aura:attribute name="showBanner" type="Boolean" default="false" />
+    <!-- <aura:if isTrue="{!v.showBanner == false}">
+        <div id="logoArea">
+            <span class="allergan_logo GPS_menubar">
+                <img src='{!$Resource.GPSAssessmentAllerganLogo}' width='127.5' height='27.5' />
+            </span>
+            <!-
+            <span class="seperator_line GPS_menubar">
+                <span class="seperator">&nbsp;</span>
+            </span> ->
+            <span class="GPS_txt GPS_menubar">
+                <span>GPS</span> <span> Assessment</span>
+            </span>
+        </div>
+    </aura:if> -->
+   <aura:if isTrue="{!v.showBanner}">
+       <!-- PMO 3408: GPS Assessment: Start: Removed header image -->
+        <div class="banner">
+            <!-- <img src="{!$Resource.GPSAssessmentHeaderBanner}" style="max-width: 90vw !important;" /> -->
+        </div>
+       <!-- PMO 3408: GPS Assessment: End: Removed header image -->
+    </aura:if>
+</aura:component>

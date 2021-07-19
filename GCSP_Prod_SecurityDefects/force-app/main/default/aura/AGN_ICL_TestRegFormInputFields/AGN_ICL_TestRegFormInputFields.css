@@ -1,0 +1,99 @@
+.THIS .check-input label{
+    font-weight: 300;
+    font-size: 14px;
+        letter-spacing: .5px;
+    display: inline;
+}
+.THIS .required{
+    color: red;
+    margin-left: 2px;
+}
+.THIS .uiInput--checkbox input[type=checkbox][disabled], 
+.THIS input.uiInput--checkbox[type=checkbox][disabled]{
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+}
+.THIS .form-group{
+    margin-top:0 !important;
+}
+.THIS .form-group-country{
+    display: none;
+}
+.THIS span {
+    color: #2c5596;
+    display: inline-flex;
+}
+.THIS .check_input{
+    isplay: inline-block;
+    float: left;
+    width: 16px;
+    color: #2c5596;
+    margin: 1px 0 0;
+    height: 16px;
+}
+.THIS .check_input_wrap {
+    padding-top: 0;
+}
+.THIS .helper_txt{
+    margin-top: 35px;
+    position: relative;
+    float: left;
+    font-size: 10px;
+}
+
+.THIS .uiInput--select.select:not([multiple]){
+    height: 34px;
+    padding-left: 0px;
+    opacity: 1;
+}
+.THIS .drop-down-block {
+    margin: 0;
+    position: relative;
+    padding: 0;
+}
+.THIS .drop-down-block:after {
+    top: 50%;
+    right: 2%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0);
+    border-top-color: #000000;
+    border-width: 5px;
+    margin: 3px 0 0;
+    z-index: 100;
+    transform: translateY(-50%);
+}
+.THIS input[type=checkbox]::-ms-check {
+    border-color:#d3d3d3;
+}
+/* Media Queries */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  { 
+    .THIS .check_input_wrap {
+       padding-top: 0;
+    }
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation: landscape) { 
+    .THIS .uiInput--checkbox input[type="checkbox"], .THIS input.uiInput--checkbox[type="checkbox"]  {
+       width: 13px;
+        height: 13px;
+    }
+    .THIS .check-input label{
+        display: block;
+    margin-top: 9%;
+    }
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation: portrait) { 
+    .THIS .check_input_wrap {
+        padding-top: 0;
+    }
+}
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+.THIS span {   
+    display: inline;
+}
+}

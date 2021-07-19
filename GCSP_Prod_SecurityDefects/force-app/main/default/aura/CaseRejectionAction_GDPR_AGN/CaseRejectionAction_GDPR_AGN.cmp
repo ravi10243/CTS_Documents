@@ -1,0 +1,82 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="CaseRejectionAction_GDPR_AGN_controller">    
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>    
+    <aura:attribute name="objInfo" type="Case" default="{sobjectType : 'Case'}" />
+    <aura:attribute name="norender"  type="boolean" default="true"/>
+    <aura:attribute name="render"  type="boolean" default="false"/>
+    <aura:attribute name="chanelcheck" type="boolean" default="true"/>
+    <aura:attribute name="codecheck" type="boolean" default="true"/>
+    <aura:attribute name="rejcod" type="String" />
+    <aura:attribute name="rejsn" type="String" />
+    <aura:attribute name="comchnl" type="String" />
+    <aura:attribute name="dsmessage" type="String"/>
+    <aura:attribute name="recordTypeName" type="String"/>
+    <aura:attribute name="DSLang" type="String" />
+    <aura:attribute name="subjectLine" type="String"/>
+    <aura:attribute name="lblstr" type="String" />
+    <aura:attribute name="customLabelConstant" type="String" default="AGN_GDPR_Reject_Case_Message"/>
+    <aura:attribute name="subjLabelConstant" type="String" default="AGN_CCPA_Case_Reject_EmailSubj"/>
+    <aura:attribute name="subjLabelConstantgdpr" type="String" default="AGN_GDPR_Case_Reject_EmailSubj"/>
+    <aura:attribute name="pickListOptions" type="object[]" access="public" description="List of picklist values" />
+   
+    <aura:if isTrue="{!v.norender}">  
+        <aura:html tag="style">
+            .slds-backdrop {
+            background: rgba(43, 40, 38, 0) !important;  
+            }
+            .slds-fade-in-open {
+            display:none !important;
+            }
+        </aura:html>
+    </aura:if>
+    <aura:if isTrue="{!v.render}">  
+        <div aura:id="thecontainer" class="thecontainer" id="thecontainer"> 
+            <div role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal--large" >       
+                <div class="slds-modal__container" >
+                    <div class="slds-modal__header" >
+                        <h2 id="header43" class="slds-text-heading--medium">
+                            <h1 class="title slds-text-heading--medium" > {!$Label.c.AGN_GDPR_RejCaseLabel}</h1>
+                            <h1 class="slds-badge">{!$Label.c.AGN_GDPR_RejCaseFillDetails}</h1>
+                        </h2>
+                    </div>
+                    
+                    <div class="slds-modal__content slds-p-top--x-large slds-p-around--medium" aura:id="modalbody" id="modalbody">
+                        
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="select-01">{!$Label.c.AGN_GDPR_ComchanelLabel}</label>
+                            <div class="slds-select_container">
+                                <ui:inputSelect  aura:id="pickId2" class="slds-select" disabled="true" value ="{!v.comchnl}"/>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="select-01">{!$Label.c.AGN_GDPR_RejCodeLabel}</label>
+                            <div class="slds-select_container" onchange="{!c.onChangeCode}" >
+                                <ui:inputSelect  aura:id="pickId" required="true" class="slds-select" value ="{!v.rejcod}" />
+                            </div> 
+                        </div>
+                        
+                        
+                        <lightning:textarea aura:id="rejreason" name="input1" required="true" disabled="{!v.codecheck}" label="Rejection Reason" value="{!v.rejsn}" onchange="{!c.onChangeReason}"/>
+                        <lightning:textarea aura:id="message" name="input2" required="true" label="Message For DS" value ="{!v.dsmessage}"/>
+                        
+                        <div class="slds-list_horizontal" >
+                            <ui:inputCheckbox disabled="{!v.chanelcheck}" class="myCheckbox" aura:id="checkbox" label=" Dont Send E-Mail Notification " />
+                            &nbsp;
+                            <lightning:helptext class="myCheckbox" content="Checkbox enabled only for Communication Chanel Email"/>
+                        </div>
+                        <br/>
+                        <div class="Center">
+                            <div class="slds-docked-form">
+                                <button type="button" class="slds-button slds-button--neutral" onclick="{!c.Save}">{!$Label.c.AGN_GDPR_SaveBtn}</button>
+                                <button type="button" class="slds-button slds-button--neutral" onclick="{!c.rejectCase}">{!$Label.c.AGN_GDPR_RejectBtn}</button>
+                                <button type="button" class="slds-button slds-button--brand"  onclick="{!c.cancel}">{!$Label.c.AGN_GDPR_CanecelBtnLabel}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

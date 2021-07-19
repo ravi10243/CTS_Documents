@@ -1,0 +1,30 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <!-- Attributes -->
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Component Body -->
+    <div class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small' : 'slds-hide'}">
+    <div name="{!v.elementWrapper.PageElement.Name}">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-align_absolute-left slds-col slds-size_12-of-12 slds-p-around_large" >
+                <lightning:icon size="small" iconName="standard:task2" title="" />
+                <strong>{!v.elementWrapper.PortalLabel}</strong>
+            </div>
+            <!--<div class="slds-align_absolute-center slds-col slds-size_12-of-12 slds-p-around_small" >
+                <strong>{!v.elementWrapper.PortalLabel}</strong>
+            </div> 
+            <aura:if isTrue="{!v.elementWrapper.ContainerHtmlText != null}">
+                <div class="slds-col slds-size_12-of-12 slds-p-around_x-small" >
+                    <div class="slds-col slds-size_11-of-12">
+                        <lightning:formattedRichText value="{!v.elementWrapper.ContainerHtmlText}" />
+                    </div>
+                </div>
+            </aura:if>-->
+        </div>      
+    </div>  
+    </div>
+</aura:component>

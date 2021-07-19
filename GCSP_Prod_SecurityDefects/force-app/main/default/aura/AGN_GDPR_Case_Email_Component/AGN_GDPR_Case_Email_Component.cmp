@@ -1,0 +1,229 @@
+<aura:component controller="AGN_GDPR_CaseEmailSendController" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="email" type="string"/>
+    <aura:attribute name="subject" type="string"/>
+    <aura:attribute name="body" type="string"/>
+    <aura:attribute name="mailStatus" type="boolean" default="false"/>
+    <!--Added by Kunal:Change required to enable DPO verified email content change box in case email tab -->
+    <aura:attribute name="DPOVerifiedMailContent" type="boolean" default="false"/>
+    <aura:attribute name="isGDPRCase" type="boolean" default="false"/>
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="viewattachment" type="boolean" default="false"/>
+    <!--Added by Namrata :Changes done for Email -->
+    <aura:attribute name="isRequestTypeInformation" type="boolean" default="false"/>
+    <aura:attribute name="displayEmailTypeForInformation" type="boolean" default="false"/>
+    <aura:attribute name="isRequestTypeDeletion" type="boolean" default="false"/>
+    <aura:attribute name="displayEmailTypeForDeletion" type="boolean" default="false"/>
+    <aura:attribute name="isRequestTypeAccess" type="boolean" default="false"/>
+    <aura:attribute name="displayEmailTypeForAccess" type="boolean" default="false"/>
+    <aura:attribute name="noRequestTypeSelected" type="boolean" default="false"/>
+    <aura:attribute name="emailType" type="string"/>
+    <aura:attribute name="closeattachment" type="boolean" default="false"/>
+    
+    <aura:attribute name="multiple" type="Boolean" default="false"/>
+    <aura:attribute name="disabled" type="Boolean" default="false"/>
+    <aura:attribute name="attachId" type="Id"/>
+    <aura:attribute name="attachmentName" type="String"/>
+    
+    <!--Added by Arijit-->
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />  
+    
+    
+    <!-- Added DSRM_45 requiremnt for Release 3 Sprint 1 Starts Here--> 
+   <!--  <aura:attribute name="Spinner" type="boolean" default="false"/> -->
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+ <!--   <aura:if isTrue="{!v.Spinner}">
+        <div class="demo-only" style="height:6rem">
+            <div class="slds-spinner_container">
+                <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                    <span class="slds-assistive-text"></span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </div>
+    </aura:if> -->
+    <!-- Loading spinner end-->   
+    <!-- DSRM_45 Changes Ends here -->
+    
+    
+    
+    <fieldset  class="slds-box slds-theme--default" style="align:center;width:700px">
+        <div class="slds-page-header" role="banner">
+            <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" align="center" title="{!$Label.c.AGN_DSRM_SendEmail}">
+                {!$Label.c.AGN_DSRM_SendEmail}  </h1>
+        </div>
+        
+        <aura:if isTrue="{!v.mailStatus}">
+            <div role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header  slds-theme--alert-texture">
+                        <h2 class="slds-text-heading--medium" id="prompt-heading-id">{!$Label.c.AGN_DSRM_EmailSent}</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <div>
+                            <p>{!$Label.c.AGN_DSRM_EmailSuccess}</p>
+                        </div>
+                    </div>
+                    <div class="slds-modal__footer slds-theme--default">
+                        <button class="slds-button slds-button--brand" onclick="{!c.closeMessage}">{!$Label.c.AGN_DSRM_Close}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>
+        </aura:if>
+        
+        <div class="slds-m-around--medium">
+            <div class="slds-container--medium">
+                <div class="slds-form--stacked">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="CC">{!$Label.c.AGN_DSRM_EmailTo_Label}</label>
+                        <div class="slds-form-element__control">
+                            <ui:inputEmail class="slds-input" aura:id="email"  value="{!v.email}" required="true" placeholder="{!$Label.c.AGN_DSRM_EmailPlaceHolder}"/>
+                        </div>
+                    </div>
+                    <!--   Added by Namrata :Changes done for RequestType - "Information" -->
+                    <aura:if isTrue="{!v.isRequestTypeInformation}"> 
+                        <div class="slds-picklist">
+                            <div class="slds-picklist-display">
+                                <p class="title">{!$Label.c.AGN_DSRM_EmailType}</p>
+                                <ui:inputSelect class="single" aura:id="InputSelectInformation1" change="{!c.populateEmailBodyForInformationType}">
+                                    <ui:inputSelectOption text="Select an option"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Information_Complete_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Information_Failed_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Others_Picklist_AGN}"/>
+                                </ui:inputSelect>
+                            </div>  
+                        </div>
+                    </aura:if> 
+                    <aura:if isTrue="{!v.displayEmailTypeForInformation}">
+                        
+                        <div class="slds-picklist">
+                            <div class="slds-picklist-display">
+                                <p class="title">{!$Label.c.AGN_DSRM_EmailType}</p>
+                                <ui:inputSelect class="single" aura:id="InputSelectInformation2" change="{!c.populateEmailBodyForInformationType}">
+                                    <ui:inputSelectOption text="Select an option"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Information_Info_Required_Generic_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Others_Picklist_AGN}"/>
+                                </ui:inputSelect>
+                            </div>  
+                        </div>
+                    </aura:if> 
+                    <!--Added by Namrata :Changes done for RequestType - "Deletion" -->
+                    <aura:if isTrue="{!v.isRequestTypeDeletion}">
+                        <div class="slds-picklist">
+                            <div class="slds-picklist-display">
+                                <p class="title">{!$Label.c.AGN_DSRM_EmailType}</p>
+                                <ui:inputSelect class="single" aura:id="InputSelectDeletion1" change="{!c.populateEmailBodyForDeletionType}">
+                                    <ui:inputSelectOption text="Select an option"/>
+                                    <ui:inputSelectOption text="{!$Label.c.Deletion_Complete_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.Deletion_Partial_Complete_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.Deletion_Failed_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Others_Picklist_AGN}"/>                                
+                                </ui:inputSelect>
+                            </div>  
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.displayEmailTypeForDeletion}">
+                        <div class="slds-picklist">
+                            <div class="slds-picklist-display">
+                                <p class="title">{!$Label.c.AGN_DSRM_EmailType}</p>
+                                <ui:inputSelect class="single" aura:id="InputSelectDeletion2" change="{!c.populateEmailBodyForDeletionType}">
+                                    <ui:inputSelectOption text="Select an option"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Deletion_Info_Required_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Deletion_Confirmation_mail_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Deletion_Info_Required_Generic_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Others_Picklist_AGN}"/>                                
+                                </ui:inputSelect>
+                            </div>  
+                        </div>
+                    </aura:if>
+                    <!--Added by Namrata :Changes done for RequestType - "Access" -->
+                    
+                    
+                    <aura:if isTrue="{!v.isRequestTypeAccess}">
+                        
+                        <div class="slds-picklist">
+                            <div class="slds-picklist-display">
+                                <p class="title">{!$Label.c.AGN_DSRM_EmailType}</p>
+                                <ui:inputSelect class="single" aura:id="InputSelectAccess1" change="{!c.populateEmailBodyForAccessType}">
+                                    
+                                    <ui:inputSelectOption text="Select an option"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Access_Failed_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Others_Picklist_AGN}"/>
+                                </ui:inputSelect>
+                            </div>  
+                        </div>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.displayEmailTypeForAccess}">
+                        
+                        <div class="slds-picklist">
+                            <div class="slds-picklist-display">
+                                <p class="title">{!$Label.c.AGN_DSRM_EmailType}</p>
+                                <ui:inputSelect class="single" aura:id="InputSelectAccess2" change="{!c.populateEmailBodyForAccessType}">
+                                    <ui:inputSelectOption text="Select an option"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Access_Info_Required_Generic_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Access_Info_Required_Picklist_AGN}"/>
+                                    <ui:inputSelectOption text="{!$Label.c.CCPA_Others_Picklist_AGN}"/>
+                                    
+                                </ui:inputSelect>
+                            </div>  
+                        </div>
+                    </aura:if>
+                    
+                    
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="CC">{!$Label.c.AGN_DSRM_Email_Subject}</label>
+                        <div class="slds-form-element__control">
+                            <ui:outputText class="slds-input" aura:id="subject" value="{!v.subject}" />
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!v.viewattachment}">
+                        <div class="slds-form-element">
+                            <lightning:fileUpload  name="fileUploader"
+                                                  label= ""
+                                                  multiple="{!v.multiple}"
+                                                  disabled="{!v.disabled}"
+                                                  recordId="{!v.recordId}"
+                                                  onuploadfinished="{!c.handleUploadFinished }"/>
+                            <label class="slds-form-element__label">
+                                {!$Label.c.AGN_DSRM_AttachmentName} {!v.attachmentName} 
+                                <aura:if isTrue ="{!v.closeattachment}">  
+                                    &nbsp;
+                                    <lightning:button variant="base" label="X" title="{!$Label.c.AGN_DSRM_RemoveAttchment}" onclick="{!c.removeAttach}"/>
+                                    <br/> 
+                                </aura:if> 
+                                <br/>
+                            </label> 
+                        </div>
+                    </aura:if>
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                            <pre><lightning:inputRichText aura:id="body" value="{!v.body}" placeholder="{!$Label.c.AGN_DSRM_SubjectPlaceholder}"/></pre>
+                        </div>
+                    </div>
+                    &nbsp;
+                    <!--Added by Kunal: Change required to enable DPO verified email content change box in case email tab -->
+                    <aura:if isTrue="{!v.isGDPRCase}">
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <pre><ui:inputCheckbox label="{!$Label.c.AGN_DSRM_VerifiedMailContent}" class="myCheckbox" aura:id="DPOVerifiedMailContent" change="{!c.emailVerification}"/></pre>
+                            </div>
+                        </div>                   
+                        &nbsp;
+                        <div class="slds-form-element">
+                            <button class="slds-button slds-button--brand" disabled="{!not(v.DPOVerifiedMailContent)}" onclick="{!c.sendMail}">{!$Label.c.AGN_DSRM_SendButton}</button>
+                        </div>
+                        <aura:set attribute="else">
+                            <div class="slds-form-element">
+                                <button class="slds-button slds-button--brand" onclick="{!c.sendMail}">{!$Label.c.AGN_DSRM_SendButton}</button>
+                            </div>
+                        </aura:set>    
+                    </aura:if>                 
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</aura:component>

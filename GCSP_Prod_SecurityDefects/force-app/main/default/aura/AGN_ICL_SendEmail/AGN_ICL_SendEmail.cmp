@@ -1,0 +1,64 @@
+<!-- **AGN_ICL_SendEmail** -->
+<aura:component controller="AGN_ICL_SendEmailCtrl" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+	<ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}"/>
+	<aura:attribute name="notify" type="string" default=""/>
+	<aura:attribute name="searchEmail" type="string"/>
+	<!-- <aura:attribute name="Clinicdetails" type="Account" default="{'sobjectType':'Account'}"/> -->
+	<!--<lightning:input type="string" label="Email" value="{!v.searchEmail}" />
+    <lightning:button onclick="{!c.sendEmailToContact}"  label="Submit" variant="brand" />-->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+	<link rel="stylesheet" href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+	<link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+	<!--<link href="{!$Resource.AGN_ICL_TempScripts+'/AGN_ICL_TEST_CSS/mystyle.css'}" rel="stylesheet"/>-->
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:attribute name="LocatorListingId" type="String"/>
+     <!--GTM-->
+    <aura:attribute name="fireGTM" type="Boolean" default="false"/>
+    <aura:attribute name="showGTM" type="Boolean" default="false"/>
+    <aura:attribute name="GTMPageURL" type="String" default=""/>
+    <aura:attribute name="GTMPageTitle" type="String" default=""/>
+    <aura:attribute name="GTMCountry" type="String" default=""/>
+      <!--GTM-->
+	<!--<ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}" afterScriptsLoaded="{!c.scriptsLoaded}" />
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS+'/ICL/js/bootstrap.js'}"/> -->
+	<!--<div class="col-md-5">
+       {!v.notify}
+                 <div class="form-group input-effect time-field">
+                 <label>Email</label>
+                 <lightning:input type="string" label="Send opt out Instructions" value="{!v.searchEmail}" /> 
+				  <label>{!$Label.c.AGN_ICL_Send_Opt_Out_Instruction}</label>
+                 </div>
+      
+    <div>
+         <ui:button class="reg-submit btnSubmit"  label="Submit" press="{!c.sendEmailToContact}"/>
+    </div> 
+    </div>-->
+	<div>
+           <aura:if isTrue="{!v.showGTM}">
+              <iframe aura:id="vfFrame" style="display:none;visibility:hidden" src="{!$Label.c.AGN_ICL_GTMPageRedirction+'?type=optout&amp;emailsend='+v.fireGTM+'&amp;curl='+v.GTMPageURL+'&amp;ctitle='+v.GTMPageTitle+'&amp;country='+v.GTMCountry}"/>
+       </aura:if>
+		<div class="row opt_out_instruction">
+			<h4 class="section-text">{!$Label.c.AGN_ICL_Send_Opt_out_instructions}</h4>
+			<div class="emailform">
+				<div class="emailformblk">
+					<label class="opt-email-label">{!$Label.c.AGN_ICL_Email}</label>
+				</div>
+				<div class="emailformblk">
+					{!v.notify}
+					<div class="form-group input-effect">
+						<lightning:input type="string" value="{!v.searchEmail}">
+							<label>{!$Label.c.AGN_ICL_Send_Opt_out_instructions}</label>
+						</lightning:input>
+					</div>
+					<span class="helper_txt">{!$Label.c.AGN_ICL_SendEmail_help_Text}</span>
+				</div>
+				<div class="emailformblk">
+					<ui:button class="reg-submit btn btnSubmit" label="{!$Label.c.AGN_ICL_Submit_Forgot_Password}" press="{!c.sendEmailToContact}"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</aura:component>

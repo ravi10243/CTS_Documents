@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="Tax Exempted values" >
+
+  <aura:attribute name="taxExemptedVal" type="String" description="Selected value" access="global" />
+
+</aura:event>

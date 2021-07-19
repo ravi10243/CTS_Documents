@@ -1,0 +1,893 @@
+<aura:component access="public" controller="GPSAssessmentToolController">
+
+    <!-- Static Resources -->
+    <ltng:require styles="{!$Resource.gps_common_styles}" />
+
+    <!-- Public Attributes -->
+    <aura:attribute name="assessmentId" type="Id" />
+    <aura:attribute name="userId" type="Id" />
+    <aura:attribute name="user" type="User" />
+
+    <!-- Private Attributes -->
+    <aura:attribute name="assessment" type="GPS_Assessment__c" access="private" />
+    <aura:attribute name="accountAssessments" type="Account_GPS_Assessment__c[]" access="private" />
+    <aura:attribute name="colspan" type="Integer" access="private" default="1" />
+    <aura:attribute name="customQuestionColspan" type="Integer" access="private" default="0" />
+    <aura:attribute name="displaySpinner" type="Boolean" access="private" default="true" />
+    <aura:attribute name="disableForm" type="Boolean" access="private" default="false" />
+    <aura:attribute name="isPersonAccounts" type="Boolean" access="private" />
+    <aura:attribute name="showBusinessSize" type="Boolean" access="private" default="true" />
+    <aura:attribute name="showAGNShare" type="Boolean" access="private" default="true" />
+    <aura:attribute name="showDosageTreatment" type="Boolean" access="private" default="true" />
+    <aura:attribute name="showFrequencyTreatment" type="Boolean" access="private" default="true" />
+    <aura:attribute name="showSecondaryBrands" type="Boolean" access="private" default="true" />
+    <aura:attribute name="showCustomQuestions" type="Boolean" access="private" default="true" />
+    <aura:attribute name="showFinancialProjections" type="Boolean" access="private" default="true" />
+    <aura:attribute name="picklistOptionsCustomQuestion1" type="Object[]" access="private" />
+    <aura:attribute name="picklistOptionsCustomQuestion2" type="Object[]" access="private" />
+    <aura:attribute name="picklistOptionsCustomQuestion3" type="Object[]" access="private" />
+    <aura:attribute name="picklistOptionsCustomQuestion4" type="Object[]" access="private" />
+
+    <aura:attribute name="showAddAccounts" type="Boolean" access="private" default="false" />
+    <aura:attribute name="accountsToAdd" type="Account[]" access="private" />
+
+    <aura:attribute name="showAccountCustomerAssessmentForm" type="Boolean" access="private" default="false" />
+
+    <aura:attribute name="accountSearchString" type="String" access="private" />
+
+     <!-- Pagination Attributes -->
+    <aura:attribute name="filterIsCompleted" type="Boolean" access="private" />
+    <aura:attribute name="sortField" type="String" access="private" default="Account_AGN__r.LastName" />
+    <aura:attribute name="sortArrow" type="String" access="private" default="&nbsp;  &#9650;" />
+    <aura:attribute name="sortIsAsc" type="Boolean" access="private" default="true" />
+    <aura:attribute name="pageNumber" type="Integer" access="private" default="1" />
+    <aura:attribute name="totalRecords" type="Integer" access="private" />
+    <aura:attribute name="totalPages" type="Integer" access="private" />
+	
+    <!--### declared attributes for Search Account ###-->
+    <aura:attribute name="searchString" type="String" description="use for store user search input"/>
+    
+    <aura:attribute name="showSearchAccountForm" type="Boolean" access="private" default="false" /> 
+    <aura:attribute name="searchResult" type="List" description="use for store and display account list return"/>
+    <aura:attribute name="searchKeyword" type="String" description="use for store user search input"/>
+    <aura:attribute name="Message" type="boolean" default="false" description="use for display no record found message"/>
+    <aura:attribute name="numberOfRecord" type="integer" default="0" description="use for display Number of records"/>
+    
+    <!-- Handlers -->
+    <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> -->
+<!--     <aura:handler event="aura:waiting" action="{!c.showSpinner}" />
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}" /> -->
+    <aura:handler event="c:AGN_GPSShowAccountAssessmentsEvt" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.assessmentId}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.userId}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.sortField}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.sortIsAsc}" action="{!c.doInit}" default="true" />
+    <aura:handler name="change" value="{!v.recordsPerPage}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.pageNumber}" action="{!c.doInit}" />
+    <!-- <aura:handler name="change" value="{!v.accountAssessments}" action="{!c.saveAccountAssessments}" /> -->
+
+    <!-- Events -->
+    <aura:registerEvent name="assessmentUpdated" type="c:AGN_GPSAssessmentUpdatedEvt" />
+
+    <!-- Markup -->
+    <aura:if isTrue="{!v.displaySpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <lightning:spinner variant="brand" size="large" />
+        </div>
+    </aura:if>
+
+    <div style="display:inline-block; font-weight:bold; font-size:16px; margin-left:20px; text-align:left;">
+        <c:sobjectLabel sobjectName="GPS_Assessment__c" />: {!v.assessment.Name}
+        <aura:if isTrue='{!v.assessment.Due_Date_AGN__c != null}'>
+            <br /><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Due_Date_AGN__c" />: <ui:outputDate value="{!v.assessment.Due_Date_AGN__c}" />
+        </aura:if>
+    </div>
+    <aura:if isTrue="{!v.assessment.Status_AGN__c == 'Active'}">
+        <!-- <div style="position:fixed; bottom:0; right:0; z-index:999"> -->
+        <aura:if isTrue="{!and(v.assessmentId != null, v.assessmentId != '')}">
+            <div class="form-controls" style="float:right; position:sticky; height:50px; top:10px; z-index:999">
+                <!-- <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select class="slds-select" aura:id="filterIsCompleted" onchange="{!c.doInit}">
+                                <option>All</option>
+                                <option value="true">Completed</option>
+                                <option value="false">Incompleted</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> -->
+                <lightning:buttonGroup >
+                    <!-- Release 14 Niladri -->       
+                    <div class="slds-button">
+                        <ui:inputText aura:id="searchId" class="slds-input" value="{!v.searchString}" required="true" placeholder="{!$Label.c.Account_Search_Text}"/>                                                                 
+                    </div> &nbsp;
+                    <lightning:button label="{!$Label.c.Search}" class="slds-button--brand" onclick="{!c.searchAccountsByName}" />&nbsp;
+                    <lightning:button label="{!$Label.c.Add + ' ' + if(v.assessment.Assessment_Type_AGN__c == 'Customers', $Label.c.Customer, $Label.c.Account)}" onclick="{!c.toggleAddAccounts}" />
+                    <lightning:button label="{!$Label.c.Save}" class="gps-primary-action" onclick="{!c.saveAccountAssessments}" />
+                </lightning:buttonGroup>
+            </div>
+        </aura:if>
+    </aura:if>
+    <div class="floatThead-container" style="width:90vw; overflow-x:scroll; overflow-y:auto;-webkit-overflow-scrolling:touch; max-height:40vw;">
+        <table class="slds-table slds-table_bordered slds-table_striped slds-max-medium-table_stacked-horizontal formTable">
+            <thead>
+                <tr style="topHeading">
+                    <!-- General Info & Row Actions -->
+                    <td colspan="{!if(v.isPersonAccounts, 5, 4)}" />
+                    <!-- <td class="gps-header"><!- Row action buttons -></td>
+                    <td class="gps-header"><!- Veeva_Id_AGN__c-></td>
+                    <td class="gps-header"><!- Name-></td>
+                    <td class="gps-header"><!- Assessment_Completed_AGN__c-></td> -->
+                        <aura:if isTrue="{!v.isPersonAccounts == true}">
+                        <aura:if isTrue="{!v.assessment.Display_Referrer_Capture_AGN__c}"><td class="gps-header" /></aura:if>
+                        <aura:if isTrue="{!v.assessment.Display_KOL_Capture_AGN__c}"><td class="gps-header" /></aura:if>
+                    	
+                        <!-- PMO 3408: GPS Assessment: Start: Added Digital fields -->
+                        <aura:if isTrue="{!v.assessment.Consent_for_Digital_AGN__c}"><td class="gps-header" /></aura:if>
+                        <aura:if isTrue="{!v.assessment.Digital_Only_AGN__c}"><td class="gps-header" /></aura:if>
+						<!-- PMO 3408: GPS Assessment: End: Added Digital fields -->
+                            
+                    </aura:if>
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Local ASP Removal -->
+                    <!-- <aura:if isTrue="{!v.assessment.Display_Local_ASP_Capture_AGN__c}"><td class="gps-header"> --> <!-- Local_Average_Selling_Price_AGN__c --> <!-- </td></aura:if> -->
+					<!-- PMO 3408: GPS Assessment: End: Local ASP Removal -->
+                    
+                    <!-- Business Size -->
+                    <aura:if isTrue="{!v.showBusinessSize == false}">
+                        <td title="Business Size" onclick="{!c.toggleBusinessSize}" rowspan="3" class="gps-header gps-header-collapsed gps-header-business-size">&#9658;</td>
+                    </aura:if>
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Business size question -->
+                    <!--
+                    <aura:if isTrue="{!and(v.showBusinessSize, v.assessment.Use_Market_Data_AGN__c)}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleBusinessSize}" class="gps-header gps-header-business-size">&#9668; {!$Label.c.Business_Size}</td>
+                    </aura:if>
+					-->
+                    <aura:if isTrue="{!and(v.showBusinessSize, v.assessment.Business_Size_Question_Mandatory_AGN__c)}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleBusinessSize}" class="gps-header gps-header-business-size">&#9668; {!$Label.c.Business_Size}</td>
+                    </aura:if>
+					<!-- PMO 3408: GPS Assessment: End: Business size question -->
+                    
+                    <!-- AGN Share -->
+                    <aura:if isTrue="{!v.showAGNShare == false}">
+                        <td  title="AGN Share" onclick="{!c.toggleAGNShare}" rowspan="3" class="gps-header gps-header-collapsed gps-header-agn-share">&#9658;</td>
+                    </aura:if>
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: AGN Usage question -->
+                    <!--
+                    <aura:if isTrue="{!and(v.showAGNShare, v.assessment.Share_Capture_AGN__c == 'Absolute')}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleAGNShare}" class="gps-header gps-header-agn-share">&#9668; {!$Label.c.AGN_Share_Absolute}</td>
+                    </aura:if>
+                    -->
+                    <aura:if isTrue="{!and(v.showAGNShare, v.assessment.AGN_Share_Absolute_QSTN_Mandatory_AGN__c == True)}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleAGNShare}" class="gps-header gps-header-agn-share">&#9668; {!$Label.c.AGN_Usage}</td>
+                    </aura:if>
+                    <!--
+                    <aura:if isTrue="{!and(v.showAGNShare, v.assessment.Share_Capture_AGN__c == 'Percentage')}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleAGNShare}" class="gps-header gps-header-agn-share">&#9668; {!$Label.c.AGN_Share_Percentage}</td>
+                    </aura:if>
+					-->
+					<!-- PMO 3408: GPS Assessment: End: AGN Usage question -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                    <!-- Treatment - Dosage -->
+                    <!--
+                    <aura:if isTrue="{!v.showDosageTreatment == false}">
+                        <td  title="Treatment" onclick="{!c.toggleDosageTreatment}" rowspan="3" class="gps-header gps-header-collapsed gps-header-treatment">&#9658;</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showDosageTreatment, v.assessment.Use_Dosage_Data_AGN__c == true)}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleDosageTreatment}" class="gps-header gps-header-treatment">&#9668; {!$Label.c.Dosage_Per_Treatment}</td>
+                    </aura:if>
+                    -->
+                    <!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+                    
+                    <!-- Treatment - Frequency -->
+                    <aura:if isTrue="{!v.showFrequencyTreatment == false}">
+                        <td  title="Treatment" onclick="{!c.toggleFrequencyTreatment}" rowspan="3" class="gps-header gps-header-collapsed gps-header-treatment">&#9658;</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showFrequencyTreatment, v.assessment.Use_Frequency_Data_AGN__c == true)}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleFrequencyTreatment}" class="gps-header gps-header-treatment">&#9668; {!$Label.c.Frequency_of_Treatment}</td>
+                    </aura:if>
+
+                    <!-- Secondary Brands -->
+                    <aura:if isTrue="{!v.showSecondaryBrands == false}">
+                        <td  title="Secondary Brands" onclick="{!c.toggleSecondaryBrands}" rowspan="3" class="gps-header gps-header-collapsed gps-header-secondary-brands">&#9658;</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showSecondaryBrands, v.assessment.Secondary_Brand_AGN__c)}">
+                        <td onclick="{!c.toggleSecondaryBrands}" class="gps-header gps-header-secondary-brands">&#9668; {!$Label.c.Secondary_Brands}</td>
+                    </aura:if>
+
+                    <!-- Custom Questions -->
+                    <aura:if isTrue="{!v.showCustomQuestions == false}">
+                        <td  title="{!$Label.c.Additional_Questions}" onclick="{!c.toggleCustomQuestions}" rowspan="3" class="gps-header gps-header-collapsed gps-header-custom-question">&#9658;</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestionColspan > 0)}">
+                        <td colspan="{!v.customQuestionColspan}" onclick="{!c.toggleCustomQuestions}" class="gps-header gps-header-custom-question">&#9668; {!$Label.c.Additional_Questions}</td>
+                    </aura:if>
+
+                    <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                    <!-- Financial Projections -->
+                    <!--
+                    <aura:if isTrue="{!v.showFinancialProjections == false}">
+                        <td  title="Projection / Estimation Analysis" onclick="{!c.toggleFinancialProjections}" rowspan="3" class="gps-header gps-header-collapsed gps-header-financial-projection">&#9658;</td>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showFinancialProjections}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleFinancialProjections}" class="gps-header gps-header-financial-projection">&#9668; {!$Label.c.Projection_Estimation_Analysis}</td>
+                    </aura:if>
+                    -->
+                    <!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+                    
+                </tr>
+                <tr style="questionHeading">
+                    <!-- General Info & Row Actions -->
+                    <td colspan="{!if(v.isPersonAccounts, 5, 4)}" />
+                    <!-- <td><!- Row action buttons -></td>
+                    <td><!- Veeva_Id_AGN__c-></td>
+                    <td><!- Name-></td>
+                    <td><!- Assessment_Completed_AGN__c-></td> -->
+                    <aura:if isTrue="{!v.isPersonAccounts == true}">
+                        <aura:if isTrue="{!v.assessment.Display_Referrer_Capture_AGN__c}"><td /></aura:if>
+                        <aura:if isTrue="{!v.assessment.Display_KOL_Capture_AGN__c}"><td /></aura:if>
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Added Digital fields -->
+                        <aura:if isTrue="{!v.assessment.Consent_for_Digital_AGN__c}"><td /></aura:if>
+                        <aura:if isTrue="{!v.assessment.Digital_Only_AGN__c}"><td /></aura:if>
+                        <!-- PMO 3408: GPS Assessment: End: Added Digital fields -->
+                        
+                    </aura:if>
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Local ASP Removal -->
+                    <!-- <aura:if isTrue="{!v.assessment.Display_Local_ASP_Capture_AGN__c}"><td> --> <!-- Local_Average_Selling_Price_AGN__c --> <!-- </td></aura:if> -->
+					<!-- PMO 3408: GPS Assessment: End: Local ASP Removal -->
+                    
+                    <!-- Business Size -->
+                    <!-- PMO 3408: GPS Assessment: Start: Business size question -->
+                    <!-- <aura:if isTrue="{!and(v.showBusinessSize == false, false)}"><td /></aura:if> -->
+                    <!--
+                    <aura:if isTrue="{!and(v.showBusinessSize, v.assessment.Use_Market_Data_AGN__c)}">
+                        <td colspan="{!v.colspan}" class="gps-header gps-header-question">
+                            {!v.assessment.Business_Size_Question_Override_AGN__c != null ? v.assessment.Business_Size_Question_Override_AGN__c : v.assessment.Business_Size_Question_AGN__c}
+                        </td>
+                    </aura:if>
+                    -->
+                    <aura:if isTrue="{!and(v.showBusinessSize, v.assessment.Business_Size_Question_Mandatory_AGN__c)}">
+                        <td colspan="{!v.colspan}" class="gps-header gps-header-question">
+                            {!v.assessment.Business_Size_Question_Override_AGN__c != null ? v.assessment.Business_Size_Question_Override_AGN__c : v.assessment.Business_Size_Question_AGN__c}
+                        </td>
+                    </aura:if>
+					<!-- PMO 3408: GPS Assessment: End: Business size question -->
+                    
+                    <!-- AGN Share -->
+                    <!-- <aura:if isTrue="{!v.showAGNShare == false}"><td class="gps-header gps-header-collapsed gps-header-agn-share"/></aura:if> -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: AGN Usage question -->
+                    <!-- <aura:if isTrue="{!and(v.showAGNShare, v.assessment.Share_Capture_AGN__c == 'Absolute')}"> -->
+                    <aura:if isTrue="{!and(v.showAGNShare, v.assessment.AGN_Share_Absolute_QSTN_Mandatory_AGN__c == True)}">
+                        <td colspan="{!v.colspan}" class="gps-header gps-header-question">
+                            {!v.assessment.AGN_Share_Absolute_Question_Override_AGN__c != null ? v.assessment.AGN_Share_Absolute_Question_Override_AGN__c : v.assessment.AGN_Share_Absolute_Question_AGN__c}
+                        </td>
+                    </aura:if>
+                    <!--
+                    <aura:if isTrue="{!and(v.showAGNShare, v.assessment.Share_Capture_AGN__c == 'Percentage')}">
+                        <td colspan="{!v.colspan}" class="gps-header gps-header-question">
+					-->
+                            <!-- R14 : Changed the field name as part of PMO 1838 -->
+                    <!--
+                            {!v.assessment.AGN_Share_Percent_Question_Override_AGN__c != null ? v.assessment.AGN_Share_Percent_Question_Override_AGN__c : v.assessment.AGN_Share_Percentage_Question_AGN__c}
+                        </td>
+                    </aura:if>
+                    -->
+                    <!-- PMO 3408: GPS Assessment: End: AGN Usage question -->
+
+                    <!-- Treatment -->
+                    <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                    <!--
+                    <aura:if isTrue="{!and(v.showDosageTreatment, v.assessment.Use_Dosage_Data_AGN__c == true)}">
+                        <td colspan="{!v.colspan}" class="gps-header gps-header-question">
+                            {!v.assessment.Dose_Per_Treatment_Question_Override_AGN__c != null ? v.assessment.Dose_Per_Treatment_Question_Override_AGN__c : v.assessment.Dose_Per_Treatment_Question_AGN__c}
+                        </td>
+                    </aura:if>
+                    -->
+                    <!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+                    
+                    <aura:if isTrue="{!and(v.showFrequencyTreatment, v.assessment.Use_Frequency_Data_AGN__c == true)}">
+                        <td colspan="{!v.colspan}" class="gps-header gps-header-question">
+                            {!v.assessment.Freq_Of_Treatment_Question_Override_AGN__c != null ? v.assessment.Freq_Of_Treatment_Question_Override_AGN__c : v.assessment.Freq_Of_Treatment_Question_AGN__c}
+                        </td>
+                    </aura:if>
+
+                    <!-- Secondary Brands -->
+                    <!-- <aura:if isTrue="{!v.showSecondaryBrands == false}"><td class="gps-header gps-header-collapsed "/></aura:if> -->
+                    <aura:if isTrue="{!and(v.showSecondaryBrands, v.assessment.Secondary_Brand_AGN__c)}">
+                        <td class="gps-header gps-header-question">
+                            {!v.assessment.Secondary_Brand_Question_Override_AGN__c != null ? v.assessment.Secondary_Brand_Question_Override_AGN__c : v.assessment.Secondary_Brand_Question_AGN__c}
+                        </td>
+                    </aura:if>
+
+                    <!-- Custom Questions -->
+                    <!-- <aura:if isTrue="{!v.showCustomQuestions == false}"><td class="gps-header gps-header-collapsed "/></aura:if> -->
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_1_Type_AGN__c != null)}">
+                        <td class="gps-header gps-header-question">{!v.assessment.Custom_Question_1_AGN__c}</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_2_Type_AGN__c != null)}">
+                        <td class="gps-header gps-header-question">{!v.assessment.Custom_Question_2_AGN__c}</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_3_Type_AGN__c != null)}">
+                        <td class="gps-header gps-header-question">{!v.assessment.Custom_Question_3_AGN__c}</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_4_Type_AGN__c != null)}">
+                        <td class="gps-header gps-header-question">{!v.assessment.Custom_Question_4_AGN__c}</td>
+                    </aura:if>
+
+                    <!-- Financial Projections -->
+                    <!-- <aura:if isTrue="{!v.showFinancialProjections == false}"><td class="gps-header gps-header-collapsed "/></aura:if> -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                    <!--
+                    <aura:if isTrue="{!v.showFinancialProjections}">
+                        <td colspan="{!v.colspan}" class="gps-header gps-header-question">{!v.assessment.Projection_Analysis_Note_AGN__c}</td>
+                    </aura:if>
+					-->                    
+                    <!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+                </tr>
+                <tr style="subHeading">
+                    <td class="gps-row-actions"></td>
+
+                    <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account" fieldName="Veeva_Id_AGN__c" showHelpText="true" /></td>
+                    <!-- Niladri Release 14     -->
+                    <td class="gps-subheader-general-info" scope="col" data-fieldname="Account_AGN__r.LastName" onclick="{!c.sortByField}">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Account_Name_AGN__c" /></span>
+                        <aura:if isTrue="{!v.sortField == 'Account_AGN__r.LastName'}">{!v.sortArrow}</aura:if>
+                    </a>
+                	</td>
+                	<!-- Niladri Release 14     -->  
+                    <aura:if isTrue="{!v.isPersonAccounts == true}">
+                        <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account" fieldName="Primary_Parent_vod__c" showHelpText="true" /></td>
+                    </aura:if>
+
+                    <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Assessment_Completed_AGN__c" showHelpText="true" /></td>
+
+                    <aura:if isTrue="{!v.isPersonAccounts == true}">
+                        <aura:if isTrue="{!v.assessment.Display_Referrer_Capture_AGN__c}">
+                            <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Referrer_AGN__c" showHelpText="true" /></td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Display_KOL_Capture_AGN__c}">
+                            
+                            <!-- PMO 3408: GPS Assessment: Start: Changed Stakeholder field type -->
+                            <!-- <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="KOL_AGN__c" showHelpText="true" /></td> -->
+                            <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Stakeholder_AGN__c" showHelpText="true" /></td>
+                        	<!-- PMO 3408: GPS Assessment: End: Changed Stakeholder field type -->
+                            
+                        </aura:if>
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Added Digital fields -->
+                        <aura:if isTrue="{!v.assessment.Consent_for_Digital_AGN__c}">
+                            <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Consent_for_Digital_AGN__c" showHelpText="true" /></td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Digital_Only_AGN__c}">
+                            <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Digital_Only_AGN__c" showHelpText="true" /></td>
+                        </aura:if>
+                        <!-- PMO 3408: GPS Assessment: End: Added Digital fields -->
+                        
+                    </aura:if>
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Local ASP Removal -->
+                    <!--
+                    <aura:if isTrue="{!v.assessment.Display_Local_ASP_Capture_AGN__c}">
+                        <td class="gps-subheader-general-info"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Local_Average_Selling_Price_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                    -->
+                    <!-- PMO 3408: GPS Assessment: End: Local ASP Removal -->
+
+                    <!-- Business Size -->
+                    <!-- <aura:if isTrue="{!and(v.showBusinessSize == false, false)}"><td /></aura:if> -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Business size question -->
+                    <!-- <aura:if isTrue="{!and(v.showBusinessSize, v.assessment.Use_Market_Data_AGN__c)}"> -->
+                    <aura:if isTrue="{!and(v.showBusinessSize, v.assessment.Business_Size_Question_Mandatory_AGN__c)}">
+                    <!-- PMO 3408: GPS Assessment: End: Business size question -->
+                        
+                        <td class="gps-subheader-business-size"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Business_Size_Current_AGN__c" showHelpText="true" /></td>
+                        <!-- PMO 3408: GPS Assessment: Start: Business size period 1 and 2 removal -->
+                        
+                        <!--<aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                            <td class="gps-subheader-business-size">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Business_Size_Period_1_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_1_AGN__c + ')'}" class="nowrap" />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                            <td class="gps-subheader-business-size">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Business_Size_Period_2_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_2_AGN__c + ')'}" class="nowrap" />
+                            </td>
+                        </aura:if>-->
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Business size period 1 and 2 removal -->
+                    </aura:if>
+
+                    <!-- AGN Share -->
+                    <!-- <aura:if isTrue="{!v.showAGNShare == false}"><td class="gps-header gps-header-collapsed "/></aura:if> -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: AGN Usage question -->
+                    <!-- <aura:if isTrue="{!and(v.showAGNShare, v.assessment.Share_Capture_AGN__c == 'Absolute')}"> -->
+                    <aura:if isTrue="{!and(v.showAGNShare, v.assessment.AGN_Share_Absolute_QSTN_Mandatory_AGN__c == True)}">
+                    <!-- PMO 3408: GPS Assessment: Start: AGN Usage question -->
+                        
+                        <td class="gps-subheader-agn-share"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="AGN_Share_Absolute_Current_AGN__c" showHelpText="true" /></td>
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Data Collection Period Removal -->
+                        
+                        <!--  <aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                            <td class="gps-subheader-agn-share">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="AGN_Share_Absolute_Period_1_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_1_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                            <td class="gps-subheader-agn-share">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="AGN_Share_Absolute_Period_2_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_2_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if> -->
+                        
+                        <!-- PMO 3408: GPS Assessment: End: Data Collection Period Removal -->
+                        
+                    </aura:if>
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                    <!--
+                    <aura:if isTrue="{!and(v.showAGNShare, v.assessment.Share_Capture_AGN__c == 'Percentage')}">
+                        <td class="gps-subheader-agn-share"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="AGN_Share_Percentage_Current_AGN__c" showHelpText="true" /></td>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                            <td class="gps-subheader-agn-share">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="AGN_Share_Percentage_Period_1_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_1_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                            <td class="gps-subheader-agn-share">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="AGN_Share_Percentage_Period_2_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_2_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if>
+                    </aura:if>
+					-->
+					<!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+                    
+                    <!-- Treatment -->
+                    <!-- <aura:if isTrue="{!v.showTreatment == false}"><td class="gps-header gps-header-collapsed "/></aura:if> -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                    <!--
+                    <aura:if isTrue="{!and(v.showDosageTreatment, v.assessment.Use_Dosage_Data_AGN__c == true)}">
+                        <td class="gps-subheader-treatment"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Dosage_per_Treatment_Current_AGN__c" showHelpText="true" /></td>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                            <td class="gps-subheader-treatment">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Dosage_Per_Treatment_Period_1_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_1_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                            <td class="gps-subheader-treatment">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Dosage_Per_Treatment_Period_2_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_2_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if>
+                    </aura:if>
+                    
+                    
+                    <aura:if isTrue="{!and(v.showFrequencyTreatment, v.assessment.Use_Frequency_Data_AGN__c == true)}">
+                        <td class="gps-subheader-treatment"><c:fieldLabel sobjectName="Account_GPS_Assessment__c"  fieldName="Frequency_Of_Treatment_Current_AGN__c" showHelpText="true" /></td>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                            <td class="gps-subheader-treatment">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Frequency_Of_Treatment_Period_1_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_1_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                            <td class="gps-subheader-treatment">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Frequency_Of_Treatment_Period_2_AGN__c" showHelpText="true" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_2_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if>
+                    </aura:if>
+                    -->
+                    <!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+                    
+                    <!-- Secondary Brands Share -->
+                    <!-- <aura:if isTrue="{!v.showSecondaryBrands == false}"><td class="gps-subheader-secondary-brands" /></aura:if> -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Secondary brands removed -->
+                    <!--<aura:if isTrue="{!and(v.showSecondaryBrands, v.assessment.Secondary_Brand_AGN__c)}">
+                        <td class="gps-subheader-secondary-brands"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Secondary_Brand_Current_AGN__c" showHelpText="true" /></td>
+                    </aura:if> -->
+                    <!-- PMO 3408: GPS Assessment: Secondary brands removed -->
+                    
+                    <!-- Custom Questions -->
+                    <!-- <aura:if isTrue="{!v.showCustomQuestions == false}"><td class="gps-subheader-custom-question" /></aura:if> -->
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_1_Type_AGN__c != null)}">
+                        <td class="gps-subheader-custom-question"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Custom_Question_1_Answer_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_2_Type_AGN__c != null)}">
+                        <td class="gps-subheader-custom-question"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Custom_Question_2_Answer_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions == true, v.assessment.Custom_Question_3_Type_AGN__c != null)}">
+                        <td class="gps-subheader-custom-question"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Custom_Question_3_Answer_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_4_Type_AGN__c != null)}">
+                        <td class="gps-subheader-custom-question"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Custom_Question_4_Answer_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+
+                    <!-- Financial Projections -->
+                    <!-- <aura:if isTrue="{!v.showFinancialProjections == false}"><td class="gps-subheader-financial-projection" /></aura:if> -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                    <!--
+                    <aura:if isTrue="{!v.showFinancialProjections}">
+                        <td class="gps-subheader-financial-projection"><c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Annual_Financial_Projection_Current_AGN__c" /></td>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                            <td class="gps-subheader-financial-projection">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Annual_Financial_Projection_Period_1_AGN__c" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_1_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                            <td class="gps-subheader-financial-projection">
+                                <c:fieldLabel sobjectName="Account_GPS_Assessment__c" fieldName="Annual_Financial_Projection_Period_2_AGN__c" />
+                                <br /><ui:outputDate value="{! '(' + v.assessment.Data_Collection_Period_2_AGN__c + ')' }" class="nowrap" />
+                            </td>
+                        </aura:if>
+                    </aura:if>
+                    -->
+                    <!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <aura:iteration items="{!v.accountAssessments}" var="accountAssessment">
+                    <tr>
+                        <td class="gps-row-actions">
+                            <aura:if isTrue="{!and(v.assessment.Status_AGN__c == 'Active', v.assessment.Allow_Account_Removal_AGN__c == true)}">
+                                <lightning:buttonIcon iconName="utility:delete" class="delete" onclick="{!c.deleteAccountAssessment}" value="{!accountAssessment.Id}" />
+                            </aura:if>
+                            <aura:if isTrue="{!v.assessment.Assessment_Type_AGN__c == 'Accounts'}">
+                                <lightning:buttonIcon iconName="utility:expand_alt" title="{!$Label.c.Complete_Account_Customer_Potential_Assessments}" onclick="{!c.toggleAccountCustomerAssessmentForm}" value="{!accountAssessment.Id}" />
+                            </aura:if>
+                        </td>
+                        <td class="gps-row-general-info fix"><ui:outputText value="{!accountAssessment.Account_AGN__r.Veeva_Id_AGN__c}" /></td>
+                         <aura:if isTrue="{!v.isPersonAccounts == true}">
+                        <td align="left" class="gps-row-general-info fix">
+                            <a href="{! '/' + accountAssessment.Account_AGN__c}" target="_blank">{!accountAssessment.Account_AGN__r.LastName}&nbsp;{!accountAssessment.Account_AGN__r.FirstName}</a>
+                        </td>
+                        </aura:if>
+                        
+                         <aura:if isTrue="{!v.isPersonAccounts == false}">
+                            <td align="left" class="gps-row-general-info">
+                                <a href="{! '/' + accountAssessment.Account_AGN__c}" target="_blank">{!accountAssessment.Account_AGN__r.Name}</a>
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.isPersonAccounts == true}">
+                            <td align="left" class="gps-row-general-info">
+                                <a href="{! '/' + accountAssessment.Account_AGN__r.Primary_Parent_vod__c}" target="_blank">{!accountAssessment.Account_AGN__r.Primary_Parent_vod__r.Name}</a>
+                            </td>
+                        </aura:if>
+
+                        <td class="gps-row-general-info"><ui:outputCheckbox value="{!accountAssessment.Assessment_Completed_AGN__c}" /></td>
+                        <aura:if isTrue="{!v.isPersonAccounts == true}">
+                            <aura:if isTrue="{!v.assessment.Display_Referrer_Capture_AGN__c}">
+                                <td class="gps-row-general-info"><c:inputField sobjectName="Account_GPS_Assessment__c" record="{!accountAssessment}" fieldName="Referrer_AGN__c" variant="bare" disabled="{!v.disableForm}" /></td>
+                            </aura:if>
+                            <aura:if isTrue="{!v.assessment.Display_KOL_Capture_AGN__c}">
+                                
+                                <!-- PMO 3408: GPS Assessment: Start: Changed Stakeholder field type -->
+                                <!-- <td class="gps-row-general-info"><c:inputField sobjectName="Account_GPS_Assessment__c" record="{!accountAssessment}" fieldName="KOL_AGN__c" variant="bare" disabled="{!v.disableForm}" /></td> -->
+                                <td class="gps-row-general-info"><c:inputField sobjectName="Account_GPS_Assessment__c" record="{!accountAssessment}" fieldName="Stakeholder_AGN__c" variant="bare" disabled="{!v.disableForm}" /></td>
+                            	<!-- PMO 3408: GPS Assessment: End: Changed Stakeholder field type -->
+                                
+                            </aura:if>
+                            
+                            <!-- PMO 3408: GPS Assessment: Start: Added Digital fields -->
+                            <aura:if isTrue="{!v.assessment.Consent_for_Digital_AGN__c}">
+                                <td class="gps-row-general-info"><c:inputField sobjectName="Account_GPS_Assessment__c" record="{!accountAssessment}" fieldName="Consent_for_Digital_AGN__c" variant="bare" disabled="{!v.disableForm}" /></td>
+                            </aura:if>
+                            <aura:if isTrue="{!v.assessment.Digital_Only_AGN__c}">
+                                <td class="gps-row-general-info"><c:inputField sobjectName="Account_GPS_Assessment__c" record="{!accountAssessment}" fieldName="Digital_Only_AGN__c" variant="bare" disabled="{!v.disableForm}" /></td>
+                            </aura:if>
+                            <!-- PMO 3408: GPS Assessment: End: Added Digital fields -->
+                            
+                        </aura:if>
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Local ASP Removal -->
+                        <!--
+                        <aura:if isTrue="{!v.assessment.Display_Local_ASP_Capture_AGN__c}">
+                            <td class="gps-row-general-info">
+                                <ui:inputCurrency value="{!accountAssessment.Local_Average_Selling_Price_AGN__c}" disabled="{!v.disableForm}" class="slds-input"
+                                    format="{!'######0.00 ' + v.user.DefaultCurrencyIsoCode}"
+                                />
+                            </td>
+                        </aura:if>
+                        -->
+                        <!-- PMO 3408: GPS Assessment: End: Local ASP Removal -->
+
+                        <!-- Business Size -->
+                        <aura:if isTrue="{!v.showBusinessSize == false}"><td class="gps-header gps-header-collapsed gps-header-business-size"/></aura:if>
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Business size question -->
+                        <!-- <aura:if isTrue="{!and(v.showBusinessSize, v.assessment.Use_Market_Data_AGN__c)}"> -->
+                        <aura:if isTrue="{!and(v.showBusinessSize, v.assessment.Business_Size_Question_Mandatory_AGN__c)}">
+                        <!-- PMO 3408: GPS Assessment: End: Business size question -->    
+                            
+                            <td class="gps-row-business-size">
+                                <ui:inputNumber value="{!accountAssessment.Business_Size_Current_AGN__c}" disabled="{!v.disableForm}" class="slds-input" />
+                            </td>
+                            
+                            <!-- PMO 3408: GPS Assessment: Start: Business size Period 1 and 2 Removal -->
+                            <!--<aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                                <td class="gps-row-business-size">
+                                    <ui:inputNumber value="{!accountAssessment.Business_Size_Period_1_AGN__c}" disabled="{!v.disableForm}" class="slds-input" />
+                                </td>
+                            </aura:if>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                                <td class="gps-row-business-size">
+                                    <ui:inputNumber value="{!accountAssessment.Business_Size_Period_2_AGN__c}" disabled="{!v.disableForm}" class="slds-input" />
+                                </td>
+                            </aura:if> -->
+                            <!-- PMO 3408: GPS Assessment: Start: Business size Period 1 and 2 Removal -->
+                        </aura:if>
+
+                        <!-- AGN Share -->
+                        <aura:if isTrue="{!v.showAGNShare == false}"><td class="gps-header gps-header-collapsed gps-header-agn-share"/></aura:if>
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: AGN Usage question -->
+                        <!-- <aura:if isTrue="{!and(v.showAGNShare, v.assessment.Share_Capture_AGN__c == 'Absolute')}"> -->
+                        <aura:if isTrue="{!and(v.showAGNShare, v.assessment.AGN_Share_Absolute_QSTN_Mandatory_AGN__c == True)}">    
+                        <!-- PMO 3408: GPS Assessment: End: AGN Usage question -->
+                            
+                            <td class="gps-row-agn-share">
+                                <ui:inputNumber value="{!accountAssessment.AGN_Share_Absolute_Current_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                            </td>
+                            
+                            <!--PMO 3408: GPS Assessment: Start: Data Collection Period Removal -->
+                            
+                            <!--<aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                                <td class="gps-row-agn-share">
+                                    <ui:inputNumber value="{!accountAssessment.AGN_Share_Absolute_Period_1_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                                </td>
+                            </aura:if>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                                <td class="gps-row-agn-share">
+                                    <ui:inputNumber value="{!accountAssessment.AGN_Share_Absolute_Period_2_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                                </td>
+                            </aura:if>-->
+                            
+                            <!--PMO 3408: GPS Assessment: End: Data Collection Period Removal -->
+                            
+                        </aura:if>
+                        
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                        <!--
+                        <aura:if isTrue="{!and(v.showAGNShare, v.assessment.Share_Capture_AGN__c == 'Percentage')}">
+                            <td class="gps-row-agn-share">
+                                <ui:inputNumber value="{!accountAssessment.AGN_Share_Percentage_Current_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                            </td>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                                <td class="gps-row-agn-share">
+                                    <ui:inputNumber value="{!accountAssessment.AGN_Share_Percentage_Period_1_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                                </td>
+                            </aura:if>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                                <td class="gps-row-agn-share">
+                                    <ui:inputNumber value="{!accountAssessment.AGN_Share_Percentage_Period_2_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                                </td>
+                            </aura:if>
+                        </aura:if>
+						-->
+                        <!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+                        
+                        <!-- Treatment - Dosage -->
+                        <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                        <!--
+                        <aura:if isTrue="{!v.showDosageTreatment == false}"><td class="gps-header gps-header-collapsed gps-header-treatment"/></aura:if>
+                        <aura:if isTrue="{!and(v.showDosageTreatment, v.assessment.Use_Dosage_Data_AGN__c == true)}">
+                            <td class="gps-row-treatment">
+                                <ui:inputNumber value="{!accountAssessment.Dosage_per_Treatment_Current_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                            </td>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                                <td class="gps-row-treatment">
+                                    <ui:inputNumber value="{!accountAssessment.Dosage_Per_Treatment_Period_1_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                                </td>
+                            </aura:if>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                                <td class="gps-row-treatment">
+                                    <ui:inputNumber value="{!accountAssessment.Dosage_Per_Treatment_Period_2_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                                </td>
+                            </aura:if>
+                        </aura:if>
+                        -->
+                        <!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+
+                        <!-- Treatment - Frequency -->
+                        <aura:if isTrue="{!v.showFrequencyTreatment == false}"><td class="gps-header gps-header-collapsed gps-header-treatment"/></aura:if>
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Frequency of Treatment removed from UI -->
+                        
+                        <!--<aura:if isTrue="{!and(v.showFrequencyTreatment, v.assessment.Use_Frequency_Data_AGN__c == true)}">
+                            <td class="gps-row-treatment">
+                                <ui:inputNumber value="{!accountAssessment.Frequency_Of_Treatment_Current_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                            </td>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                                <td class="gps-row-treatment">
+                                    <ui:inputNumber value="{!accountAssessment.Frequency_Of_Treatment_Period_1_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                                </td>
+                            </aura:if>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                                <td class="gps-row-treatment">
+                                    <ui:inputNumber value="{!accountAssessment.Frequency_Of_Treatment_Period_2_AGN__c}" disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}" class="slds-input" />
+                                </td>
+                            </aura:if>
+                        </aura:if>-->
+                        <!-- PMO 3408: GPS Assessment: Start: Frequency of Treatment removed from UI -->
+
+                        <!-- Secondary Brands -->
+                        
+                        <!-- PMO 3408: GPS Assessment: Secondary Brands removed -->
+                        <!--<aura:if isTrue="{!v.showSecondaryBrands == false}"><td class="gps-header gps-header-collapsed gps-header-secondary-brands"/></aura:if>
+                        <aura:if isTrue="{!and(v.showSecondaryBrands, v.assessment.Secondary_Brand_AGN__c)}">
+                            <td class="gps-row-secondary-brands">
+                                <c:inputField sobjectName="Account_GPS_Assessment__c" fieldName="Secondary_Brand_Current_AGN__c" record="{!accountAssessment}" variant="bare"
+                                    disabled="{!or(v.disableForm, accountAssessment.Referrer_AGN__c == true)}"
+                                />
+                            </td>
+                        </aura:if>-->
+                        <!-- PMO 3408: GPS Assessment: Secondary Brands removed -->
+
+                        <!-- Custom Questions -->
+                        <aura:if isTrue="{!v.showCustomQuestions == false}"><td class="gps-header gps-header-collapsed gps-header-custom-question"/></aura:if>
+                        <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_1_Type_AGN__c != null)}">
+                            <td class="gps-row-custom-question">
+                                 <c:inputField sobjectName="Account_GPS_Assessment__c" fieldName="Custom_Question_1_Answer_AGN__c" record="{!accountAssessment}" variant="bare"
+                                    displayType="{!v.assessment.Custom_Question_1_Type_AGN__c}" picklistOptions="{!v.picklistOptionsCustomQuestion1}"
+                                    disabled="{!v.disableForm}"
+                                />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_2_Type_AGN__c != null)}">
+                            <td class="gps-row-custom-question">
+                                <c:inputField sobjectName="Account_GPS_Assessment__c" fieldName="Custom_Question_2_Answer_AGN__c" record="{!accountAssessment}" variant="bare"
+                                    displayType="{!v.assessment.Custom_Question_2_Type_AGN__c}" picklistOptions="{!v.picklistOptionsCustomQuestion2}"
+                                    disabled="{!v.disableForm}"
+                                />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_3_Type_AGN__c != null)}">
+                            <td class="gps-row-custom-question">
+                                <c:inputField sobjectName="Account_GPS_Assessment__c" fieldName="Custom_Question_3_Answer_AGN__c" record="{!accountAssessment}" variant="bare"
+                                    displayType="{!v.assessment.Custom_Question_3_Type_AGN__c}" picklistOptions="{!v.picklistOptionsCustomQuestion3}"
+                                    disabled="{!v.disableForm}"
+                                />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.showCustomQuestions, v.assessment.Custom_Question_4_Type_AGN__c != null)}">
+                            <td class="gps-row-custom-question">
+                                <c:inputField sobjectName="Account_GPS_Assessment__c" fieldName="Custom_Question_4_Answer_AGN__c" record="{!accountAssessment}" variant="bare"
+                                    displayType="{!v.assessment.Custom_Question_4_Type_AGN__c}" picklistOptions="{!v.picklistOptionsCustomQuestion4}"
+                                    disabled="{!v.disableForm}"
+                                />
+                            </td>
+                        </aura:if>
+
+                        <!-- Financial Projections -->
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Removed from UI -->
+                        <!--
+                        <aura:if isTrue="{!v.showFinancialProjections == false}"><td class="gps-header gps-header-collapsed gps-header-financial-projection"/></aura:if>
+                        <aura:if isTrue="{!v.showFinancialProjections}">
+                            <td class="gps-row-financial-projection">
+                                <ui:outputCurrency value="{!accountAssessment.Annual_Financial_Projection_Current_AGN__c}" currencyCode="{!v.user.DefaultCurrencyIsoCode}"
+                                    format="{!'######0.00 ' + v.user.DefaultCurrencyIsoCode}"
+                                />
+                            </td>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_1_AGN__c != null}">
+                                <td class="gps-row-financial-projection">
+                                    <ui:outputCurrency value="{!accountAssessment.Annual_Financial_Projection_Period_1_AGN__c}" currencyCode="{!v.user.DefaultCurrencyIsoCode}"
+                                        format="{!'######0.00 ' + v.user.DefaultCurrencyIsoCode}"
+                                    />
+                                </td>
+                            </aura:if>
+                            <aura:if isTrue="{!v.assessment.Data_Collection_Period_2_AGN__c != null}">
+                                <td class="gps-row-financial-projection">
+                                    <ui:outputCurrency value="{!accountAssessment.Annual_Financial_Projection_Period_2_AGN__c}" currencyCode="{!v.user.DefaultCurrencyIsoCode}"
+                                        format="{!'######0.00 ' + v.user.DefaultCurrencyIsoCode}"
+                                    />
+                                </td>
+                            </aura:if>
+                        </aura:if>
+                        -->
+                        <!-- PMO 3408: GPS Assessment: End: Removed from UI -->
+                        
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+    <div class="slds-page-header" role="banner">
+        <ui:inputSelect aura:id="filterIsCompleted" label="{!$Label.c.display + ': '}" change="{!c.doInit}" class=".slds-show_inline">
+            <ui:inputSelectOption text="" label="{!$Label.c.Filter_All}" value="true"/>
+            <ui:inputSelectOption text="true" label="{!$Label.c.Filter_Completed}"/>
+            <ui:inputSelectOption text="false" label="{!$Label.c.Filter_Incompleted}"/>
+        </ui:inputSelect>
+        <ui:inputSelect aura:id="recordsPerPage" label="{!$Label.c.records_Per_Page + ': '}" change="{!c.changeRecordsPerPage}" class=".slds-show_inline">
+            <ui:inputSelectOption text="10" label="10" value="true"/>
+            <ui:inputSelectOption text="25" label="25"/>
+            <ui:inputSelectOption text="50" label="50"/>
+        </ui:inputSelect>
+        <aura:if isTrue="{!v.pageNumber &gt; 1}">
+           <lightning:button onclick="{!c.previousPage}" label="{!$Label.c.Previous_Page}"/>
+        </aura:if>
+        <aura:if isTrue="{!v.pageNumber &lt; v.totalPages}">
+           <lightning:button aura:id="nextbtn" onclick="{!c.nextPage}" label="{!$Label.c.Next_Page}"/>
+        </aura:if>
+
+      <!--  &nbsp;{!v.totalRecords} total records • Page {!v.pageNumber} / {!v.totalPages} -->
+        &nbsp;{!v.totalRecords}&nbsp;{!$Label.c.total_records} • {!$Label.c.page_number}&nbsp; {!v.pageNumber} / {!v.totalPages}
+    </div>
+
+    <!-- Modals -->
+    <c:modal title="{!$Label.c.Add + ' ' + if(v.assessment.Assessment_Type_AGN__c == 'Customers', $Label.c.Customer, $Label.c.Account)}" isOpen="{!v.showAddAccounts}" class="slds-modal_large"
+        primaryAction="{!c.addSelectedAccounts}" primaryActionClass="gps-primary-action" primaryActionLabel="{!$Label.c.Add + ' ' + if(v.assessment.Assessment_Type_AGN__c == 'Customers', $Label.c.Customer, $Label.c.Account)}"
+    >
+        <aura:set attribute="body">
+            <ui:inputText value="{!v.accountSearchString}" class="slds-input" />
+            <lightning:button label="{!$Label.c.Search + ' ' + if(v.assessment.Assessment_Type_AGN__c == 'Customers', $Label.c.Customer, $Label.c.Account)}" onclick="{!c.searchAccounts}" />
+
+        <!--    <table class="gps-table gps-sub-table">-->
+            <div class="floatThead-container" style="width:100%; -webkit-overflow-scrolling:touch;">
+                <table class="slds-table slds-table_bordered slds-table_striped slds-max-medium-table_stacked-horizontal formTable">
+                    <thead>
+                        <tr class="slds-text-title_caps">
+                            <td role="gridcell" style="background-color: #e5e8e5;"></td>
+                            <td role="gridcell" style="background-color: #e5e8e5;"><c:fieldLabel sobjectName="Account" fieldName="Name" /></td>
+                            <aura:if isTrue="{!v.assessment.Assessment_Type_AGN__c == 'Customers'}">
+                                <td role="gridcell" style="background-color: #e5e8e5;"><c:fieldLabel sobjectName="Account" fieldName="Primary_Parent_vod__c" /></td>
+                            </aura:if>
+                            <!-- PMO 3408: GPS Assessment: Start: Show Account Identifier -->
+                            <td role="gridcell" style="background-color: #e5e8e5;">{!$Label.c.AGN_Account_Identifier}</td>
+                            <!-- PMO 3408: GPS Assessment: End: Show Account Identifier -->
+                            <td role="gridcell" style="background-color: #e5e8e5;"><c:fieldLabel sobjectName="Account" fieldName="Target__c" /></td>
+                           <!-- <th scope="col"></th>
+                            <th scope="col"><c:fieldLabel sobjectName="Account" fieldName="Name" /></th>
+                            <th scope="col">{!$Label.c.Owner}</th>
+                            <th scope="col"><c:fieldLabel sobjectName="Account" fieldName="Target__c" /></th>-->
+                        </tr>
+                    </thead>
+                    <aura:iteration items="{!v.accountsToAdd}" var="accountToAdd">
+                        <tr>
+                            <td role="gridcell"><input name="checkbox" type="checkbox" data-accountid="{!accountToAdd.Id}" /></td>
+                            <td role="gridcell">
+                                <a href="{! '/' + accountToAdd.Id}" target="_blank">{!accountToAdd.Name}</a>
+                            </td>
+                            <aura:if isTrue="{!v.assessment.Assessment_Type_AGN__c == 'Customers'}">
+                                <td role="gridcell">{!accountToAdd.Primary_Parent_vod__r.Name}</td>
+                            </aura:if>
+                            <!-- PMO 3408: GPS Assessment: Start: Show Account Identifier -->
+                            <td role="gridcell">{!accountToAdd.Account_Identifier_vod__c}</td>
+                            <!-- PMO 3408: GPS Assessment: End: Show Account Identifier -->
+                            <td role="gridcell"><ui:outputCheckbox value="{!accountToAdd.Target__c}" /></td>
+                        </tr>
+                    </aura:iteration>
+                </table>
+            </div>
+        </aura:set>
+    </c:modal>
+    <c:modal title="Account-Customer Assessments" isOpen="{!v.showAccountCustomerAssessmentForm}" class="slds-modal_large">
+        <aura:set attribute="body">
+            <c:AGN_GPSAssessmentAccountCustomerForm aura:id="accountCustomerAssessmentForm" userId="{!v.userId}" assessmentId="{!v.assessmentId}" />
+        </aura:set>
+    </c:modal>
+</aura:component>

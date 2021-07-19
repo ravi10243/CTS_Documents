@@ -1,0 +1,78 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                access="global" >
+	
+    <!-- Attributes -->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="parentFormId" type="String" />
+    
+    <aura:attribute name="currentProgressStage" type="String" default="step" />
+    <aura:attribute name="hasError" type="Boolean" default="false" />
+    
+    <!-- RegisterEvent -->
+    <aura:registerEvent name="CMS_BuilderRefreshEvent" type="c:CMS_BuilderRefreshEvent"/>
+    <aura:registerEvent name="CMS_ComponentsRefreshEvent" type="c:CMS_ComponentsRefreshEvent"/>
+    
+     <!-- Component Body --> 
+    <div class="demo-only" style="height: auto;">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" 
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <aura:if isTrue="{!v.recordId==null}">
+                    	<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add New Step</h2>
+                    </aura:if>
+                    <aura:if isTrue="{!v.recordId!=null}">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit Step</h2>
+                    </aura:if>
+                    
+                    <div class="slds-grid slds-wrap slds-border_top"> 
+                        <div class="slds-col slds-size_12-of-12 slds-p-around_small">
+                            <lightning:progressIndicator currentStep="{!v.currentProgressStage}" type="path" hasError="{!v.hasError}" variant="base">
+                                <lightning:progressStep label="Details" value="step" />
+                                <lightning:progressStep label="Finish" value="finish"/>
+                            </lightning:progressIndicator>
+                        </div>
+                    </div>
+					
+                </header>
+                <!-- Main Body of Modal -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <aura:if isTrue="{!v.currentProgressStage=='step'}">
+                        <aura:if isTrue="{!v.recordId==null}">
+                            <c:CMSWStep_StepDetail aura:id="stepDetailChild"
+                                                   formId="{!v.parentFormId}" renderMode="WIZARD" /> 
+                        </aura:if>
+                        <aura:if isTrue="{!v.recordId!=null}">
+                            <c:CMSWStep_StepDetail aura:id="stepDetailChild" 
+                                                   recordId="{!v.recordId}" renderMode="WIZARD" /> 
+                        </aura:if>    
+                    </aura:if>
+                    <aura:if isTrue="{!v.currentProgressStage=='finish'}">
+                        <lightning:card iconName="standard:endorsement" title="Success">
+                            <div class="slds-box" style = "background-color: #f1f1f1;">
+                                Step Details modified succesfully!
+                            </div>
+                        </lightning:card>    
+                    </aura:if>
+                </div>
+                <!-- Footer of Modal -->
+                <footer class="slds-modal__footer">
+                    <!--
+                    <lightning:button disabled="{!v.currentProgressStage != 'step' ? '' : 'disabled'}"
+                                      variant="brand" 
+                                      label="Back"
+                                      title="Back"
+                                      onclick="{!c.moveBack}"/>
+					-->
+                    <lightning:button variant="brand" 
+                                      label="{!v.currentProgressStage != 'finish' ? 'Next' : 'Finish'}"
+                                      title="{!v.currentProgressStage != 'finish' ? 'Next' : 'Finish'}"
+                                      onclick="{!c.moveNext}"/>
+                    <lightning:button variant="neutral" label="Cancel" title="Cancel" onclick="{!c.closeComponentModal}" />   
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div> 
+</aura:component>

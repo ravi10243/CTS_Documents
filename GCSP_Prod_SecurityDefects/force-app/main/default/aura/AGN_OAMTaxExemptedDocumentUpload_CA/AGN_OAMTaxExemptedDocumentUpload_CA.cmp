@@ -1,0 +1,86 @@
+<aura:component implements="lightning:availableForFlowScreens,forceCommunity:availableForAllPageTypes" access="global" controller="AGN_OAMDocumentUploaderShipto_CA">
+    <aura:attribute name="customerRegId" type="String" description="Customer Registration Record Id" access="global"/>
+    
+    <aura:attribute name="taxExemptedVal" type="String" description="Tax Exempted values" access="global"/>
+    
+   <!-- <aura:attribute name="AttachmentList" type="AGN_OAMDocumentUploaderShipto_CA.AttachmentWrapper[]" description="List of Attachments by Customer Group" access="global"/> -->
+    <aura:attribute name="AttachmentList" type="object" description="List of Attachments by Customer Group" access="global"/>
+    
+    <aura:attribute name="isSingleAttachment" type="Boolean" description="Is this for uploading single file" default="false" access="global"/>
+    <aura:attribute name="singleAttachmentLabel" type="String" description="Customer Registration Record Id" default="Upload Document" access="global"/>
+    <aura:attribute name="singleAttachmentName" type="String" description="File Name of the Attachment" access="global"/>
+    <aura:attribute name="singleAttachmentIsRequired" type="Boolean" description="Customer Registration Record Id" default="false" access="global"/>
+    <aura:attribute name="MissingAttachment" type="Boolean" description="Missing required attachmentas per customer group"  default="false" access="global"/>
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    
+    <aura:attribute name="fileName" type="string"/>
+    <aura:attribute name="fileUploadmsg" type="string"/>
+    
+    <!-- method for tax exempted values-->
+    <aura:method name="TaxExpMethod" action="{!c.doAction}" description="Tax Exempted method with parameters"> 
+     <aura:attribute name="customerId" type="String" description="Customer Registration Record Id" access="global"/>    
+     <aura:attribute name="taxExemVal" type="String" description="Tax Exempted values" access="global"/> 
+    </aura:method>
+    
+    <aura:registerEvent name="isManadteTaxExemptingDocmant" type="c:AGN_MandateDocumentUpload_Evt" />   
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    
+    <aura:if isTrue="{!v.showSpinner ? true : false}">
+        <div id="LoaderAnimation">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.50; z-index: 1000; background-color: #e3e3e3;">
+                &nbsp;
+            </div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 25% 45%">
+                
+                <div align="center" class="loader"></div>
+            </div>
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.isSingleAttachment? true:false}">
+        <div class="section_header"><b><aura:if isTrue="{!v.singleAttachmentIsRequired? true:false}"><span style="color:red">*</span></aura:if>{!v.singleAttachmentLabel}</b>
+            <div class="file-input-box">
+                <label for="single-file">
+                    <span class="photo_id_attach"><br/>
+                        <span class="attach_btn_text">{!$Label.c.AGN_OAM_Upload_File}</span><br/>
+                    </span>
+                </label>
+                <aura:if isTrue="{!v.singleAttachmentName==null ? false : true}"><span class="upload_file">{!v.singleAttachmentName}</span></aura:if>             
+                <input type="file" class="file" aura:id="{!attachment.inputFileHtmlId}"  data-attachmentid= "{!attachment.file.Id}" data-description= "{!attachment.file.Description}" id ="{!attachment.inputFileHtmlId}" style="visibility:hidden;" onchange="{!c.uploadAttachment}" /> 
+                
+            </div>
+        </div>  
+    </aura:if>
+    
+ <!--   <aura:if isTrue="{!v.taxExemptedVal == '0'}"> -->
+    <aura:iteration items="{!v.AttachmentList}" var="attachment">
+        <aura:if isTrue="{!and(v.isSingleAttachment? false:true, v.taxExemptedVal == '0' )}">           
+            <div class="section_header"><b><aura:if isTrue="{!attachment.isRequired? true:false}"><span style="color:red">*</span></aura:if>{!attachment.label}</b>
+                <div class="file-input-box">
+                    <label for="{!attachment.inputFileHtmlId}">
+                        <span class="photo_id_attach"><br/>
+                            <img  src="{!$Resource.AGN_CustomerPortal + '/images/attach_icon.png'}"/>
+                            <span class="attach_btn_text">{!$Label.c.AGN_OAM_Upload_File}</span><br/>
+                        </span>
+                    </label>
+                    <aura:if isTrue="{!attachment.file.Name==null ? false : true}"><span class="upload_file">
+                        <!--Document Delete button-->
+                        <button name="lead" class="slds-button">
+                            <span title='{!$Label.c.AGN_OAM_Click_here_to_delete_this_attachment}' data-value="{!attachment.file.Id}" onclick="{!c.deleteAttachment}">
+                                <lightning:icon iconName="utility:delete" size="x-small" variant="Error"/>
+                            </span>
+                        </button>
+                        &nbsp;
+                        <!--End of Document Delete button-->
+                        {!attachment.file.Name} 
+                        </span>
+                    </aura:if>
+                    <input type="file" class="file" aura:id="{!attachment.inputFileHtmlId}" data-attachmentid= "{!attachment.file.Id}" data-description= "{!attachment.file.Description}" id ="{!attachment.inputFileHtmlId}" style="visibility:hidden;" onchange="{!c.uploadAttachment}" /> 
+                    
+                </div>
+            </div>            
+        </aura:if>        
+    </aura:iteration> 
+   <!-- </aura:if>  -->
+</aura:component>

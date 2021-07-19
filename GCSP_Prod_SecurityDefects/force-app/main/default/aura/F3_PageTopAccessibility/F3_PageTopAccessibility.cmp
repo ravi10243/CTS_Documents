@@ -1,0 +1,28 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <!-- Events -->
+    <aura:registerEvent name="Accessibility Control Event" type="c:AccessibilityControlEvent"/>
+    <span>
+        <div style="color: rgb(105, 105, 105);font-size: 0.75rem;margin: 0px;">
+            <!--Accessibility Settings-->
+            &nbsp;
+        </div>
+        <div style="position: absolute;">
+            <div class="slds-button-group">
+                <button class="slds-button slds-button_neutral" onclick="{!c.fireAccessibilityEvent}" value="decreaseFontSize" style="font-size: 12px;" >A</button>
+                <button class="slds-button slds-button_neutral" onclick="{!c.fireAccessibilityEvent}" value="increaseFontSize" style="font-size: 16px;" >A</button>
+                <button class="slds-button slds-button_neutral" onclick="{!c.fireAccessibilityEvent}" value="increaseLetterSpacing" >
+                    <lightning:icon iconName="utility:expand" size="x-small"/>
+                </button>
+                <button class="slds-button slds-button_neutral" onclick="{!c.fireAccessibilityEvent}" value="highContrastWhite"  style="background: black">
+                    <lightning:icon iconName="utility:preview" size="x-small" variant="inverse"/>
+                </button>
+                <button class="slds-button slds-button_neutral" onclick="{!c.fireAccessibilityEvent}" value="highContrastYellow"  style="background: black">
+                    <lightning:icon iconName="utility:preview" size="x-small" variant="warning"/>
+                </button>
+                <button class="slds-button slds-button_neutral" onclick="{!c.fireAccessibilityEvent}" value="reset" >
+                    <lightning:icon iconName="utility:undo" size="x-small" />
+                </button>
+            </div>
+        </div>
+    </span>
+</aura:component>

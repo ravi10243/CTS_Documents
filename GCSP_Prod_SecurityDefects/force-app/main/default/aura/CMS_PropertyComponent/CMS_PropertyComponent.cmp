@@ -1,0 +1,82 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global" 
+                controller="MDFormBuilderController">
+    
+    <!-- Attributes-->
+    <aura:attribute name="componentType" type="String" />
+    <aura:attribute name="developerName" type="String" />
+    <aura:attribute name="compIconName" type="String" />
+    <aura:attribute name="isBrandingSupported" type="Boolean" default="true"/>
+    
+    <!-- Handlers-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.recordId}">
+        <c:CMS_TreeNodeBox>
+            <aura:set attribute="box">
+                <aura:if isTrue ="{!v.compIconName}">
+                    <lightning:icon variant="inverse" size="small" iconName="{!v.compIconName}"/>
+                </aura:if>
+            </aura:set>
+            <aura:set attribute="boxtitle">
+                {!v.developerName}
+            </aura:set> 
+        </c:CMS_TreeNodeBox>
+        <lightning:tabset selectedTabId="componet">
+            <lightning:tab label="Details" id="componet">
+                <c:CMSWStep_StepComponentDetail aura:id="componetDetailChild" renderMode="BUILDER" componentType="{!v.componentType}"
+                                                recordId = "{!v.recordId}"/> 
+            </lightning:tab>
+            <aura:if isTrue="{!v.componentType=='ChildObjectOne'}">
+                <lightning:tab label="Child Object - One" id="childObjectOne">
+                    <c:CMSWStep_StepComponentChildObjectOne aura:id="childObjectOne" renderMode="BUILDER" 
+                                                            recordId = "{!v.recordId}"/>
+                </lightning:tab>
+                <lightning:tab label="Field Translations" id="childObjectManyFieldTranslations">
+                    <c:CMSWStep_ComponentFieldTranslations aura:id="childObjectManyFieldTranslations"
+                                                                 recordId = "{!v.recordId}"/>
+                </lightning:tab>
+            </aura:if>
+            <aura:if isTrue="{!v.componentType=='ChildObjectMany'}">
+                <lightning:tab label="Child Object - Many" id="childObjectMany">
+                    <c:CMSWStep_StepComponentChildObjectMany aura:id="childObjectMany" renderMode="BUILDER" 
+                                                                 recordId = "{!v.recordId}"/>
+                </lightning:tab>
+
+            </aura:if>
+            <lightning:tab label="Languages" id="languages">
+                <c:CMSWStep_StepComponentLanguages aura:id="componentLanguages" renderMode="BUILDER" componentType="{!v.componentType}"
+                                                   recordId = "{!v.recordId}"/>
+            </lightning:tab> 
+            <aura:if isTrue="{!v.isBrandingSupported}">
+                <lightning:tab label="Branding" id="branding">
+                    <c:CMSWStep_StepComponentBranding aura:id="componentBranding" renderMode="BUILDER" 
+                                                      recordId = "{!v.recordId}"/>
+                </lightning:tab>
+            </aura:if>
+            <aura:if isTrue="{!v.componentType=='TranslatedPicklist'}">
+                <lightning:tab label="Picklist" id="translatedPicklist">
+                    <c:CMSWStep_StepComponentPicklist aura:id="componentPicklist" renderMode="BUILDER" 
+                                                      recordId = "{!v.recordId}"/>
+                </lightning:tab>
+            </aura:if>
+            <aura:if isTrue="{!v.componentType=='SurveyIconPicklist'}">
+                <lightning:tab label="Survey Icon from Picklist" id="surveyIconPicklist">
+                    <c:CMSWStep_StepComponentPicklist aura:id="surveyIconPicklist" renderMode="BUILDER" 
+                                                      recordId = "{!v.recordId}"/>
+                </lightning:tab>
+            </aura:if>
+            <aura:if isTrue="{!v.componentType=='SurveyRadioPicklist'}">
+                <lightning:tab label="Survey Radio from Picklist" id="surveyRadioPicklist">
+                    <c:CMSWStep_StepComponentPicklist aura:id="surveyRadioPicklist" renderMode="BUILDER" 
+                                                      recordId = "{!v.recordId}"/>
+                </lightning:tab>
+            </aura:if>
+            <aura:if isTrue="{!v.componentType=='SurveyCheckboxPicklist'}">
+                <lightning:tab label="Checkbox from Picklist" id="SurveyCheckboxPicklist">
+                    <c:CMSWStep_StepComponentPicklist aura:id="SurveyCheckboxPicklist" renderMode="BUILDER" 
+                                                      recordId = "{!v.recordId}"/>
+                </lightning:tab>
+            </aura:if>
+        </lightning:tabset> 
+    </aura:if>   
+</aura:component>

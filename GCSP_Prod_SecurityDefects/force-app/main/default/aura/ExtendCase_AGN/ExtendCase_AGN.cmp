@@ -1,0 +1,50 @@
+<!-- Description :Extend Case aura component is being used to provide the extend case functionality to the DPO/PO Users.
+        Aura Component is called by the Quick Action Extend_Case_AGN on Case Object.
+        Created to facilitate the Req:DSRM 119 in Release 2 -->
+
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global"  controller="ExtendCase_AGN_controller">
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="extensionReason" type="String"/>
+    <aura:attribute name="norender"  type="boolean" default="true"/>
+    <aura:attribute name="render"  type="boolean" default="false"/>
+    <aura:attribute name="DSLanguage" type="String"/>
+    
+    
+    <aura:if isTrue="{!v.norender}">  
+        <aura:html tag="style">
+            .slds-backdrop {
+            background: rgba(43, 40, 38, 0) !important;  
+            }
+            .slds-fade-in-open {
+            display:none !important;
+            }
+        </aura:html>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.render}">  
+        <div aura:id="thecontainer" class="thecontainer" id="thecontainer"> 
+            <div role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open slds-modal--large" >       
+                <div class="slds-modal__container" >
+                    <div class="slds-modal__header" >
+                        <h2 id="header43" class="slds-text-heading--medium">
+                            <h1 class="title slds-text-heading--medium" > {!$Label.c.AGN_DSRM_ExtendCase_Header} </h1>
+                        </h2>
+                    </div>
+                    
+                    <div class="slds-modal__content slds-p-top--x-large slds-p-around--medium" aura:id="modalbody" id="modalbody" label="{!$Label.c.AGN_DSRM_ExtendCase_Reason}">
+                        <lightning:textarea aura:id="extensionReason" name="extensionReason" label="{!$Label.c.AGN_DSRM_ExtendCase_Reason}" value="{!v.extensionReason}" placeholder="{!v.DSLanguage}"/>
+                    </div>
+                    
+                    
+                    <div class="slds-modal__footer">
+                        <div class="forceChangeRecordTypeFooter">
+                            <lightning:button label="Extend" class="slds-button slds-button--neutral .slds-modal__close"  onclick="{!c.extendCase}" aura:id="btnextend" /> 
+                            <lightning:button label="{!$Label.c.AGN_GDPR_Cancel}" class="slds-button_brand" onclick="{!c.cancel}"/> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </aura:if>
+</aura:component>

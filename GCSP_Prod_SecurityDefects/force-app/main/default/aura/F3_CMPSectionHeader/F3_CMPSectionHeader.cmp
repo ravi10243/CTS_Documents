@@ -1,0 +1,30 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <!-- Attributes -->
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="headerFont" type="String"/>
+    <aura:attribute name="headerFontStyle" type="String"/>
+    <aura:attribute name="headerColor" type="String"/>
+    <aura:attribute name="headerFontSize" type="String"/>
+    <aura:attribute name="headerBackgroundColor" type="String"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="backgroundColor" type="String"/>
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+    
+    <aura:attribute name="headerStyle" type="String" />
+    
+    <!-- Component Body -->
+    <div class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small' : 'slds-hide'}">
+        <div id="parentDiv">
+            <div name="{!v.elementWrapper.PageElement.Name}">
+                <div class="lex-form-actionpanel slds-p-around_small backgroundSectionHeader" style="{!v.headerStyle}">
+                    <strong>
+                        &nbsp;{!v.elementWrapper.PortalLabel}
+                    </strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,124 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global"
+                controller="F3_ChildObjectController">
+    
+    <!-- Attributes -->
+    <aura:attribute name="currentSitePage" type="Object"/>
+    
+    <aura:attribute name="elementWrapper" type="Object"/> 
+    <aura:attribute name="childRecordId" type="String"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="currentStepType" type="String"/>
+    <aura:attribute name="childObjectAPIName" type="String"/>
+    <aura:attribute name="relationshipFieldAPIName" type="String"/> 
+    <aura:attribute name="elementClass" type="String" default="bordernot-required" />
+    <aura:attribute name="parentRecordId" type="String"/>
+    <aura:attribute name="mdChildObjectOneConfig" type="Object"/>
+    <aura:attribute name="listFieldConfig" type="List" />
+    <aura:attribute name="addNewMode" type="Boolean" default = "true"/>
+    <aura:attribute name="selectedRecordId" type="String"/>
+    
+    <!--AURA METHODS-->
+	<aura:method name="isValid" description="Method to validate this component.">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <aura:method name="Save" description="Method to save data in this component.">
+    </aura:method>
+
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="saveEditEvent" event="c:F3_CMPChildObjectManySave" action="{!c.handleSaveEvent}"/> 
+    <!-- Component Body -->
+    <aura:if isTrue="{!v.mdChildObjectOneConfig}">
+        <div class="{!v.elementWrapper.class}" name="{!v.elementWrapper.PageElement.Name}">
+            <lightning:card iconName="utility:description" class="{!v.elementClass}" title="{!v.elementWrapper.PortalLabel}">
+                <aura:set attribute="actions">
+                    <aura:if isTrue="{!v.elementWrapper.QuickHelpText}">
+                        <lightning:helptext content="{!v.elementWrapper.QuickHelpText}"/>
+                    </aura:if>
+                </aura:set>
+                <div class="slds-grid slds-wrap slds-gutters slds-p-around_medium">
+                    <div class="slds-col slds-size_12-of-12 slds-m-bottom_small" >
+                        {!v.elementWrapper.ContainerHtmlText}
+                    </div>
+                    <div class="slds-col slds-size_12-of-12 slds-m-bottom_small">
+                        <aura:if isTrue="{!v.listFieldConfig}">
+                            <!-- Display existing records in a table format-->
+                            <lightning:accordion aura:id="accordion" activeSectionName="0">
+                                
+                                    {!v.body}
+                                    
+                            <div class="slds-box slds-box_xx-small">                              
+                                <lightning:accordionSection name="New Record" label="(+) Add New Record" class = "accordionColor">
+                                        <aura:if isTrue="{!v.addNewMode}">
+                                            <lightning:recordEditForm 
+                                                                      onsubmit="{!c.onFormSubmit}"
+                                                                      onsuccess="{!c.onFormSubmitSuccess}"
+                                                                      onload="{!c.onFormLoad}"
+                                                                      onerror="{!c.onFormSubmitError}"
+                                                                      recordId="{!v.childRecordId}"
+                                                                      aura:id="editFormRelatedRecordMultiple"
+                                                                      objectApiName="{!v.childObjectAPIName}">
+                                                <lightning:messages />
+                                                <aura:iteration items="{!v.listFieldConfig}" var="elementWrapper">
+                                                    <aura:if isTrue="{!elementWrapper.IsHidden}">
+                                                        <aura:if isTrue="{!elementWrapper.IsHidden==true}">
+                                                            <c:F3_CMPChildObjectFieldHidden 
+                                                                                            aura:id="childobjectfieldhidden" 
+                                                                                            elementWrapper="{!elementWrapper}"/>
+                                                        </aura:if>
+                                                        <aura:if isTrue="{!elementWrapper.IsHidden==false}">
+                                                            <c:F3_CMPChildObjectField 
+                                                                                      aura:id="childobjectfield" 
+                                                                                      elementWrapper="{!elementWrapper}"
+                                                                                      currentStepType="{!v.currentStepType}"
+                                                                                      renderMode="{!v.renderMode}"/>
+                                                        </aura:if>
+                                                        <aura:set attribute="else">
+                                                            <c:F3_CMPChildObjectField 
+                                                                                      aura:id="childobjectfield" 
+                                                                                      elementWrapper="{!elementWrapper}"
+                                                                                      currentStepType="{!v.currentStepType}"
+                                                                                      renderMode="{!v.renderMode}"/>
+                                                        </aura:set>  
+                                                    </aura:if>    
+                                                </aura:iteration>
+                                                <aura:if isTrue="{!v.childRecordId}">
+                                                    <lightning:outputField aura:id="relationshipFieldAPIName" 
+                                                                           fieldName="{!v.relationshipFieldAPIName}"  class="slds-hide slds-lookup" variant="label-hidden" />    
+                                                </aura:if>    
+                                                <aura:if isTrue="{!!v.childRecordId}">
+                                                    <lightning:inputField aura:id="relationshipFieldAPIName" 
+                                                                          fieldName="{!v.relationshipFieldAPIName}" value="{!v.parentRecordId}"   />  
+                                                </aura:if>
+                                            </lightning:recordEditForm>
+                                        	<lightning:notificationsLibrary aura:id="notifLib"/>
+                                            <div class="slds-align_absolute-center slds-p-top_small">
+                                                <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.onSaveClick}" />
+                                            </div>
+                                    	</aura:if>
+                                    </lightning:accordionSection>
+                                </div>
+                            </lightning:accordion>
+                            <!--
+                            <div class="slds-box slds-box_small">
+                                <p>
+                                    New Record
+                                    <div class = "slds-float_left slds-m-horizontal_x-large">
+                                        
+                                        <lightning:buttonIcon variant="success" iconName="utility:edit"  size="small" name="{!v.childRecordId}"  value="{!v.childRecordId}" title="Add Record" onclick="{!c.OnAddNew}"/>
+                                        
+                                    </div>
+                                </p>
+                            </div>
+                          -->
+                            <!-- For New Record addition-->
+                            
+                        </aura:if>    
+                    </div>    
+                </div>
+            </lightning:card>
+        </div>
+    </aura:if>    
+</aura:component>

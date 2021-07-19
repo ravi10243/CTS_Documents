@@ -1,0 +1,10 @@
+<aura:component >
+    <!-- Initialiser -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+	<!-- Attributes -->
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    
+    <lightning:formattedRichText value="{!v.elementWrapper.ContainerRichText}" />
+</aura:component>

@@ -1,0 +1,75 @@
+.THIS .container {
+    background: #fff;
+    padding: 5%;
+    margin: 150px auto;
+    width: 100%;
+    min-height: 500px;
+}
+
+.THIS #clinic_list {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #f5f5f5;
+}
+
+.THIS #clinic_list td, .THIS #clinic_list th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.THIS #clinic_list tr:nth-child(even){background-color: #f2f2f2;}
+
+.THIS #clinic_list tr:hover {background-color: #ddd;}
+
+.THIS #clinic_list th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #909090;
+    color: white;
+}
+.THIS #clinic_list td:not(:first-child) {
+    text-align: center;
+}
+.THIS #clinic_list tr td a:hover {
+    text-decoration: none;
+}
+.THIS #clinic_list tr td button{
+    background-color: transparent;
+    border: 0;
+}
+.THIS #clinic_list tr td button:focus {
+    outline:none !important;
+    box-shadow: none;
+}
+.THIS .panel-primary {
+    border-color: #2c5596;
+    
+}
+.THIS .panel-primary > .panel-heading {
+    color: #ffffff;
+    background-color: #2c5596;
+    border-color: #2c5596;
+    
+}
+.THIS .panel-heading .btn-default {
+    color: #2c5596;
+    font-weight: bold;
+}
+.THIS .page_prev, .THIS .page_next{
+    margin-top: 10px;
+}
+.THIS .page_next{
+    float: right;
+}
+.THIS .glyphicon-trash{
+    color:red;
+}
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px)  { 
+    .THIS .container {
+    min-height: 670px;    
+    }
+}

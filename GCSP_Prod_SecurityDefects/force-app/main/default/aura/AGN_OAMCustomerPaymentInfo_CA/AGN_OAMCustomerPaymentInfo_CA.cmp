@@ -1,0 +1,128 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:appHostable" controller="AGN_OAMPortalCustomerRegStep2Controller" access="global" >
+    <ltng:require scripts="{!$Resource.AGN_CustomerPortalJQuery}" afterScriptsLoaded="{!c.scriptsLoaded}"/> 
+    <aura:attribute name="objAGNCustAddr" type="Allergan_Customer_Address_AGN__c" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}" access="global" />
+    <aura:attribute name="objAGNCustReg" type="Allergan_Customer_Registration_AGN__c" default="{'sobjectType': 'Allergan_Customer_Registration_AGN__c'}" access="global" />
+    <aura:attribute name="objMixType" type="sObject" access="private" default="{'sobjectType': 'sObject'}"/>
+    <aura:attribute name="sectionPaymentMap" type="Map" default="{}"/>
+    <aura:attribute name="sectionPaymentCreditList" type="List" default="[]"/>
+    
+    <aura:attribute name="caseId" type="String" default="{}"/>
+    
+    <aura:attribute name="customerGroup" type="String" />    
+    <aura:attribute name="payment" type="Form_Of_Payment_AGN__c[]" access="Private"/> 
+    
+    <aura:attribute name="countryCode" type="String"/>
+    <aura:attribute name="customerType" type="String"/>
+    <aura:attribute name="customerSubType" type="String"/>
+    <aura:attribute name="isTCAccepted" type="boolean" default="false"/>
+    <aura:attribute name="isConsentAccepted" type="boolean" default="false"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    
+    <aura:attribute name="PaymentMethod1" type="string"/>
+    <aura:attribute name="PaymentTerm1" type="string"/>
+    <aura:attribute name="isPaymentTerm" type="boolean" default="true"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!--<aura:handler event="aura:doneRendering" action="{!c.doneRendering}"/>-->
+    <aura:registerEvent name="notifyRegStepChange" type="c:AGN_Reg_Step_Chg_Evt" />    
+    <aura:attribute type = "sObject[]" name="PaymentMethod"/>
+    <aura:attribute type = "sObject[]" name="PaymentTerm"/>
+    
+    <aura:attribute name="required" type="Boolean" />
+    <aura:attribute name="fieldValueMissing" type="Boolean" default="false"/>
+    <aura:attribute name="PTfieldValueMissing" type="Boolean" default="false"/>
+    <aura:attribute name="CurrentUserLanguage" type="string"/>
+        
+    <div class="infr_bg">            
+        <div class="infr_details">
+            <div class="regi_add_1">
+                <section class="content bgcolor-7">
+                    <span  class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.PaymentMethod1}" data-fieldValueMissing="{!v.fieldValueMissing}" >
+                        <ui:inputSelect aura:id="paymentMethod" value="{!v.PaymentMethod1}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" change="{!c.onChangePaymentMethod}">                            
+                            <option value="" text=""></option>
+                            <aura:iteration items="{!v.PaymentMethod}" var="fop">
+                                <aura:renderIf isTrue="{!v.CurrentUserLanguage == 'en'}">
+                                	<option value="{!fop.Name}" text="{!fop.Name}"></option>
+                                    <aura:set attribute="else">
+                                     <option value="{!fop.Name}" text="{!fop.Form_Of_Payment_Label_AGN__c}"></option>
+                                    </aura:set>
+                                </aura:renderIf>                                  
+                            </aura:iteration>      
+                        </ui:inputSelect>
+                        <label class="input__label input__label--nariko" for="input-19">
+                            <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_PaymentMethod}<span>*</span></span>
+                        </label>
+                    </span>
+                   
+                    <aura:renderif isTrue="{!v.PaymentMethod1 == $Label.c.AGN_OAM_CreditCard}">                   
+                        <span  class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.PaymentTerm1}" data-fieldValueMissing="{!v.PTfieldValueMissing}" >                                              
+                            <ui:inputSelect aura:id="paymentTerm" value="{!v.PaymentTerm1}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.PTfieldValueMissing ? 'required' : '')}" disabled="{!v.isPaymentTerm}" change="{!c.onChangePaymentTerm}">
+                                <option value="" text=""></option> 
+                                <aura:iteration items="{!v.PaymentTerm}" var="pt">
+                                    <aura:renderIf isTrue="{!v.CurrentUserLanguage == 'en'}">
+                                	<option value="{!pt.Name}" text="{!pt.Name}" ></option>
+                                    <aura:set attribute="else">
+                                     <option value="{!pt.Name}" text="{!pt.Payment_Term_Label_AGN__c}" ></option>
+                                    </aura:set>
+                                </aura:renderIf>                                     
+                                </aura:iteration>    
+                            </ui:inputSelect>
+                            <label class="input__label input__label--nariko" for="input-19">
+                                <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Payment_Term}<span>*</span></span>
+                            </label>                              
+                        </span>
+                   </aura:renderif>  
+                </section>   
+                
+                <aura:iteration items="{!v.sectionPaymentCreditList}" var="set" indexVar="key">                 
+                    <section class="content bgcolor-7">                       
+                            <aura:iteration items="{!set.value}" var="fieldValue"> 
+                                <c:AGN_CommunityInputFieldCmp 
+                                                              aura:id="fieldId" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!v.objMixType}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"
+                                                              /> 
+                                
+                             </aura:iteration>        
+                    </section>
+                </aura:iteration>              
+            </div>	<br/>
+            
+            <div class="regi_add_3">               
+                                        <div class="address_text Declt">{!$Label.c.AGN_OAM_CONSENT_FOR_COMMUNICATION}</div>
+                                        <p>
+                                            {!$Label.c.AGN_OAM_CONSENT_FOR_COMMUNICATION_TEXT}                      
+                                        </p>
+                                    </div>
+                                    <div class="slds-form-element check_box_btn">
+                                        <div class="slds-form-element__control">
+                                            <ui:inputCheckbox labelClass="myCheckbox" aura:id="consentChkBox" value="{!v.isConsentAccepted}" label="{!$Label.c.AGN_OAM_I_Accept_the_GDPR_Terms_and_Conditions}"/>
+                                        </div>
+                                    </div><br/>
+            
+            <div class="regi_add_3">               
+                <div class="address_text Declt">{!$Label.c.AGN_OAM_Body_Declaration}</div>
+                <aura:if isTrue="{!v.countryCode == 'CA'}" ><p>
+                    {!$Label.c.AGN_OAM_Declaration_Canada} &nbsp;
+                    {!$Label.c.AGN_OAM_Declaration2_Canada}                      
+                    </p>
+                </aura:if>
+            </div> 
+            <div class="slds-form-element check_box_btn">
+                <div class="slds-form-element__control">
+                    <ui:inputCheckbox labelClass="myCheckbox" aura:id="chkTC" value="{!v.isTCAccepted}" label="{!$Label.c.AGN_OAM_I_Accept_the_GDPR_Terms_and_Conditions}"/>
+                </div>
+            </div>
+            <div class="det_btn det_btn1">                
+                <!--<ui:button aura:id="button" class="add_btn cancel_btn" label="{!$Label.c.AGN_OAM_Body_Cancel}" press="{!c.resetBlock}"/>-->
+                <ui:button aura:id="buttonSave" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Finish}" press="{!c.finishRegistrationForCust}" disabled="{!!v.isTCAccepted}"/>
+            </div>
+        </div>
+    </div>
+</aura:component>

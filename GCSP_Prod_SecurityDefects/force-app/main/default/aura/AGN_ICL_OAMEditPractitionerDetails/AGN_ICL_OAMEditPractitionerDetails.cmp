@@ -1,0 +1,128 @@
+<!-- **** AGN_ICL_OAMEditPractitionerDetails **** -->
+<aura:component controller="AGN_ICL_AddPractitionerDetailsController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" /> 
+    <link href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+    <link href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+    <ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}"/>
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}" />
+    <aura:attribute name="practitioner" type="Practitioner_Listing_AGN__c"
+                    default="{ 'sObjectType': 'Practitioner_Listing_AGN__c',
+                        'Name': '',
+                        'Salutation_AGN__c' :'',
+                        'First_Name_AGN__c':'',
+                        'Last_Name_AGN__c':'',
+                        'Type_AGN__c':'',                        
+                        'Gender_AGN__c': '',
+                        'Brand_AGN__c':'',
+                        'Qualification_AGN__c' :'',
+                        'Email__c': '',                        
+                        'Years_of_Experience_AGN__c': 0,                       
+                        'Type_Of_Physician_AGN__c': '' }"/>
+    <!--<aura:attribute name="CountryWiseFields" type="AGN_ICL_Practitioner_Layout__mdt" />
+    <aura:attribute name="CountryWiseFieldList" type="AGN_ICL_Practitioner_Layout__mdt[]" />-->
+    <aura:attribute name="CountryWiseFields" type="AGN_ICL_Layout_Field__mdt" />
+    <aura:attribute name="CountryWiseFieldList" type="AGN_ICL_Layout_Field__mdt[]" />
+    <aura:attribute name="CountryWiseFieldsMap" type="Map" />
+    <aura:attribute name="RequiredFieldMissing" type="Boolean" default="true"/>
+    <aura:attribute name="Salutationlist" type="List"/>
+    <!--<aura:attribute name="practitionerTypeList" type="List"/>-->
+    <aura:attribute name="Salutation" type="String"/>
+    <aura:attribute name="practitionerType" type="String"/>
+    <aura:attribute name="Locator_Listing" type="Locator_Listing_AGN__c"/>
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    
+    <aura:attribute name="BrandValues1" type="String[]"/>
+    <aura:attribute name="selectedBrandvalues" type="List" default=""/>
+    <aura:attribute name="image" type="String"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="CloseEditPopup" type="c:AGN_ICL_CloseEditModal" />
+    <aura:handler name="CloseSpinner" event="c:AGN_ICL_EditSpinner" action="{!c.HandleSpinner}"/>
+    <!--<aura:registerEvent name="AGN_ICL_AddPractitioners" type="c:AGN_ICL_AddPractitioners"/>-->
+        <!--<aura:registerEvent name="appEvent" type="c:AGN_ICL_AddPractitioners"/>-->
+
+    <div class="demo-only" style="height: 640px;">
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+          
+          <aura:if isTrue="{!v.spinner == true}">
+                    <div class="spinnerLoad">
+                        <lightning:spinner alternativeText="Loading" size="medium" />
+                    </div>
+                </aura:if>
+  
+          <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="{!$Label.c.AGN_ICL_Close}">
+                        
+                        <span class="slds-assistive-text">{!$Label.c.AGN_ICL_Close}</span>
+                    </button>
+                    <h4 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.AGN_ICL_Practitioner_s_Details}</h4>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    
+                    <form id="formId">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id='img_contain1'>
+                                   <!--AWS--> 
+                                                <aura:if isTrue="{!(v.image==undefined)}">
+       									 <img id="clinic_image1" class="clinic_image_file" align='middle' src="{!$Resource.AGN_ICL_CSS+'/ICL/images/upload.jpg'}"  height="100" width="150"/>
+        									<aura:set attribute="else">
+            									<img  id="clinic_image1" class="clinic_image_file" align='middle'  src="{!v.image}" />              
+        									</aura:set>
+   									 </aura:if>
+                                     <input type="file" id="clinic_upload"  name="file" aura:id="fileId" multiple="false" onchange="{!c.handleFilesChange}"/>  
+                        <label class="custom-file-label" for="clinic_upload"><span class="edit-txt">{!$Label.c.AGN_ICL_Upload_image}</span>
+                            </label>
+                                    
+        					 <!--AWS--> 
+                                      
+                                    <!-- <p style="width: 60%;text-align: center;">{!$Label.c.AGN_ICL_Upload_image}</p>-->
+                                 </div>
+                             </div>
+                            
+                            <div class="col-md-6" style="margin-bottom: 30px;">
+           
+                            
+                            					<lightning:checkboxGroup
+                                                                 aura:id="mygroup"
+                                                                 name="checkboxGroup"
+                                                                 label="Brand"
+                                                                 options="{!v.BrandValues1 }"
+                                                                 value="{!v.selectedBrandvalues }"
+                                                                 onchange="{!c.handleBrandChange }" />
+                            </div>
+                          <aura:iteration items="{!v.CountryWiseFieldList}" var="fieldList"> 
+                                <c:AGN_ICL_OAMEditPractitionerInputFields aura:id="fieldId" 
+                                   sobjectName="{!fieldList.Field_Sobject_API_Name_AGN__c}" 
+                                   fieldName="{!fieldList.Field_API_Name_AGN__c}" 
+                                   displayType="{!fieldList.Field_Type_AGN__c}" 
+                                   isPicklist="{!fieldList.IsPicklist_AGN__c}"
+                                   required="{!fieldList.Required_AGN__c}" 
+                                   customLabel="{!fieldList.Field_Label_AGN__c}"
+                                   practitioner="{!v.practitioner}"
+                                   fieldRegex ="{!fieldList.Field_Regex_AGN__c}"/>
+                            <br/>
+                          </aura:iteration>
+                      </div>
+                   </form>
+               </div>
+                
+                <footer class="slds-modal__footer">
+                    <lightning:button class="slds-button slds-button_neutral" label="{!$Label.c.AGN_ICL_Cancel}" onclick="{!c.cancelEditPractitioner}"/>
+                    <lightning:button class="slds-button slds-button_neutral" label="{!$Label.c.AGN_ICL_Save}" onclick="{!c.SaveEditPractitioner}"/>
+                </footer>
+       </div>
+     </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+   </div>
+    
+
+ 
+    <div>
+        <!--  <c:AGN_ICL_AllPractitioners aura:id="allPractId"/> -->
+    </div>
+</aura:component>

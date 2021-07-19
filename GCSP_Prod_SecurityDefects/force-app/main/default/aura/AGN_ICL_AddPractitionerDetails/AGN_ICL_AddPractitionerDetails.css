@@ -1,0 +1,327 @@
+.THIS .AddNewPractitioner{
+    display: none;
+}
+.THIS .slds-modal__content{
+    padding: 15px 30px;
+}
+.THIS.practitioner_wrapper {
+    background-color: #f5f5f5;
+}
+.THIS  .header {
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px 10px;
+}
+.THIS  .header-right {
+    float: right;
+}
+.THIS #img_contain:hover .custom-file-label {
+    display: block;
+}
+.THIS  #img_contain1:hover .custom-file-label {
+    display: block;
+}
+.THIS .clinic_image_file{
+    width: 75px;
+    height: 75px;
+	margin-right: 10px;
+}
+.THIS .custom-file-label {
+    position: absolute;
+    top: 8px;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    width: 75px;
+    height: 75px;
+    margin: 0;
+    display: none;
+}
+.THIS .slds-file-selector__body .slds-file-selector__text{
+    display: none;
+}
+.THIS .slds-file-selector__dropzone{
+    border: 0;
+}
+.THIS #img_contain:hover .custom-file-label {
+    display: block;
+}
+.THIS #img_contain1:hover .custom-file-label {
+    display: block;
+}
+.THIS .opt_out_instruction{
+    border: 1px solid #ddd;
+    margin-left: 7%;
+    margin-right: 7%;
+    min-height: 100px;
+    padding: 10px 0;
+}
+.THIS .opt_out_instruction .btnSubmit{
+    background-color: #43af2a;
+    float: right;
+    color: #fff;
+    font-weight: 600;
+    margin: 10% 3%;
+    border-radius: initial;
+    width: 100%;
+    padding: 7px;
+}
+.THIS .opt_out_instruction .opt-email-label{
+    color: #2c5596;
+    font-weight: 600;
+    font-size: 15px;
+    float: right;
+    padding: 25px;
+}
+.THIS .brand-info{
+    margin-top: 25px;
+    position: relative;
+    float: left;
+    font-size: 10px;
+    margin-left: 10px;
+}
+.THIS .brand span{
+    background-color: #bfbdbd;
+    padding: 3px 9PX;
+    border-radius: 50%;
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+}
+.THIS #myModal .check{
+    margin-top: 30px;
+    color: #2c5596;
+    font-weight: 300;
+}
+.THIS .slds-modal__container{
+    max-width: 53%;
+    width: 53%;
+}
+.THIS .slds-modal__header{
+	padding: 0;
+	text-align: left;
+}
+.THIS .slds-modal__header h4{
+	position: relative;
+    margin: 0;
+    font-size: 20px;
+    color: #2c5596;
+    font-weight: 600;
+    padding: 15px 40px;
+    background: #efefef;
+}
+.THIS .slds-modal__container #img_contain1{
+    width: auto;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding: 8px 0 0;
+}
+.THIS .slds-modal__container select{
+    color: #59585b;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.THIS .slds-modal__container .col-md-3{
+    width: 50%
+}
+
+.THIS .slds-modal__container select ~ label{
+    margin-top: -14px;
+}
+.THIS .col-md-3{
+    min-height: 57px !important;
+}
+.THIS .Test{
+    color: #FFFF00;
+}
+.THIS .required{
+    color: red;
+}
+.THIS .input-effect .effect-16{    
+    box-shadow: none;    
+    background-color: transparent;
+}
+.THIS .input-effect select{    padding-bottom: 23px;}
+.THIS .input-effect .effect-16 ~ label{
+    color: #2c5596;
+    padding-left: 0;
+}
+.THIS .input-effect .effect-16:focus ~ label, .THIS .effect-16 ~ label{
+    color: #2c5596;
+}
+.THIS .slds-modal__container .slds-modal__footer{
+	padding: 15px 40px;
+}
+.THIS .slds-modal__container .slds-modal__footer button,
+.THIS .slds-modal__container .slds-modal__footer button:hover{
+    font-weight: 600;
+    color: #fff;
+    background: #43af2a;
+    padding: 8px 10px;
+    width: auto;
+    position: relative;
+    border-radius: 0;
+    margin: 0 5px;
+    border: none;
+}
+.THIS fieldset::before {
+/* content: "* ";
+    float: left;
+    padding-right: 2px;
+    color: red;
+    font-weight: 700;
+    position: relative;
+    top: 2.5px; */
+}
+.THIS .slds-form-element__legend{    
+    display: inline-block;
+    width: auto;
+}
+.THIS .slds-form-element__legend::after{
+    position: absolute;
+    content: "*";
+    color: red;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 1px;
+    margin-left: 2px;
+}
+.THIS .checkboxgroup{
+    min-height: 92px !important;
+}
+.THIS lightning-checkbox-group fieldset{   
+    margin-left: 0px;
+	padding: 8px 0 0;
+}
+.THIS lightning-checkboxgroup_checkboxgroup{
+        margin-top: 30px;
+}
+.THIS .row-practitioner{
+	display:  flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: flex-start;
+}
+.THIS .row-practitioner .columns{
+	width:50%;
+	padding:10px 15px 7px;
+}
+.THIS .row-practitioner .columns2{
+	width:100%;
+	padding:10px 15px 7px;
+}
+.THIS .row-practitioner .columns.columns-helptxt{
+	width:100%;
+}
+.THIS .row-practitioner .columns .helptxt{
+	position: relative;
+	font-size: 10px;
+	margin-left: 10px;
+	margin:10px 0;
+}
+.THIS .row-practitioner .columns.columns-profileimg{
+}
+.THIS .row-practitioner .columns .form-group.input-effect .uiInput{
+	position: relative;
+    min-height: 34px;
+	color:#222222;
+}
+.THIS .row-practitioner .columns .form-group.input-effect label,
+.THIS .row-practitioner .columns .form-group.input-effect .drop-down-block label{
+	margin: -6px 0 0;
+    line-height: 34px;
+}
+.THIS .row-practitioner .columns .form-group.input-effect label span,
+.THIS .row-practitioner .columns .form-group.input-effect .drop-down-block label span{
+    position: relative;
+    display: inline-flex;
+    width: auto;
+}
+.THIS .row-practitioner .columns .form-group.input-effect label span span.required,
+.THIS .row-practitioner .columns .form-group.input-effect .drop-down-block label span span.required{
+    margin-left: 2px;
+    margin-top: 1px;
+}
+.THIS .row-practitioner .columns .form-group.input-effect .drop-down-block{
+	margin: 0;
+	line-height: 34px;
+}
+.THIS .row-practitioner .columns .form-group.input-effect .form-control-select{
+	padding: 8px 0 0;
+    margin-left:2px;
+}
+.THIS .row-practitioner .columns .form-group.input-effect .form-control-select option{
+	overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow:ellipsis;
+    width:90%
+}
+.THIS .slds-form-element__label{
+    margin-right: -0.5rem;
+}
+.THIS .slds-checkbox .slds-checkbox__label .slds-form-element__label{
+	font-size: 14px;
+}
+.THIS .slds-dueling-list__column_responsive .slds-dueling-list__options{
+    max-width:12.4rem;
+}
+
+/* Media Queries */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  { 
+	.THIS .slds-modal__container select~label {
+    	margin-top: 0;
+	}
+    .THIS .input-effect select {
+    	padding-bottom: 0; 	
+    }    
+    .THIS .slds-modal__container{
+        max-width: 75%;
+        width: 75%;
+    }
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {  
+    .THIS .slds-modal__container .col-md-3 {
+    width: 100%;
+    }
+    .THIS .slds-modal__container{
+        max-width: 90%;
+        width: 90%;
+    }
+}
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+	.THIS .slds-modal__content{
+		padding: 15px;
+	}
+	.THIS .row-practitioner{
+		flex-flow: column nowrap;
+	}
+	.THIS .row-practitioner .columns{
+		width: 100%;
+		padding: 6px 15px;
+	}
+    .THIS .slds-modal__container{
+        max-width: 100%;
+        width:100%;
+    }
+    .THIS .slds-modal__container .col-xs-12 {
+        width: 100%!important;
+        min-height: 75px!important;
+    }
+    .THIS .input-effect select {
+    	padding-bottom: 0px;
+	}
+    .THIS .slds-modal__container .slds-modal__footer{
+	  text-align:center;
+   }
+    .THIS .slds-button {   
+       margin: 3px 1px !important;
+    }
+}

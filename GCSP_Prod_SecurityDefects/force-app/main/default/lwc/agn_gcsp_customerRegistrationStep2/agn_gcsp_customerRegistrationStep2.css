@@ -1,0 +1,338 @@
+/* --------------------- NEW UI Changes ----------------------------- */
+.outer_wrapper{
+    width: 100%;
+    max-width: 1366px;
+    margin: auto;
+    font-size: 0.8125rem;
+}
+.slds-scope{   
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid #bfbfbf;
+    background: #fff;
+}
+.scope_container{
+    width: 90%;    
+    margin: 2% auto 3%;  
+}
+.scope2{
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 50%;
+}
+.scope3{
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 50%;
+    padding-left:2.8em;
+}
+.scope1_ca{
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 33%;
+    padding-right:2em;
+}
+.scope2_ca{
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 33%;
+    padding-left:1.5em;
+}
+.scope3_ca{
+    padding-left:3em;
+    margin: 0em;
+    display: inline-block;
+    width: 100%;
+    max-width: 33%;
+}
+
+/*.registered_address, .existing_address{    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: normal;
+    justify-content: space-evenly
+}*/
+.cheading{    
+    font-size: 1rem;
+    font-weight: 700;
+    margin-left: 147px;
+    color: #565656;
+    font-family: Arial,sans-serif;
+    width: 100%;
+    margin: 10px auto 10px;
+}
+.cheadingboldnew{    
+    width: 90%;  
+}
+.cheadingboldnew1{
+    width: 95%;
+    margin: 0px auto 5px;
+}
+.cheadingbold1{
+    width: 90%;    
+    /*margin-left: 25px; */
+}
+.hd{
+    font-size: 1.1rem;
+    font-weight: 700;  
+    width: 100%;
+    font-family: Arial,sans-serif;
+    margin: 2% 0;
+}
+
+.checkbox_text{        	
+    display: flex;	
+    margin: 0 auto;	
+    width: 90%;   	
+    font-size: 0.9rem;	
+}	
+.chktxt{	
+    margin-top: 2px;	
+  /*  margin-left: -230px; */	
+    color: #2c5596;	
+    font-size: 1rem;	
+}
+
+.btn_container{    
+    display: flex;
+    width: 90%;
+    margin: 0 auto;   
+    padding: 1% 0% 5% 0%;
+}
+.btn_margin{    
+    width: 75%;
+    padding: 1% 0% 5%; 
+    display:block;
+    margin:0 auto;
+    text-align:center;
+}
+.prev , .saveCont , .btn_next{
+    /* padding: 6% !important; */
+    margin: 0 5%;
+}
+.btn_next{
+    display:inline;
+}
+.gradient_border_btn{
+    padding-left:0%;
+}
+/*.deletebtn{
+    padding-left:0%;
+}*/
+
+.registered_address, .Article_Declaration{           
+    padding: 20px 0px 30px 0px;
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid #bfbfbf;
+    background: #fff;
+}
+.reg_add{
+    width:90%;
+    /*display: flex;
+    flex-wrap: wrap; */
+    border: 1px solid #b8860b;
+    padding : 2% 0;
+    margin: 0 auto;
+}
+.newshipto_address{      
+    padding: 0px 0px 20px;
+    width: 90%;    
+    background: #fff;  
+    border: 1px solid #b8860b;
+    margin: 2% auto 2% ;
+}
+.deletebtn{           
+    display: block;
+    margin-right: 5px;
+    margin-top: 5px;
+} 
+.btn1{           
+    display: block;
+    margin: 5px 5px 30px 0px;
+} 
+        
+/* Existind User Adderess only Check box need to be checked */
+.existing_address{  
+    padding: 0 0 2%;
+    width: 90%;
+    background: #fff;   
+    margin: 1% auto 2%;
+    border: 1px solid #b8860b;   
+} 
+.slds-grid{
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+}
+.newshipto_info, .declaration_legal_info{
+    font-size: 0.99rem;
+    width: 90%;
+    margin: 1% auto 2%;
+}
+.Address_container{
+    width: 100%;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid #bfbfbf;
+    padding:20px 0px 0px;
+}
+.sameadd_checkbox, .declaration_legal_text{
+    width: 90%;
+    margin: 0 auto;
+}
+.declartionpart{
+    width: 100%;
+    margin: 30px auto 0;
+    background: white;
+    border: 1px solid #bfbfbf;
+    padding: 0px 20px 20px;
+ }
+.checkbox_text{
+    padding: 1% 0;
+    width: 45%;    
+    border: 1px solid #b8860b;
+    margin: 0 5% 2% ;
+}
+.tncchkbox{
+    margin:0em 1em !important;
+}  
+@media screen and (max-width: 1160px) and (min-width: 941px){
+    /* .prev , .saveCont , .btn_next{
+        padding: 4% !important;
+    } */
+    .scope3{
+        padding-left: 2.5em;
+    }
+}
+@media screen and (max-width: 940px) and (min-width: 815px){
+    /* .prev , .saveCont , .btn_next{
+        padding: 2% !important;
+    } */
+    .scope3{
+        padding-left: 2.5em;
+    }
+}
+@media screen and (max-width: 814px) and (min-width: 771px){
+    /* .prev , .saveCont , .btn_next{
+        padding: 1% !important;
+    } */
+    .scope3{
+        padding-left: 2.5em;
+    }
+}
+@media screen and (max-width: 770px) and (min-width: 511px){    
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        padding: 2% 0% 5%;  
+    }
+    .prev , .saveCont , .btn_next{
+        /* padding: 2%!important; */
+        display: block;
+        margin: 1% 0 5% !important;
+    }
+} 
+@media screen and (max-width: 770px) and (min-width: 616px){    
+    .scope3{
+        padding-left: 2.5em;
+    }
+}
+@media screen and (max-width: 615px) and (min-width: 591px){    
+    .scope3{
+        padding-left: 0.8em;
+    }
+}
+@media screen and (max-width: 590px) and (min-width: 551px){    
+    .scope3{
+        padding-left: 2.5em;
+    }
+}
+@media screen and (max-width: 550px) and (min-width: 511px){    
+    .scope3{
+        padding-left: 1.2em;
+    }
+}
+@media screen and (max-width: 510px) and (min-width:421px){    
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        padding: 2% 0% 5%;  
+    }
+    .prev , .saveCont , .btn_next{
+        /* padding: 2%!important; */
+        display: block;
+        margin: 1% 0 5% !important;
+    }
+    .scope3{
+        padding-left: 0;
+    }
+    .scope1_ca,.scope2_ca,.scope3_ca{
+        padding:0;
+    } 
+    .checkbox_text{
+        width:90%;
+    }            
+}
+@media screen and (max-width: 420px) and (min-width:351px){    
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        padding: 2% 0% 5%;  
+    }
+    .prev , .saveCont , .btn_next{
+        /* padding: 2%!important; */
+        display: block;
+        margin: 1% 0 5% !important;
+    } 
+    .btn_container{    
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+    }
+    .scope3{
+        padding-left: 0;
+    }
+    .scope1_ca,.scope2_ca,.scope3_ca{
+        padding:0;
+    }  
+    .checkbox_text{
+        width:90%;
+    }          
+}
+@media screen and (max-width: 350px){    
+    .btn_margin{       
+        display: block;       
+        width: 100%;   
+        text-align: center;
+        padding: 2% 0% 5%;  
+    }
+    .btn_container{    
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+    }
+    .prev , .saveCont , .btn_next{
+        /* padding: 2%!important; */
+        display: block;
+        margin: 1% 0 5% !important;
+    }
+    .scope3{
+        padding-left: 0;
+    }
+    .scope1_ca,.scope2_ca,.scope3_ca{
+        padding:0;
+    } 
+    .checkbox_text{
+        width:90%;
+    }              
+}

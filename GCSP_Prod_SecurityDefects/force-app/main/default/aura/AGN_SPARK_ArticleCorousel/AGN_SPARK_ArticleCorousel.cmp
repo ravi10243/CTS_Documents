@@ -1,0 +1,383 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="AGN_SPARK_ArticleCarouselController" >
+	<ltng:require scripts="{!($Resource.AGN_SPARK_Theme + '/lib/jquery-3.2.1.min.js')}" afterScriptsLoaded="{!c.scriptsLoaded}" />
+
+    <ltng:require scripts="{!join(',',
+                           $Resource.AGN_SPARK_Theme+ '/lib/bootstrap-4.0.0-dist/js/bootstrap.min.js',
+                           $Resource.AGN_SPARK_Theme+ '/script/owl.carousel.min.js')}" 
+                  styles="{!$Resource.AGN_SPARK_Theme+ '/css/owl.carousel.min.css'}"/>
+   
+    
+    <aura:attribute name="KnowledgeArticlesType" type="string" />
+    <aura:attribute name="KnowledgeArticles" type="object[]" />
+    <aura:handler name="init" value="{!this}" action="{!c.knowledgeArticle}"/>
+    <aura:attribute name="isRender" type="Boolean" default="false"/>
+    <aura:handler name="render" value="{!this}" action="{!c.displayRender}"/>
+    <aura:html tag="style">
+        .firstWidth{
+            width:500px !important;
+            outline: none;
+        }
+                 button.owl-prev.disabled {
+            opacity: 0.3;
+        }
+                button.owl-next.disabled {
+            opacity: 0.3;
+        }
+        .firstWidth img,.owl-carousel .owl-item img{
+            height: 300px;
+            width: 92%;
+        }
+        .gutter-remove{
+            margin-left: -16px;
+        }
+        #welcomeSectionArticle{
+        	justify-content: center;
+   			 margin: 0 auto;
+        background-color: white;
+        }
+        .multiple-items{
+            width: 1500px; /*11th*/
+            height: auto;
+        }
+        .articleTitle{
+            font: normal normal 300 26px/35px Beatrice-light;
+            letter-spacing: 1.56px;
+            color: #4D5258 !important;
+            margin-top: 10px;
+            min-height: 75px;
+        }
+        .articleDesc{
+            margin-top: 15px;
+            font: normal normal 300 17px/21px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 0px;
+            margin-bottom: 20px;
+        }
+        .articleDetails a{
+            font: normal normal normal 18px/24px Beatrice-light;
+            letter-spacing: 1.08px;
+            color: #A7756E;
+            cursor: pointer;
+        }
+        
+        .slick-prev, .slick-next{
+            top: 27%;
+        }
+        .slick-prev{
+            left: -30px;
+        }
+        .slick-next{
+            right: 16px;
+        }
+        .slick-prev:before{
+            content: ' \003C';
+        }
+        .slick-next:before{
+            content: '>';
+        }
+        .slick-prev:before, .slick-next:before{
+            color:black;
+            font-size: 28px;
+            font-weight: 900;
+        }
+        .container-readmore{
+            margin-bottom: 0px;
+        }
+        
+        button.owl-prev.disabled {
+            opacity: 0.3;
+        }
+        button.owl-next.disabled {
+            opacity: 0.3;
+        }
+        button.owl-prev span,button.owl-next span {
+            font-size: 40px;
+            top: 20%;
+                position:absolute;
+        }
+        button.owl-prev span{
+            left: -2%;
+        }
+        button.owl-next span{
+            right: 0.2%;
+        }
+        /* laptop specific styles */
+        @media screen and (min-width: 1970px){
+            .multiple-items {
+            	width: 1594px;
+            }
+        	button.owl-next span{
+            right: 2.2%;
+        	}
+        }
+        @media screen and (max-width: 1590px) and (min-width: 1533px) {
+         .slick-slide img {
+                height: 260px;
+                width: 75%;
+            }
+            .firstWidth {
+                width: 398px !important;
+            }
+            .multiple-items {
+                width: 1187px;
+            }
+        	button.owl-next span{
+                right: -0.2%;
+        	}
+        }
+        @media screen and (max-width: 1532px) and (min-width: 1440px) {
+        	button.owl-prev.disabled {
+                opacity: 0.3;
+            }
+                    button.owl-next.disabled {
+                opacity: 0.3;
+            }
+                    button.owl-prev span,button.owl-next span {
+                font-size: 40px;
+                top: 20%;
+                    position:absolute;
+            }
+            button.owl-prev span{
+                left: -2%;
+            }
+            button.owl-next span{
+                right: -0.2%;
+            }
+        .firstWidth img,.owl-carousel .owl-item img{
+            height: 252px !important;
+            width: 90%;
+            }
+            button.owl-prev.disabled {
+            opacity: 0.3;
+            }
+            button.owl-next.disabled {
+            opacity: 0.3;
+            }
+            .articleTitle{
+            min-height:108px;
+            }
+            .firstWidth {
+            width: 407px !important;
+            }
+            .multiple-items {
+            width: 1190px;
+            }
+        }
+        @media screen and (max-width: 1439px) and (min-width: 1418px) {
+        .slick-slide img {
+            height: 260px;
+            width: 75%;
+        }
+        .firstWidth {
+            width: 388px !important;
+        }
+        .multiple-items {
+            width: 1113px;
+        }
+            #title{
+            font-size:42px;
+            }
+        	button.owl-next span{
+                right: -1.4%;
+            }
+	}
+ @media screen and (max-width: 1417px) and (min-width: 1340px) {
+        .slick-slide img {
+        height: 260px;
+        width: 92%;
+    }
+    .firstWidth {
+        width: 388px !important;
+    }
+    .slick-next{
+        right: -35px;
+    }
+        button.owl-next span {
+        right: -1.4%;
+    }
+    .multiple-items {
+        width: 1113px;
+    }
+        }
+    /*----------------------IPad Pro Views -----------------------------*/    
+@media screen and (max-width: 1339px) and (min-width: 1161px) {
+        .slick-slide img {
+        height: 260px;
+        width: 92%;
+    }
+    .firstWidth {
+        width: 388px !important;
+    }
+    .slick-next{
+        right: -35px;
+    }
+    .multiple-items {
+        width: 1113px;
+    }
+        button.owl-next span {
+        right: -1.4%;
+    }
+}
+         /*----------------------IPad Landscape and Ipad Pro View -----------------------------*/            
+@media screen and (max-width: 1160px) and (min-width: 992px) {
+         .slick-slide img {
+        height: 220px;
+        width: 92%;
+    }
+    .firstWidth {
+        width: 300px !important;
+    }
+    .slick-next{
+        right: -35px;
+    }
+    .multiple-items {
+        width: 880px;
+    }
+    .slick-prev, .slick-next{
+        top:20%
+    }
+        button.owl-next span {
+        right: -0.9%;
+    }
+} 
+    /*----------------------IPad and Tablet Views -----------------------------*/            
+@media screen and (max-width: 991px) and (min-width: 601px) {
+        .container-readmore {
+    margin-bottom: 50px;
+	}
+        .repeating-content .firstWidth{
+        width: 560px !important;
+    	margin: 0 auto;
+    }
+    .repeating-content .firstWidth img{
+        width: 90%;
+    }
+        
+    .articleDetails{
+        padding-right: 0px;
+    }
+    .articleTitle{
+        font: normal normal 300 20px/36px Neue_Haas_Unica_Pro-light;
+    	letter-spacing: 1.56px;
+    	
+    }
+    .articleDesc{
+        margin-top: 0px;
+    	margin-bottom: 0px;
+    }
+    .articleDetails a{
+        font: normal normal normal 22px/28px Beatrice-light;
+    	letter-spacing: 1.08px;
+    	color: #A7756E !important;
+    	cursor: pointer;
+    }
+    .d-xs-block{
+        display: block !important;
+    }
+    .d-xs-none{
+        display: none !important;
+    }
+}
+        /*----------------------Mobile View -----------------------------*/              
+@media screen and (max-width: 600px) and (min-width: 300px) {
+        .container-readmore {
+        margin: 0 auto;
+		margin-bottom: 50px;        
+        }
+      .repeating-content{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .repeating-content .firstWidth{
+       width: 100%;
+    margin: 0 auto;
+
+    }
+    .repeating-content .firstWidth img{
+        width: 510px;
+    	height: 250px;
+    	margin: 0 auto;
+    }  
+        
+    .articleDetails{
+        padding-right: 0px;
+    }
+    .articleTitle{
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+    	letter-spacing: 0px;    	        
+        display:block;
+    }
+    .articleDesc{
+        margin-top: 0px;
+        margin-bottom:0px;
+    }
+    .articleDetails a{
+        font: normal normal normal 18px/24px Beatrice-light;
+        letter-spacing: 1.08px;
+        color: #A7756E !important;
+        cursor: pointer;
+    }        
+       
+    .d-xs-block{
+        display: block !important;
+    }
+    .d-xs-none{
+        display: none !important;
+    }
+ }
+    </aura:html>
+    <aura:if isTrue="{!not(empty(v.KnowledgeArticles))}">
+    	<div id="welcomeSectionArticle" class="row recent_clinic_section">
+            <div id="welcomeSectionHead" class="row edit_asthetic_head">
+               <div>  {!$Label.c.AGN_SPARK_RecentClinicalArticles}</div>
+            </div>
+            
+            <div class="carousel d-lg-block d-xl-block d-sm-none d-md-none d-xs-none">
+                <div class="owl-carousel owl-theme test multiple-items">               
+                    <aura:iteration items="{!v.KnowledgeArticles}" var="article" >
+                        
+                        <div class="item firstWidth" data-articleId="{!article.Id}" onclick="{!c.selectedArticle}" >
+                                        <aura:if isTrue="{!not(empty(article.Summary_URL_AGN__c))}" >
+                                            <img src="{!article.Summary_URL_AGN__c}" alt="thumbnail" class="thumbnail_img"/>
+                                            <aura:set attribute="else">
+                                               <img src="{!$Resource.AGN_SPARK_TrainingPageThumb+ '/TrainingPagethumb/thumb2.png'}" alt="thumbnail" class="thumbnail_img"/>
+                                            </aura:set>
+                                        </aura:if> 
+                                <div class="articleDetails">
+                                   <p class="thumb_content articleTitle">{!article.Title}</p>
+                                   <p class="thumb_content articleDesc">{!article.Body_AGN__c}</p>
+                                    
+                                    <div class="container-readmore">
+                                        <a>Read more ></a>
+                                    </div>
+                                </div>
+                        </div>
+                    </aura:iteration>               
+                </div>  
+            </div>
+            <div class="carousel d-lg-none d-xl-none d-sm-block d-md-block d-xs-block">
+                <div class="repeating-content">               
+                    <aura:iteration items="{!v.KnowledgeArticles}" var="article" >
+                        
+                        <div class="item firstWidth" data-articleId="{!article.Id}" onclick="{!c.selectedArticle}" >
+                                        <aura:if isTrue="{!not(empty(article.Summary_URL_AGN__c))}" >
+                                            <img src="{!article.Summary_URL_AGN__c}" alt="thumbnail" class="thumbnail_img"/>
+                                            <aura:set attribute="else">
+                                               <img src="{!$Resource.AGN_SPARK_TrainingPageThumb+ '/TrainingPagethumb/thumb2.png'}" alt="thumbnail" class="thumbnail_img"/>
+                                            </aura:set>
+                                        </aura:if> 
+                                <div class="articleDetails">
+                                   <p class="thumb_content articleTitle">{!article.Title}</p>
+                                   <p class="thumb_content articleDesc">{!article.Body_AGN__c}</p>
+                                    
+                                    <div class="container-readmore">
+                                        <a>Read more ></a>
+                                    </div>
+                                </div>
+                        </div>
+                    </aura:iteration>               
+                </div>  
+            </div>
+            <div class="clear"></div>
+    	</div>
+   </aura:if>
+</aura:component>

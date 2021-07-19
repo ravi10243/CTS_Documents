@@ -1,0 +1,62 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes"  controller="AGN_SPARK_404Error" access="global" >
+	 <aura:attribute name="AGNSPARKImage" type="object"/>
+     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     <ltng:require styles="{!$Resource.AGN_SPARK_Theme + '/css/404Error-page.css'}"/> 
+   
+    <div class="wrapper">
+    <div class="home-content">
+    <div class="error_banner" style="{!'background-image: url('+ v.AGNSPARKImage.Error404banner+' );'}">
+        <div class="banner_content">
+            <p class="error_head">{!$Label.c.AGN_SPARK_404Error_Title} </p>
+            <p class="error_content">{!$Label.c.AGN_SPARK_404Error_Titlediscr}</p>
+        </div>
+    </div>
+    <div class="service_block">
+        <div class="our_Service_head">{!$Label.c.AGN_SPARK_404Error_header} <span> {!$Label.c.AGN_SPARK_404Error_headerdiscr}</span></div>
+        <div class="service_content">
+            <div class="service_right">
+               <img src="{!v.AGNSPARKImage.knowledgeHub}" alt="aim_img" class="service_right_img" />
+              
+                <div class="service_left">
+                    <h4>{!$Label.c.AGN_SPARK_404_Error_Knowledge_Hub_Title}</h4>
+                    <p>{!$Label.c.AGN_SPARK_404Error_Knowledge_Hub_Titlediscr}</p>
+                    <button class="resource_button" onclick="{!c.showKnowledgeHub}">{!$Label.c.AGN_SPARK_404Error_KnowledgeHub_Go}</button>
+                </div>
+                   
+            
+            <div class="clear"></div>
+        </div>
+        </div>
+        <div class="service_content">
+            <div class="service_right_block2">
+                <img src="{!v.AGNSPARKImage.Training}" alt="aim_img" class="service_right_img__block2 service_image_left" />
+            <div class="service_right_img__block2" >
+                <div class="service_left__block2">
+                    <h4>{!$Label.c.AGN_SPARK_404Error_Training_Title}</h4>
+                    <p>{!$Label.c.AGN_SPARK_404Error_Training_Titlediscr}</p>
+                    <button class="pdf_button" onclick="{!c.showTraining}">{!$Label.c.AGN_SPARK_404Error_Training_Go}</button>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+            </div>
+        <div class="service_content">
+            <div class="service_right">
+               <img src="{!v.AGNSPARKImage.Contact}" alt="aim_img" class="service_right_img" />
+               
+                <div class="service_left service_left__block3">
+                    <h4>{!$Label.c.AGN_SPARK_404Error_Contact_Title}</h4>
+                    <p>{!$Label.c.AGN_SPARK_404Error_Contact_Titlediscr}</p>
+                    <button class="site_button" onclick="{!c.showContactus}">{!$Label.c.AGN_SPARK_404Error_Contact_Go}</button>
+
+                </div>
+            
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    </div>
+        </div>
+    </div>
+       <c:AGN_SPARK_ZincCode pageName="404Errorpage"/>
+</aura:component>

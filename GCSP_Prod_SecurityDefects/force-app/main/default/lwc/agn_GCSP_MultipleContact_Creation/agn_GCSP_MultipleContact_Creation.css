@@ -1,0 +1,149 @@
+.contact_outer_wrapper{
+    width: 1148px;
+    max-width: 1366px;
+    margin: auto;
+    font-size: 0.8125rem;
+}
+.content_center{
+    width: 100%;
+    border: 1px solid #bfbfbf;
+    background: #fff;
+    margin: 2% auto 5%;
+    padding: 2% 0 3%;
+}
+.content_center2, .content_center3{
+    width: 100%;
+    border: 1px solid #bfbfbf;
+    background: #fff;
+    margin: 0 auto 5%;
+    padding: 2% 2.7% 3%;
+}
+.heading{
+    font-size: 1.1rem;
+    font-weight: 700;    
+    margin-left: -25px;
+    font-family: Arial,sans-serif;
+}
+.existing_contact, .new_contact{ 
+    width: 90%;
+    border: 1px solid #b8860b;
+    margin: 0 auto 2.5%;   
+}
+.cheading {
+    font-size: 1rem;
+    font-weight: 700;   
+    width: 90%;   
+    margin: 0 auto;
+    font-family: Arial,sans-serif;
+}
+.cheadingboldnew1{
+    width: 95%;
+    margin: 0 auto -2%;
+}
+.cheadingbold{
+    padding-bottom:1%;
+}
+.row1{
+   /* display: flex; */
+    padding: 1% 1%;
+    display: inline-block;
+    width: 100%;
+}
+.sapid{
+    border-radius: 5px;
+    text-align: center;
+    border: none;    
+    font-size: 1.1rem;  
+    color: #fff;
+    background: rgba(119,136,153,.59);
+    padding: 4px;
+    /*min-width: 7.5rem !important;*/
+    width: auto;
+    float: left;
+}
+.editbtn{
+    float:right;
+    /*margin-left: 76.7%;*/
+}
+.clearspace{
+    clear:both;
+}
+.closebtn{
+    float: right;
+    margin-top: -1%;
+    margin-right: .8%; 
+}
+.newshipto_info{
+    font-size: 0.99rem;
+    width: 90%;
+    margin: 0px auto 20px;
+}
+.deletebtn{
+    justify-content: flex-end;
+    margin-right: 5px;
+    margin-top: 5px;
+    display: flex;
+}
+.btn_container{
+    display: flex;
+    padding: 1% 5% 1% 0;
+    width:100%;
+}
+.savecontact{
+    justify-content: center;
+}
+
+.Contact_add {
+    display: none;
+}
+
+.Contact_add1 {
+    display: block !important;
+}
+.line, .linechange, .linechangebt{	
+    width: 90px !important;  
+}
+
+/*.container{
+    width: 100%;
+    border: 1px solid #bfbfbf;
+    background: #fff;
+    margin: 25px auto 50px;
+}     
+.Contact_Aff_Container{
+    width: 100%;
+    border: 1px solid #bfbfbf;
+    background: #fff;
+    margin: 0 auto 30px;   
+}
+.Fields_block_add, .Checkbox_Fields_add, .Checkbox_Fields_update{
+    width:90%;
+    border: solid 1px  darkgoldenrod;
+    margin: 2% auto;
+    padding: 20px 9px;
+}
+.Fblock1, .chkbox_grp{
+    display:flex;
+    flex-wrap:wrap;
+}
+.inputbox{
+    margin: 2% 2.3% 0;
+}
+.chktext1{
+    font-size: 1rem;    
+}
+.flagtxt{
+    font-size: 1rem;
+    padding: 1% 2.5%;
+}
+.chktable{
+    margin :2% 2%;
+}
+.Fields_block_update{
+    width:90%;
+    border: solid 1px  darkgoldenrod;
+    margin: 2% auto;
+    padding: 20px 9px;
+    display:flex;
+    flex-wrap:wrap;
+}*/

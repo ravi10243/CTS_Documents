@@ -1,0 +1,460 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="AGN_SPARK_TermsOfUse" access="global" >
+	 <aura:attribute name="AGNSPARKImage" type="object"/>
+
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:html tag="style">
+            
+
+/* --------------------- Banner Section Starts ------------------------------------------ */
+.container-fluid{
+        padding: 0px;
+        }
+#bannerTOU{
+	height: 980px;
+    margin: 0px !important;
+}
+.row{
+        	margin:0px !important;
+        }   
+#bannerImageMobile{
+    display: none;
+}
+#bannerContentTOU{
+	background-color: #000000;
+}
+#Group_88{
+    top:48%;
+}
+#titleTOU{
+	white-space: nowrap;
+    text-align: left;
+    font-family: Beatrice-light;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 50px;
+    color: #ffffff;
+    padding: 451px 105px;
+}
+#clearFloat{
+	clear: both;
+}
+
+
+/* ---------------------- Banner Section Ends ---------------------------- */
+
+/* ---------------------- Content Section Starts ------------------------- */
+#contentTOU{
+	padding: 115px 115px;
+}
+#bannerImageMobile img{
+    width: 100%;
+    height: 100%;
+}
+#contentHeadTOU{
+	text-align: center;
+    font-size: 40px;
+    font-family: Beatrice-light;
+    margin:0 auto;
+    padding-top: 25px;
+    padding-bottom: 81px;
+    color: rgba(167,117,110,1);
+}
+.contentQuestion{
+	text-align: left;
+    font-size: 32px;
+    font-family: Beatrice-light;
+	color: rgba(167,117,110,1);
+	margin-bottom: 0.2rem;
+    padding-top:15px;
+    letter-spacing:1.2px;
+}
+.contentAnswer{
+	text-align: left;       
+    color: #000000;
+    font:normal normal 300 21px/40px Neue_Haas_Unica_Pro-light;        
+    letter-spacing:1.2px;
+    padding-bottom:15px;
+}
+
+#TOUquerySection{
+	padding: 70px;
+    background-color:#F5F5F5;
+    margin-top: 155px; 
+    width:824px;    
+}
+#AccessContent{
+        font-family:'Neue_Haas_Unica_Pro-bold';
+        }
+
+#Address,#AddressTitle{
+        /*font: normal normal 300 30px/40px Beatrice;*/
+		font-family: Beatrice-light;
+		font-size: 30px;
+		
+}
+/* ---------------------- Content Section ends ------------------------- */
+
+@media screen and (max-width: 1620px) and (min-width: 1250px) {
+#contentTOU{
+    padding:75px;
+}
+.contentAnswer{
+    font:normal normal 300 15px/28px Neue_Haas_Unica_Pro-light; 
+    padding-bottom:0px;
+}
+.contentQuestion{
+    font-size: 24px;
+}
+#titleTOU{
+    padding: 351px 80px;
+    font-size: 35px;
+}
+#bannerTOU{
+    height: 765px;
+}
+#Group_88{
+    top:46%;
+}
+#contentHeadTOU{
+	padding-bottom:40px;
+}
+#TOUquerySection{
+        margin-top: 90px;
+    width: 600px;
+    padding: 50px;
+}
+#AddressTitle{      
+     	/*font: normal normal 300 28px/30px Beatrice; */   
+			font-family: Beatrice-light;
+		font-size: 28px;
+    }    
+    #Address{      
+     	/*font: normal normal 300 25px/28px Beatrice; */  
+			font-family: Beatrice-light;
+		font-size: 25px;
+    }       
+#AccessContent{
+        font-family:'Neue_Haas_Unica_Pro-bold';
+        }
+
+              
+}
+
+/* laptop/tablet View starts----------------------------------------- */
+@media screen and (max-width: 1249px) and (min-width: 992px) {            
+        .row{
+        margin:0px !important;
+        }
+    #contentTOU{
+        padding:39px;
+    }
+    .contentAnswer{
+        font:normal normal 300 14px/26px Neue_Haas_Unica_Pro-light;
+        padding-bottom:0px;
+    }
+    .contentQuestion{
+        font-size: 17px;
+    }
+    #titleTOU{
+        padding: 351px 39px;
+        font-size:33px;
+    }
+    #bannerTOU{
+        height: 765px;
+    }
+    #Group_88{
+        top:45%;
+    }
+    #TOUquerySection{
+    	margin-top: 295px;
+    	width: 445px;
+        padding: 40px;
+	}  
+    #AddressTitle{      
+     	/*font: normal normal 300 27px/25px Beatrice; */
+			font-family: Beatrice-light;
+		font-size: 27px;
+    }    
+    #Address{      
+     	/*font: normal normal 300 23px/25px Beatrice;   */
+			font-family: Beatrice-light;
+		font-size: 23px;
+    }
+    #AccessContent{
+    	font-family:Neue_Haas_Unica_Pro-bold;
+    }
+}
+/* laptop/tablet View ends----------------------------------------- */
+
+
+/* tablet/mobile View starts----------------------------------------- */
+
+    @media screen and (max-width: 991px) and (min-width: 600px) {
+        .row{
+        margin:0px !important;
+        }        
+        #contentTOU{
+            padding:55px;
+            position: relative;
+        }
+        #bannerImageTOU{
+            display:none;
+        }
+        #bannerImageMobile{
+            padding:0px;
+            display: block;
+        }
+        #contentRightTOU{
+       		padding-left : 15px !important;    
+    	}
+        #contentLeftTOU{
+          padding-right :0px !important;    
+        } 
+        
+        .contentAnswer{
+           font:normal normal 300 19px/28px Neue_Haas_Unica_Pro-light;
+        	padding-bottom:0px;
+        }
+        .contentQuestion {
+            font-size: 28px;
+            width: 80%;
+            line-height: 40px;
+        padding-top:0px;
+        }
+      
+        #bannerTOU{
+            height:100%;
+        }
+        #Group_88{
+            display: none;
+        }
+        #Group_88Mobile{
+            display: block;
+        }
+        #titleTOU {
+            padding: 201px 39px;
+            text-align: left;
+            font-size: 36px;
+        }
+        #TOUquerySection{
+            display:none;
+        }
+        #TOUquerySectionMobile{
+            display: block;
+        } 
+        #TOUquerySectionMobile {
+        margin: 0px;
+        width: 100%;
+        padding: 0px;
+    	}
+        #TOUquerySectionMobile div p{
+            text-align: center;
+        }               
+        #Address{
+  			padding-top: 25px;    
+    		padding-bottom: 10px;
+    		line-height: 1.8;
+			font-family: Beatrice-light;
+			font-size: 28px;
+		}
+     	#AddressTitle{
+        font-size:30px;
+        padding-top:30px;
+        color: rgba(167,117,110,1);
+		}
+        #AccessContent{
+        font-family:Neue_Haas_Unica_Pro-light;
+        }
+        }
+    /* tablet/mobile View ends----------------------------------------- */
+
+/* mobile View starts----------------------------------------- */
+@media screen and (max-width: 600px) and (min-width: 300px) {
+ .row{
+        margin:0px !important;
+        }
+       
+    #bannerImageTOU{
+            display:none;
+    }
+    #bannerImageMobile{
+            padding:0px;
+            display: block;
+    }    
+    #contentTOU{
+        padding:30px;
+        position: relative;
+    }       
+    #contentRightTOU{
+       padding-left : 15px !important;    
+    }
+    #contentLeftTOU{
+      padding-right :0px !important;    
+    }    
+    
+    .contentAnswer{
+        font:normal normal 300 16px/25px Neue_Haas_Unica_Pro-light;
+        letter-spacing:0px;
+        padding-bottom:0px;
+    }
+    .contentQuestion {
+        font-size: 21px;
+        width: 80%;
+        line-height: 31px;
+        letter-spacing:0px;
+    }   
+    #bannerTOU{
+        height:100%;
+    }
+    #Group_88{
+        display: none;
+    }
+    #Group_88Mobile{
+        display: block;
+    }
+    #titleTOU {
+        padding: 151px 25px;
+        text-align: left;
+        font-size: 35px;
+    }
+    #TOUquerySection{
+        display:none;
+    } 
+    #TOUquerySectionMobile{
+        display: block;
+    } 
+    #TOUquerySectionMobile {
+        margin: 0px;
+        width: 100%;
+        padding: 0px;
+    }
+    #TOUquerySectionMobile div p{
+        text-align: center;
+    }
+    #Address{
+    padding-top: 25px;    
+    padding-bottom: 10px;
+    line-height: 1.8;
+    font:normal normal 300 20px/35px Neue_Haas_Unica_Pro-light;       
+}
+     #AddressTitle{
+        font-size:30px;
+        padding-top:30px;
+        color: rgba(167,117,110,1);
+}
+ 	#AccessContent{
+        font-family:Neue_Haas_Unica_Pro-light;
+        }
+}
+/*mobile View ends----------------------------------------- */
+        
+        
+    </aura:html>
+    
+    <div id="bannerTOU" class="row">
+		<div id="bannerContentTOU" class="col-sm-12 col-md-12 col-lg-5 col-xl-5" >
+			<div id="titleTOU">{!$Label.c.AGN_SPARK_Terms_Of_Use_Title }</div>
+		</div>
+		<div id="bannerImageTOU" class="col-sm-12 col-md-12 col-lg-7 col-xl-7">
+			<div id="Group_88">
+                    <a aura:id="facebook" id = "facebook" class="facebook" target="_blank" href="https://www.facebook.com/AllerganSparkUK/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-facebook" viewBox="0.562 0.562 28.095 28.043">
+                          <path id="Icon_awesome-facebook" d="M 28.65703392028809 14.66943073272705 C 28.65703392028809 6.876489162445068 22.36974906921387 0.5624998807907104 14.60976696014404 0.5624998807907104 C 6.849785327911377 0.5624998807907104 0.5625001192092896 6.876489162445068 0.5625001192092896 14.66943073272705 C 0.5625001192092896 21.71038436889648 5.699381828308105 27.54655647277832 12.41488075256348 28.60571670532227 L 12.41488075256348 18.74736022949219 L 8.84642219543457 18.74736022949219 L 8.84642219543457 14.66943073272705 L 12.41488075256348 14.66943073272705 L 12.41488075256348 11.561354637146 C 12.41488075256348 8.026090621948242 14.51064205169678 6.073303699493408 17.72055625915527 6.073303699493408 C 19.25782585144043 6.073303699493408 20.86533164978027 6.348616123199463 20.86533164978027 6.348616123199463 L 20.86533164978027 9.818466186523438 L 19.09356498718262 9.818466186523438 C 17.34898567199707 9.818466186523438 16.80465126037598 10.90606498718262 16.80465126037598 12.02153778076172 L 16.80465126037598 14.66943073272705 L 20.70050430297852 14.66943073272705 L 20.07743835449219 18.74736022949219 L 16.80465126037598 18.74736022949219 L 16.80465126037598 28.60571670532227 C 23.52015495300293 27.54655647277832 28.65703392028809 21.71038436889648 28.65703392028809 14.66943073272705 Z">
+                          </path>
+                         </svg>
+                     	]]>
+                    </a>                                
+                  <!--  <a aura:id="twitter" id = "twitter" class="twitter">
+                        <![CDATA[
+                         <svg class="Icon_awesome-twitter" viewBox="0 3.381 34.496 27.948">
+                          <path id="Icon_awesome-twitter" d="M 30.94974136352539 10.34597492218018 C 30.97163772583008 10.65164279937744 30.97163772583008 10.9573802947998 30.97163772583008 11.2630500793457 C 30.97163772583008 20.58637237548828 23.85805320739746 31.32903099060059 10.85649394989014 31.32903099060059 C 6.850955963134766 31.32903099060059 3.130007743835449 30.17174911499023 -9.5367431640625e-07 28.16305351257324 C 0.5691098570823669 28.228515625 1.116256594657898 28.25035667419434 1.707264065742493 28.25035667419434 C 5.012311458587646 28.25035667419434 8.05479907989502 27.13682556152344 10.48438549041748 25.23721313476562 C 7.376272678375244 25.17168045043945 4.77158260345459 23.14108085632324 3.87415623664856 20.34623336791992 C 4.311954975128174 20.41169548034668 4.749685764312744 20.45537948608398 5.209380626678467 20.45537948608398 C 5.844114303588867 20.45537948608398 6.478915214538574 20.36800575256348 7.069854736328125 20.21524238586426 C 3.830430746078491 19.56014633178711 1.400778412818909 16.72168159484863 1.400778412818909 13.2936544418335 L 1.400778412818909 13.20635032653809 C 2.341930150985718 13.73038291931152 3.436425447463989 14.05789566040039 4.596409320831299 14.10151386260986 C 2.692142009735107 12.83508205413818 1.44457221031189 10.67348480224609 1.44457221031189 8.227993011474609 C 1.44457221031189 6.917941093444824 1.794716358184814 5.717039108276367 2.407620429992676 4.668971061706543 C 5.887839794158936 8.948548316955566 11.11911773681641 11.74332714080811 16.98506355285645 12.04906463623047 C 16.87565040588379 11.52503108978271 16.80995750427246 10.97922134399414 16.80995750427246 10.4333438873291 C 16.80995750427246 6.546741485595703 19.96186447143555 3.38076376914978 23.87981605529785 3.38076376914978 C 25.91539573669434 3.38076376914978 27.75397491455078 4.23231029510498 29.04540252685547 5.607890129089355 C 30.64318466186523 5.302221298217773 32.17534255981445 4.712657928466797 33.53246688842773 3.904798030853271 C 33.00708389282227 5.542428016662598 31.89082527160645 6.918008804321289 30.42435646057129 7.791332244873047 C 31.84709930419922 7.638564109802246 33.22604751586914 7.245454788208008 34.49551391601562 6.699644088745117 C 33.53260040283203 8.097002029418945 32.32868957519531 9.341523170471191 30.94974136352539 10.34597206115723 Z">
+                          </path>
+                         </svg>
+                     ]]>
+                    </a>   -->             
+                    <a aura:id="instagram" id ="instagram" class="instagram" target="_blank" href="https://www.instagram.com/allergansparkuk/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-instagram" viewBox="-0.005 2.238 27.89 27.888">
+                          <path id="Icon_awesome-instagram" d="M 13.94292449951172 9.031681060791016 C 9.985723495483398 9.031681060791016 6.793830394744873 12.22409343719482 6.793830394744873 16.18193817138672 C 6.793830394744873 20.1397819519043 9.985723495483398 23.33219528198242 13.94292449951172 23.33219528198242 C 17.90012359619141 23.33219528198242 21.09201431274414 20.13977813720703 21.09201431274414 16.18193817138672 C 21.09201431274414 12.22409439086914 17.90012359619141 9.031681060791016 13.94292449951172 9.031681060791016 Z M 13.94292449951172 20.83053588867188 C 11.38567733764648 20.83053588867188 9.295080184936523 18.74582290649414 9.295080184936523 16.18193626403809 C 9.295080184936523 13.6180477142334 11.37945556640625 11.5333366394043 13.94292449951172 11.5333366394043 C 16.50639343261719 11.5333366394043 18.59076690673828 13.6180477142334 18.59076690673828 16.18193626403809 C 18.59076690673828 18.74582290649414 16.50017356872559 20.83053588867188 13.94292449951172 20.83053588867188 Z M 23.05195045471191 8.739198684692383 C 23.05195045471191 9.666430473327637 22.30530548095703 10.40697002410889 21.38445091247559 10.40697002410889 C 20.45736885070801 10.40697002410889 19.71695327758789 9.66020679473877 19.71695327758789 8.739198684692383 C 19.71695327758789 7.818192481994629 20.46359443664551 7.071429252624512 21.38445091247559 7.071429252624512 C 22.30530548095703 7.071429252624512 23.05195045471191 7.818192481994629 23.05195045471191 8.739198684692383 Z M 27.78690147399902 10.43186283111572 C 27.68112754821777 8.197796821594238 27.17092132568359 6.218875408172607 25.5345344543457 4.588443279266357 C 23.90436363220215 2.958010911941528 21.9257640838623 2.447722434997559 19.69206237792969 2.335709095001221 C 17.38991928100586 2.205025196075439 10.48970603942871 2.205025196075439 8.187561988830566 2.335709095001221 C 5.960081100463867 2.441499948501587 3.981481075286865 2.951788425445557 2.345092296600342 4.582220077514648 C 0.708703339099884 6.212652206420898 0.2047198414802551 8.191572189331055 0.09272374957799911 10.42563819885254 C -0.03793852031230927 12.72815704345703 -0.03793852031230927 19.62948989868164 0.09272374957799911 21.93201065063477 C 0.1984979659318924 24.16607666015625 0.7087030410766602 26.14500045776367 2.345092296600342 27.77542877197266 C 3.981481075286865 29.40586090087891 5.953859329223633 29.9161491394043 8.187561988830566 30.02816009521484 C 10.48970603942871 30.15884399414062 17.38991928100586 30.15884399414062 19.69206237792969 30.02816009521484 C 21.92576599121094 29.92237091064453 23.90436553955078 29.41208267211914 25.5345344543457 27.77542877197266 C 27.16470146179199 26.14499282836914 27.67490577697754 24.16607284545898 27.78690147399902 21.93201065063477 C 27.91756439208984 19.62948989868164 27.91756439208984 12.73437881469727 27.78690147399902 10.43186092376709 Z M 24.81277847290039 24.40254974365234 C 24.32746124267578 25.62226486206055 23.38793563842773 26.56193923950195 22.16220092773438 27.05355834960938 C 20.32670974731445 27.78165435791016 15.97130012512207 27.61362838745117 13.94292449951172 27.61362838745117 C 11.91454792022705 27.61362838745117 7.552917003631592 27.77542877197266 5.723643779754639 27.05355834960938 C 4.504129886627197 26.56816101074219 3.564606189727783 25.62848663330078 3.073067426681519 24.40254974365234 C 2.345091819763184 22.5667610168457 2.513086318969727 18.21064376831055 2.513086318969727 16.18193817138672 C 2.513086318969727 14.15323162078857 2.351313829421997 9.790890693664551 3.073067426681519 7.961321353912354 C 3.55838418006897 6.741610050201416 4.497908115386963 5.801933765411377 5.723643779754639 5.310314178466797 C 7.55913782119751 4.582221031188965 11.91454792022705 4.750241756439209 13.94292449951172 4.750241756439209 C 15.97130012512207 4.750241756439209 20.33293151855469 4.588443279266357 22.16220092773438 5.310314178466797 C 23.38171577453613 5.795710563659668 24.32123947143555 6.735385894775391 24.81277847290039 7.961321353912354 C 25.54075241088867 9.797114372253418 25.37276077270508 14.15323066711426 25.37276077270508 16.18193817138672 C 25.37276077270508 18.21064376831055 25.54075241088867 22.57298278808594 24.81277847290039 24.40254974365234 Z">
+                          </path>
+                         </svg>
+                    	]]>
+                    </a> 
+                   
+                </div>
+		</div>
+        
+		<div id="bannerImageMobile" class="col-sm-12 col-md-12 col-lg-0 col-xl-0">
+            <img src="{!$Resource.SPARK_Rebranding_PageLayout +'/images/AllerganAesthetics_Photography_29@2x.jpg'}"/>
+            
+		</div>
+      
+	</div>
+	<div id="contentTOU" class="row">
+		<div id="contentLeftTOU" class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="padding-right: 38px;padding-top: 10px;">
+			<div id="TOUquestion1">
+			<p class="contentAnswer"><span id="AccessContent">Access to and use of this Web site are subject to the following terms and conditions and all applicable laws. If you do not agree with these terms of use, please do not use this Web site. Because we may revise the terms of use from time to time, you should review them periodically.</span></p>
+			</div>
+			<div id="TOUquestion2">
+				<p class="contentQuestion">Copyrights</p>
+				<p class="contentAnswer">You should assume that all contents of the Web site are copyrighted unless otherwise noted and may not be used except as provided herein and without our express written permission. Except as expressly provide above, nothing contained herein shall be construed as conferring any license or right under any Allergan Aesthetics copyright.</p>
+			</div>
+			<div id="TOUquestion3">
+				<p class="contentQuestion">Trademarks</p>
+				<p class="contentAnswer">All product names, logos, and service marks displayed on the Web site that are identified by ® or ™ or appearing in type form different from that of the surrounding text (collectively, the "Trademarks") are registered or unregistered trademarks owned by or licensed to Allergan Aesthetics or our affiliates, unless otherwise identified as being owned by another entity. Nothing contained herein shall be construed as conferring by implication, estoppel, or otherwise any license or right, either express or implied, under any patent or Trademark of Allergan Aesthetics or any third party. No use of any Trademark may be made without our prior written authorization, except to identify the product or services of the company.</p>
+			</div>
+			<div id="TOUquestion4">
+				<p class="contentQuestion">User Responsibility</p>
+				<p class="contentAnswer">Each person assumes full responsibility and all risks arising from use of the Web site. IN NO EVENT SHALL WE, OR ANY OF OUR AFFILIATES, AND/OR THEIR RESPECTIVE OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, REPRESENTATIVES, INFORMATION PROVIDERS, AND LICENSORS AND/OR THEIR RESPECTIVE HEIRS AND ASSIGNS BE LIABLE FOR ANY DAMAGES OF ANY KIND OR NATURE, INCLUDING, BUT NOT LIMITED TO, DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, EXEMPLARY, SPECIAL (INCLUDING LOSS OF PROFIT), PUNITIVE, OR OTHER DAMAGES ARISING FROM OR IN CONNECTION WITH THE EXISTENCE OR USE OF THE WEB SITE, REGARDLESS OF WHETHER ALLERGAN AESTHETICS OR ANY OF THE OTHER ENTITIES OR PERSONS LISTED ABOVE HAS BEEN ADVISED AS TO THE POSSIBILITY OF SUCH DAMAGES. This includes damages to, or for viruses that may infect your computer equipment. Without limiting the foregoing, everything on the Web site is provided to you "AS IS" AND WE MAKE NO REPRESENTATIONS OR WARRANTIES OF ANY KIND OR NATURE WITH RESPECT TO THIS WEB SITE. WE HEREBY DISCLAIM ALL REPRESENTATIONS AND WARRANTIES, WHETHER EXPRESS OR IMPLIED, CREATED BY LAW, CONTRACT OR OTHERWISE, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTIBILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, OR NON-INFRINGEMENT. WE MAKE NO REPRESENTATION OR WARRANTY THAT ACCESS TO THE WEB SITE WILL BE AVAILABLE ON A TIMELY BASIS, WILL BE UNINTERRUPTED, OR THAT THE INFORMATION CONTAINED ON THE WEB SITE WILL BE TIMELY OR ERROR FREE. Please note that some jurisdictions may not allow the exclusion of implied warranties, so some of the above exclusions may not apply to you. Check your local laws for any restriction s or limitations regarding the exclusion of implied warranties.</p>
+			</div>
+			
+		</div>
+		<div id="contentRightTOU" class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="padding-right: 10px;padding-left: 40px;">
+			<div id="TOUquestion5">
+				<p class="contentQuestion" style="padding-top: -21px;">Medical Advice</p>
+				<p class="contentAnswer">No information contained on this Web site is provided with the intention to give medical advice or instructions on the accurate use of our products. We cannot answer unsolicited e-mails requesting personal medical advice; visitors should always consult a health care professional.</p>
+			</div>
+			<div id="TOUquestion6">
+				<p class="contentQuestion">Countries</p>
+				<p class="contentAnswer">This Web site and its contents are intended for use by UK residents only. Nothing contained on the Web site should be construed as solicitation or promotion for any product or for the use of any product in a way which is not authorized by the country in which the reader is physically located. This Web site provides information about products or uses that may not be available in particular countries. Trademarks used for certain products may differ in specific countries. Some of the products mentioned may in certain countries be approved or cleared by regulatory authorities for sale or use with different indications, dosages, and restrictions.</p>
+			</div>
+			<div id="TOUquestion7">
+				<p class="contentQuestion">Liability</p>
+				<p class="contentAnswer">So far as permitted by applicable laws, we do not accept, and expressly disclaim, any liability for any direct, incidental, consequential, indirect, or punitive loss or damage arising out of access to, use of, or inability to use this Web site, or any errors or omissions in the content thereof. Except as may otherwise be required by law, we have no duty to update our Web site.</p>
+			</div>
+			<div id="TOUquestion8">
+				<p class="contentQuestion">Forward-Looking Statements</p>
+				<p class="contentAnswer">This Web site contains information that is forward-looking and involves risks and uncertainties, including, without limitation, risks and uncertainties of research and development, clinical development, regulatory approvals and the regulatory process, our reliance on third-party manufacturers, product commercialization, competition, patents, product liability, and third party reimbursement, and other risks and uncertainties detailed from time to time in our periodic reports filed with the Securities and Exchange Commission. Actual results may differ materially from such forward-looking information.</p>
+			</div>
+			<div id="TOUquerySection" >
+				<div>
+                    <p id="AddressTitle" class="contentQuestion">Spark UK<br/><br/></p>
+                    <p id="Address" class="contentAnswer">Allergan Aesthetics<br/>
+                        Marlow International<br/>
+                    The Parkway, Marlow, Buckinghamshire<br/>
+                    SL7 1YL, UK<br/><br/></p>	
+                    <p id="Address" class="contentAnswer">Telephone: 01204 440 292<br/>
+					Email: spark@allergan.com</p>
+				
+				</div>
+				</div>            		
+			
+		</div>
+			
+	
+	</div>
+    <div id="TOUquerySectionMobile" class="row" style="padding-bottom: 50px;">               
+			<div class="col-sm-12">
+            <p id="AddressTitle">Spark UK<br/></p>
+            <p id="Address">Allergan Aesthetics<br/>
+                Marlow International<br/>
+                The Parkway, Marlow, Buckinghamshire<br/>
+                SL7 1YL, UK<br/></p>	
+            <p id="Address">Telephone: +353 57 8684800<br/>
+			Fax: +353 57 8684800</p>		
+			</div>			
+	</div>
+    <c:AGN_SPARK_ZincCode pageName="TermsofusePage"/>
+</aura:component>

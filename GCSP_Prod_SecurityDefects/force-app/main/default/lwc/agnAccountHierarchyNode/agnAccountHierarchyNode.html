@@ -1,0 +1,88 @@
+<!--
+@FileName:          agnAccountHierarchyNode.html 
+@Version:           1.0
+@Author:            Ayush Basak (ayush.basak@cognizant.com)
+@Purpose:           This component is created to act as the individual nodes on the account hierarchy tree
+@ Change history:   04.01.2021 / Ayush Basak / Created the file.
+-->
+
+<template>
+    <!-- Hidden display of accountId, this is to ensure rendered callback is triggered on accountId is 
+        set from parent component-->
+    <!--div class="slds-hide">{accountId} {hierarchy} {buttonConfig} {tableConfigs}</div-->
+
+    <!-- Spinner to display before server side data is recieved -->
+    <template if:false={rendered}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+
+    <!-- Once data is recieved, display the table -->
+    <template if:true={rendered}>
+        <div class={nodeStyle}>
+            <!-- Once data is recieved, display the table -->
+            <template if:true={record}>
+                <!-- Setting up the accordion to display to new level for the node to reside on 
+                    Active sections are determined based on the whether the node is in direct line from Top HCO 
+                    to the account for which the hierarchy is displayed -->
+                <lightning-accordion allow-multiple-sections-open 
+                                     onsectiontoggle={handleSectionToggle} 
+                                     active-section-name={hierarchy}
+                                     class="accordion slds-p-right_none">
+                                     
+                    <!-- Accordion section containing all the details of the node account and its children -->
+                    <lightning-accordion-section name={record.account.Id} 
+                                                 label={record.account.Name} 
+                                                 class="slds-p-right_none">
+
+                        <template for:each={buttonConfig} for:item="button">
+                            <div key={button.sObject} slot="actions" if:true={button.visible}>
+                                <button  
+                                    onclick={showRequest} 
+                                    data-object={button.sObject}
+                                    class="action-buttons slds-button slds-m-right_small" 
+                                    if:false={button.toggled}>
+                                    {button.onLabel}
+                                </button>
+                                <button 
+                                    onclick={hideRequest} 
+                                    data-object={button.sObject}
+                                    class="action-buttons slds-button slds-m-right_small" 
+                                    if:true={button.toggled}>
+                                    {button.offLabel} 
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- Child Component to display datatable for selected sObject child of current account -->
+                        <template if:true={isDatatableVisible} >
+                            <c-agn-account-hierarchy-datatable account-id={record.account.Id} 
+                                                               s-object-type={selectedObject}
+                                                               column-input={selectedColumn}
+                                                               schema-input={selectedFlatteningSchema}>
+                            </c-agn-account-hierarchy-datatable>
+                        </template>
+
+                        <!-- Loads the children records only if the account node is expanded -->
+                        <template if:true={isExpanded}>
+                            <!-- Recursively calls itself if children are present on the node -->
+                            <template if:true={record.children}>
+                                <template for:each={record.children} for:item="child">
+                                    <c-agn-account-hierarchy-node key={child} 
+                                                            account-id={child} 
+                                                            hierarchy={hierarchy} 
+                                                            record-id={recordId} 
+                                                            table-configs={tableConfigs}>
+                                    </c-agn-account-hierarchy-node>
+                                </template>
+                            </template>
+                        </template>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </template>
+        </div>
+        <!-- Message to be displayed if something went wrong while fetching the data -->
+        <template if:true={wiredError}>
+            {label.errorMessage}{wiredError}
+        </template>
+    </template>
+</template>

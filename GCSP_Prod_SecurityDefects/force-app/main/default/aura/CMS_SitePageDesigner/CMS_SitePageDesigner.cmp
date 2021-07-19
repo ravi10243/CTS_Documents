@@ -1,0 +1,48 @@
+<aura:component implements="flexipage:availableForAllPageTypes" 
+                access="global" controller="MDFormBuilderController">
+	
+    <!--Attributes-->
+    <aura:attribute name="formId" type="String"/>
+    <aura:attribute name="stepId" type="String"/>
+    
+    <aura:attribute name="currentSitePage" type="Object"/>
+    
+    <aura:attribute name="showPageTop" type="Boolean" />
+    <aura:attribute name="showPageHeader" type="Boolean" />
+    <aura:attribute name="showLanguageSelector" type="Boolean" />
+    <aura:attribute name="showPageFooter" type="Boolean" />
+    <aura:attribute name="showPageBottom" type="Boolean" />
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:method name="refreshOnStepChange">
+        <aura:attribute name="selectedStepId" type="String"/>
+    </aura:method>
+    
+    <!--Component Body-->
+    <aura:if isTrue="{!v.currentSitePage != null}">
+        <aura:if isTrue = "{!v.showLanguageSelector == true}">
+        	<c:F3_PageLanguageSelector renderMode="DESIGNER"/>
+        </aura:if>
+        <aura:if isTrue = "{!v.showPageTop == true}">
+        	<c:F3_SitePageTop renderMode="DESIGNER" />
+        </aura:if>
+        <aura:if isTrue = "{!v.showPageHeader == true}">
+        	<c:F3_SitePageHeader formId="{v.formId}" currentSitePage="{!v.currentSitePage}"/>
+        </aura:if>
+        <aura:if isTrue = "{!v.currentSitePage}">
+        <c:F3_SitePageForm renderMode="DESIGNER"
+                           currentSitePage="{!v.currentSitePage}" />
+        </aura:if>
+        <aura:if isTrue = "{!v.showPageFooter == true}">
+        	<c:F3_SitePageFooter  renderMode="DESIGNER"
+                                 currentSitePage="{!v.currentSitePage}" />
+        </aura:if>
+        <aura:if isTrue = "{!v.showPageBottom == true}">
+        	<c:F3_SitePageBottom  renderMode="DESIGNER"
+                                 bgColor="#ffffff"/>
+        </aura:if>
+    </aura:if>
+    
+</aura:component>

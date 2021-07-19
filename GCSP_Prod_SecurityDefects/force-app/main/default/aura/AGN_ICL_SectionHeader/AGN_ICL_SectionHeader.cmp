@@ -1,0 +1,6 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+	<aura:attribute name="SectionHeaderCustomLabel" type="String"/>
+    <aura:attribute name="SectionHeaderValue" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    {!v.SectionHeaderValue}
+</aura:component>

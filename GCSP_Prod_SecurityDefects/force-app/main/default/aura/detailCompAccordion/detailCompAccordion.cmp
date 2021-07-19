@@ -1,0 +1,81 @@
+<aura:component >
+    <aura:attribute name = "recordId" type = "String" />
+    <aura:attribute name = "accordionLabel" type = "String" />
+    <aura:attribute name = "selectedChildRecordId" type = "String" />
+    <aura:attribute name="elementWrapper" type="Object"/> 
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="currentStepType" type="String"/>
+    <aura:attribute name="childObjectAPIName" type="String"/>
+    <aura:attribute name="relationshipFieldAPIName" type="String"/>
+    <aura:attribute name="parentRecordId" type="String"/>
+    <aura:attribute name="mdChildObjectOneConfig" type="Object"/>
+    <aura:attribute name="listFieldConfig" type="List" />
+    <aura:attribute name="addNewMode" type="Boolean" default = "false"/>
+        
+        
+    <div class="slds-box slds-box_small">
+        <p>
+            
+            {!v.accordionLabel}
+            
+            
+            <div class = "slds-float_left slds-m-horizontal_x-large">
+                <lightning:buttonIcon variant="destructive" iconName="utility:delete"  size="small" value="{!recordId}" title="Delete Record" onclick="{!c.OnDelete}"/>
+                <lightning:buttonIcon variant="success" iconName="utility:edit"  size="small" name="{!v.recordId}"  value="{!v.recordId}" title="Edit Record" onclick="{!c.OnEdit}"/>
+                
+            </div>
+        </p>
+    </div>
+        
+    	<div class="slds-p-around_small">
+            <!-- Show Record Edit Form when selected -->
+            <aura:if isTrue="false">
+                <lightning:recordEditForm 
+                                                          onsubmit="{!c.onFormSubmit}"
+                                                          onsuccess="{!c.onFormSubmitSuccess}"
+                                                          onload="{!c.onFormLoad}"
+                                                          onerror="{!c.onFormSubmitError}"
+                                                          recordId="{!v.recordId}"
+                                                          aura:id="editFormRelatedRecordMultiple"
+                                                          objectApiName="Backlog_Items__c">
+                                    <lightning:messages />
+                                    <aura:iteration items="{!v.listFieldConfig}" var="elementWrapper">
+                                        <aura:if isTrue="{!elementWrapper.IsHidden}">
+                                            <aura:if isTrue="{!elementWrapper.IsHidden==true}">
+                                                <c:F3_CMPChildObjectFieldHidden 
+                                                                                aura:id="childobjectfieldhidden" 
+                                                                                elementWrapper="{!elementWrapper}"/>
+                                            </aura:if>
+                                            <aura:if isTrue="{!elementWrapper.IsHidden==false}">
+                                                <c:F3_CMPChildObjectField 
+                                                                          aura:id="childobjectfield" 
+                                                                          elementWrapper="{!elementWrapper}"
+                                                                          currentStepType="{!v.currentStepType}"
+                                                                          renderMode="{!v.renderMode}"/>
+                                            </aura:if>
+                                            <aura:set attribute="else">
+                                                <c:F3_CMPChildObjectField 
+                                                                          aura:id="childobjectfield" 
+                                                                          elementWrapper="{!elementWrapper}"
+                                                                          currentStepType="{!v.currentStepType}"
+                                                                          renderMode="{!v.renderMode}"/>
+                                            </aura:set>  
+                                        </aura:if>    
+                                    </aura:iteration>
+                                    <aura:if isTrue="{!v.recordId}">
+                                        <lightning:outputField aura:id="relationshipFieldAPIName" 
+                                                               fieldName="{!v.relationshipFieldAPIName}"  class="slds-hide slds-lookup" variant="label-hidden" />    
+                                    </aura:if>    
+                                    <aura:if isTrue="{!!v.recordId}">
+                                        <lightning:inputField aura:id="relationshipFieldAPIName" 
+                                                              fieldName="{!v.relationshipFieldAPIName}" value="{!v.parentRecordId}"  class="slds-hide slds-lookup" variant="label-hidden"  />  
+                                    </aura:if>
+                                </lightning:recordEditForm>
+                <lightning:notificationsLibrary aura:id="notifLib"/>
+                <div class="slds-align_absolute-center slds-p-top_small">
+                    <lightning:button label="Cancel" title="Cancel" onclick="{!c.OnCloseProperty}" />
+                    <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.OnSubmitFormClick}" />
+                </div>
+            </aura:if>    
+    </div>
+</aura:component>

@@ -1,0 +1,67 @@
+.THIS .check-input-wrap{
+        padding-top: 20px;
+}
+.THIS .check-input label{
+	font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+.THIS .required{
+    color: red;
+}
+.THIS .form-group{
+    margin-top:0 !important;
+}
+.THIS span {
+    color: #2c5596;
+    font-weight: normal;
+}
+.THIS .input-effect input{
+    max-width: none;
+    margin: 20px 0;
+}
+.THIS .input-effect .effect-16 ~ label{
+        top: 30px;
+}
+.THIS .input-effect .effect-16:focus ~ label, .THIS .effect-16 ~ label{
+    top: 12px;
+}
+.THIS .col-md-3{
+    min-height: 57px !important;
+}
+.THIS .Test{
+    color: #FFFF00;
+}
+.THIS .required{
+    color: red;
+}
+.THIS .requiredBorder{
+    border-color: red;
+}
+.THIS .helper_txt{
+    margin-top: 38px;
+    position: relative;
+    float: left;
+    font-size: 10px;
+    margin-left: 10px;
+}
+.THIS .check_input{
+    display: block;
+    float: left;
+    width: 12px;
+    height: 12px;
+}
+.THIS .has-content.effect-16~label{
+    top: 12px;
+}
+.THIS .requiredField{
+    color:red;
+}
+.THIS .uiInput--select.select:not([multiple]){
+    height: 34px;
+    padding-left: 0px;
+    opacity:0.6;
+}
+.THIS .opacity_cls{
+    opacity: 1 !important;
+}

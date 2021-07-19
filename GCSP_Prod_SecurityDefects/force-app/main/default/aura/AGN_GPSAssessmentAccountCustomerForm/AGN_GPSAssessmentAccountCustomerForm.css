@@ -1,0 +1,160 @@
+.THIS .slds-table th {
+    word-wrap: break-word !important;
+}
+.THIS .slds-table td {
+    padding: 4px;
+}
+.THIS .gps-header {
+    text-align: center;
+}
+.THIS .red, .THIS .red:hover {
+    background-color: #ff8c8c !important;
+}
+.THIS .center {
+    text-align: center;
+}
+
+
+/* 3408 */
+.THIS .slds-table_bordered {
+    border-top: none !important;
+}
+.THIS .slds-input {
+    min-width: 150px;
+}
+.THIS .slds-page-header .uiInput {
+    display: inline !important;
+}
+.THIS .gps-header-collapsed {
+    padding: 8px !important;
+}
+/*.THIS .sticky-right {
+    position: absolute !important;
+    z-index: 999 !important;
+}*/
+/*.THIS .formTable tbody, .THIS .formTable thead tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}*/
+/*.THIS .formTable * {
+    box-sizing: border-box;
+}
+.THIS .formTable td {
+    min-width: 100px;
+}*/
+
+/*.THIS .formTable {
+    overflow-x: auto;
+    max-width: 90vw;
+}*/
+.THIS .formTable td, .THIS td span, .THIS td {
+    padding: 4px 10px !important;
+}
+/*.THIS .formTable td a {
+    white-space: nowrap;
+}*/
+.THIS .formTable thead td {
+    text-align: center !important;
+}
+.THIS .formTable td {
+    padding: 0 4px !important;
+    white-space: pre-line !important;
+}
+.THIS .topHeading {
+    color: black;
+}
+.THIS .questionHeading td, .THIS .gps-header-question {
+    /*background-color: #ececec !important;*/
+    color: black;
+    min-width: 150px;
+    text-align: left !important;
+}
+.THIS .questionHeading, .THIS .questionHeading td {
+    border: none;
+}
+.THIS .subHeading {
+    color: gray;
+}
+.THIS .topHeading .gps-header {
+    color: white;
+    cursor: pointer;
+    cursor: hand;
+    text-align: center;
+    white-space: pre-line;
+}
+/*.THIS .questionHeading td:empty, .THIS .gps-header:empty {
+    background-color: white;
+    border:none;
+}*/
+.THIS .gps-subheader-general-info, .THIS .gps-row-general-info {
+    background-color: #dadde0;
+}
+.THIS .gps-subheader-business-size, .THIS .gps-row-business-size {
+    background-color: #98d1f9;
+}
+.THIS .gps-subheader-agn-share, .THIS .gps-row-agn-share {
+    background-color: #e4f3d6;
+}
+.THIS .gps-subheader-treatment, .THIS .gps-row-treatment {
+    background-color: #eadff7;
+}
+.THIS .gps-subheader-secondary-brands, .THIS .gps-row-secondary-brands {
+    background-color: #f9e9de;
+}
+.THIS .gps-subheader-custom-question, .THIS .gps-row-custom-question {
+    background-color: #feece6;
+}
+.THIS .gps-subheader-financial-projection, .THIS .gps-row-financial-projection {
+    background-color: #fce1bf;
+}
+.THIS .gps-row-financial-projection span {
+    white-space: nowrap;
+}
+.THIS .gps-row-general-info {
+    background-color: #f2f3f3;
+    display: table-cell;
+    padding-left: 0;
+    text-align: left !important;
+    word-wrap: break-word !important;
+}
+.THIS .gps-row-general-info select {
+    word-wrap: no-wrap !important;
+}
+.THIS .gps-header-business-size, .THIS .gps-header-business-size:hover {
+    background-color: #0070c0 !important;
+    color: #fff;
+}
+.THIS .gps-header-agn-share, .THIS .gps-header-agn-share:hover {
+    background-color: #93d14a !important;
+    color: #fff;
+}
+.THIS .gps-header-treatment, .THIS .gps-header-treatment:hover {
+    background-color: #cb99fe !important;
+    color: #fff;
+}
+.THIS .gps-header-secondary-brands, .THIS .gps-header-secondary-brands:hover {
+    background-color: #f3b185 !important;
+    color: #fff;
+}
+.THIS .gps-header-custom-question, .THIS .gps-header-custom-question:hover {
+    background-color: #f95826 !important;
+    color: #fff;
+}
+.THIS .gps-header-financial-projection, .THIS .gps-header-financial-projection:hover {
+    background-color: #f59b2a !important;
+    color: #fff;
+}
+.THIS .uiOutputCheckbox, .THIS .slds-checkbox_faux_container, .THIS .slds-checkbox_faux {
+    margin: auto 10px;
+}
+.THIS .slds-checkbox_faux_container .gps-header-business-size {
+    margin: 4px;
+    padding: 4px;
+}
+.THIS .formTable .slds-scope {
+    line-height: 1 !important;
+}
+.THIS .slds-scope .slds-table_bordered, .THIS .slds-scope .slds-table--bordered {
+    border-top: none !important;
+}

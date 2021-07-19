@@ -1,0 +1,42 @@
+.THIS .lex-app-header{
+    background-color:#EAF4F7;
+    font-weight: 1000;
+    height: 55px;
+    
+}
+.THIS .lex-app-body{
+    font-weight: 1000;
+    height: 54px;
+}
+
+.THIS .slds-button_brand {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #1B7CC2;
+    color: rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    transition: border 0.15s linear;
+    border-color: rgb(37, 116, 169);
+}
+.THIS .outer_div{
+    background:white;
+    font-family: Verdana, Geneva, sans-serif;
+    color: #3f3f3f;
+}
+
+.THIS .content_div{
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    background:white;
+}
+.THIS .section_font{
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+    color:white;
+    font-weight: bold;
+}

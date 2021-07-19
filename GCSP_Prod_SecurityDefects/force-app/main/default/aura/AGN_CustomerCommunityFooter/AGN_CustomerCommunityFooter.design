@@ -1,0 +1,4 @@
+<design:component >
+	<design:attribute name="urlPrivacy" label="Privacy URL"/>
+    <design:attribute name="urlConditionUse" label="Condition of Use URL"/>
+</design:component>

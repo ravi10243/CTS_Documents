@@ -1,0 +1,36 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="currentSitePage" type="Object"/> 
+    
+    <aura:if isTrue = "{!v.renderMode == 'COMMUNITY'}">
+        <div style="{!';border-bottom: 1px solid rgb(0, 112, 210); width: 100%;background-color:'+v.bgColor}">
+            <div style = "height: 150px;"> 
+                <div align="center" style="padding: 20px;">
+                    <!--Site Page Footer-->
+                    <p class="footerText">
+                        <lightning:formattedUrl value="www.allergan.com/privacy" label="Privacy Statement"/>
+                    </p>  
+                    <p class="footerText">
+                        <lightning:formattedUrl value="www.allergan.com/privacy/ccpa" label="California Privacy Policy"/>
+                    </p>
+                </div>
+            </div>
+        </div> 
+    </aura:if>
+    <aura:if isTrue = "{!v.renderMode == 'DESIGNER'}">    
+        <div style="{!';border-bottom: 1px solid rgb(0, 112, 210); width: 100%;background-color:'+v.bgColor}">
+            <div style = "height: 150px;"> 
+                <div align="center" style="padding: 20px;">
+                    <!--Site Page Footer - DESIGNER-->
+                    <p class="footerText">
+                        <lightning:formattedUrl value="www.allergan.com/privacy" label="Privacy Statement"/>
+                    </p>  
+                    <p class="footerText">
+                        <lightning:formattedUrl value="www.allergan.com/privacy/ccpa" label="California Privacy Policy"/>
+                    </p>
+                </div>
+            </div>
+        </div> 
+    </aura:if>
+</aura:component>

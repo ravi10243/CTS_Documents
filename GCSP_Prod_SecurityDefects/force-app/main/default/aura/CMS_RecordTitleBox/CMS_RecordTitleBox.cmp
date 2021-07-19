@@ -1,0 +1,35 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global" >
+	
+    <aura:attribute name="box" type="Object" default=""/>
+    <aura:attribute name="boxtitle" type="Object" default=""/>
+    <aura:attribute name="boxaction" type="Object" default=""/>
+    
+    <div>
+        <div class="slds-clearfix">
+            <div class="slds-clearfix">
+                <div class="slds-align_absolute-center slds-float_left box">
+                    <aura:if isTrue="{!v.box}">
+                        {!v.box}
+                    </aura:if>
+                </div>
+                <div class="slds-float_left slds-align_absolute-center boxtitle">
+                    <div class="slds-clearfix">
+                       <div  style="width: 100px;" class="slds-has-flexi-truncate">
+                            <div class="slds-truncate">
+                                <aura:if isTrue="{!v.boxtitle}">
+                                    {!v.boxtitle}
+                                </aura:if>
+                            </div>
+                           </div>                        
+                    </div>
+                </div>
+                <div class="slds-float_right slds-align_absolute-center boxaction">
+                    <aura:if isTrue="{!v.boxaction}">
+                        {!v.boxaction}
+                    </aura:if>                
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

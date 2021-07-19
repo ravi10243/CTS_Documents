@@ -1,0 +1,64 @@
+<aura:component controller="AGN_OAMCountryHeaderController">
+    
+    <aura:attribute name="picklistProvinceOptions" type="AGN_CR_CountryRegionMapping__mdt[]" />
+    <aura:attribute name="selectedProvince" type="String"/>    
+    
+    <aura:attribute name="picklistCountryOptions" type="Country_vod__c[]"/> 
+    <aura:attribute name="picklistCustomerTypeOptions" type="String[]" default="[]"/>
+    <aura:attribute name="picklistSubTypeOptions" type="String[]" default="[]"/>
+    <aura:attribute name="customerTypeConfig" type="Customer_Type_Configuration_AGN__c[]"/>
+    <aura:attribute name="selectedCountry" type="String"/>
+    <aura:attribute name="selectedCustomerType" type="String"/>
+    <aura:attribute name="selectedSubType" type="String"/>
+    <aura:attribute name="language" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+   <!-- <aura:registerEvent name="formHeaderChange" type="c:AGN_CustRegHdr_Evt" /> -->
+   <aura:registerEvent name="formHeaderChangeCA" type="c:AGN_CustRegHdr_Evt" />
+
+    <div class="cus_details">
+        <section class="content bgcolor-7">           
+            <!--  For Provience Start  -->
+             <span class="input input--nariko inputtextValue input-identifier"  data-inputFiedlValue="{!v.selectedProvince}">              
+                <ui:inputSelect aura:id="inputselectedProvince" class='input__field input__field--nariko input-select inputtextValue' change="{!c.onSelectChangeProvince}">
+                    <ui:inputSelectOption text="" label="" />
+                    <aura:iteration items="{!v.picklistProvinceOptions}" var="lst">
+                        <aura:renderIf isTrue="{!v.language == 'fr_CA'}">
+                            <ui:inputSelectOption label="{!lst.Region_Label_AGN__c}" text="{!lst.RegionCode__c}" />
+                            <aura:set attribute="else">
+                               <ui:inputSelectOption label="{!lst.MasterLabel}" text="{!lst.RegionCode__c}" />
+                            </aura:set>
+                        </aura:renderIf>                        
+                    </aura:iteration>
+                </ui:inputSelect>                
+                <label class="input__label input__label--nariko">
+                    <span class="input__label-content input__label-content--nariko">{!$Label.c.AGN_OAM_Body_Province}</span>
+                </label>                       
+            </span>
+            <!-- For Provience End -->
+            
+            <span class="input input--nariko inputtextValue input-identifier" data-inputFiedlValue="{!v.selectedCustomerType}">              
+                <ui:inputSelect aura:id="inputSelectCustomerType" class='input__field input__field--nariko input-select inputtextValue' change="{!c.onSelectChangeCustomerType}">
+                    <ui:inputSelectOption text="" label="" /> 
+                    <aura:iteration items="{!v.picklistCustomerTypeOptions}" var="lst">
+                        <ui:inputSelectOption label="{!lst.val}" text="{!lst.key}" />
+                    </aura:iteration>
+                </ui:inputSelect>                
+                <label class="input__label input__label--nariko">
+                    <span class="input__label-content input__label-content--nariko">{!$Label.c.AGN_OAM_Body_CustomerType}</span>
+                </label>                       
+            </span>
+            <span class="input input--nariko inputtextValue input-identifier" data-inputFiedlValue="{!v.selectedSubType}">              
+                <ui:inputSelect aura:id="inputSelectSubType" class='input__field input__field--nariko input-select inputtextValue' change="{!c.onSelectChangeSubType}">
+                    <ui:inputSelectOption text="" label="" />
+                    <aura:iteration items="{!v.picklistSubTypeOptions}" var="lst">
+                        <ui:inputSelectOption label="{!lst.val}" text="{!lst.key}" />
+                    </aura:iteration>
+                </ui:inputSelect>                
+                <label class="input__label input__label--nariko">
+                    <span class="input__label-content input__label-content--nariko">{!$Label.c.AGN_OAM_Body_SubType}</span>
+                </label>                       
+            </span>
+        </section>
+    </div>
+</aura:component>

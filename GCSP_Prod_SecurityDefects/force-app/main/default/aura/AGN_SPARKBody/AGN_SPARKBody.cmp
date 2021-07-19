@@ -1,0 +1,2303 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="AGN_SPARK_HomepageController">
+    <aura:attribute name="backgroundImageURL" type="String" default=""/>
+    <aura:attribute name="bannerBgImageURL" type="String" default=""/>
+    <aura:attribute name="ourAimBgImageURL" type="String" default=""/>
+    <aura:attribute name="truthy" type="string"/>
+    <aura:attribute name="userType" type="boolean" default="false"/>
+    <aura:attribute name="compltProfile" type="Allergan_Customer_Registration_AGN__c" />
+    <aura:attribute name="loginUser" type="String" default=""/>
+    <aura:attribute name="KnowledgehubPage" type="string" default=""/>
+    <aura:attribute name="AGNSPARKImage" type="object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+    <aura:handler name="ModalCloseEvent" event="c:AGN_SPARK_CloseModal" action="{!c.closeAction}"  phase="capture"/>
+    <!--<aura:registerEvent name="navigateToArticle" type="c:AGN_SPARK_NavigateToArticle"/>-->
+
+    
+    
+    
+    <aura:if isTrue="{!!v.userType}">
+        <aura:html tag="style">
+            
+            
+            /* --------------------- Banner Section Starts ------------------------------------------ */
+            
+            
+            #banner{
+            height: 980px;
+            }
+            #bannerImageHome{
+            width: 100%;
+            background: url("../images/AllerganAesthetics_Photography_-1@2x.jpg") no-repeat;
+            background-position: top right;
+            background-size: cover;
+            }
+            #Icon_awesome-twitter,#Icon_awesome-facebook,#Icon_awesome-instagram {
+            fill: #ffffff !important;
+            }
+            #bannerContentHome{
+            background-color: #DBA39A;
+            height: 980px;
+            }
+            #titleHome{
+            white-space: pre-line;
+            text-align: left;
+            font: normal normal 300 50px/67px Beatrice-light;
+            color: #000000;
+            padding: 317px 95px 0px 114px
+            line-height: 67px;
+            }
+            #sub-titleHome{
+            font-weight: 400;
+            color: #000000;
+            padding: 50px 134px 0px 118px;
+            line-height: initial;
+            font-size:28px;
+            }
+            #Register{
+            margin-right: 15px;
+            }
+            #register{
+            background-color: #DBA39A;
+            color:white;
+            text-align: center;
+            letter-spacing: 2px;
+            border-style: solid;
+            font-size: 28px;
+            margin: 42px 94px 94px 115px;
+            width: 60%;
+            padding: 15px 0px;
+            }
+            #clearFloat{
+            clear: both;
+            }
+            li{
+            padding-bottom: 15px;
+            }
+            #welcomeSectionSubHead{
+            text-align: left;
+            font-size: 40px;
+            line-height: normal;
+            font-family: inherit;
+            font-weight: 200;
+            color: rgba(167,117,110,1);
+            padding-bottom: 30px;
+            padding-left: 90px;
+            }
+            /* ---------------------- Banner Section Ends ---------------------------- */
+            
+            /* ---------------------- Content Section Starts ------------------------- */
+            body{
+            overflow-x: hidden;
+            }
+            #Home{
+            padding-left: 0px;
+            padding-right: 0px;
+            }
+            hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 1px solid black;
+            margin: 1em 0;
+            width: 92%;
+            padding: 0;
+            }
+            #bulletContainer{
+            margin-bottom: 120px;
+            }
+            #aimsSection{
+            background-color: #fadbd3;
+            padding-top: 70px;
+            padding-left: 90px;
+            }
+            #aimsHead{
+            text-align: left;
+            font-size: 58px;
+            font-family: inherit;
+            font-weight: 400;
+            width: 900px;
+            border-bottom: black 1px solid;
+            color: black;
+            padding-bottom: 105px;
+            width: 92%;
+            }
+            #number{
+            font-size: 90px;
+            }
+            #aimDesc{
+            font-size: 30px;
+            padding-top: 25px;
+            padding-right: 70px;
+            }
+            #Group_88 {
+            top: 44%;
+            }
+            #welcomeSectionHead{
+            text-align: left;
+            font-size: 58px;
+            font-family: inherit;
+            font-weight: 400;
+            color: rgba(167,117,110,1);
+            padding-bottom: 30px;
+            padding-top: 70px;
+            padding-left: 90px;
+            }
+            #articlesContent{
+            padding:130px 90px 0px 90px;
+            }
+            #articlesHead{
+            font-size: 58px;
+            color: #a7756e;
+            line-height: normal;
+            }
+            #registerButton{
+            background-color: black;
+            color: white;
+            text-align: center;
+            letter-spacing: 2px;
+            outline:none;
+            font-size: 28px;
+            width: 100%;
+            margin-bottom: 30px;
+            padding: 20px 0px;
+            border-color :black;
+            }
+            #articlesCont{
+            font-size: 25px;
+            line-height: 40px;
+            padding-top: 20px;
+            margin-bottom: 90px;
+            }
+            #welcomeSectionContent{
+            text-align: left;
+            letter-spacing: 1px;
+            font-size: 28px;
+            color: #000000;
+            padding-bottom: 30px;
+            line-height: 41px;
+            padding-left: 94px;
+            padding-right: 40px;
+            }
+            .hubArticleSection{
+            border-bottom: 1px solid #000000;
+            }
+            #articles{
+            background-color: #a7756e;
+            }
+            #articlesSec{
+            height: 896px;;
+            }
+            #articlesImage{
+            background: url("../images/AllerganAesthetics_Photography_-2@2x.jpg") no-repeat;
+            background-position: top right;
+            background-size: cover;
+            }
+            /* ---------------------- Content Section ends ------------------------- */
+            /* Cookies section */
+            
+            .policy-banner {
+            height: auto;
+            color: black;
+            background-color: white;
+            font-size: 25px;    
+            letter-spacing: 1px;
+            line-height: 45px;
+            z-index: 5;
+            position: fixed;
+            padding: 18px;
+            border: 2px solid black;
+            bottom: 0;
+            }
+            #ok{
+            background-color: black;
+            color: white;
+            text-align: center;
+            letter-spacing: 2px;
+            border-style: solid;
+            display: inline-block;
+            font-size: 20px;
+            width: fit-content;
+            padding: 10px 30px;
+            cursor: pointer;
+            }
+            #more {display: none;}
+            #readless{display: none;}
+            .policy-banner a{
+            cursor: pointer;
+            }
+            
+            /* New changes */
+            .imgResponsive {
+    width: 100%;
+    height: 100% !important;
+}
+            #titleHome {
+            white-space: normal;
+            text-align: left;
+            font-weight: 300;
+            font-family: Beatrice-light;
+            font-size: 50px;
+            color: #000000;
+            padding: 22% 95px 0px 114px;
+            line-height: 67px;
+            }
+            #bannerContentHome{height: auto;}
+            #banner {
+            height: auto;
+            }
+            #sub-titleHome {
+            color: #000000;
+            padding: 12% 134px 0px 118px;
+            font: normal normal 300 21px/28px Beatrice-light;
+            letter-spacing: 1.26px;
+            }
+            #register{
+            width: 44%;
+            font: normal normal bold 27px/31px Helvetica;
+            letter-spacing: 1.62px;
+            background-color: #DBA39A;
+            color:white;
+            outline:none;
+            border: 1px solid white;
+            margin: 60px 0px 100px 115px;
+            padding: 18px 0px;
+            }
+            #welcomeSectionHead{
+            text-align: left;
+            color: rgba(167,117,110,1);
+            padding-bottom: 35px;
+            padding-top: 78px;
+            padding-left: 105px;
+            font: normal normal 300 50px/65px Beatrice-light;
+            letter-spacing: 0px;
+            }
+            
+            #welcomeSectionContent{
+            text-align: left;
+            color: #000000;
+            font: normal normal 300 24px/36px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1.44px;
+            padding-bottom: 60px;
+            padding-left: 105px;
+            padding-right: 80px;
+            }
+            #welcomeSectionSubHead{
+            text-align: left;
+            font: normal normal 300 30px/40px Beatrice-light;
+            letter-spacing: 0px;
+            color: #A7756E;
+            padding-bottom: 60px;
+            padding-left: 105px;
+            }
+            #welcomeSectionContent ul{
+            padding-left: 15px;
+            }
+            #welcomeSectionContent ul li{
+            padding-bottom: 35px;
+            }
+            #aimsSection{
+            background-color: #fadbd3;
+            padding-top: 78px;
+            padding-left: 90px;
+            }
+            #aimsHead{
+            text-align: left;
+            font: normal normal 300 50px/67px Beatrice-light;
+            letter-spacing: 3px;
+            border-bottom: black 1px solid;
+            color: black;
+            padding-bottom: 105px;
+            width: 92%;
+            }
+            #aimsDetails{
+            padding-top: 18px;
+            }
+            #number{
+            font: normal normal 300 80px/106px Beatrice-light;
+            letter-spacing: 0px;
+            padding-top: 14px;
+            }
+            #aimDesc{
+            font: normal normal 300 30px/45px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 0px;
+            padding-top: 10px;
+            padding-right: 70px;
+            }
+            #articlesContent{
+            padding:105px 90px 0px 90px;
+            }
+            #articlesHead{
+            font: normal normal 300 50px/65px Beatrice-light;
+            letter-spacing: 3px;
+            color: #A7756E;
+            }
+            #articlesImage{
+            background: url("../images/AllerganAesthetics_Photography_-2@2x.jpg") no-repeat;
+            background-position: top;
+            background-size: cover;
+            }
+            #registerButton{
+            background-color: black;
+            text-align: center;
+            font: normal normal bold 30px/34px Helvetica;
+            letter-spacing: 1.8px;
+            color: #FFFFFF;
+            outline:none;
+            width: 88%;
+            margin-bottom: 88px;
+            padding: 20px 0px;
+            border-color:black;
+            margin-top: 20px;
+            }
+            #articlesCont{
+            font: normal normal 300 24px/36px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1.44px;
+            color: black;
+            padding-top: 46px;
+            margin-bottom: 68px;
+            }
+            /* Laptop specific styles */
+            
+            @media screen and (max-width: 1580px) and (min-width: 1421px){
+            #articlesImage{
+            background-position: top;
+            background-size: cover;
+            height: 930px;
+            }
+            .home-content{
+                margin-left: -60px;
+            }
+            #articlesContent {
+            padding: 105px 20px 0px 62px;
+            }
+            #registerButton{
+            margin-top: 8px;
+            }
+            #number {
+            font-size: 65px;
+            }
+            #articlesHead{
+            font-size: 38px;
+            }
+            }
+            @media screen and (max-width: 1420px) and (min-width: 1366px){
+            #titleHome{
+            font-size: 35px;
+            padding: 120px 50px 0px 45px;
+            line-height: 60px;
+            }
+            #sub-titleHome {
+            color: #000000;
+            padding: 134px 25px 0px 45px;
+            font: normal normal 300 18px/28px Beatrice-light;
+            letter-spacing: 1.26px;
+            }
+            #register{
+            margin-left:45px;
+            margin-bottom:80px;
+            }
+            #welcomeSectionHead,#aimsHead{
+            font-size: 45px;
+            }
+            #number{
+            font-size: 60px;
+            }
+            #welcomeSectionHead{
+            padding-left:40px;
+            }
+            #welcomeSectionContent{
+            font-size: 18px;
+            padding-left:40px;
+            }
+            #welcomeSectionSubHead{
+            padding-left:40px;
+            }
+            #aimDesc{
+            font-size: 25px;
+            }
+            #articlesHead{
+            font-size: 42px;
+            }
+            #articlesCont {
+            font: normal normal 300 18px/31px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1px;
+            margin-bottom: 68px;
+            }
+            #articlesContent{
+            padding: 50px 50px 0px 50px;
+            }
+            #registerButton{
+            font-size:24px;
+            }
+            #bannerImageHome{
+            background-position: initial !important;
+            }
+            #welcomeSectionContent ul{
+            padding-left:8px;
+            }
+            } 
+            @media screen and (max-width: 1365px) and (min-width: 1059px){
+            #titleHome {
+            font-size: 40px;
+            padding: 14% 12px 0px 75px;
+            line-height: 60px;
+            }
+            .home-content{
+            margin-left:-28px;
+            }
+            #sub-titleHome {
+            padding: 7% 0px 0px 75px;
+            font: normal normal 300 18px/28px Beatrice-light;
+            letter-spacing: 1px;
+            }
+            #register{
+            margin: 60px 0px 0px 75px;
+            font-size: 22px;
+            }
+            #welcomeSectionHead{
+            padding-left: 68px;
+            font-size: 40px;
+            }
+            #welcomeSectionContent{
+            font: normal normal 300 20px/31px Neue_Haas_Unica_Pro-light;
+            padding-left: 70px;
+            padding-right: 30px;
+            }
+            #aimsHead{
+            font-size: 40px;
+            }
+            #welcomeSectionSubHead{
+            font-size: 28px;
+            padding-bottom: 60px;
+            padding-left: 70px;
+            }
+            #number{
+            font-size: 60px;
+            }
+            #aimDesc{
+            font-size: 24px;
+            }
+            #articlesHead{
+            font-size: 35px;
+            letter-spacing: 1px;
+            line-height: 58px;
+            }
+            #articlesCont{
+            font-size: 20px;
+            padding-top: 30px;
+            margin-bottom: 45px;
+            }
+            #articlesContent {
+            padding: 50px 45px 0px 45px;
+            }
+            #registerButton{
+            font-size: 20px;
+            }
+            }
+            @media screen and (max-width: 1058px) and (min-width: 992px){
+            #titleHome {
+            font-size: 36px;
+            padding: 18% 12px 0px 75px;
+            line-height: 60px;
+            }
+            #sub-titleHome {
+            padding: 8% 0px 0px 75px;
+            font: normal normal 300 16px/26px Beatrice-light;
+            letter-spacing: 0px;
+            }
+            #register{
+            margin: 38px 0px 50px 75px;
+            font-size: 20px;
+            }
+            #welcomeSectionHead{
+            padding-left: 68px;
+            font-size: 40px;
+            }
+            #welcomeSectionContent{
+            font: normal normal 300 20px/31px Neue_Haas_Unica_Pro-light;
+            padding-left: 70px;
+            padding-right: 30px;
+            }
+            #aimsHead{
+            font-size: 40px;
+            }
+            #welcomeSectionSubHead{
+            font-size: 28px;
+            padding-bottom: 60px;
+            padding-left: 70px;
+            }
+            #number{
+            font-size: 60px;
+            }
+            #aimDesc{
+            font-size: 24px;
+            }
+            #articlesHead{
+            font-size: 30px;
+            line-height: 48px;
+            }
+            #articlesCont{
+            font-size: 20px;
+            padding-top: 30px;
+            margin-bottom: 55px;
+            letter-spacing: 0px;
+            }
+            #articlesContent {
+            padding: 85px 50px 0px 50px;
+            }
+            #registerButton{
+            font-size: 20px;
+            padding: 10px 0px;
+            margin-top: 0px;
+            }
+            }
+            @media screen and (max-width: 991px) and (min-width: 776px){
+            .home-content{
+            	margin-left:-30px;
+            }
+            #articles {
+                background-color: transparent;
+            }
+            #articlesImage {
+            background: url("../images/tablet/AllerganAesthetics_Photography@2x.jpg") no-repeat;
+            background-position: bottom;
+            background-size: contain;
+            height: 1185px;
+            }
+            #titleHome {
+            font-size: 35px;
+            padding: 45px 95px 0px 70px;
+            line-height: 45px;
+            }
+            #sub-titleHome{
+            padding: 25px 134px 0px 75px;
+            font: normal normal 300 16px/20px Beatrice-light;
+            letter-spacing: 1.26px;
+            }
+            .btnContainer{
+            margin:15px 0px 20px 75px;
+            display:block !important;
+            }
+            #register{
+            display:none !important;
+            }
+            #sm_login{
+            margin-left: 10px;
+            }
+            #sm_register,#sm_login{
+            background-color: black;
+            color: white;
+            outline: none;
+            border-color:black;
+            font: normal normal bold 18px/30px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1px;
+            padding: 8px 60px;
+            }
+            #welcomeSectionHead {
+            padding-bottom: 15px;
+            padding-top: 30px;
+            padding-left: 60px;
+            font: normal normal 300 35px/47px Beatrice-light;
+            letter-spacing: 0px;
+            }
+            #welcomeSectionContent {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1.26px;
+            padding-bottom: 20px;
+            padding-left: 60px;
+            padding-right: 80px;
+            }
+            #welcomeSectionSubHead{
+            padding-left: 60px;
+            font: normal normal 300 21px/31px Beatrice-light;
+            padding-bottom: 20px;
+            }
+            #welcomeSectionContent ul li {
+            padding-bottom: 30px;
+            }
+            #aimsHead {
+            text-align: left;
+            font: normal normal 300 35px/47px Beatrice-light;
+            width: 90%;
+            padding-bottom: 50px;
+            }
+            #number {
+            font: normal normal 300 28px/37px Beatrice-light;
+            }
+            #aimDesc {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            }
+            #bulletContainer {
+            margin-bottom: 50px;
+            }
+            #articlesHead {
+            font: normal normal 300 35px/47px Beatrice-light;
+            }
+            #articlesContent {
+            padding: 40px 90px 0px 90px;
+            }
+            #articlesCont{
+            padding-top: 26px;
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            margin-bottom: 40px;
+            }
+            #registerButton {
+            font: normal normal bold 22px/26px Helvetica;
+            width: 70%;
+            }
+            #articlesImage{
+            height: 915px;
+            background-size: cover;
+            }
+            hr{
+            width: 90%;
+            }
+            }
+            @media screen and (max-width: 775px) and (min-width: 648px){
+            #articles {
+                background-color: transparent;
+            }
+            .home-content{
+            margin-left:-7px;
+            }
+            #articlesImage{
+            height: 860px;
+            background-position: bottom;
+            background-size: cover;
+            }
+            #titleHome {
+            font-size: 35px;
+            padding: 45px 95px 0px 45px;
+            line-height: 45px;
+            }
+            #sub-titleHome{
+            padding: 25px 134px 0px 45px;
+            font: normal normal 300 16px/20px Beatrice-light;
+            letter-spacing: 1.26px;
+            }
+            .btnContainer{
+            margin:15px 0px 20px 45px;
+            }
+            #sm_login{
+            margin-left: 10px;
+            }
+            #sm_register,#sm_login{
+            background-color: black;
+            color: white;
+            
+            border-color:black;
+            outline: none;
+            font: normal normal bold 18px/30px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1px;
+            padding: 8px 60px;
+            }
+            #welcomeSectionHead {
+            padding-bottom: 15px;
+            padding-top: 30px;
+            padding-left: 40px;
+            font: normal normal 300 35px/47px Beatrice-light;
+            letter-spacing: 0px;
+            }
+            #welcomeSectionContent {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1.26px;
+            padding-bottom: 20px;
+            padding-left: 40px;
+            padding-right: 80px;
+            }
+            #welcomeSectionSubHead{
+            padding-left: 40px;
+            font: normal normal 300 21px/31px Beatrice-light;
+            padding-bottom: 20px;
+            }
+            #welcomeSectionContent ul li {
+            padding-bottom: 30px;
+            }
+            #aimsHead {
+            text-align: left;
+            font: normal normal 300 35px/47px Beatrice-light;
+            width: 90%;
+            padding-bottom: 50px;
+            }
+            #aimsSection{
+            padding-left:55px;
+            }
+            #number {
+            font: normal normal 300 28px/37px Beatrice-light;
+            }
+            #aimDesc {
+            font: normal normal 300 24px/26px Neue_Haas_Unica_Pro-light;
+            padding-right: 200px;
+            }
+            #bulletContainer {
+            margin-bottom: 50px;
+            }
+            #articlesHead {
+            font: normal normal 300 35px/47px Beatrice-light;
+            }
+            #articlesContent {
+            padding: 40px 90px 0px 55px;
+            }
+            #articlesCont{
+            padding-top: 26px;
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            margin-bottom: 40px;
+            }
+            #registerButton {
+            font: normal normal bold 22px/26px Helvetica;
+            width: 70%;
+            }
+            hr{
+            width: 90%;
+            }
+            .btnContainer{
+            display:block !important;
+            }
+            #register{
+            display:none !important;
+            }
+            }
+            @media screen and (max-width: 647px) and (min-width: 628px){
+            #articles {
+                background-color: transparent;
+            }
+            #articlesImage{
+            height: 610px;
+            background-position: bottom;
+            background-size: cover;
+            }
+            #titleHome {
+            font-size: 35px;
+            padding: 45px 95px 0px 70px;
+            line-height: 45px;
+            }
+            #sub-titleHome{
+            padding: 25px 75px 0px 75px;
+            font: normal normal 300 16px/20px Beatrice-light;
+            letter-spacing: 1.26px;
+            }
+            .btnContainer{
+            margin:15px 0px 20px 75px;
+            }
+            #sm_login{
+            margin-left: 10px;
+            }
+            #sm_register,#sm_login{
+            background-color: black;
+            color: white;
+            outline: none;
+            
+            border-color:black;
+            font: normal normal bold 18px/30px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1px;
+            padding: 8px 60px;
+            }
+            #welcomeSectionHead {
+            padding-bottom: 15px;
+            padding-top: 30px;
+            padding-left: 60px;
+            font: normal normal 300 35px/47px Beatrice-light;
+            letter-spacing: 0px;
+            }
+            #welcomeSectionContent {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1.26px;
+            padding-bottom: 20px;
+            padding-left: 60px;
+            padding-right: 80px;
+            }
+            #welcomeSectionSubHead{
+            padding-left: 60px;
+            font: normal normal 300 21px/31px Beatrice-light;
+            padding-bottom: 20px;
+            }
+            #welcomeSectionContent ul li {
+            padding-bottom: 30px;
+            }
+            #aimsHead {
+            text-align: left;
+            font: normal normal 300 35px/47px Beatrice-light;
+            width: 90%;
+            padding-bottom: 50px;
+            }
+            #number {
+            font: normal normal 300 28px/37px Beatrice-light;
+            }
+            #aimDesc {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            }
+            #bulletContainer {
+            margin-bottom: 50px;
+            }
+            #articlesHead {
+            font: normal normal 300 35px/47px Beatrice-light;
+            }
+            #articlesContent {
+            padding: 40px 90px 0px 90px;
+            }
+            #articlesCont{
+            padding-top: 26px;
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            margin-bottom: 40px;
+            }
+            #registerButton {
+            font: normal normal bold 22px/26px Helvetica;
+            width: 70%;
+            }
+            hr{
+            width: 90%;
+            }
+            }
+            @media screen and (max-width: 627px) and (min-width: 576px){
+            .scrollClass{
+            	overflow-y: scroll; bottom: 0 !important;top:0;
+            }
+            #articles {
+                background-color: transparent;
+            }
+             .home-content{
+            	margin-left:-45px;
+            }
+            #articlesImage{
+            height: 680px;
+            background-position: bottom;
+            background-size: cover;
+            }
+            #titleHome {
+            font-size: 35px;
+            padding: 45px 95px 0px 70px;
+            line-height: 45px;
+            }
+            #sub-titleHome{
+            padding: 25px 60px 0px 75px;
+            font: normal normal 300 16px/20px Beatrice-light;
+            letter-spacing: 1.26px;
+            }
+            .btnContainer{
+            margin:15px 0px 20px 75px;
+            }
+            #sm_login{
+            margin-left: 10px;
+            }
+            #sm_register,#sm_login{
+            background-color: black;
+            color: white;
+            border-color:black;
+            outline: none;
+            font: normal normal bold 18px/30px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1px;
+            padding: 8px 60px;
+            }
+            #welcomeSectionHead {
+            padding-bottom: 15px;
+            padding-top: 30px;
+            padding-left: 60px;
+            font: normal normal 300 35px/47px Beatrice-light;
+            letter-spacing: 0px;
+            }
+            #welcomeSectionContent {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1.26px;
+            padding-bottom: 20px;
+            padding-left: 60px;
+            padding-right: 80px;
+            }
+            #welcomeSectionSubHead{
+            padding-left: 60px;
+            font: normal normal 300 21px/31px Beatrice-light;
+            padding-bottom: 20px;
+            }
+            #welcomeSectionContent ul li {
+            padding-bottom: 30px;
+            }
+            #aimsHead {
+            text-align: left;
+            font: normal normal 300 35px/47px Beatrice-light;
+            width: 90%;
+            padding-bottom: 50px;
+            }
+            #number {
+            font: normal normal 300 28px/37px Beatrice-light;
+            }
+            #aimDesc {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            }
+            #bulletContainer {
+            margin-bottom: 50px;
+            }
+            #articlesHead {
+            font: normal normal 300 35px/47px Beatrice-light;
+            }
+            #articlesContent {
+            padding: 40px 90px 0px 90px;
+            }
+            #articlesCont{
+            padding-top: 26px;
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            margin-bottom: 40px;
+            }
+            #registerButton {
+            font: normal normal bold 22px/26px Helvetica;
+            width: 70%;
+            }
+            hr{
+            width: 90%;
+            }
+            }
+            @media screen and (max-width: 575px) and (min-width: 501px){
+            .scrollClass{
+            	overflow-y: scroll; bottom: 0 !important;top:0;
+            }
+            #articles {
+                background-color: transparent;
+            }
+            .home-content{
+            margin-left: -42px
+            }
+            
+            #articlesImage{
+            height: 525px;
+            background-position: bottom;
+            background-size: cover;
+            }
+            #titleHome {
+            font-size: 35px;
+            padding: 45px 95px 0px 70px;
+            line-height: 45px;
+            }
+            #sub-titleHome{
+            padding: 25px 60px 0px 75px;
+            font: normal normal 300 16px/20px Beatrice-light;
+            letter-spacing: 1.26px;
+            }
+            .btnContainer{
+            margin:15px 0px 20px 75px;
+            }
+            #sm_login{
+            margin-left: 10px;
+            }
+            #sm_register,#sm_login{
+            background-color: black;
+            color: white;
+            outline: none;
+            border-color:black;
+            font: normal normal bold 18px/30px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1px;
+            padding: 8px 60px;
+            }
+            #welcomeSectionHead {
+            padding-bottom: 15px;
+            padding-top: 30px;
+            padding-left: 60px;
+            font: normal normal 300 35px/47px Beatrice-light;
+            letter-spacing: 0px;
+            }
+            #welcomeSectionContent {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1.26px;
+            padding-bottom: 20px;
+            padding-left: 60px;
+            padding-right: 80px;
+            }
+            #welcomeSectionSubHead{
+            padding-left: 60px;
+            font: normal normal 300 21px/31px Beatrice-light;
+            padding-bottom: 20px;
+            }
+            #welcomeSectionContent ul li {
+            padding-bottom: 30px;
+            }
+            #aimsHead {
+            text-align: left;
+            font: normal normal 300 35px/47px Beatrice-light;
+            width: 90%;
+            padding-bottom: 50px;
+            }
+            #number {
+            font: normal normal 300 28px/37px Beatrice-light;
+            width:15%
+            }
+            #aimDesc {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            width: 85%;
+            }
+            #bulletContainer {
+            margin-bottom: 50px;
+            }
+            #articlesHead {
+            font: normal normal 300 35px/47px Beatrice-light;
+            }
+            #articlesContent {
+            padding: 40px 90px 0px 90px;
+            }
+            #articlesCont{
+            padding-top: 26px;
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            margin-bottom: 40px;
+            }
+            #registerButton {
+            font: normal normal bold 22px/26px Helvetica;
+            width: 70%;
+            }
+            hr{
+            width: 90%;
+            }
+            }
+            @media screen and (max-width: 500px) and (min-width: 381px){
+            .scrollClass{
+            	overflow-y: scroll; bottom: 0 !important;top:0;
+            }
+            #articles {
+                background-color: transparent;
+            }
+            .home-content{
+            	margin-left:-15px;
+            }
+            #articlesImage{
+            height: 525px;
+            background-position: bottom;
+            background-size: cover;
+            }
+            #titleHome {
+            font-size: 35px;
+            padding: 40px 82px 0px 40px;
+            line-height: 45px;
+            }
+            #sub-titleHome{
+            padding: 40px 14px 0px 40px;
+            font: normal normal 300 12px/16px Beatrice-light;
+            letter-spacing: 1.26px;
+            }
+            .btnContainer{
+            margin:15px 20px 20px 40px;
+            }
+            #sm_login{
+            margin-left: 10px;
+            }
+            #sm_register,#sm_login{
+            background-color: black;
+            color: white;
+            outline: none;
+            border-color:black;
+            font: normal normal bold 18px/30px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1px;
+            padding: 8px 40px;
+            }
+            #welcomeSectionHead {
+            padding-bottom: 15px;
+            padding-top: 30px;
+            padding-left: 32px;
+            font: normal normal 300 32px/47px Beatrice-light;
+            letter-spacing: 0px;
+            }
+            #welcomeSectionContent {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1.26px;
+            padding-bottom: 20px;
+            padding-left: 32px;
+            padding-right: 32px;
+            }
+            #welcomeSectionSubHead{
+            padding-left: 40px;
+            font: normal normal 300 21px/31px Beatrice-light;
+            padding-bottom: 20px;
+            }
+            #welcomeSectionContent ul li {
+            padding-bottom: 30px;
+            }
+            #aimsHead {
+            text-align: left;
+            font: normal normal 300 35px/47px Beatrice-light;
+            width: 90%;
+            padding-bottom: 50px;
+            }
+            #number {
+            font: normal normal 300 28px/37px Beatrice-light;
+            width:15%
+            }
+            #aimDesc {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            width: 85%;
+            padding-right: 35px;
+            }
+            #bulletContainer {
+            margin-bottom: 50px;
+            }
+            #articlesHead {
+            font: normal normal 300 30px/47px Beatrice-light;
+            }
+            #articlesContent {
+            padding: 40px 0px 0px 75px;
+            
+            padding-left: 42px;
+            padding-right: 30px;
+            }
+            #articlesCont{
+            padding-top: 26px;
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            margin-bottom: 40px;
+            }
+            #registerButton {
+            font: normal normal bold 22px/26px Helvetica;
+            width: 70%;
+            }
+            hr{
+            width: 90%;
+            }
+            #aimsSection{
+            padding-left: 42px;
+            padding-right: 30px;
+            }
+            }
+            @media screen and (max-width: 380px) and (min-width: 320px){
+            .scrollClass{
+            	overflow-y: scroll; bottom: 0 !important;top:0;
+            }
+            .home-content{
+            	margin-left:-14px;
+            }
+            #articles {
+                background-color: transparent;
+            }
+            #articlesImage{
+            height: 525px;
+            background-position: bottom;
+            background-size: cover;
+            }
+            .d-xs-none{
+            display:none !important;
+            }
+            .d-xs-block{
+            display:block !important;
+            }
+            #titleHome {
+            font-size: 35px;
+            padding: 45px 82px 0px 35px;
+            line-height: 45px;
+            }
+            #sub-titleHome{
+            padding: 25px 10px 0px 35px;
+            font: normal normal 300 10px/20px Beatrice-light;
+            letter-spacing: 1px;
+            }
+            .btnContainer{
+            margin:15px 0px 20px 35px;
+            }
+            #sm_login{
+            margin-left: 10px;
+            }
+            #sm_register,#sm_login{
+            background-color: black;
+            color: white;
+            outline: none;
+            border-color:black;
+            font: normal normal bold 16px/30px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 0px;
+            padding: 6px 26px;
+            }
+            #welcomeSectionHead {
+            padding-bottom: 15px;
+            padding-top: 30px;
+            padding-left: 28px;
+            font: normal normal 300 32px/47px Beatrice-light;
+            letter-spacing: 0px;
+            }
+            #welcomeSectionContent {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            letter-spacing: 1.26px;
+            padding-bottom: 20px;
+            padding-left: 32px;
+            padding-right: 30px;
+            }
+            #welcomeSectionSubHead{
+            padding-left: 35px;
+            font: normal normal 300 21px/31px Beatrice-light;
+            padding-bottom: 20px;
+            }
+            #welcomeSectionContent ul li {
+            padding-bottom: 30px;
+            }
+            #aimsHead {
+            text-align: left;
+            font: normal normal 300 35px/47px Beatrice-light;
+            width: 90%;
+            padding-bottom: 50px;
+            }
+            #number {
+            font: normal normal 300 28px/37px Beatrice-light;
+            width:18%
+            padding-left:15px;
+            }
+            #aimDesc {
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            width: 82%;
+            padding-right: 35px;
+            padding-left:25px;
+            }
+            #bulletContainer {
+            margin-bottom: 50px;
+            }
+            #articlesHead {
+            font: normal normal 300 28px/47px Beatrice-light;
+            }
+            #articlesContent {
+            padding: 40px 10px 0px 40px;
+            }
+            #articlesCont{
+            padding-top: 26px;
+            padding-right: 35px;
+            font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+            margin-bottom: 40px;
+            }
+            #registerButton {
+            font: normal normal bold 18px/24px Helvetica;
+            width: 70%;
+            padding: 12px 0px;
+            }
+            hr{
+            width: 90%;
+            }
+            #aimsSection{
+            padding-left: 45px;
+            }
+            }
+        </aura:html>
+        <aura:set attribute="else">
+            <aura:html tag="style">
+                
+                
+                
+                /* --------------------- Banner Section Starts ------------------------------------------ */
+                
+                #banner{
+                height: 980px;
+                }
+                
+                #bannerImageHome{
+                width: 100%;
+                background: url("../images/AllerganAesthetics_Photography_-1@2x.jpg") no-repeat;
+                background-position: unset;
+                background-size: cover;
+                }
+                #Icon_awesome-twitter,#Icon_awesome-facebook,#Icon_awesome-instagram {
+                fill: #ffffff !important;
+                }
+                #bannerContentHome{
+                background-color: #DBA39A;
+                height: 980px;
+                }
+                #titleHome{
+                white-space: pre-line;
+                text-align: left;
+                font-weight: 400;
+                font-size: 54px;
+                color: #000000;
+                padding: 317px 134px 0px 118px;
+                line-height: initial;
+                }
+                #sub-titleHome{
+                font-weight: 400;
+                color: #000000;
+                padding: 50px 134px 0px 118px;
+                line-height: initial;
+                font-size:28px;
+                }
+                #Register{
+                margin-right: 15px;
+                }
+                #register{
+                background-color: #DBA39A;
+                color:white;
+                text-align: center;
+                letter-spacing: 2px;
+                border-style: solid;
+                font-size: 28px;
+                margin: 42px 94px 94px 115px;
+                width: 60%;
+                padding: 15px 0px;
+                }
+                #clearFloat{
+                clear: both;
+                }
+                li{
+                padding-bottom: 15px;
+                }
+                #welcomeSectionSubHead{
+                text-align: left;
+                font-size: 40px;
+                line-height: normal;
+                font-family: inherit;
+                font-weight: 200;
+                color: rgba(167,117,110,1);
+                padding-bottom: 30px;
+                padding-left: 90px;
+                }
+                /* ---------------------- Banner Section Ends ---------------------------- */
+                
+                /* ---------------------- Content Section Starts ------------------------- */
+                body{
+                overflow-x: hidden;
+                }
+                #Home{
+                padding-left: 0px;
+                padding-right: 0px;
+                }
+                hr {
+                display: block;
+                height: 1px;
+                border: 0;
+                border-top: 1px solid black;
+                margin: 1em 0;
+                width: 92%;
+                padding: 0;
+                }
+                #bulletContainer{
+                margin-bottom: 120px;
+                }
+                #aimsSection{
+                background-color: #fadbd3;
+                padding-top: 70px;
+                padding-left: 90px;
+                }
+                #aimsHead{
+                text-align: left;
+                font-size: 58px;
+                font-family: inherit;
+                font-weight: 400;
+                width: 900px;
+                border-bottom: black 1px solid;
+                color: black;
+                padding-bottom: 105px;
+                width: 92%;
+                }
+                #number{
+                font-size: 90px;
+                }
+                #aimDesc{
+                font-size: 30px;
+                padding-top: 25px;
+                padding-right: 70px;
+                }
+                #Group_88 {
+                top: 44%;
+                }
+                #welcomeSectionHead{
+                text-align: left;
+                font-size: 58px;
+                font-family: inherit;
+                font-weight: 400;
+                color: rgba(167,117,110,1);
+                padding-bottom: 30px;
+                padding-top: 70px;
+                padding-left: 90px;
+                }
+                #articlesContent{
+                padding:130px 90px 0px 90px;
+                }
+                #articlesHead{
+                font-size: 58px;
+                color: #a7756e;
+                line-height: normal;
+                }
+                #registerButton{
+                background-color: black;
+                color: white;
+                text-align: center;
+                letter-spacing: 2px;
+                font-size: 28px;
+            outline:none;
+                width: 100%;
+                margin-bottom: 30px;
+                padding: 20px 0px;
+                }
+                #articlesCont{
+                font-size: 25px;
+                line-height: 40px;
+                padding-top: 20px;
+                margin-bottom: 90px;
+                }
+                #welcomeSectionContent{
+                text-align: left;
+                letter-spacing: 1px;
+                font-size: 28px;
+                color: #000000;
+                padding-bottom: 30px;
+                line-height: 41px;
+                padding-left: 94px;
+                padding-right: 40px;
+                }
+                .hubArticleSection{
+                border-bottom: 1px solid #000000;
+                }
+                #articles{
+                background-color: #a7756e;
+                }
+                #articlesSec{
+                height: 896px;;
+                }
+                #articlesImage{
+                background: url("../images/AllerganAesthetics_Photography_-2@2x.jpg") no-repeat;
+                background-position: top right;
+                background-size: cover;
+                }
+                /* ---------------------- Content Section ends ------------------------- */
+                /* Cookies section */
+                
+                .policy-banner {
+                height: auto;
+                color: black;
+                background-color: white;
+                font-size: 25px;    
+                letter-spacing: 1px;
+                line-height: 45px;
+                z-index: 5;
+                position: fixed;
+                padding: 18px;
+                border: 2px solid black;
+                bottom: 0;
+                }
+                #ok{
+                background-color: black;
+                color: white;
+                text-align: center;
+                letter-spacing: 2px;
+                border-style: solid;
+                display: inline-block;
+                font-size: 20px;
+                width: fit-content;
+                padding: 10px 30px;
+                cursor: pointer;
+                }
+                #more {display: none;}
+                #readless{display: none;}
+                .policy-banner a{
+                cursor: pointer;
+                }
+                
+                /* New changes */
+                
+                #titleHome {
+                white-space: normal;
+                text-align: left;
+                font-weight: 300;
+                font-family: Beatrice-light;
+                font-size: 50px;
+                color: #000000;
+                padding: 220px 100px 0px 114px;
+                line-height: 67px;
+                }
+                .articlesButton{
+                background-color: black;
+                color: white;
+                text-align: center;
+                font-family:  Neue_Haas_Unica_Pro-light;
+                letter-spacing: 2px;
+                font-size: 28px;
+                width: 96%;
+                margin-bottom: 50px;
+                border-color: black;
+                padding: 18px 0px;
+                }
+                #bannerContentHome{height: auto;}
+                #banner {
+                height: auto;
+                }
+                #sub-titleHome {
+                color: #000000;
+                padding: 134px 134px 0px 118px;
+                font: normal normal 300 21px/28px Beatrice-light;
+                letter-spacing: 1.26px;
+                }
+                #viewResource{
+                font: normal normal bold 27px/31px Neue_Haas_Unica_Pro-Bold;
+                letter-spacing: 1.62px;
+                color: #FFFFFF;
+                border-color:black;
+                background-color: black;
+                padding: 18px 10%;
+                    width: 58%;
+                margin-left: 90px;
+                margin-top: 85px;
+                }
+                #register{
+                width: 50%;
+                font: normal normal bold 27px/31px Helvetica;
+                letter-spacing: 1.62px;
+                background-color: #DBA39A;
+                color:white;
+                border-style: solid;
+                margin: 60px 0px 100px 115px;
+                padding: 18px 0px;
+                }
+                #welcomeSectionHead{
+                text-align: left;
+                color: rgba(167,117,110,1);
+                padding-bottom: 35px;
+                padding-top: 100px;
+                padding-left: 90px;
+                font: normal normal 300 50px/65px Beatrice-light;
+                letter-spacing: 0px;
+                }
+                
+                #welcomeSectionContent{
+                text-align: left;
+                color: #000000;
+                font: normal normal 300 24px/36px Neue_Haas_Unica_Pro-light;
+                letter-spacing: 1.44px;
+                padding-bottom: 0px;
+                padding-left: 90px;
+                padding-right: 80px;
+                }
+                #welcomeSectionSubHead{
+                text-align: left;
+                font: normal normal 300 30px/40px Beatrice-light;
+                letter-spacing: 0px;
+                color: #A7756E;
+                padding-bottom: 60px;
+                padding-left: 90px;
+                }
+                #welcomeSectionContent ul{
+                padding-left: 25px;
+                }
+                #welcomeSectionContent ul li{
+                padding-bottom: 35px;
+                }
+                #aimsSection{
+                background-color: #fadbd3;
+                padding-top: 100px;
+                padding-left: 90px;
+                }
+                #aimsHead{
+                text-align: left;
+                font: normal normal 300 50px/67px Beatrice-light;
+                letter-spacing: 3px;
+                border-bottom: black 1px solid;
+                color: black;
+                padding-bottom: 105px;
+                width: 92%;
+                }
+                #aimsDetails{
+                padding-top: 18px;
+                }
+                #number{
+                font: normal normal 300 80px/106px Beatrice-light;
+                letter-spacing: 0px;
+                padding-top: 14px;
+                }
+                #aimDesc{
+                font: normal normal 300 30px/45px Neue_Haas_Unica_Pro-light;
+                letter-spacing: 0px;
+                padding-top: 10px;
+                padding-right: 70px;
+                }
+                #articlesContent{
+                padding:105px 90px 0px 90px;
+                }
+                #articlesHead{
+                font: normal normal 300 50px/65px Beatrice-light;
+                letter-spacing: 3px;
+                color: #A7756E;
+                }
+                .imgResponsive {
+                    width: 100%;
+                    height: 100% !important;
+                }
+                #articlesImage{
+                background: url("../images/AllerganAesthetics_Photography_-2@2x.jpg") no-repeat;
+                background-position: top;
+                background-size: cover;
+                }
+                #registerButton{
+                background-color: black;
+                text-align: center;
+                font: normal normal bold 30px/34px Helvetica;
+                letter-spacing: 1.8px;
+                color: #FFFFFF;
+            outline:none;
+                width: 82%;
+                margin-bottom: 88px;
+                padding: 20px 0px;
+                margin-top: 20px;
+                }
+                #articlesCont{
+                font: normal normal 300 24px/36px Neue_Haas_Unica_Pro-light;
+                letter-spacing: 1.44px;
+                color: black;
+                padding-top: 46px;
+                margin-bottom: 68px;
+                }
+                /* Laptop specific styles */
+                
+                @media screen and (max-width: 1799px) and (min-width: 1621px){
+                #viewResource{
+                margin-bottom: 12%;
+                }
+                }
+                @media screen and (max-width: 1620px) and (min-width: 1367px){
+                #viewResource{
+                margin-bottom: 12%;
+                margin-left: 48px;
+                width: 68%;
+                font: normal normal bold 27px/31px Helvetica;
+                }
+                #bannerImageHome{
+                	background-size: contain;
+                }
+                #titleHome {
+                padding: 185px 45px 0px 45px;
+                }
+                #sub-titleHome {
+                padding: 80px 80px 0px 55px;
+                }
+                #welcomeSectionHead{
+                padding-left: 42px;
+                font: normal normal 300 45px/67px Beatrice-light;
+                }
+                #welcomeSectionContent{
+                font: normal normal 300 21px/36px Neue_Haas_Unica_Pro-light;
+                padding-left: 48px;
+                padding-right: 46px;
+                }
+                #aimsHead{
+                width: 92%;
+                }
+                hr{
+                width: 92%;
+                }
+                }
+                @media screen and (max-width: 1366px) and (min-width: 1360px){
+                #viewResource{
+                margin-bottom: 12%;
+                margin-left: 48px;
+                font: normal normal bold 22px/31px Neue_Haas_Unica_Pro-Bold;
+                letter-spacing: 1px;
+                }
+                #bannerImageHome{
+                background-position: top;
+                background-size: contain;
+                height: 702px;
+                }
+                #titleHome {
+                padding: 178px 24px 0px 45px;
+                font-size: 42px;
+                }
+                #sub-titleHome {
+                padding: 95px 20px 0px 55px;
+                font-size: 19px;
+                margin-bottom: 183px;
+                }
+                #welcomeSectionHead{
+                padding-left: 42px;
+                padding-top: 50px;
+                font: normal normal 300 40px/67px Beatrice-light;
+                }
+                #welcomeSectionContent{
+                font: normal normal 300 20px/31px Neue_Haas_Unica_Pro-light;
+                padding-right: 20px;
+                padding-left: 50px;
+                }
+                #aimsSection{
+                padding-top: 52px;
+                }
+                #aimsHead{
+                font-size: 40px;
+                border-bottom: 1px solid black;
+                width: 92%;
+                }
+                hr{
+                width: 92%;
+                }
+                #number{
+                font-size: 55px;
+                }
+                #aimDesc{
+                font-size: 24px;
+                }
+                #bulletContainer{
+                margin-bottom: 100px;
+                }
+                #articlesContent {
+                padding: 50px 60px 0px 60px;
+                }
+                #articlesHead {
+                font: normal normal 300 38px/64px Beatrice-light;
+                letter-spacing: 1px;
+                color: #A7756E;
+                }
+                #articlesCont {
+                font: normal normal 300 20px/31px Neue_Haas_Unica_Pro-light;
+                letter-spacing: 1px;
+                margin-bottom: 30px;
+                }
+                .articlesButton {
+                letter-spacing: 2px;
+                font-size: 22px;
+                padding: 18px 0px;
+                margin-bottom:30px !important;
+                }
+                #articlesImage{
+                height: 608px;
+                }
+                }
+                @media screen and (max-width: 1359px) and (min-width: 992px){
+                #viewResource{
+                margin-bottom: 12%;
+                margin-left: 48px;
+                font: normal normal bold 22px/31px Neue_Haas_Unica_Pro-Bold;
+                letter-spacing: 1px;
+                padding: 18px 0px;
+                }
+                #bannerImageHome{
+                background-position: top right;
+                background-size: cover;
+                }
+                #titleHome {
+                padding: 130px 24px 0px 45px;
+                font-size: 40px;
+                }
+                #sub-titleHome {
+                padding: 30px 20px 0px 55px;
+                font-size: 19px;
+                }
+                #welcomeSectionHead{
+                padding-left: 42px;
+                padding-top: 50px;
+                font: normal normal 300 40px/67px Beatrice-light;
+                }
+                #welcomeSectionContent{
+                font: normal normal 300 20px/31px Neue_Haas_Unica_Pro-light;
+                padding-right: 20px;
+                padding-left: 50px;
+                }
+                #aimsSection{
+                padding-top: 52px;
+                }
+                #aimsHead{
+                font-size: 40px;
+                border-bottom: 1px solid black;
+                width: 92%;
+                }
+                hr{
+                width: 92%;
+                }
+                #number{
+                font-size: 55px;
+                }
+                #aimDesc{
+                font-size: 24px;
+                }
+                #bulletContainer{
+                margin-bottom: 100px;
+                }
+                #articlesContent {
+                padding: 50px 60px 0px 60px;
+                }
+                #articlesHead {
+                font: normal normal 300 38px/64px Beatrice-light;
+                letter-spacing: 1px;
+                color: #A7756E;
+                }
+                #articlesCont {
+                font: normal normal 300 20px/31px Neue_Haas_Unica_Pro-light;
+                letter-spacing: 1px;
+                margin-bottom: 30px;
+                }
+                .articlesButton {
+                letter-spacing: 2px;
+                font-size: 22px;
+                padding: 10px 0px;
+                margin-bottom: 30px;
+                }
+                }
+                @media screen and (max-width: 991px) and (min-width: 769px){
+                #viewResource{
+                margin-bottom: 12%;
+                margin-left: 62px;
+                font-size: 28px;
+                padding: 15px 8%;
+                }
+                #articles {
+                background-color: transparent;
+                }
+                #articlesImage{
+                background-position: top;
+                background-size: cover;
+                height: 920px;
+                }
+                #articlesContent {
+                padding: 105px 90px 0px 65px;
+                background-color: #FAF6F5;
+                }
+                #titleHome{
+                font-size: 40px;
+                padding: 317px 10px 0px 50px;
+                }
+                #sub-titleHome{
+                padding: 134px 10px 0px 50px;
+                font: normal normal 300 18px/28px Beatrice-light;
+                margin-bottom: 120px;
+                }
+                #welcomeSectionHead{
+                padding-left: 45px;
+                }
+                #welcomeSectionContent{
+                padding-left: 52px;
+                padding-bottom:30px;
+                }
+                #aimsSection{
+                padding-left: 50px;
+                padding-right: 70px;
+                }
+                #aimsHead{
+                font-size: 40px;
+                border-bottom: 1px solid black;
+                width: 92%;
+                }
+                hr{
+                width: 92%;
+                }
+                #number{
+                font-size: 50px;
+                }
+                #aimDesc{
+                font-size: 28px;
+                }
+                }
+                @media screen and (max-width: 768px) and (min-width: 601px){
+                #viewResource{
+                margin-bottom: 12%;
+                margin-left: 76px;
+                font-size: 25px;
+                padding: 20px 8%;
+                width: 80%;
+                }
+                #articles {
+                background-color: transparent;
+                }
+                #articlesImage{
+                background-position: top;
+                background-size: cover;
+                height: 840px;
+                }
+                #articlesContent {
+                padding: 105px 70px 0px 65px;
+                background-color: #FAF6F5;
+                }
+                #titleHome{
+                font-size: 40px;
+                padding: 100px 274px 0px 50px;
+                margin-bottom: 0px;
+                }
+                .articlesButton{
+                width: 100%;
+                }
+                #sub-titleHome{
+                padding: 50px 10px 0px 50px;
+                font: normal normal 300 20px/28px Beatrice-light;
+                margin-bottom: 120px;
+                }
+                #welcomeSectionHead{
+                padding-left: 65px;
+                padding-right: 30px;
+                }
+                .paddingnone{
+                padding-top:50px !important;
+                }
+                .secone{
+                padding-left: 45px !important;
+                }
+                #welcomeSectionContent{
+                padding-left: 76px;
+                font-size: 24px;
+                margin-bottom: 60px;
+                }
+                #aimsSection{
+                padding-left: 65px;
+                padding-right: 70px;
+                }
+                #aimsHead{
+                font-size: 40px;
+                border-bottom: 1px solid black;
+                width: 92%;
+                }
+                hr{
+                width: 92%;
+                }
+                #number{
+                font-size: 50px;
+                }
+                #aimDesc{
+                font-size: 28px;
+                }
+                }
+                @media screen and (max-width: 600px) and (min-width: 531px){
+                #viewResource{
+                margin-bottom: 12%;
+                margin-left: 76px;
+                font-size: 28px;
+                padding: 15px 8%;
+                width: 75%;
+                }
+                #articles {
+                background-color: transparent;
+                }
+                #articlesImage{
+                background-position: top;
+                background-size: cover;
+                height: 725px;
+                }
+                .articlesButton{
+                width: 105%;
+                }
+                #articlesContent {
+                padding: 105px 90px 0px 65px;
+                background-color: #FAF6F5;
+                }
+                #titleHome{
+                font-size: 40px;
+                padding: 100px 274px 0px 20px;
+                margin-bottom: 0px;
+                }
+                #sub-titleHome{
+                padding: 30px 10px 0px 20px;
+                font: normal normal 300 18px/28px Beatrice-light;
+                margin-bottom: 120px;
+                }
+                #welcomeSectionHead{
+                padding-left: 65px;
+                padding-right: 30px;
+                }
+                .paddingnone{
+                padding-top:50px !important;
+                }
+                .secone{
+                padding-left: 45px !important;
+                }
+                #welcomeSectionContent{
+                padding-left: 76px;
+                font-size: 24px;
+                }
+                #aimsSection{
+                padding-left: 65px;
+                padding-right: 70px;
+                }
+                #aimsHead{
+                font-size: 40px;
+                border-bottom: 1px solid black;
+                width: 92%;
+                }
+                hr{
+                width: 92%;
+                }
+                #number{
+                font-size: 50px;
+                }
+                #aimDesc{
+                font-size: 28px;
+                }
+                }
+                @media screen and (max-width: 530px) and (min-width: 320px){
+                #viewResource{
+                margin-bottom: 12%;
+                margin-left: 30px;
+                font-size: 22px;
+                padding: 15px 8%;
+                width: 76%;
+                }
+                .push-right{
+                padding-left:45px !important;}
+                .push-right-m{
+                margin-left:40px !important;
+                }
+                #articles {
+                background-color: transparent;
+                }
+                #articlesImage{
+                background-position: top;
+                background-size: cover;
+                height: 525px;
+                }
+                .d-xs-none{
+                display:none !important;
+                }
+                .d-xs-block{
+                display:block !important;
+                }
+                .articlesButton{
+                width: 105%;
+                font-size: 22px;
+                }
+                #articlesContent {
+                padding: 50px 50px 0px 42px;
+                background-color: #FAF6F5;
+                }
+                #titleHome{
+                font-size: 39px;
+                padding: 100px 70px 0px 20px;
+                margin-bottom: 0px;
+                }
+                #sub-titleHome{
+                padding: 30px 10px 0px 20px;
+                font: normal normal 300 12px/16px Beatrice-light;
+                margin-bottom: 50px;
+                }
+                #welcomeSectionHead{
+                padding-left: 25px;
+                padding-right: 30px;
+                font-size: 45px;
+                padding-top: 30px;
+                }
+                .paddingnone{
+                padding-top:50px !important;
+                }
+                .secone{
+                padding-left: 25px !important;
+                }
+                #welcomeSectionContent{
+                padding-left: 32px;
+                font-size: 18px;
+                padding-right: 30px;
+                padding-bottom: 20px;
+                }
+                #aimsSection{
+                padding-left: 42px;
+                padding-right: 30px;
+                }
+                #aimsHead{
+                font-size: 38px;
+                letter-spacing: 1px;
+                border-bottom: 1px solid black;
+                width: 98%;
+                }
+                hr{
+                width: 98%;
+                }
+                #number{
+                font-size: 26px;
+                width: 8%;
+                padding-left: 13px;
+                }
+                #bulletContainer {
+                margin-bottom: 50px;
+                }
+                #aimDesc{
+                width: 82%;
+                margin-left: 7%;
+                padding-right: 20px;
+                font: normal normal 300 24px/30px Neue_Haas_Unica_Pro-light;
+                }
+                #articlesHead {
+                font: normal normal 300 40px/60px Beatrice-light;
+                letter-spacing: 1px;
+                }
+                #articlesCont {
+                font: normal normal 300 18px/31px Neue_Haas_Unica_Pro-light;
+                letter-spacing: 1px;
+                }
+                }                 
+                
+            </aura:html>
+        </aura:set>
+        
+    </aura:if> 
+    
+    
+    
+    
+    
+    
+   <!-- <aura:if isTrue="{!v.userType}">
+        <aura:if isTrue="{!!(v.compltProfile.AGN_SPARK_Update_my_Profile__c)}">
+            <c:AGN_SPARK_Completemyprofile acrId="{!v.compltProfile.Id}"/>
+        </aura:if>
+    </aura:if>-->   
+    <div class="home-content">
+        <div id="banner" class="row">
+            <div id="bannerContentHome" class="col-sm-12 col-md-12 col-lg-5 col-xl-5" >
+                <div id="titleHome">Igniting your <br></br> aesthetic community
+                    
+                </div>
+                <div id="sub-titleHome">Get trusted support from Allergan Aesthetics, one of the world leaders in medical aesthetics.</div>
+                <aura:if isTrue="{!!v.userType}">
+                    <button id="register" onclick="{!c.fireRegisterEvent}" class="d-xs-none d-sm-none d-md-none d-lg-block d-xl-block d-none">Register now</button>
+                    <div class="d-sm-block d-md-block d-lg-none d-xl-none btnContainer visible-xs-block">
+                        <button id ="sm_register" onclick="{!c.fireRegisterEvent}">Register</button>
+                        <button id ="sm_login" onclick="{!c.loginPage}">Login</button>
+                    </div>
+                </aura:if>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-7 col-xl-7 pl-0 pr-0">
+                <img id="bannerImageHome" src="{!$Resource.AGN_SPARK_Rebranding_Home + '/images/AllerganAesthetics_Photography_-1@2x.jpg'}" class="imgResponsive p-0" alt="bannerImage"/>
+                <div id="Group_88">
+                    <a aura:id="facebook" id = "facebook" class="facebook" target="_blank" href="https://www.facebook.com/AllerganSparkUK/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-facebook" viewBox="0.562 0.562 28.095 28.043">
+                          <path id="Icon_awesome-facebook" d="M 28.65703392028809 14.66943073272705 C 28.65703392028809 6.876489162445068 22.36974906921387 0.5624998807907104 14.60976696014404 0.5624998807907104 C 6.849785327911377 0.5624998807907104 0.5625001192092896 6.876489162445068 0.5625001192092896 14.66943073272705 C 0.5625001192092896 21.71038436889648 5.699381828308105 27.54655647277832 12.41488075256348 28.60571670532227 L 12.41488075256348 18.74736022949219 L 8.84642219543457 18.74736022949219 L 8.84642219543457 14.66943073272705 L 12.41488075256348 14.66943073272705 L 12.41488075256348 11.561354637146 C 12.41488075256348 8.026090621948242 14.51064205169678 6.073303699493408 17.72055625915527 6.073303699493408 C 19.25782585144043 6.073303699493408 20.86533164978027 6.348616123199463 20.86533164978027 6.348616123199463 L 20.86533164978027 9.818466186523438 L 19.09356498718262 9.818466186523438 C 17.34898567199707 9.818466186523438 16.80465126037598 10.90606498718262 16.80465126037598 12.02153778076172 L 16.80465126037598 14.66943073272705 L 20.70050430297852 14.66943073272705 L 20.07743835449219 18.74736022949219 L 16.80465126037598 18.74736022949219 L 16.80465126037598 28.60571670532227 C 23.52015495300293 27.54655647277832 28.65703392028809 21.71038436889648 28.65703392028809 14.66943073272705 Z">
+                          </path>
+                         </svg>
+                      ]]>
+                    </a>
+                    <a aura:id="instagram" id ="instagram" class="instagram" target="_blank" href="https://www.instagram.com/allergansparkuk/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-instagram" viewBox="-0.005 2.238 27.89 27.888">
+                          <path id="Icon_awesome-instagram" d="M 13.94292449951172 9.031681060791016 C 9.985723495483398 9.031681060791016 6.793830394744873 12.22409343719482 6.793830394744873 16.18193817138672 C 6.793830394744873 20.1397819519043 9.985723495483398 23.33219528198242 13.94292449951172 23.33219528198242 C 17.90012359619141 23.33219528198242 21.09201431274414 20.13977813720703 21.09201431274414 16.18193817138672 C 21.09201431274414 12.22409439086914 17.90012359619141 9.031681060791016 13.94292449951172 9.031681060791016 Z M 13.94292449951172 20.83053588867188 C 11.38567733764648 20.83053588867188 9.295080184936523 18.74582290649414 9.295080184936523 16.18193626403809 C 9.295080184936523 13.6180477142334 11.37945556640625 11.5333366394043 13.94292449951172 11.5333366394043 C 16.50639343261719 11.5333366394043 18.59076690673828 13.6180477142334 18.59076690673828 16.18193626403809 C 18.59076690673828 18.74582290649414 16.50017356872559 20.83053588867188 13.94292449951172 20.83053588867188 Z M 23.05195045471191 8.739198684692383 C 23.05195045471191 9.666430473327637 22.30530548095703 10.40697002410889 21.38445091247559 10.40697002410889 C 20.45736885070801 10.40697002410889 19.71695327758789 9.66020679473877 19.71695327758789 8.739198684692383 C 19.71695327758789 7.818192481994629 20.46359443664551 7.071429252624512 21.38445091247559 7.071429252624512 C 22.30530548095703 7.071429252624512 23.05195045471191 7.818192481994629 23.05195045471191 8.739198684692383 Z M 27.78690147399902 10.43186283111572 C 27.68112754821777 8.197796821594238 27.17092132568359 6.218875408172607 25.5345344543457 4.588443279266357 C 23.90436363220215 2.958010911941528 21.9257640838623 2.447722434997559 19.69206237792969 2.335709095001221 C 17.38991928100586 2.205025196075439 10.48970603942871 2.205025196075439 8.187561988830566 2.335709095001221 C 5.960081100463867 2.441499948501587 3.981481075286865 2.951788425445557 2.345092296600342 4.582220077514648 C 0.708703339099884 6.212652206420898 0.2047198414802551 8.191572189331055 0.09272374957799911 10.42563819885254 C -0.03793852031230927 12.72815704345703 -0.03793852031230927 19.62948989868164 0.09272374957799911 21.93201065063477 C 0.1984979659318924 24.16607666015625 0.7087030410766602 26.14500045776367 2.345092296600342 27.77542877197266 C 3.981481075286865 29.40586090087891 5.953859329223633 29.9161491394043 8.187561988830566 30.02816009521484 C 10.48970603942871 30.15884399414062 17.38991928100586 30.15884399414062 19.69206237792969 30.02816009521484 C 21.92576599121094 29.92237091064453 23.90436553955078 29.41208267211914 25.5345344543457 27.77542877197266 C 27.16470146179199 26.14499282836914 27.67490577697754 24.16607284545898 27.78690147399902 21.93201065063477 C 27.91756439208984 19.62948989868164 27.91756439208984 12.73437881469727 27.78690147399902 10.43186092376709 Z M 24.81277847290039 24.40254974365234 C 24.32746124267578 25.62226486206055 23.38793563842773 26.56193923950195 22.16220092773438 27.05355834960938 C 20.32670974731445 27.78165435791016 15.97130012512207 27.61362838745117 13.94292449951172 27.61362838745117 C 11.91454792022705 27.61362838745117 7.552917003631592 27.77542877197266 5.723643779754639 27.05355834960938 C 4.504129886627197 26.56816101074219 3.564606189727783 25.62848663330078 3.073067426681519 24.40254974365234 C 2.345091819763184 22.5667610168457 2.513086318969727 18.21064376831055 2.513086318969727 16.18193817138672 C 2.513086318969727 14.15323162078857 2.351313829421997 9.790890693664551 3.073067426681519 7.961321353912354 C 3.55838418006897 6.741610050201416 4.497908115386963 5.801933765411377 5.723643779754639 5.310314178466797 C 7.55913782119751 4.582221031188965 11.91454792022705 4.750241756439209 13.94292449951172 4.750241756439209 C 15.97130012512207 4.750241756439209 20.33293151855469 4.588443279266357 22.16220092773438 5.310314178466797 C 23.38171577453613 5.795710563659668 24.32123947143555 6.735385894775391 24.81277847290039 7.961321353912354 C 25.54075241088867 9.797114372253418 25.37276077270508 14.15323066711426 25.37276077270508 16.18193817138672 C 25.37276077270508 18.21064376831055 25.54075241088867 22.57298278808594 24.81277847290039 24.40254974365234 Z">
+                          </path>
+                         </svg>
+                     ]]>
+                    </a> 
+                </div>
+            </div>
+        </div>
+        <div id="content" class="">
+            <div id="welcomeSection" class="row" >
+                <aura:if isTrue="{!v.userType}">
+                    <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5">
+                        <div id="welcomeSectionHead" class="paddingnone secone">
+                            Welcome to The Spark
+                        </div>
+                        <div id="welcomeSectionContent" class="secone">
+                            <p>We created the Spark to help the next generation of aesthetics professionals thrive. We're really excited to be with you on your medical aesthetics journey.</p>
+                        </div>
+                        <div id="welcomeSectionHead" class="d-lg-block d-xl-block d-sm-none d-md-none d-xs-none ">
+                            Training and Events
+                        </div>
+                        <div id="welcomeSectionContent" class="d-lg-block d-xl-block d-sm-none d-md-none d-xs-none">
+                            Find Allergan Aesthetics-approved clinical and injectable training with our list of providers, upcoming events and webinars, and keep your business growing with Allergan Aesthetics's business support services.
+                        </div>
+                        <button id ="viewResource" onclick="{!c.trainingProviders}" class="d-lg-block d-xl-block d-sm-none d-md-none d-xs-none">View Resources</button>
+                    </div>
+                    <div id="aimsSection" class="col-sm-12 col-md-12 col-lg-7 col-xl-7">
+                        <div id="aimsHead">
+                            Our Aims
+                        </div>
+                        <div id="aimsDetails">
+                            <div id="bulletContainer" class="row">
+                                <span id="number" class="col-xs-2 col-sm-2 col-md-2 col-xl-3 col-lg-3"> 01</span>
+                                <span id="aimDesc" class="col-xs-10 col-sm-10 col-md-10 col-xl-9 col-lg-9">To Build the skills and confidence of new medical aesthetics professionals</span>
+                            </div>
+                            <hr/>
+                            <div id="bulletContainer" class="row">
+                                <span id="number" class="col-xs-2 col-sm-2 col-md-2 col-xl-3 col-lg-3"> 02</span>
+                                <span id="aimDesc" class="col-xs-10 col-sm-10 col-md-10 col-xl-9 col-lg-9">To elevate the quality of medical aesthetic treatment outcomes for patients</span>
+                            </div>
+                            <hr/>
+                            <div id="bulletContainer" class="row">
+                                <span id="number" class="col-xs-2 col-sm-2 col-md-2 col-xl-3 col-lg-3"> 03</span>
+                                <span id="aimDesc" class="col-xs-10 col-sm-10 col-md-10 col-xl-9 col-lg-9">To encourage the ethical growth of medical aesthetic careers and businesses</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-lg-none d-xl-none d-sm-block d-md-block">
+                        <div id="welcomeSectionHead" class="push-right d-lg-none d-xl-none d-sm-block d-md-block d-xs-block">
+                            Training and Events
+                        </div>
+                        <div id="welcomeSectionContent" class="push-right d-lg-none d-xl-none d-sm-block d-md-block d-xs-block">
+                            Find Allergan Aesthetics-approved clinical and injectable training with our list of providers, upcoming events and webinars, and keep your business growing with Allergan Aesthetics's business support services.
+                        </div>
+                    </div>
+                    <button id ="viewResource" onclick="{!c.trainingProviders}" class="push-right-m  d-lg-none d-xl-none d-sm-block d-md-block d-xs-block">View Resources</button>
+                    
+                    <aura:set attribute="else">
+                        <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5">
+                            <div id="welcomeSectionHead">
+                                {!$Label.c.AGN_SPARK_About_Spark}
+                            </div>
+                            <div id="welcomeSectionContent">
+                                <p>{!$Label.c.AGN_SPARK_About_Spark_Content1}</p>
+                                <p>{!$Label.c.AGN_SPARK_About_Spark_Content2}</p>
+                                <p>{!$Label.c.AGN_SPARK_About_Spark_Content3}</p>
+                            </div>
+                            <div id="welcomeSectionSubHead">
+                                Having an Allergan Aesthetics Spark <br/> account lets you:
+                            </div>
+                            <div id="welcomeSectionContent" class="slds-text-longform">
+                                <ul>
+                                    <li>{!$Label.c.AGN_SPARK_Banner_Content5}</li>
+                                    <li>{!$Label.c.AGN_SPARK_Banner_Content4}</li>
+                                    <li>{!$Label.c.AGN_SPARK_Banner_Content7}</li>
+                                    <li>{!$Label.c.AGN_SPARK_Banner_Content6}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="aimsSection" class="col-sm-12 col-md-12 col-lg-7 col-xl-7">
+                            <div id="aimsHead">
+                                {!$Label.c.AGN_SPARK_our_aims}
+                            </div>
+                            <div id="aimsDetails">
+                                <div id="bulletContainer" class="row">
+                                    <span id="number" class="col-xs-2 col-sm-2 col-md-2 col-xl-3 col-lg-3"> 01</span>
+                                    <span id="aimDesc" class="col-xs-10 col-sm-10 col-md-10 col-xl-9 col-lg-9">{!$Label.c.AGN_SPARK_our_aims_Content1}</span>
+                                </div>
+                                <hr/>
+                                <div id="bulletContainer" class="row">
+                                    <span id="number" class="col-xs-2 col-sm-2 col-md-2 col-xl-3 col-lg-3"> 02</span>
+                                    <span id="aimDesc" class="col-xs-10 col-sm-10 col-md-10 col-xl-9 col-lg-9">{!$Label.c.AGN_SPARK_our_aims_Content2}</span>
+                                </div>
+                                <hr/>
+                                <div id="bulletContainer" class="row">
+                                    <span id="number" class="col-xs-2 col-sm-2 col-md-2 col-xl-3 col-lg-3"> 03</span>
+                                    <span id="aimDesc" class="col-xs-10 col-sm-10 col-md-10 col-xl-9 col-lg-9">{!$Label.c.AGN_SPARK_our_aims_Content3}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:set>
+                </aura:if>
+            </div>
+            <div class="hubArticleSection row">
+                <aura:if isTrue="{!v.userType}">
+                    <div id="articles" class="col-sm-0 col-md-0 col-lg-1 col-xl-1">
+                    </div>
+                    <div id="articlesImage" class="col-sm-12 col-md-12 col-lg-5 col-xl-5 order-12 order-sm-12 order-md-12 order-lg-1 order-xl-1" style="{!'background: url(' + $Resource.AGN_SPARK_Rebranding_Home + '/images/AllerganAesthetics_Photography_-2@2x.jpg' +') no-repeat; background-position: unset; background-size: cover;'}">
+                    </div>
+                    <div id="articlesContent" class="col-sm-12 col-md-12 col-lg-6 col-xl-6 order-sm-1 order-1 order-md-1 order-xl-12 order-xl-12">
+                        <div id="articlesHead">Browse our Knowledge Hub Articles</div>
+                        <div id="articlesCont">Read articles from our Virtual Product Specialists and industry experts, covering business, clinical, and product topics on the Knowledge Hub. Find high-quality resources that are accessible from any device, anywhere, at any time.</div>
+                        <div id="articlesButtons">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                                    <button class ="articlesButton"  id="Getting_Started_Clinical" onclick="{!c.knowledgePage}">Clinical</button>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 d-xs-none d-sm-none d-md-none d-lg-block d-xl-block">
+                                    <button class ="articlesButton" id="Getting_Started_Product" onclick="{!c.knowledgePage}">Product</button>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+                                    <button class ="articlesButton" id="Getting_Started_Business" onclick="{!c.knowledgePage}">Business</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 d-xs-none d-sm-none d-md-none d-lg-block d-xl-block">
+                                    <button class ="articlesButton" id="Getting_Started_Business" onclick="{!c.knowledgePage}">Business</button>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+                                    <button class ="articlesButton" id="Getting_Started_Product" onclick="{!c.knowledgePage}">Product</button>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                                    <button class ="articlesButton" id="Getting_Started_Video" onclick="{!c.knowledgePage}">Video</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <aura:set attribute="else">
+                        <div id="articles" class="col-sm-0 col-md-0 col-lg-3 col-xl-3">
+                        </div>
+                        <div id="articlesImage" class="col-sm-12 col-md-12 col-lg-5 col-xl-5 order-12 order-sm-12 order-md-12 order-lg-1 order-xl-1" style="{!'background: url(' + $Resource.AGN_SPARK_Rebranding_Home + '/images/AllerganAesthetics_Photography_-2@2x.jpg' +') no-repeat; background-position: unset; background-size: cover;'}">
+                        </div>
+                        <div id="articlesContent" class="col-sm-12 col-md-12 col-lg-4 col-xl-4 order-sm-1 order-1 order-md-1 order-xl-12 order-xl-12">
+                            <div id="articlesHead">{!$Label.c.AGN_SPARK_our_service_Content1}</div>
+                            <div id="articlesCont">{!$Label.c.AGN_SPARK_our_service_Content2}</div>
+                            <div id="articlesHead">{!$Label.c.AGN_SPARK_our_service_Content3}</div>
+                            <div id="articlesCont">{!$Label.c.AGN_SPARK_our_service_Content4}</div>
+                            <button id="registerButton" onclick="{!c.fireRegisterEvent}">Register now</button>
+                        </div>
+                    </aura:set>
+                </aura:if>
+            </div>	
+        </div>        
+    </div>
+    <c:AGN_SPARK_ZincCode pageName="HomePage"/>
+    <c:AGN_SPARK_PopUpAllowCookie/>
+    <!--<aura:if isTrue="{!!v.userType}">
+      <c:AGN_SPARK_PopUpAllowCookie/>  
+    </aura:if>-->
+</aura:component>

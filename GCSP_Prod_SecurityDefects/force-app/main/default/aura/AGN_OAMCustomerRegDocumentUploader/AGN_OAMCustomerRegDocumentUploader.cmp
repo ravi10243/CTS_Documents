@@ -1,0 +1,219 @@
+<aura:component implements="force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" controller="AGN_OAMPortalCustomerRegStep2Controller" access="global"> 
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="selectedCustRegID" type="String" description="Customer Registration Record Id" access="global"/>
+    <aura:attribute name="objAGNCustAddr" type="Allergan_Customer_Address_AGN__c" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}" access="private" />
+    <aura:attribute name="objAGNCustReg" type="Allergan_Customer_Registration_AGN__c" default="{'sobjectType': 'Allergan_Customer_Registration_AGN__c'}" access="private" />
+    <aura:attribute name="objSpecialty" type="Specialty_Allergan_AGN__c" access="private" default="{'sobjectType': 'Specialty_Allergan_AGN__c'}"/>
+    <aura:attribute name="objMixType" type="sObject" access="private" default="{'sobjectType': 'sObject'}"/>
+    <aura:attribute name="options" type="List" default="[
+                                                        {'label': 'Owner', 'value': 'option1'},
+                                                        {'label': 'Contractor', 'value': 'option2'},
+                                                        {'label': 'Employee', 'value': 'option3'},
+                                                        {'label': 'Professional Service Provider', 'value': 'option4'}
+                                                        ]"/>
+    <aura:attribute name="value" type="String" default=""/>
+	<!--IE fileUpload issue fix Start #SCTASK1100635 Start-->     
+    <aura:attribute name="value11" type="String" default=""/>
+	<!--IE fileUpload issue fix Start #SCTASK1100635 End-->     
+    <aura:attribute name="DisclaimerValue" type="Boolean" default="false"/>
+    
+    <aura:attribute name="selectedSpecialty" type="String"/>
+    
+    <!-- Either VAT or TAX is mandatory-->
+    <aura:attribute name="TaxNumberMissing" type="Boolean" default="false"/>
+    <aura:attribute name="VatNumberMissing" type="Boolean" default="false"/>
+    
+    <aura:attribute name="sectionHeaderMapDoc" type="Map" default="{}" access="global"/> 
+    <aura:attribute name="dropdownListMap" type="Map" default="{}" access="global" />
+    
+    <!-- Fix for GB IE -->
+    <aura:attribute name="SAPCountryCode" type="String"/>
+    <!-- Fix for GB IE -->
+    
+    <aura:attribute name="countryCode" type="String"/>
+    <aura:attribute name="customerType" type="String"/>
+    <aura:attribute name="customerSubType" type="String"/>
+    <aura:registerEvent name="notifyRegStepChange" type="c:AGN_Reg_Step_Chg_Evt" />
+    <aura:method name="displayFormStep3" action="{!c.showForm}">
+        <aura:attribute name="custRegID" type="String"/>
+    </aura:method>
+    
+    <aura:attribute name="isMandate" type="boolean" default="true"/>
+    <aura:handler name="isManadteDocmant" action="{!c.ondocumentUploadMandate}" event="c:AGN_MandateDocumentUpload_Evt" />
+    
+    <!-- For IE TaxExempting Document -->
+    <aura:attribute name="taxExempted" type="String"/>
+    <aura:attribute name="isMandateTaxExempting" type="boolean" default="true"/>    
+    <aura:handler name="isManadteTaxExemptingDocmant" action="{!c.onTaxExemptingDocmantUploadMandate}" event="c:AGN_MandateDocumentUpload_Evt" /> 
+    
+    
+    <aura:if isTrue="{! not(empty(v.selectedCustRegID))}">
+        <div class="regi_add_1 reg_add">
+            <aura:iteration items="{!v.sectionHeaderMapDoc}" var="set" indexVar="key">
+                <!-- <div class="slds-section-title__divider"><b>{!set.value[0].Section_Header_Label_AGN__c}</b><span></span></div> -->
+                <section class="content bgcolor-7">
+                    <aura:if isTrue="{!v.countryCode == 'DE'}">
+                        <c:auraIfContains_AGN items="{!set.value[0].Customer_Groups_AGN__c}"  element="GP,SP,DN,SG,R,CL">
+                            <span class="input input--nariko inputtextValue input-identifier required-identifier" data-inputFiedlValue="{!v.selectedSpecialty}">
+                                <!--  <div class="box">-->
+                                <ui:inputSelect aura:id="speciality" value="{!v.selectedSpecialty}" class="input__field input__field--nariko inputtextValue" change="{!c.onChangePaymentMethod}">                                        
+                                    <aura:if isTrue="{!not(empty(v.selectedSpecialty))}">
+                                        <option value="{!v.selectedSpecialty}" text="{!v.selectedSpecialty}"></option>
+                                        <option value="" text=""></option>
+                                        <aura:set attribute="else">
+                                            <option value="" text=""></option>
+                                        </aura:set>
+                                    </aura:if>                                        
+                                    
+                                    <aura:iteration items="{!v.objSpecialty}" var="sep">
+                                        <option value="{!sep.Translated_Value_AGN__c}" text="{!sep.Translated_Value_AGN__c}"></option>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                                <label class="input__label input__label--nariko" for="input-19">
+                                    <span class="input__label-content input__label-content--nariko inputHasValue">Fachrichtung<span class="upload_i"></span></span>
+                                </label>
+                                <!--  </div> -->
+                            </span>
+                        </c:auraIfContains_AGN>                        
+                    </aura:if>
+                    <!-- Either VAT or TAX is mandatory-->
+                    <!--19r3 minor, for CIF and NIF number for ES-->
+                    
+                    <!-- Santanu for Spain Change Start-->
+                    <aura:if isTrue= "{!v.countryCode == 'ES'}">                             
+                        <lightning:helptext content="{!$Label.c.AGN_OAM_CIF_Format_HelpText}"/>
+                    </aura:if>
+                    <!-- Santanu for Spain Change End-->
+                    
+                    <aura:if isTrue= "{!or(v.countryCode == 'ES', v.countryCode == 'IT')}">
+                        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.objAGNCustAddr.VAT_Number_AGN__c}" data-fieldValueMissing="{!v.VatNumberMissing}" >                           
+                            <ui:inputText aura:id="inputField" value="{!v.objAGNCustAddr.VAT_Number_AGN__c}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.VatNumberMissing ? 'required' : '')}" blur="{!c.handleBlur}"/>
+                            <label class="input__label input__label--nariko">
+                                <span class="input__label-content input__label-content--nariko inputHasValue">
+                                    <aura:if isTrue= "{!v.countryCode == 'ES'}">
+                                        {!$Label.c.AGN_OAM_VAT_Number_Registered} 
+                                    </aura:if>
+                                    <aura:if isTrue= "{!v.countryCode == 'IT'}">
+                                        {!$Label.c.AGN_OAM_VAT_Number}
+                                    </aura:if>
+                                    
+                                </span>
+                            </label>                
+                        </span>
+                        
+                        
+                        
+                        <aura:if isTrue= "{!v.countryCode == 'IT'}">
+                            <!--20R1 Major Req No.2795, Helptext for CIF and NIF number for IT-->    
+                            <lightning:helptext content="{!$Label.c.AGN_OAM_HelpText_SocialReason}" />
+                        </aura:if> 
+                        <aura:if isTrue= "{!v.countryCode == 'IT'}">
+                            <!--20R1 Major Req No.2795, Helptext for CIF and NIF number for IT-->    
+                            <lightning:helptext content="{!$Label.c.AGN_OAM_HelpText_SocialReason}" />
+                        </aura:if> 
+                        <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.objAGNCustAddr.Tax_Number_AGN__c}" data-fieldValueMissing="{!v.TaxNumberMissing}" >
+                            <ui:inputText aura:id="inputField" value="{!v.objAGNCustAddr.Tax_Number_AGN__c}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.TaxNumberMissing ? 'required' : '')}" blur="{!c.handleBlur}"/>
+                            <label class="input__label input__label--nariko">
+                                <span class="input__label-content input__label-content--nariko inputHasValue">
+                                    <aura:if isTrue= "{!v.countryCode == 'ES'}">
+                                        {!$Label.c.AGN_OAM_Tax_Number_Registered}  
+                                    </aura:if>
+                                    <aura:if isTrue= "{!v.countryCode == 'IT'}">
+                                        {!$Label.c.AGN_OAM_Tax_Number}  
+                                    </aura:if>
+                                </span>
+                            </label>                
+                        </span>                        
+                    </aura:if>                    
+                    
+                    <aura:iteration items="{!set.value}" var="fieldValue"> 
+                        <aura:if isTrue="{!and(fieldValue.Field_Name_AGN__c == 'Tax_Exempted_AGN__c', or(v.SAPCountryCode == 'IE', v.SAPCountryCode == 'GB'))}">
+                            <span onchange="{!c.onChange}">
+                                <c:AGN_CommunityInputFieldCmp 
+                                                              aura:id="fieldId_Doc" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!v.objMixType}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"
+                                                              />
+                            </span>
+                            <aura:set attribute="else">
+                                <c:AGN_CommunityInputFieldCmp 
+                                                              aura:id="fieldId_Doc" 
+                                                              sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                              record="{!v.objMixType}" 
+                                                              fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                              customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                              required="{!fieldValue.Required_AGN__c}"
+                                                              fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                              customCountryCode = "{!v.countryCode}"
+                                                              cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"
+                                                              /> 
+                            </aura:set>
+                        </aura:if> 
+                    </aura:iteration>                     
+                </section>
+            </aura:iteration>          
+            <aura:if isTrue="{!and(v.countryCode == 'ES', v.customerType == 'Pharmacies')}">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ui:outputText  value="{!$Label.c.AGN_OAM_PH_Disclaimer_Section}"></ui:outputText>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ui:outputText  value="{!$Label.c.AGN_OAM_PH_Disclaimer_Section_1}"></ui:outputText>     
+            </aura:if>
+        </div> 
+        
+        <c:AGN_CustRegStep2DocumentUploader aura:id="docId" custRegId="{!v.selectedCustRegID}" /> 
+        
+        <!-- for Tax Exempting Reference Document  -->
+        <aura:if isTrue="{!and(or(v.SAPCountryCode == 'IE',v.SAPCountryCode == 'GB'),v.taxExempted =='0')}">
+            <c:AGN_OAMTaxExemptedDocumentUpload_CA aura:id="TaxExeId" taxExemptedVal="{!v.taxExempted}" customerRegId="{!v.selectedCustRegID}"/>          
+        </aura:if> 
+    </aura:if>             
+        
+    <aura:if isTrue="{!v.SAPCountryCode == 'IE'}">
+        <div>
+            <div>
+                <div class="IE_ALL_FORM">
+                    <!--IE fileUpload issue fix Start #SCTASK1100635 Start--> 
+                    <!--lightning:radioGroup
+                                          aura:id="mygroup"
+                                          name="radioButtonGroup"
+                                          label="I ,(Medical Practitioner) confirm that I am associated to the entity / establishment of by engagement as "
+                                          options="{! v.options }"
+                                          value="{! v.value }"
+                                          onchange="{!c.handleChange}"
+                                          required="true" 
+                                          type="radio"/-->                    
+                    
+                                          
+                    <span >
+                        <b style="font-size: 12px;">*I ,(Medical Practitioner) confirm that I am associated to the entity / establishment of by engagement as</b>
+                        <br/>
+                        <ui:inputRadio aura:id="mygroup01" name="radioButtonGroup" label="Owner" change="{!c.handleChange}" value="option1"/>
+                        <ui:inputRadio aura:id="mygroup02" name="radioButtonGroup" label="Contractor" change="{!c.handleChange}" value="option2"/>
+                        <ui:inputRadio aura:id="mygroup03" name="radioButtonGroup" label="Employee" change="{!c.handleChange}" value="option3"/>
+                        <ui:inputRadio aura:id="mygroup04" name="radioButtonGroup" label="Professional Service Provider" change="{!c.handleChange}" value="option4"/>
+                        <br/>
+                    </span>
+                    <!--IE fileUpload issue fix Start #SCTASK1100635 End-->
+                    
+                    <div>and will be acting as the Responsible Person on this account, and therefore signing  ‘Declaration by Medical Practitioner’ in this capacity.
+                        All particulars herein are declared to be true and complete to the best of my knowledge. I am legally authorized to sign on behalf of the aforementioned entity or as an individual and to receive the products to be ordered. I agree to inform Allergan of any change in status that could affect the authority to receive medicinal products/medical devices. I agree to supply Allergan with supporting documentation for account review. I agree to inform Allergan of any change in address/place of practice. I agree to the Allergan Data Protection Notice. I agree that I am responsible for the ordering on the account, the receipt, storage and administration of the medicinal products/medical devices at the premises to which the product will be supplied.
+                    </div>
+                    <div class="slds-checkbox">
+                        <lightning:input  required = "true" type="checkbox" name="ProofDisclaimer" label="I Agree" aura:id="ProofDisclaimer" checked="{!v.DisclaimerValue}"  />
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </aura:if> 
+    
+    
+    <div class="det_upload">
+        <ui:button aura:id="buttonSave" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Save_Continue}" press="{!c.validateAndUpsert}" />
+        <ui:button aura:id="button" class="add_btn cancel_btn" label="{!$Label.c.AGN_OAM_Body_Cancel}" press="{!c.resetBlock}"/>
+    </div>
+</aura:component>

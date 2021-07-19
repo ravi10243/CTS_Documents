@@ -1,0 +1,81 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}" />
+    <!--<aura:attribute name="MultipleoptnId" type="object" /> -->
+    
+    <aura:attribute name="options_" type="String[]"/>
+    
+    <aura:attribute name="selectedItems" type="String[]" />
+    
+    <aura:attribute name="infoText" type="String" default="Select an option..." />
+    
+    <aura:attribute name="width" type="String" default="245px;" />
+    
+    <!--<aura:attribute name="dropdownLength" type="Integer" default="4" />-->
+    
+    <aura:registerEvent name="SelectedBrandValues" type="c:AGN_ICL_MultiSelectChangeEventForOAM" />
+    
+    <!--<aura:method name="reInit" action="{!c.init}" description="Allows the lookup to be reinitalized">
+
+    </aura:method> -->
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    
+    <aura:attribute name="dropdownOver" type="Boolean" default="false" />
+    
+    <!--<div style="padding-left: 2rem; padding-top: 5rem; position: relative;"><a href="javascript:void(0)" aria-describedby="help">Help Text</a>
+<div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="help" style="position: absolute; top: -4px; left: 35px;">
+<div class="slds-popover__body">Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi.</div>
+</div>
+</div>-->
+      <div class="row">
+    <div class="col-md-2">
+        
+        
+        <label></label>
+        <label style="width: 300px;"><h5 class="brand section-label">Brand*&nbsp;&nbsp;&nbsp;&nbsp;<span  data-toggle="tooltip" title="you can select multiple brands at the same time" >i</span></h5></label>
+        
+        
+    </div>
+    <div class="col-md-3">
+        <div class="form-group brand-select input-effect">
+            <div aura:id="main-div" class="slds-picklist slds-dropdown-trigger slds-dropdown-trigger--click">
+                
+                <button class="slds-button slds-button--neutral slds-picklist__label" style="{!'width:' + v.width }" aria-haspopup="true" onclick="{!c.handleClick}" onmouseleave="{!c.handleMouseOutButton}">
+                    
+                    <span class="slds-truncate" title="{!v.infoText}">{!v.infoText}</span>
+                    
+                    <lightning:icon iconName="utility:down" size="small" class="slds-icon" />
+                    
+                </button>
+                
+                <div class="slds-dropdown slds-dropdown--left" onmouseenter="{!c.handleMouseEnter}" onmouseleave="{!c.handleMouseLeave}">
+                    
+                    <ul class="{!'slds-dropdown__list slds-dropdown--length-4'}" role="menu">
+                        
+                        <aura:iteration items="{!v.options_}" var="option">
+                            
+                            <li class="{!'slds-dropdown__item ' + (option.selected ? 'slds-is-selected' : '')}" role="presentation" onclick="{!c.handleSelection}" data-value="{!option.Name}" data-selected="{!option.selected}">
+                                
+                                <a href="javascript:void(0);" role="menuitemcheckbox" aria-checked="true" tabindex="0">
+                                    
+                                    <span class="slds-truncate">
+                                        
+                                        <lightning:icon iconName="utility:check" size="x-small" class="slds-icon slds-icon--selected slds-icon--x-small slds-icon-text-default slds-m-right--x-small" />
+                                        {!option.Name}
+                                        
+                                    </span>
+                                    
+                                </a>
+                                
+                            </li>
+                            
+                        </aura:iteration>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    </div>
+</aura:component>

@@ -1,0 +1,137 @@
+<aura:component controller="AGN_ICL_AddPractitionerDetailsController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+    <link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+    <!--<link href="{!$Resource.AGN_ICL_TempScripts+'/AGN_ICL_TEST_CSS/mystyle.css'}" rel="stylesheet"/>-->
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}"  />
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS+'/ICL/js/bootstrap.js'}"/>
+    
+    <aura:attribute name="practitioners" type="Practitioner_Listing_AGN__c[]"/>
+    <aura:attribute name="practitioner" type="Practitioner_Listing_AGN__c"/>
+    <aura:handler event="c:AGN_ICL_AddPractitioners" action="{!c.RefreshPractitionerList}"/>
+    <aura:handler name="CloseEditPopup" event="c:AGN_ICL_CloseEditModal" action="{!c.HandleEditPopup}"/>
+    <aura:handler name="ClosePopup" event="c:AGN_ICL_CloseModel" action="{!c.HandlePopup}"/>
+    <!--Canada Changes-->
+    <aura:attribute name="twoLayerLayout" type="Boolean" access="public"/>
+    <!--Canada Change-->
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="openModal" type="boolean" default="false"/>
+    <aura:attribute name="openaddModal" type="boolean" default="false"/>
+    <aura:attribute name="LocatorListingId" type="String"/>
+     <aura:attribute name="isEdit" type="boolean" />
+    <!--<aura:attribute name="url" type="String"/>-->
+    
+    <!--<aura:registerEvent name="editPractitioner" type="c:AGN_ICL_EditPractitioner"/>-->
+    <!--27_mar -->
+    
+   
+    <div  class="{!v.isEdit ? 'table-responsive practioner-details-wrapper gradeout' : 'table-responsive practioner-details-wrapper' }">
+        <h4 class="section-text">{!$Label.c.AGN_ICL_All_Practitioner_Label}</h4>
+        <table id="mytable" class="table table-bordred">
+            <thead>
+                <th>{!$Label.c.AGN_ICL_Profile_picture}</th>
+                <th>{!$Label.c.AGN_ICL_First_Name}</th>
+                <th>{!$Label.c.AGN_ICL_Last_Name}</th>
+                <th>{!$Label.c.AGN_ICL_Brand}</th>
+                <th>{!$Label.c.AGN_ICL_Email}</th>
+                <th>{!$Label.c.AGN_ICL_Consent1}</th>
+                <th>{!$Label.c.AGN_ICL_Edit}</th>
+                <th>{!$Label.c.AGN_ICL_Delete}</th>
+            </thead>
+            
+            <tbody>
+                
+                <aura:iteration items="{!v.practitioners}" var="record" indexVar ="index">
+                    
+                    <tr>
+                        
+                        <!--<td style="display:none;"><input type="hidden" value="{!record.Id}" id="{!record.Id}" class="practitioner" /></td>-->
+                        <td>
+                            <!-- <img align='middle' src="{!$Resource.AGN_ICL_CSS+'/ICL/images/upload.jpg'}" width="40px" height="40px" />-->
+                            
+                            <!--AWS-->    
+                            <aura:if isTrue="{!not(empty(record.Practitioner_Image_AGN__c))}">
+                                <img  align="middle" src="{!record.Practitioner_Image_AGN__c}"  height="42" width="42" /> 
+                                <aura:set attribute="else">
+                                   <img  align="middle" src="{!$Resource.AGN_ICL_CSS+'/ICL/images/upload.jpg'}"  height="42" width="42" />  
+                                </aura:set>
+                            </aura:if>
+                            <!--AWS-->  
+                            
+                        </td>
+                        <td>{!record.First_Name_AGN__c}</td>
+                        <td>{!record.Last_Name_AGN__c}</td>
+                        <td>{!record.Brand_AGN__c}</td>
+                        <td>{!record.Email_AGN__c}</td>
+                        <td> 
+                            <aura:if isTrue="{!record.Consent_AGN__c}">
+                                <img style="width: 20px;" src="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/images/tik.png'}"/>
+                                <aura:set attribute="else">
+                                    <img style="width: 20px;" src="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/images/cross.png'}"/>
+                                </aura:set>
+                            </aura:if>
+                        </td>
+                        
+                        <!--
+                            <td>
+                                <lightning:input value="{!record.First_Name_AGN__c}" required="{!v.required}" class="checkthis"/>
+                            </td>
+                            <td>
+                                <lightning:input value="{!record.Last_Name_AGN__c}" required="{!v.required}" class="checkthis"/>
+                            </td>
+                            <td>
+                                <lightning:input value="{!record.Brand_AGN__c}" required="{!v.required}" class="checkthis"/>
+                            </td>
+                            <td>
+                                <lightning:input value="{!record.Email_AGN__c}" required="{!v.required}" class="checkthis"/>
+                            </td>
+                            <td>
+                                <ui:inputCheckbox value="{!record.Consent_AGN__c}" required="{!v.required}" class="checkthis"/>
+                            </td>
+                           -->   
+                        <td>
+                            <p data-placement="top" data-toggle="tooltip" title="{!$Label.c.AGN_ICL_Edit}" class="p-editlink">
+                                <lightning:button value="{!index}" aura:id="btnId" variant="brand" class="{!v.isEdit ? 'btn btn-primary btn-xs disable-click' : 'btn btn-primary btn-xs' }" onclick="{! c.editPractitioner }">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </lightning:button>
+                            </p>
+                        </td>
+                        <td>
+                            <p data-placement="top" data-toggle="tooltip" title="{!$Label.c.AGN_ICL_Delete}" class="p-deletelink">
+                                <lightning:button aura:id="btnId" value="{!index}"  variant="brand" class="{!v.isEdit ? 'btn btn-danger btn-xs disable-click' : 'btn btn-danger btn-xs' }" onclick="{! c.deletePractitioner}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </lightning:button>
+                            </p>
+                            
+                        </td>
+                        
+                    </tr>
+                    
+                </aura:iteration>
+            </tbody>
+        </table>
+        
+        <div class="add-prac-wrapper">
+            
+                
+                <ui:button class="{!v.isEdit ? 'reg-submit add-prac btnSubmit disable-click' : 'reg-submit add-prac btnSubmit' }" aura:id="practBtn" label="{!$Label.c.AGN_ICL_Add_New_Practitioner}" press="{!c.addPractitioner}"/>
+
+        </div>
+        
+    </div>
+    
+    
+    <aura:if isTrue="{!v.openModal}">
+        <c:AGN_ICL_EditPractitionerDetails aura:id="editablePractId" twoLayerLayout = "{!v.twoLayerLayout}" practitioner = "{!v.practitioner}"/>
+    </aura:if>
+    <aura:if isTrue="{!v.openaddModal}">
+        <c:AGN_ICL_AddPractitionerDetails twoLayerLayout = "{!v.twoLayerLayout}"/> 
+    </aura:if>
+</aura:component>

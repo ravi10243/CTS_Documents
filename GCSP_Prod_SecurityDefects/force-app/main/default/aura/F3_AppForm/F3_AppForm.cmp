@@ -1,0 +1,9 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+	<aura:attribute name="currentStepId" type="String"/>
+    <aura:attribute name="listFormSteps" type="Object"/>
+    <aura:attribute name="currentFormStepWrapper" type="Object"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+</aura:component>

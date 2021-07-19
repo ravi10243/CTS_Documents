@@ -1,0 +1,6 @@
+<!-- **** AGN_ICL_MultiSelectChangeEvent **** COMPONENT--> 
+<!-- @description - Fired when Multi Select values are changed to store selected values in Event attribute-->
+<aura:event type="APPLICATION" description="Event template" >
+ <aura:attribute name="values" type="String[]" description="Selected values" access="global" />
+    <!--<aura:attribute name="message" type="String" description="Selected values" access="global" />-->
+</aura:event>

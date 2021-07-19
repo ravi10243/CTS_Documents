@@ -1,0 +1,60 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" 
+                access="global"
+                controller="F3_LocalisedPicklistController">
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+    <!-- Attributes -->
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="fieldValue" type="Object"/>
+    <aura:attribute name="translatedOptions" type="List" />
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="componentClass" type="String" default="slds-form-element" />
+    
+    <aura:attribute name="labelStyle" type="String" />
+    
+    <!-- Component Body -->
+    <div class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small' : 'slds-hide'}" 
+         name="{!v.elementWrapper.PageElement.Name}">
+        <label class="slds-form-element__label" for="{!v.elementWrapper.PageElement.DataFieldAPIName__c}" style="{!v.labelStyle}">
+            <aura:if isTrue="{!v.elementWrapper.PageElement.Required__c}">
+                <abbr class="slds-required">* </abbr>
+            </aura:if>
+            {!v.elementWrapper.PortalLabel}
+        </label>
+        <aura:if isTrue="{!v.elementWrapper.QuickHelpText}">
+            <lightning:helptext content="{!v.elementWrapper.QuickHelpText}"/>
+        </aura:if>
+        <div class="slds-form-element__control ">
+            <aura:if isTrue="{!v.renderMode == 'COMMUNITY'}">
+                <div class="">
+                    <lightning:select aura:id="visiblePickList" name="{!v.elementWrapper.PageElement.Name}" onchange="{!c.onPickChange}">
+                        <option value="">NONE</option>
+                        <aura:iteration items="{!v.translatedOptions}" var="prop">
+                            <option value="{!prop.OptionValue}">{!prop.TranslatedLabel}</option>
+                        </aura:iteration>    
+                    </lightning:select>
+                    
+                    <aura:iteration items="{!v.translatedOptions}" var="prop">
+                        
+                        <lightning:button label="{!prop.OptionValue}" variant="brand"/>
+                    </aura:iteration>   
+                </div>
+                <div class="slds-hide">
+                    <lightning:inputField aura:id="hiddenPickList" 
+                                          fieldName="{!v.elementWrapper.PageElement.DataFieldAPIName__c}" 
+                                          value=""
+                                          hidden="true"/>
+                </div>    
+            </aura:if>
+            <aura:if isTrue="{!v.renderMode == 'DESIGNER'}">
+                <div class="slds-m-top_xx-small slds-m-bottom_xx-small slds-m-left_xx-small">
+                    <lightning:inputField aura:id="{!v.elementWrapper.PageElement.Name}" 
+                                          fieldName="{!v.elementWrapper.PageElement.DataFieldAPIName__c}"  
+                                          class="slds-m-vertical_small" variant="label-hidden" 
+                                          />
+                </div>
+            </aura:if>
+        </div>  
+    </div>
+</aura:component>

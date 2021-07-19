@@ -1,0 +1,561 @@
+/* === modal styling for the address section start === */
+.THIS .slds-backdrop {
+    opacity: .6;
+}
+.THIS .align_modal{
+    background-color: white;
+    z-index: 90001;
+    -webkit-box-shadow: 0 0 5px #fff;
+    box-shadow: 0 0 5px #fff;
+    padding: 15px 0 15px 15px !important;
+}
+.THIS .addr_modal_det_btns{
+    padding-bottom: 60px;
+    margin-top: 30px;
+}
+.THIS .addr_modal_det_btns>.add_btn{
+    width: 15%;
+}
+/* === modal styling for the address section end === */
+/*  new one start   */
+.THIS .displ_reg_addr {
+   /*padding: 5px 0 5px 0;;
+    position: relative;
+    width: 100%;*/
+    padding: 5px 0 5px 0;
+    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+}
+.THIS .reg_address::after{
+	content: '';
+	position: absolute;
+	width: 85%;
+	height: 4em;
+	top: 100%;
+	left: 0;
+	border-top: 1px solid #d9d9d9;
+}
+.THIS section span {
+    margin-left: 0px!important;
+}
+.THIS .Registered{
+    /*margin: 20px 0 25px 0;*/
+    margin: 0px 0 0px 0;
+}
+.THIS .reg_address{
+    display: table-cell;
+    vertical-align: middle;
+}
+.THIS.Registered_add{
+    top: 0px;
+    position: relative !important;
+    border: 1px solid #d6d6d6;
+    margin: 25px 25px 25px 0px;
+}
+.THIS .input{
+    vertical-align: bottom;
+    max-width: 31%;
+}
+.THIS.Registered_addr{
+    top: 0px;
+    position: relative !important;
+    border: 1px solid #d6d6d6;
+    margin: 25px 25px 25px 0px;
+}
+.THIS.Registered_addr_popup{
+    top: 0px;
+    position: relative !important;
+    border: 1px solid #d6d6d6;
+    margin: 25px 25px 25px 0px;
+}
+.THIS .edit_icons{
+    float: right;
+    margin: 0 30px 0 0;
+}
+.THIS .edit_addr {
+    /*background: url(../images/edit_acc.png) no-repeat;*/
+    width: 14px;
+    height: 16px;
+    padding-left: 0px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+.THIS .Registered_add{
+    display:none;
+}
+.THIS .Registered_addr{
+    display:block;
+}
+
+.THIS .popup_billing{
+    display:none;
+}
+.THIS .slds-form-element__label{
+    font-size: 15px;
+}
+.THIS .add_delivery_btn,.THIS .add_BillAddr_btn{
+    cursor: pointer;
+    width: 35%;
+}
+.THIS .add_delivery_btn span,.THIS .add_BillAddr_btn span{
+	width: auto;
+    display: inline-block;
+    height: auto;
+    border: 2px solid #969696;
+    border-radius: 50%;
+    margin: 0 0 0 10px;
+}
+/*  new one end   */
+
+.THIS .myCheckbox{
+    display: inline-block;
+    float: left;
+}
+
+.THIS .infr_det{
+    clear:both;
+    width: 98%;
+    position: relative;
+    float: left;
+    /*margin-top: 10px;*/
+}
+.THIS .basic_details .divider{
+    background:#ccc;
+    width:2px;
+    height:33px;
+    position:relative;
+    left:50px;
+    clear: both;
+}
+.THIS .infr_bg{
+    background:#FFF;
+    border:1px solid #bfbfbf;
+    position: relative;
+    width: 100%;
+    float: left;    
+}
+.THIS .infr_bg .input__label--nariko::after {
+    border-top: 1px solid #CCC;
+}
+.THIS .infr_bg .input__label--nariko {
+    color: #2c5596;
+}
+.THIS .infr_bg .input__label-content--nariko{
+    text-transform:none;
+}
+.THIS .infr_bg .input__label-content--nariko span{
+    color:#ff0000;
+}
+.THIS .infr_bg .input__field--nariko{
+    color:#333333;
+    position: relative;
+    float: inherit;
+    top: 5px;
+    padding: 0;
+    border: none;
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
+    max-width: 100%;
+}
+.THIS textarea:focus{
+    outline: none;
+}
+.THIS input:focus{
+    outline: none;
+}
+
+.THIS .input-state{
+    padding-top: 21px;
+}
+
+/**** start add new ******/
+.THIS .show{     
+    display:block;    
+}
+.THIS .hide{     
+    display:none;    
+}
+.THIS .edit_btn{
+    border: 1px solid #3d86ca;
+    color: #3d86ca;
+    padding: 5px 12px;
+    position: relative;
+    float: left;
+    text-align: right;
+    left: 177px;
+    top: 10px;
+    font-size: 12px;
+    /* display: none;*/
+}
+.THIS .no_det img {
+    display: none;
+}
+.THIS .no_det img {
+    display: block;
+}
+/**** end add new ******/
+.THIS .required{
+    display: none;
+    position: relative !important;
+    border-bottom: 1px solid #F00 !important;
+    top: -2px !important;
+    z-index: 1 !important;
+    border-radius: 0 !important;
+    
+}
+.THIS .attach_btn_text{
+    background: #3d86ca;
+    color: white;
+    padding: 4px 16px;
+}
+.THIS .upload_file{
+    border: 1px solid;
+    border-color: #3d86ca;
+    padding: 3px 10px 3px 10px;
+    margin-left: 30px;
+}
+
+.THIS .det_btn{
+    display: inline-block;
+    margin: 5% 2% 5% 0;
+    float: right;
+    top: 0;
+    left: 0;
+    width: 90%;
+}
+.THIS .arrow_down{
+    background: url(../images/arrow_down.png) no-repeat center !important;
+    width: 8px;
+    height: 5px;
+    display: inline-block;
+    position: relative;
+    margin-left: 5px;
+}
+.THIS .arrow_up{
+    background: url(../images/arrow_up.png) no-repeat center  !important;
+    width: 8px;
+    height: 5px; 
+    display: inline-block;
+    position: relative;
+    margin-left: 4px;
+}
+
+.THIS .add_btn{
+    
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    text-transform: uppercase;    
+    background: #FFF;
+    border: 1px solid #bfbfbf;
+    padding: 13px;
+    position:relative;
+    border-radius: 0rem;
+    font-size: inherit;
+    display:inline-block;
+}
+.THIS .continue_btn{
+    background:#43af2a;
+    color:#FFF;
+    border: none; 
+    float: right;
+}
+.THIS .addmore_address{
+    background:#43af2a;
+    color:#FFF;
+    border: none;   
+    width: 250px;
+}
+/*.THIS .continue_btn{
+top: 0;
+width: 250px;
+min-width: 140px;
+}*/
+.THIS .cancel_btn{
+    top:0px;
+    width: 250px;
+    min-width: 100px;
+    float: right;
+}
+.THIS .success_com{
+    float: left;
+    position: relative;
+    font-size: 16px;
+    color: #333333;
+    padding: 20px 90px;
+    display: none; 
+    background: white;
+    border: 1px solid #bfbfbf;
+    width: 98%;
+    margin-bottom: 15%;
+    top: 100px;
+}
+.THIS .success_com span{
+    /*color:#43af2a;*/
+    margin-top: -5px;
+}
+
+.THIS .success_btn{
+    background:#43af2a;
+    color:#FFF;
+    right: -35px;
+    margin-left: 30px;
+    border: none;   
+    top: 0;
+}
+
+.THIS .section_header {
+    position: relative;
+    top: 20px;
+    width: 100%;
+    float: left;
+    left: 16px;
+    
+}
+
+.THIS .uiButton .label {
+    display: block;
+    margin-top: -5px !important;
+}
+
+.THIS .loader {
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    opacity:0.5;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+.THIS .Error-class{
+    color: red !important;
+}
+
+.THIS .Error-class-border::after{
+    border-top: 1px solid;
+    border-top-color: red !important;
+}
+.THIS .blank_field{
+    color: red;
+    left: 350px;
+    top: 55px;
+    position: absolute;
+    font-size: 14px;
+}
+
+.THIS .regi_add{
+    color:#2c5596;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 30px;
+}
+.THIS .input_select{
+    padding-left: 450px;
+}
+
+.THIS .Registered_add{
+    top:-10px;
+    clear:left;
+    padding-bottom: 20px;
+}
+
+.THIS .regi_add1{
+    border-bottom:none !important;
+    padding-left: 5px;
+    
+}
+.THIS .regi_add_1{
+  /*  padding-left:0px;
+    margin: 0 0 0 34px;*/
+    padding-left: 34px;
+    padding-top: 0px;
+    left: 0px;
+}
+.THIS .add_addr_btn {
+    margin-top: -40px;
+    /*top:-40px;*/
+    margin-bottom: -2px;
+}
+.THIS .det_btn1{
+    top:0px;
+    margin-bottom: 0;
+}
+
+.THIS .det_btn1 {
+    left: auto !important;
+}
+
+.THIS .add_btn{
+    width: 25%;
+    height: 46px;
+    padding: 13px;
+    float: right;
+    margin: 0 5% 0 0;
+}
+.THIS .sign_btn{
+    
+    left:-255px;
+}
+
+.THIS .toggle {    
+    display: none !important;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media only screen 
+    and (max-device-width: 500px) and (min-device-width: 100px) {
+    .THIS .regi_add_1{
+    padding-right: 34px;
+}
+.THIS .Registered{
+    margin-bottom: 10px;
+}
+.THIS .displ_reg_addr{
+    word-break: break-word;
+    padding-left: 5px;
+    border: 1px solid #bfbfbf;
+    background: #FFF;
+    border-top: 2px solid #7eace2; 
+}
+.THIS .edit_icons{
+    margin: 0px -10px;
+    padding: 0 5px;
+}
+.THIS .slds-list_horizontal.slds-wrap{
+    float: left;
+    display: block;
+}
+.THIS #copy_reg_addr_checkbox_holder{
+    width: 100% !important;
+    position: relative;
+    top: 10px;
+    margin-bottom: 25px;
+}
+.THIS .slds-checkbox_faux_container{
+    top: 10px;
+    position: relative;
+}
+.THIS .add_delivery_btn, .THIS .add_BillAddr_btn{
+    width: 100%;
+    display: flex;
+}
+.THIS .add_delivery_btn span, .THIS .add_BillAddr_btn span{
+    margin: 5px 10px;
+    display: inline-table;
+}
+.THIS .cancel_btn, .THIS .add_btn{
+    width: 95%;
+    margin: 0px 5% 20% 0%;
+    float: none;
+}
+.THIS .uiButton .label{
+    font-size: 13px;
+}
+.THIS .det_btn{
+    display: inline-block;
+    margin: 0 7%;
+    float: right;
+    top: 0;
+    left: 0;
+    width: 80%;
+}
+.THIS .input{
+    vertical-align: bottom;
+    max-width: 100%;
+}
+}
+@media only screen 
+    and (max-device-width: 750px) and (min-device-width: 501px) {
+    .THIS .regi_add_1{
+    padding-right: 34px;
+}
+.THIS .Registered{
+    margin-bottom: 10px;
+}
+.THIS .displ_reg_addr{
+    word-break: break-word;
+    padding-left: 5px;
+    border: 1px solid #bfbfbf;
+    background: #FFF;
+    border-top: 2px solid #7eace2; 
+}
+.THIS .edit_icons{
+    margin: 0px -10px;
+    padding: 0 5px;
+}
+.THIS .slds-list_horizontal.slds-wrap{
+    float: left;
+    display: block;
+}
+.THIS #copy_reg_addr_checkbox_holder{
+    width: 100% !important;
+    position: relative;
+    top: 10px;
+    margin-bottom: 25px;
+}
+.THIS .slds-checkbox_faux_container{
+    position: relative;
+}
+.THIS .add_delivery_btn, .THIS .add_BillAddr_btn{
+    width: 100%;
+    display: flex;
+}
+.THIS .add_delivery_btn span, .THIS .add_BillAddr_btn span{
+    margin: auto 7%;
+    display: inline-table;
+}
+.THIS .cancel_btn, .THIS .add_btn{
+        width: 70%;
+    margin: 5% auto;
+    float: none;
+}
+.THIS .uiButton .label{
+    font-size: 13px;
+}
+.THIS .det_btn{
+        display: inline-block;
+        margin: 0 auto;
+        float: right;
+        top: 0;
+        left: 0;
+        width: 80%;
+}
+.THIS .det_btns {
+   margin: 0;
+}
+.THIS .input{
+    vertical-align: bottom;
+    max-width: 100%;
+}
+}
+@media only screen 
+    and (max-device-width: 1200px) and (min-device-width: 751px) {
+ .THIS .slds-form-element__label {
+    width: 70%;
+}   
+    .THIS .add_delivery_btn, .THIS .add_BillAddr_btn{
+        width:50%;
+    }
+    .THIS .input{
+        margin-right: 2%;
+    }
+    .THIS .reg_address::after{
+        width:80%;
+    }
+    .THIS .add_btn{
+        width: 35%;
+    }
+}

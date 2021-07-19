@@ -1,0 +1,18 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <!-- Attributes -->
+    <aura:attribute name="currentUserViewMode" type="String" />
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Component Body -->
+    
+    <aura:if isTrue="{!v.currentUserViewMode=='WIZARD'}">
+        <c:CMS_BuilderTreeMode recordId="{!v.recordId}" />
+    </aura:if>
+    <aura:if isTrue="{!v.currentUserViewMode=='DESIGNER'}">
+        <div class="slds-p-around_small">
+            <c:CMS_BuilderDesignerMode formId="{!v.recordId}" />
+        </div>     
+    </aura:if>
+</aura:component>

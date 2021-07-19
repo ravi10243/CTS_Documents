@@ -1,0 +1,6 @@
+<design:component>
+	<design:attribute
+		name="data"
+		label="Collection Variable"
+        description="Name of Collection Variable to display or modify"/>
+</design:component>

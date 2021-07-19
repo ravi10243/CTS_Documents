@@ -1,0 +1,1382 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" 
+                controller="AGN_SPARK_ContactUs">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="AGNSPARKImage" type="object" />
+    <aura:html tag="style">
+        
+
+
+/* --------------------- Banner Section Starts ------------------------------------------ */
+
+/* --------------------- Banner Section Starts ------------------------------------------ */
+
+#bannerContacts{
+	height: 980px;
+}
+
+#bannerImageContacts{
+    width: 1134px;
+    position: relative;
+}
+#bannerContentContacts{
+	background-color: #000000;
+}
+#Icon_awesome-facebook {
+	fill:#ffffff;
+}
+#Icon_awesome-twitter {
+	fill:#ffffff;
+}
+#Icon_awesome-instagram {
+	fill:#ffffff;
+}
+#titleContacts{
+	white-space: nowrap;
+    text-align: left;
+    font-family:'Beatrice-light';
+    font: normal normal 300 50px/60px Beatrice-light;    
+    font-weight:normal;
+    color: #ffffff;
+    padding-top: 451px;
+    padding-left: 95px;
+}
+#title1{
+	white-space: nowrap;
+    text-align: left;
+    font: normal normal 300 32px/43px Beatrice-light;    
+    letter-spacing: 1.92px;   
+    color: #FADBD3;
+    
+}
+#clearFloat{
+	clear: both;
+}
+
+
+/* ---------------------- Banner Section Ends ---------------------------- */
+
+/* ---------------------- Content Section Starts ------------------------- */
+
+#contentContacts{
+	padding: 39px 115px 0px 115px;
+}
+#contentHeadContacts{
+	text-align: center;        
+    font: normal normal 300 50px/60px Beatrice-light;
+    padding: 0px;
+    margin-top:90px;
+    color: #A7756E;
+}
+#contactInputSection{
+    width: 100%;
+    margin-bottom: 70px;
+    padding-left:15px;
+    margin-top: 100px;"
+}
+#contactInputForm h3{
+    font-size: 40px;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    color: rgba(167,117,110,1);
+    height: 865px;
+}
+.background{
+    position: absolute;
+    left: 0px;
+    top: 1400px;
+    width: 100%;
+    height: 1024px;
+    background-color: #faf6f5;
+    z-index: 0;
+}
+#sparkteam{
+   	font-size:35px;
+    color: #ffffff;
+}
+        
+.slds-has-error .slds-textarea{
+    border-color:red;
+}
+.slds-has-error .slds-input{
+    border-color:red;
+}
+.slds-form-element__help {
+    position: absolute;
+    text-align: left;
+    font-size: 25px;
+    padding-left: 110px;
+    padding-bottom: 10px;
+    color: red;
+    margin-top: -39px;
+}  
+.slds-button {
+    border: 0px;
+    background-color: #000000;
+    color: #ffffff;
+    width: 300px;
+    padding: 30px;
+    font-size: 27px;
+    margin-left: 58px;
+    margin-top: 20px;
+}
+.email_error {
+    font-size: 27px;
+    margin-left: 20px;
+}
+#contactInputSectionHead{
+    text-align: left;
+    font: normal normal 300 50px/60px Beatrice-light;
+    color: rgba(167,117,110,1);
+    padding-bottom: 90px;
+    margin-top: 40px;
+}
+.contentViewSectionLeftHead{
+    text-align: left;
+    font: normal normal 300 50px/60px Beatrice-light;
+    color: rgba(167,117,110,1);
+    padding-bottom: 90px;
+    margin-top: 20px;
+}
+#contactInputSectionHead{
+	padding-top: 240px;
+}
+.last{
+    border-bottom: 0px !important;
+}
+#contactInputSectionContent{
+    text-align: left;
+    font: normal normal 300 30px/40px Beatrice-light;
+    color: #000000;
+    padding-bottom: 30px;
+    padding-right: 124px;
+    letter-spacing:1.8px;
+}
+.contentViewSectionLeftContent{
+    text-align: left;
+    font: normal normal 300 24px/36px Neue_Haas_Unica_Pro-light;
+    color: #000000;
+    padding-bottom: 30px;
+    padding-right: 124px;
+    letter-spacing:1.44px;
+}
+#ContactsquerySection{
+	padding: 69px;
+    background-color:#F5F5F5;
+    margin-top:156px;
+}
+.contentViewSection{
+    width: 100%;
+    padding-top: 90px;
+    border-bottom: 1px solid #000000;
+}
+.contentViewSectionRight{
+    display:block;
+    padding-left: 135px;
+    margin-bottom: 50px;
+}        
+.contentViewSectionRightMobile { 
+display:none;
+}        
+.contentViewSectionRightHead{
+    text-align: left;
+    font: normal normal 300 30px/45px Neue_Haas_Unica_Pro-light;
+	letter-spacing: 1.8px;
+    color: rgba(167,117,110,1);
+    padding-top: 13px;
+}
+.contentViewSectionRightContent{
+    text-align: left;
+    font: normal normal 300 30px/45px Neue_Haas_Unica_Pro-light;
+	letter-spacing: 1.8px;
+    color: #000000;
+    padding-bottom: 30px;
+    line-height: 34px;
+}
+#AdverseEvents{
+    display:block;
+    padding: 39px 115px 70px 115px;
+    background-color: #faf6f5;
+}
+
+#AdverseEventsSectionHead{
+    text-align: left;
+    font: normal normal 300 50px/60px Beatrice-light;
+	letter-spacing: 0px;
+	color: #A7756E;
+    padding-bottom: 30px;
+    padding-left: 15px;
+}
+#AdverseEventsSectionContent{
+    margin-top: 25px;
+    width: 100%;
+}
+#AdverseEventsSectionRightContent{
+    padding-left:135px;
+}
+#card{
+    color: #000000;
+    font-weight:bold;
+}        
+#contactName input{
+    width: 720px;
+    height: 112px;    
+    font: normal normal 300 18px/24px Beatrice-light;
+    padding: 50px;
+    border: 1px solid #707070;
+    letter-spacing: 1.08px;
+    margin-left: 107px;
+    margin-bottom: 40px;  
+}        
+#contactEmail input{
+    width: 720px;
+    height: 112px;    
+    font: normal normal 300 18px/24px Beatrice-light;
+    padding: 50px;
+    border: 1px solid #707070;
+    letter-spacing: 1.08px;
+    margin-left: 107px;
+    margin-bottom: 40px;
+}
+#contactMessage textarea{
+    width: 720px;
+    height: 350px;  
+    font: normal normal 300 18px/24px Beatrice-light;
+    padding: 50px;
+    border: 1px solid #707070;
+    letter-spacing: 1.08px;
+    margin-left: 107px;
+    margin-bottom: 40px;
+}
+.contacSubmit {
+    border: 0px;
+    background-color: #000000;
+    color: #ffffff;
+    width: 401px;
+    height: 87px;
+    padding: 20px;
+    font: normal normal bold 30px/34px Helvetica;
+    margin-left: 120px;
+    margin-top: 50px;
+	letter-spacing: 1.8px;        
+}
+
+.slds-button_neutral:active{
+    border: 0px;
+    background-color: #000000;
+    color: #ffffff;
+    width: 300px;
+    padding: 20px;
+    font-size: 27px;
+    margin-left: 128px;
+ }
+#AdverseEventsMobile{
+display:none;
+}        
+/* ---------------------- Content Section ends ------------------------- */
+                
+/* ---------------------- Laptop View ------------------------- */        
+@media screen and (max-width: 1700px) and (min-width: 1250px) {
+#contactInputSectionHead{
+   font-size: 35px;
+   line-height:43px;
+   margin-top: 0px;
+   padding-bottom:50px;
+   padding-top:220px;
+}
+#contactInputForm h3{
+    font-size: 27px;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    color: rgba(167,117,110,1);
+    height: 600px;
+}
+.contentViewSectionLeftHead{
+   font-size:35px;
+   line-height: 43px;
+   padding-bottom:50px;
+   margin-top: 20px;
+}
+#AdverseEventsSectionHead {
+   font-size:35px;
+   line-height: 43px;
+   padding-bottom:0px;
+   margin-top: 20px;
+   
+}
+#contentHeadContacts{
+   font-size:35px;
+   line-height:43px;
+   margin-top: 50px;
+   margin-bottom: 30px;        
+}
+#contactInputSection{
+    width: 100%;
+    margin-bottom: 10px;
+    padding-left:15px;
+    margin-top: 30px;"
+}
+.background{    
+   top: 1130px;    
+   height: 710px;    
+}
+#sparkteam{
+  font-size:35px;
+}
+.contentViewSectionRightHead{
+   font-size: 21px;
+   line-height:28px;
+}
+#contactInputSectionContent, .contentViewSectionLeftContent, .contentViewSectionRightContent{
+   font-size: 21px;
+   line-height:28px;
+}
+#titleContacts{
+  font-size: 37px;
+  padding: 351px 37px;
+}
+#bannerContacts {
+   height: 800px;
+}
+#title1{
+   font-size: 25px;
+}
+.contentViewSection{
+    padding-top: 50px;
+}
+.contentViewSectionRight {
+    padding-left: 85px;
+    margin-bottom: 40px;
+}
+.contentViewSectionRightMobile { 
+display:none;
+} 
+.margin-top{
+   padding-top: 130px !important;
+}
+#contactName input , #contactEmail input{
+   width: 520px;
+    height: 25px;    
+    font: normal normal 300 13px/22px Beatrice-light;
+    padding: 30px;
+    margin: 0px 0px 40px 70px;    
+}
+#contactMessage textarea{
+   width: 520px;
+   height:275px;   
+   font: normal normal 300 13px/22px Beatrice-light;
+   padding: 30px;
+   margin: 0px 0px 40px 70px;      
+}        
+.contacSubmit {    
+    width: 268px;
+    height: 75px;
+    padding: 17px;
+    font: normal normal 300 23px/24px Beatrice-light;
+    margin-left: 70px;
+    margin-top: 30px;
+}
+#contentContacts {
+  padding: 29px 50px;
+}
+#AdverseEvents {
+  display:block;
+  padding: 39px 50px 70px 50px;
+}
+#AdverseEventsSectionRightContent{
+    padding-left:85px;
+}
+.slds-button_neutral:active{
+	width: 268px;
+    padding: 17px;
+    font-size: 24px;
+    margin-left: 72px;
+}
+.margin-top{
+    padding-top:130px !important;
+}
+.slds-form-element__help{   
+   font-size: 18px;
+   padding-left: 70px;   
+}
+#AdverseEventsMobile{
+display:none;
+}        
+}
+        
+/* --------------------Laptop and Tablet View ------------------------- */        
+@media screen and (max-width: 1249px) and (min-width: 991px) {
+
+#contactInputSectionHead{
+   font-size: 30px;
+   line-height: 35px;
+   margin-top: 0px;
+   padding-bottom: 25px;
+   padding-top: 180px;
+}
+#bannerContacts {
+   height: 650px;
+}  
+#contactInputForm h3{
+    font-size: 25px;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    color: rgba(167,117,110,1);
+    height: 553px;
+}
+.contentViewSectionLeftHead{
+   font-size: 27px;
+   line-height: 32px;
+   padding-bottom: 25px;
+   margin-top: 20px;
+}
+#AdverseEventsSectionHead {
+   font-size:27px;
+   line-height: 32px;
+   padding-bottom:25px;
+   margin-top: 0px;
+}
+#contentHeadContacts{
+   font-size:30px;
+   line-height:35px;
+   margin-top: 50px;
+   margin-bottom: 30px;        
+}
+#contactInputSection{
+    width: 100%;
+    margin-bottom: 60px;
+    padding-left:15px;
+    margin-top: 25px;"
+}      
+.background{
+    position: absolute;
+    left: 0px;
+    top: 1120px;
+    width: 100%;
+    height: 640px;
+    background-color: #faf6f5;
+    z-index: 0;
+}        
+#sparkteam{
+  font-size:35px;
+}
+.contentViewSectionRight {
+    padding-left: 85px;
+    margin-bottom: 30px;
+}
+.contentViewSectionRightMobile { 
+display:none;
+} 
+.contentViewSectionRightHead{
+   font-size: 19px;
+   line-height:25px;
+   letter-spacing: 0.8px;
+}
+#contactInputSectionContent, .contentViewSectionLeftContent, .contentViewSectionRightContent{
+   font-size: 19px;
+   line-height: 25px;
+   letter-spacing: 0.44px;
+   padding-right:50px;
+}
+#titleContacts{
+  font-size: 30PX;
+    padding-top: 251px;
+    padding-left: 35px;
+        }        
+#bannerContacts {
+   height: 800px;
+}
+#title1{
+   font-size: 20px;
+   letter-spacing:0.92px;
+}
+.contentViewSection{
+    padding-top: 40px;
+}
+    
+#contactName input , #contactEmail input{
+    width: 375px;
+    height: 0px;
+    font: normal normal 300 11px/18px Beatrice-light;
+    padding: 25px;
+    border: 1px solid #707070;
+    letter-spacing: 0px;  
+    margin: 0px 0px 40px 70px;
+}
+#contactMessage textarea{
+   width: 375px;
+   height:275px;  
+   font: normal normal 300 11px/18px Beatrice-light;
+   padding:25px;
+   margin: 0px 0px 40px 70px;
+}
+.contacSubmit {    
+    width: 185px;
+    height: 60px;
+    padding: 0px;
+    font: normal normal bold 20px/0px Helvetica;
+    margin-left: 72px;
+    margin-top: 15px;
+}
+#contentContacts {
+  padding: 29px 50px;
+}
+#AdverseEvents {
+  display:block;
+  padding: 39px 50px 70px 50px;
+}
+#AdverseEventsSectionRightContent{
+    padding-left:85px;
+}
+#AdverseEventsSectionLeftContent{
+    padding-right:35px;
+}        
+.slds-button_neutral:active{
+	width: 268px;
+    padding: 17px;
+    font-size: 24px;
+    margin-left: 72px;
+}
+#AdverseEventsMobile{
+display:none;        
+}
+.slds-form-element__help{   
+   font-size: 15px;
+   padding-left: 70px;
+}  
+}
+/* --------------------Tablet Portrait View ------------------------- */        
+@media screen and (max-width: 990px) and (min-width: 600px) {
+
+#bannerContacts {
+   height: 800px;
+}
+#bannerContentContacts, #bannerImageContacts{
+   height: 515px;     
+}
+    #contactInputForm h3 {
+    font-size: 21px;
+    text-align: center;
+    padding-top: 20px;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    color: rgba(167,117,110,1);
+    height: 200px;
+    margin: 0px;
+}
+#titleContacts{
+  font-size: 40px;
+  padding-top: 170px;
+  padding-left: 37px;
+  line-height: 60px;
+}        
+#title1{
+   font-size: 25px;
+}
+#contentHeadContacts{
+   font-size: 30px;
+    line-height: 40px;
+    margin-top: 220px;
+    margin-bottom: 20px;
+    text-align: center;        
+}
+#contactInputSectionHead{
+    font-size: 30px;
+    line-height: 40px;
+    margin-top: 50px;
+    padding: 0px;   
+    text-align: center;
+    width: 100%;
+    letter-spacing: 0px;   
+}
+#contactInputSectionContent, .contentViewSectionLeftContent{    
+    font: normal normal 300 21px/28px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.44px;
+    text-align: center;    
+    padding: 0px;
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+.background{   
+    display:none;   
+}
+#contactInputForm{
+    margin-top: 0px;       
+}
+#contactName input , #contactEmail input{
+   width: 420px;
+   height:0px;
+   margin: 0px;
+   font: normal normal 300 15px/20px Beatrice-light;
+   padding: 30px;
+   border: 1px solid #707070;
+   letter-spacing: 0px;
+   margin-bottom: 40px;
+}
+#contactMessage textarea{
+   width: 420px;
+   height:250px;
+   margin: 0px;
+   font: normal normal 300 15px/20px Beatrice-light;
+   padding: 30px;
+   border: 1px solid #707070;
+   letter-spacing: 0px;
+   margin-bottom: 40px;
+}
+.contacSubmit {    
+    width: 250px;
+    height: 60px;
+    padding: 0px;
+    font: normal normal bold 21px/28px Helvetica;    
+    margin: 0 auto;
+    display: block;
+} 
+.slds-form-element__help{              
+    position: absolute;    
+    font-size: 18px;   
+    color: red;
+    margin-top: -35px;
+    margin-left: 50px;   
+}        
+.contentViewSectionLeftHead{
+    font-size: 30px;
+    line-height: 40px;
+    margin-top: -65px;
+    padding: 0px;   
+    text-align: center;
+    width: 100%;
+    letter-spacing: 0px;
+    padding-top: 50px;
+}
+.contentViewSectionRightHeadMobile{
+    display: block;
+    text-align: center;
+    font: normal normal 300 24px/30px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.44px;
+    color: rgba(167,117,110,1);
+    padding-top: 13px;
+    width: 100%;
+}
+.contentViewSectionRightContentMobile{
+    text-align: center;
+    font: normal normal 300 24px/30px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.44px;
+    color: #000000;
+    width: 100%;
+    padding-bottom: 15px;
+}
+.contentViewSectionRightContentEmailMobile{    
+    word-break: break-all;
+    width: 100%;
+    font: normal normal 300 24px/30px Neue_Haas_Unica_Pro-light;
+    text-align: center;    
+    padding-bottom: 15px;   
+}        
+.contentViewSectionRight{
+	display:none;
+}        
+.contentViewSectionRightMobile {
+    display: block;
+    margin-bottom: 20px;
+    width: 100%;   
+    margin-top: 0px;
+}        
+#AdverseEventsSectionHead {
+   font-size: 30px;
+    line-height: 40px;
+    margin-top: -65px;
+    padding: 0px;    
+    text-align: center;
+    width: 100%;
+    letter-spacing: 0px;
+    padding-top: 50px;
+    display: block;
+}
+#contactInputSection{  
+    width: 100%;
+    height: 900px;
+    margin-bottom: 60px;   
+    background-color: #faf6f5;
+    margin: 0 auto;
+    padding: 0px;
+}
+.contentViewSection{
+    margin: 0 auto;
+    padding-top: 60px; 
+    width: 95%;
+}       
+#sparkteam{
+  font-size:35px;
+}
+#contentContacts {
+  padding: 29px 0px;
+}
+.contentViewSectionMobile {
+    font: normal normal 300 21px/28px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 0px;
+    text-align: center;
+    width: 90%;
+    margin: 0 auto;
+    padding-bottom: 15px; 
+}
+        
+#AdverseEvents{
+display:none;
+}
+#AdverseEventsMobile {
+	display: block;
+    background-color: #faf6f5;       
+}         
+#AdverseEventsSectionHeadMobile {
+    font: normal normal 300 35px/42px Beatrice-light;
+    letter-spacing: 0px;  
+    text-align: center;
+    padding-top: 40px;
+    width: 100%;
+    color: #A7756E;
+    display: block;
+    margin: 0 auto;
+}        
+#AdverseEventsSectionRightContentMobile{
+    display: block;
+    margin-bottom: 50px;
+    width: 100%;    
+    margin-top: 30px;
+    text-align: center;
+    margin: 0 auto;
+}
+#AdverseEventsSectionLeftContentMobile{
+    display: block;
+    margin-bottom: 50px;
+    width: 100%;        
+    margin-top: 30px;
+    text-align: center;
+}    
+.slds-button_neutral:active{
+	width: 268px;
+    padding: 17px;
+    font-size: 24px;
+    margin-left: 72px;
+}
+   	        
+}
+/* --------------------Mobile View ------------------------- */        
+@media screen and (max-width: 600px) and (min-width: 300px) {
+
+#bannerContacts {
+   height: 615px;
+}
+#bannerContentContacts{
+   height: 290px;     
+}
+   #contactInputForm h3 {
+    font-size: 21px;
+    text-align: center;
+    padding-top: 20px;
+    font-family: 'Neue_Haas_Unica_Pro-bold';
+    color: rgba(167,117,110,1);
+    height: 200px;
+    margin: 0px;
+}
+        
+#bannerImageContacts{
+  height:329px;
+}
+        /*.contact, .head{ */
+        /* padding:0px;} */
+        
+#titleContacts{
+      font-size: 35px;
+    padding-top: 100px;
+    padding-left: 25px;
+    line-height: 42px;
+    letter-spacing: 0px;
+    text-align: left;
+}        
+#title1{
+   font-size: 16px;
+   line-height: 22px;
+}
+#contentContacts {
+ 	padding-left: 0px;
+    padding-right: 0px;
+}        
+#contentHeadContacts{
+    font-size: 21px;
+    line-height: 31px;
+    letter-spacing: 0px;
+    margin-top: 0px;
+    width: 100%;
+    height: 94px;
+    text-align: center;       
+}
+#contactInputSectionHead{
+        font-size: 35px;
+    line-height: 42px;
+    margin-top: 30px;
+    padding: 0px;
+    text-align: center;
+    width: 100%;
+    height: 94px;       
+}
+#contactInputSectionContent{
+    font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 0px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    padding: 0px;
+    width: 90%;        
+}
+.contentViewSectionLeftContent{
+    font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 0px;
+    text-align: center;    
+    padding: 0px;
+    width: 100%;    
+}       
+.background{   
+   display:none;
+        }
+#contactInputForm{
+    margin-top: 0px;       
+}
+#contactName input , #contactEmail input{
+    width: 300px;
+    height: 50px;
+    margin: 0px;
+    font: normal normal 300 14px/20px Beatrice-light;
+    padding: 30px;
+    border: 1px solid #707070;
+    letter-spacing: 0px;
+    margin-bottom: 40px;
+}
+#contactMessage textarea{
+   width: 300px;
+   height:341px;
+   margin: 0px;
+   font: normal normal 300 14px/20px Beatrice-light;
+   padding: 30px;
+   border: 1px solid #707070;
+   letter-spacing: 0px;
+   margin-bottom: 40px;
+}
+.contacSubmit {    
+    width: 301px;
+    height: 65px;
+    padding: 0px;
+    font: normal normal bold 21px/30px Helvetica;
+    letter-spacing: 1.26px;   
+    margin: 0 auto;
+    display: block;
+} 
+.slds-form-element__help{              
+    position: absolute;
+    text-align: left;
+    font-size: 16px;
+    padding-left: 25px;
+    color: red;
+    margin-top: -41px;
+}        
+.contentViewSectionLeftHead{
+    font-size: 35px;
+    line-height: 42px;    
+    text-align: center;
+    width: 100%;
+    height: 95px;
+    letter-spacing: 0px;
+    text-align: center;    
+    margin-top: 30px;
+}     
+.contentViewSectionRightHeadMobile{
+    display: block;
+    text-align: center;
+    font: normal normal 300 20px/30px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.44px;
+    color: rgba(167,117,110,1);
+    padding-top: 13px;
+    width: 100%;
+}
+.contentViewSectionRightContentMobile{
+    text-align: center;
+    font: normal normal 300 20px/30px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.44px;
+    color: #000000;
+    width: 100%;
+    padding-bottom: 15px;
+}      
+.contentViewSectionRight{
+	display:none;
+}        
+.contentViewSectionRightMobile {
+    display: block;
+    margin-bottom: 20px;
+    width: 100%;   
+    margin-top: 0px;
+}      
+#contactInputSection{
+    width: 100%;
+    height: 945px;
+    margin-bottom: 60px;
+    margin-top: 25px;
+    background-color: #faf6f5;
+    margin: 0 auto;
+    padding: 0px;
+}
+.contentViewSection{
+    width: 90%;   
+    margin: 0 auto;
+    padding-top: 0px;
+    border-bottom: 1px solid #000000;
+}       
+#sparkteam{
+  font-size:35px;
+}
+#AdverseEvents{
+display:none;
+}
+.contentViewSectionRightContentEmailMobile{    
+    word-break: break-all;
+    width: 100%;
+    font: normal normal 300 18px/30px Neue_Haas_Unica_Pro-light;
+    text-align: center;    
+    padding-bottom: 15px;   
+}
+#AdverseEventsMobile {
+	display: block;
+    background-color: #faf6f5;       
+}
+#AdverseEventsSectionHeadMobile {
+    font: normal normal 300 35px/42px Beatrice-light;
+    letter-spacing: 0px;  
+    text-align: center;
+    padding-top: 40px;
+    width: 100%;
+    color: #A7756E;
+    display: block;
+    margin: 0 auto;
+}        
+#AdverseEventsSectionRightContentMobile{
+    display: block;
+    margin-bottom: 50px;
+    width: 100%;    
+    margin-top: 30px;
+    text-align: center;
+    margin: 0 auto;
+}
+#AdverseEventsSectionLeftContentMobile{
+    display: block;
+    margin-bottom: 50px;
+    width: 100%;        
+    margin-top: 30px;
+    text-align: center;
+}
+.contentViewSectionMobile {
+    font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 0px;
+    text-align: center;
+    width: 90%;
+    margin: 0 auto;
+    padding-bottom: 15px;  
+}
+        
+.contentViewSectionMobileHead{
+	font-size: 24px;
+    line-height: 30px;
+    letter-spacing: 1.44px;
+    text-align: center;
+    margin-top: 30px;
+    padding: 0px;
+    margin-left: 20px;
+    width: 296px;
+    height: 85px;
+    color: #A7756E;        
+  }
+.contentViewSectionMobileContent{
+	font-size: 24px;
+    line-height: 30px;
+    letter-spacing: 1.44px;
+    text-align: center;
+    margin-top: 30px;
+    padding: 0px;
+    margin-left: 20px;
+    width: 296px;
+    height: 85px;          
+  }                
+.slds-button_neutral:active{
+	width: 268px;
+    padding: 17px;
+    font-size: 24px;
+    margin-left: 72px;
+}  
+}
+/* --------------------Mobile View ------------------------- */        
+@media screen and (max-width: 355px) and (min-width: 300px) {
+    
+#title1{
+   font-size: 12px;
+   line-height: 20px;
+}
+#contentHeadContacts {
+    font-size: 19px;
+    line-height: 28px;
+}
+#contactName input, #contactEmail input {   
+    width: 250px;
+    height: 50px;
+    margin: 0 auto;
+    font: normal normal 300 12px/18px Beatrice-light;
+    padding: 30px;
+    border: 1px solid #707070;
+    letter-spacing: 0px;
+    margin-bottom: 40px;
+    display: block;        
+}
+#contactMessage textarea{
+   width: 250px;
+   height:341px;
+   margin: 0 auto;
+   font: normal normal 300 12px/18px Beatrice-light;
+   padding: 30px;
+   border: 1px solid #707070;
+   letter-spacing: 0px;
+   margin-bottom: 40px;
+       display: block; 
+}
+.contacSubmit {    
+    width: 250px;
+    height: 65px;
+    padding: 0px;
+    font: normal normal bold 18px/28px Helvetica;
+    letter-spacing: 1.26px;   
+    margin: 0 auto;
+    display: block;
+}
+.contentViewSectionLeftHead {
+    font-size: 30px;        
+}        
+
+    </aura:html>
+    <div id="Contacts" class="container-fluid" style="padding:0px">
+        <div id="bannerContacts" class="row">
+            <div id="bannerContentContacts" class="col-xs-12 col-sm-12 col-md-12 col-lg-5 col-xl-5" >
+                <div id="titleContacts">{!$Label.c.AGN_SPARK_Contact_Us}<br/><span id="title1">{!$Label.c.AGN_SPARK_ContactUs_Title_Description}</span></div>
+            </div>
+            <div id="bannerImageContacts" class="col-xs-12 col-sm-12 col-md-12 col-lg-7 col-xl-7" style="{!'background: url(' + $Resource.AGN_SPARK_Rebranding_ContactUs + '/images/AllerganAesthetics_Photography_07.jpg@2x.jpg' +') no-repeat; background-size: cover;'}">
+                <div id="Group_88">
+                    <a aura:id="facebook" id = "facebook" class="facebook" target="_blank" href="https://www.facebook.com/AllerganSparkUK/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-facebook" viewBox="0.562 0.562 28.095 28.043">
+                          <path id="Icon_awesome-facebook" d="M 28.65703392028809 14.66943073272705 C 28.65703392028809 6.876489162445068 22.36974906921387 0.5624998807907104 14.60976696014404 0.5624998807907104 C 6.849785327911377 0.5624998807907104 0.5625001192092896 6.876489162445068 0.5625001192092896 14.66943073272705 C 0.5625001192092896 21.71038436889648 5.699381828308105 27.54655647277832 12.41488075256348 28.60571670532227 L 12.41488075256348 18.74736022949219 L 8.84642219543457 18.74736022949219 L 8.84642219543457 14.66943073272705 L 12.41488075256348 14.66943073272705 L 12.41488075256348 11.561354637146 C 12.41488075256348 8.026090621948242 14.51064205169678 6.073303699493408 17.72055625915527 6.073303699493408 C 19.25782585144043 6.073303699493408 20.86533164978027 6.348616123199463 20.86533164978027 6.348616123199463 L 20.86533164978027 9.818466186523438 L 19.09356498718262 9.818466186523438 C 17.34898567199707 9.818466186523438 16.80465126037598 10.90606498718262 16.80465126037598 12.02153778076172 L 16.80465126037598 14.66943073272705 L 20.70050430297852 14.66943073272705 L 20.07743835449219 18.74736022949219 L 16.80465126037598 18.74736022949219 L 16.80465126037598 28.60571670532227 C 23.52015495300293 27.54655647277832 28.65703392028809 21.71038436889648 28.65703392028809 14.66943073272705 Z">
+                          </path>
+                         </svg>
+                     	]]>
+                    </a>
+                  <!--  <a aura:id="twitter" id = "twitter" class="twitter">
+                        <![CDATA[
+                         <svg class="Icon_awesome-twitter" viewBox="0 3.381 34.496 27.948">
+                          <path id="Icon_awesome-twitter" d="M 30.94974136352539 10.34597492218018 C 30.97163772583008 10.65164279937744 30.97163772583008 10.9573802947998 30.97163772583008 11.2630500793457 C 30.97163772583008 20.58637237548828 23.85805320739746 31.32903099060059 10.85649394989014 31.32903099060059 C 6.850955963134766 31.32903099060059 3.130007743835449 30.17174911499023 -9.5367431640625e-07 28.16305351257324 C 0.5691098570823669 28.228515625 1.116256594657898 28.25035667419434 1.707264065742493 28.25035667419434 C 5.012311458587646 28.25035667419434 8.05479907989502 27.13682556152344 10.48438549041748 25.23721313476562 C 7.376272678375244 25.17168045043945 4.77158260345459 23.14108085632324 3.87415623664856 20.34623336791992 C 4.311954975128174 20.41169548034668 4.749685764312744 20.45537948608398 5.209380626678467 20.45537948608398 C 5.844114303588867 20.45537948608398 6.478915214538574 20.36800575256348 7.069854736328125 20.21524238586426 C 3.830430746078491 19.56014633178711 1.400778412818909 16.72168159484863 1.400778412818909 13.2936544418335 L 1.400778412818909 13.20635032653809 C 2.341930150985718 13.73038291931152 3.436425447463989 14.05789566040039 4.596409320831299 14.10151386260986 C 2.692142009735107 12.83508205413818 1.44457221031189 10.67348480224609 1.44457221031189 8.227993011474609 C 1.44457221031189 6.917941093444824 1.794716358184814 5.717039108276367 2.407620429992676 4.668971061706543 C 5.887839794158936 8.948548316955566 11.11911773681641 11.74332714080811 16.98506355285645 12.04906463623047 C 16.87565040588379 11.52503108978271 16.80995750427246 10.97922134399414 16.80995750427246 10.4333438873291 C 16.80995750427246 6.546741485595703 19.96186447143555 3.38076376914978 23.87981605529785 3.38076376914978 C 25.91539573669434 3.38076376914978 27.75397491455078 4.23231029510498 29.04540252685547 5.607890129089355 C 30.64318466186523 5.302221298217773 32.17534255981445 4.712657928466797 33.53246688842773 3.904798030853271 C 33.00708389282227 5.542428016662598 31.89082527160645 6.918008804321289 30.42435646057129 7.791332244873047 C 31.84709930419922 7.638564109802246 33.22604751586914 7.245454788208008 34.49551391601562 6.699644088745117 C 33.53260040283203 8.097002029418945 32.32868957519531 9.341523170471191 30.94974136352539 10.34597206115723 Z">
+                          </path>
+                         </svg>
+                    	]]>
+                    </a> -->
+                    <a aura:id="instagram" id ="instagram" class="instagram" target="_blank" href="https://www.instagram.com/allergansparkuk/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-instagram" viewBox="-0.005 2.238 27.89 27.888">
+                          <path id="Icon_awesome-instagram" d="M 13.94292449951172 9.031681060791016 C 9.985723495483398 9.031681060791016 6.793830394744873 12.22409343719482 6.793830394744873 16.18193817138672 C 6.793830394744873 20.1397819519043 9.985723495483398 23.33219528198242 13.94292449951172 23.33219528198242 C 17.90012359619141 23.33219528198242 21.09201431274414 20.13977813720703 21.09201431274414 16.18193817138672 C 21.09201431274414 12.22409439086914 17.90012359619141 9.031681060791016 13.94292449951172 9.031681060791016 Z M 13.94292449951172 20.83053588867188 C 11.38567733764648 20.83053588867188 9.295080184936523 18.74582290649414 9.295080184936523 16.18193626403809 C 9.295080184936523 13.6180477142334 11.37945556640625 11.5333366394043 13.94292449951172 11.5333366394043 C 16.50639343261719 11.5333366394043 18.59076690673828 13.6180477142334 18.59076690673828 16.18193626403809 C 18.59076690673828 18.74582290649414 16.50017356872559 20.83053588867188 13.94292449951172 20.83053588867188 Z M 23.05195045471191 8.739198684692383 C 23.05195045471191 9.666430473327637 22.30530548095703 10.40697002410889 21.38445091247559 10.40697002410889 C 20.45736885070801 10.40697002410889 19.71695327758789 9.66020679473877 19.71695327758789 8.739198684692383 C 19.71695327758789 7.818192481994629 20.46359443664551 7.071429252624512 21.38445091247559 7.071429252624512 C 22.30530548095703 7.071429252624512 23.05195045471191 7.818192481994629 23.05195045471191 8.739198684692383 Z M 27.78690147399902 10.43186283111572 C 27.68112754821777 8.197796821594238 27.17092132568359 6.218875408172607 25.5345344543457 4.588443279266357 C 23.90436363220215 2.958010911941528 21.9257640838623 2.447722434997559 19.69206237792969 2.335709095001221 C 17.38991928100586 2.205025196075439 10.48970603942871 2.205025196075439 8.187561988830566 2.335709095001221 C 5.960081100463867 2.441499948501587 3.981481075286865 2.951788425445557 2.345092296600342 4.582220077514648 C 0.708703339099884 6.212652206420898 0.2047198414802551 8.191572189331055 0.09272374957799911 10.42563819885254 C -0.03793852031230927 12.72815704345703 -0.03793852031230927 19.62948989868164 0.09272374957799911 21.93201065063477 C 0.1984979659318924 24.16607666015625 0.7087030410766602 26.14500045776367 2.345092296600342 27.77542877197266 C 3.981481075286865 29.40586090087891 5.953859329223633 29.9161491394043 8.187561988830566 30.02816009521484 C 10.48970603942871 30.15884399414062 17.38991928100586 30.15884399414062 19.69206237792969 30.02816009521484 C 21.92576599121094 29.92237091064453 23.90436553955078 29.41208267211914 25.5345344543457 27.77542877197266 C 27.16470146179199 26.14499282836914 27.67490577697754 24.16607284545898 27.78690147399902 21.93201065063477 C 27.91756439208984 19.62948989868164 27.91756439208984 12.73437881469727 27.78690147399902 10.43186092376709 Z M 24.81277847290039 24.40254974365234 C 24.32746124267578 25.62226486206055 23.38793563842773 26.56193923950195 22.16220092773438 27.05355834960938 C 20.32670974731445 27.78165435791016 15.97130012512207 27.61362838745117 13.94292449951172 27.61362838745117 C 11.91454792022705 27.61362838745117 7.552917003631592 27.77542877197266 5.723643779754639 27.05355834960938 C 4.504129886627197 26.56816101074219 3.564606189727783 25.62848663330078 3.073067426681519 24.40254974365234 C 2.345091819763184 22.5667610168457 2.513086318969727 18.21064376831055 2.513086318969727 16.18193817138672 C 2.513086318969727 14.15323162078857 2.351313829421997 9.790890693664551 3.073067426681519 7.961321353912354 C 3.55838418006897 6.741610050201416 4.497908115386963 5.801933765411377 5.723643779754639 5.310314178466797 C 7.55913782119751 4.582221031188965 11.91454792022705 4.750241756439209 13.94292449951172 4.750241756439209 C 15.97130012512207 4.750241756439209 20.33293151855469 4.588443279266357 22.16220092773438 5.310314178466797 C 23.38171577453613 5.795710563659668 24.32123947143555 6.735385894775391 24.81277847290039 7.961321353912354 C 25.54075241088867 9.797114372253418 25.37276077270508 14.15323066711426 25.37276077270508 16.18193817138672 C 25.37276077270508 18.21064376831055 25.54075241088867 22.57298278808594 24.81277847290039 24.40254974365234 Z">
+                          </path>
+                         </svg>
+                    	]]>
+                    </a> 
+                </div>
+            </div>
+        </div>
+        <div id="contentContacts" class="row">
+            <div class="col-sm-12 head">
+                <h2 id="contentHeadContacts" class="col-sm-12">
+                    {!$Label.c.AGN_SPARK_ContactUs_SubTitle}<br/>
+                    {!$Label.c.AGN_SPARK_ContactUs_SubTitle_Description}
+                </h2>
+            </div>
+            <div id="contactInputSection" class="row" >
+                <div class="background"></div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contact">
+                    <div id="contactInputSectionHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Message}
+                    </div>
+                    <div id="contactInputSectionContent">
+                        Fill in this handy form and one of our friendly team will get back to you at your convenience!
+                    </div>
+                </div>
+                <div id="contactInputForm" class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <c:AGN_SPARK_ContactUs_Message/>
+                </div>
+                
+            </div>
+            <div class="contentViewSection margin-top row" >
+                
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contentViewSectionLeft " >
+                    <div class="contentViewSectionLeftHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_Title}
+                    </div>
+                    <div class="contentViewSectionLeftContent">                        
+                       Do you have a question about the effective use of one of our products, training, or starting and growing your aesthetics career? 
+                    </div>
+                    
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contentViewSectionRight">
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_Call}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                      <!--  {!$Label.c.AGN_SPARK_ContactUs_Speakto_Call_num} -->
+                        01204 440 292
+                    </div>
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_Email}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_EmailId}
+                    </div>
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_openinghours}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_openinghoursthu}
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contentViewSectionRightMobile">
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_Call}
+                    </div>
+                    <div class="contentViewSectionRightContentMobile">
+                        01204 440 292
+                      <!--  {!$Label.c.AGN_SPARK_ContactUs_Speakto_Call_num} -->
+                    </div>
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_Email}
+                    </div>
+                    <div class="contentViewSectionRightContentEmailMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_EmailId}
+                    </div>
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_openinghours}
+                    </div>
+                    <div class="contentViewSectionRightContentMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Speakto_openinghoursthu}
+                    </div>
+                </div>
+            </div>
+            <div class="contentViewSection row">
+                
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contentViewSectionLeft " >
+                    <div class="contentViewSectionLeftHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Title}
+                    </div>
+                    <div class="contentViewSectionLeftContent">                        
+                        Do you have a question about an order or need help managing your Allergan Aesthetics account? Get in touch.
+                    </div>
+                    
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contentViewSectionRight">
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Call}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Call_num}
+                    </div>
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Email}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_EmailId}
+                    </div>                    
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Opening_Hours}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Opening_Hours_schedule}
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contentViewSectionRightMobile">
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Call}
+                    </div>
+                    <div class="contentViewSectionRightContentMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Call_num}
+                    </div>
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Email}
+                    </div>
+                    <div class="contentViewSectionRightContentEmailMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_EmailId}
+                    </div>                    
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Opening_Hours}
+                    </div>
+                    <div class="contentViewSectionRightContentMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Accounts_Orders_Opening_Hours_schedule}
+                    </div>
+                </div>
+            </div>
+            <div class="contentViewSection last row">
+                
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contentViewSectionLeft " >
+                    <div class="contentViewSectionLeftHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_Title}
+                    </div>
+                    <div class="contentViewSectionLeftContent">
+                      Want to access medical information or have a scientific question about a product?
+                    </div>
+                    
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contentViewSectionRight">
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_call}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_callnum}
+                    </div>
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_Email}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_EmailId}
+                    </div>
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_Opening_Hours}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_Opening_Hours_Time}
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 contentViewSectionRightMobile">
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_call}
+                    </div>
+                    <div class="contentViewSectionRightContentMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_callnum}
+                    </div>
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_Email}
+                    </div>
+                    <div class="contentViewSectionRightContentEmailMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_EmailId}
+                    </div>                    
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_Opening_Hours}
+                    </div>
+                    <div class="contentViewSectionRightContentMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Medical_information_Opening_Hours_Time}
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div id="AdverseEvents" class="row">
+            <div id="AdverseEventsSectionHead" class="row">
+                {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Title}
+            </div>
+            <div id="AdverseEventsSectionContent" class="row">
+                <div  id="AdverseEventsSectionLeftContent" class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="contentViewSectionRightContent">
+                        Experienced unanticipated side effects or have a complaint about an Allergan Aesthetics product?
+                    </div>
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Call}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Callnum}
+                        <br/>
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_ask}
+                    </div>
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Email}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_EmailId}
+                    </div>                    
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Opening_Hours}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Opening_Hours_time}
+                    </div>
+                </div>
+                <div id="AdverseEventsSectionRightContent" class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="contentViewSectionRightContent">
+                        Adverse effects should be reported. Reporting forms and informations can be found at<br/><a id="card" href="{! 'https://' + $Label.c.AGN_SPARK_ContactUs_Adverse_events_reportwebsite}" onclick="{!c.getClick}" target="_blank">{!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportwebsite}</a>
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        <!--{!$Label.c.AGN_SPARK_ContactUs_Adverse_events_report1}-->
+                        Adverse events should also be reported to Allergan Aesthetics Ltd.
+                    </div>
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportcall}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportcallnum}
+                    </div>
+                    <div class="contentViewSectionRightHead">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportEmail}
+                    </div>
+                    <div class="contentViewSectionRightContent">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportEmailId}
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        <div id="AdverseEventsMobile" class="row">
+            <div id="AdverseEventsSectionHeadMobile" class="row">
+                {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Title}
+            </div>
+            <div id="AdverseEventsSectionContentMobile" class="row" style="margin:0px !important;">
+                <div  id="AdverseEventsSectionLeftContentMobile" class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="contentViewSectionMobile">
+                      Experienced unanticipated side effects or have a complaint about an Allergan Aesthetics product?
+                    </div>
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Call}
+                    </div>
+                    <div class="contentViewSectionRightContentMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Callnum}
+                        <br/>
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_ask}
+                    </div>
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Email}
+                    </div>
+                    <div class="contentViewSectionRightContentEmailMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_EmailId}
+                    </div>
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Opening_Hours}
+                    </div>
+                    <div class="contentViewSectionRightContentMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_Opening_Hours_time}
+                    </div>
+                </div>
+                <div id="AdverseEventsSectionRightContentMobile" class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="contentViewSectionMobile">
+                        Adverse effects should be reported. Reporting forms and informations can be found at<br/><a id="card" href="{! 'https://' + $Label.c.AGN_SPARK_ContactUs_Adverse_events_reportwebsite}" onclick="{!c.getClick}" target="_blank">{!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportwebsite}</a>
+                    </div>
+                    <div class="contentViewSectionMobile">
+                        <!--{!$Label.c.AGN_SPARK_ContactUs_Adverse_events_report1}-->
+                        Adverse events should also be reported to Allergan Aesthetics Ltd.
+                    </div>
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportcall}
+                    </div>
+                    <div class="contentViewSectionRightContentMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportcallnum}
+                    </div>
+                    <div class="contentViewSectionRightHeadMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportEmail}
+                    </div>
+                    <div class="contentViewSectionRightContentEmailMobile">
+                        {!$Label.c.AGN_SPARK_ContactUs_Adverse_events_reportEmailId}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <c:AGN_SPARK_ZincCode pageName="ContactPage"/>
+</aura:component>

@@ -1,0 +1,70 @@
+.THIS .slds-modal__container{
+    max-width: none;
+}
+.THIS .practioner-details-wrapper {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.THIS .slds-modal__container .slds-modal__header h2{
+        text-align: left;
+    font-size: 20px;
+    font-weight: 600;
+}
+.THIS .slds-select_container .slds-select{
+    box-shadow: none;
+}
+.THIS .has-content.effect-16 ~ label {
+	top: -8px;
+	font-size: 12px;
+	color: #fff;
+	transition: 0.3s;
+}
+.THIS .section-text{
+    margin: 0;
+    color: #2c5596;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+}
+.THIS .table th{
+    text-align: center;
+    padding: 10px;
+}
+.THIS table{
+    background-color: #fff;
+    margin-bottom: 0px;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+}
+.THIS .btn_true{
+    background: #61ad02;    border-radius: 1000px;
+    padding: 5px 10px;
+    color: #ffffff;
+    font: normal bold 12px/1 "Calibri",sans-serif;
+    text-align: center;
+    border: 0;
+    cursor: text;
+}
+.THIS .btn_false{
+    background: #f52c34;    border-radius: 1000px;
+    padding: 5px 10px;
+    color: #ffffff;
+    font: normal bold 12px/1 "Calibri",sans-serif;
+    text-align: center;
+    border: 0;
+    cursor: text;
+}
+.THIS .add-prac-wrapper{
+    text-align: center;
+    margin: 15px 0;
+}
+.THIS .add-prac{
+    font-weight: 600;
+    color: #fff;
+    background: #43af2a;
+    padding: 10px;
+    border-radius: 0;
+    width: auto;
+}

@@ -1,0 +1,44 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 03-10-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   02-02-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <div class="cs_outer_wrapper">
+
+        <c-agn_gcsp_custom-toast title="" message={error} variant="error" auto-close="true"></c-agn_gcsp_custom-toast >
+        <template if:true={isStep1}>
+            <c-a-g-n_-g-c-s-p_-customer-registration-step1 case-id={caseId} onstepinfoevent={handleChangeEvent}
+                account-id={accountId} source-c-s="cs">
+            </c-a-g-n_-g-c-s-p_-customer-registration-step1>
+        </template>
+
+        <template if:true={isStep2}>
+            <c-agn_gcsp_customer-registration-step2 onstepinfoevent={handleChangeEvent} case-id={caseId}
+                source-c-s="cs">
+            </c-agn_gcsp_customer-registration-step2>
+        </template>
+
+        <template if:true={isStep3}>
+            <c-agn_gcsp_customer-reg-document-cmp case-id={caseId} onstepinfoevent={handleChangeEvent}
+                source-c-s="cs">
+            </c-agn_gcsp_customer-reg-document-cmp>
+        </template>
+
+        <template if:true={isStep4}>
+           <c-a-g-n_-g-c-s-p_-customer-registration-step4 case-id={caseId} source-c-s="cs"
+                onstepinfoevent={handleChangeEvent}>
+            </c-a-g-n_-g-c-s-p_-customer-registration-step4>
+        </template>
+
+        <template if:true={isContacts}>
+             <c-agn_-g-c-s-p_-multiple-contact_-creation case-id={caseId} source="cs">
+             </c-agn_-g-c-s-p_-multiple-contact_-creation>
+        </template>
+    </div>
+</template>

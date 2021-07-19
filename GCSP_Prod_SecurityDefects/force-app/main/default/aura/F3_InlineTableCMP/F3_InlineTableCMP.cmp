@@ -1,0 +1,28 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" 
+                controller="F3_InlineTableController">
+	
+    <aura:attribute name="recordId" type="Id" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:AccessibilityControlEvent" action="{!c.accessibilityAction}"/>
+    
+    <aura:attribute name="parentId" type="String"/> 
+    
+    
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="fieldValue" type="Object"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="componentClass" type="String" default="slds-form-element" />
+    <aura:attribute name="labelStyle" type="String" />
+    
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    
+    
+    <div class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small' : 'slds-hide'}">
+        <lightning:datatable
+                keyField="id"
+                data="{! v.data }"
+                columns="{! v.columns }"
+                hideCheckboxColumn="true"/>
+    </div>
+</aura:component>

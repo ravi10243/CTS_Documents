@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Registration Step Change Notification">
+    <aura:attribute name="Operation" type="String"/>
+    <aura:attribute name="StepNo" type="String"/>
+</aura:event>

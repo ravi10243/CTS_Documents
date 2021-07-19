@@ -1,0 +1,36 @@
+/*.cheading{
+    padding: 3% 0% 0% 5%;
+ }
+ .cheadingbold{
+    font-family: SFProText-Bold;
+    font-size: 16px;
+ }*/
+ .cheading{    
+   font-size: 1rem;
+   font-weight: 700;   
+   font-family: Arial, sans-serif;
+   padding:0px;
+}
+.upload_sec{
+   display: flex;
+   width: 100%;
+   padding: 4% 0% 4% 2%;
+} 
+@media screen and (max-width: 940px) and (min-width: 511px){
+   .upload_sec{
+       width: 100%;
+       display: block;
+       margin: 3% auto;
+       padding :0;
+       border: 1px solid #b8860b;
+   }
+}
+@media screen and (max-width: 510px){
+   .upload_sec{
+       width: 80%;
+       display: block;
+       margin: 3% auto;
+       padding :0;
+       border: 1px solid #b8860b;
+   }
+}

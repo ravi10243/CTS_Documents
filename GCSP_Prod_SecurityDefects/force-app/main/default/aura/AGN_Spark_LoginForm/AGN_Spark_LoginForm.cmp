@@ -1,0 +1,489 @@
+<!-- add implements="forceCommunity:availableForAllPageTypes" to surface the component in community builder -->
+<aura:component controller="AGN_SPARK_LoginController" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="showError" type="Boolean" required="true" description="" default="false" access="private"/>
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="private"/>
+    <aura:attribute name="startUrl" type="String" required="false" description="The url you go to after a successful login" />
+    <aura:attribute name="usernameLabel" type="String" required="false" default="Username"/>
+    <aura:attribute name="passwordLabel" type="String" required="false" default="Password"/>
+    <aura:attribute name="loginButtonLabel" type="String" required="false" default="Log in"/>
+    <aura:attribute name="expid" type="String" required="false" description="The branding experience ID" />        
+    
+    <aura:attribute name="forgotPasswordLabel" type="String" required="false" default="Forgot your password?"/>
+    <aura:attribute name="selfRegisterLabel" type="String" required="false" default="Not a member?"/>
+    <aura:attribute name="forgotPasswordUrl" type="String" required="false" default="/ForgotPassword"/>
+    <aura:attribute name="selfRegisterUrl" type="String" required="false" default="/SelfRegister"/>
+    
+    <aura:attribute name="isUsernamePasswordEnabled" type="Boolean" access="private"/>
+    <aura:attribute name="isSelfRegistrationEnabled" type="Boolean" access="private"/>
+    <aura:attribute name="communityForgotPasswordUrl" type="String" access="private"/>
+    <aura:attribute name="communitySelfRegisterUrl" type="String" access="private"/>
+    
+    <aura:registerevent name="sitePropagatedStartUrl" type="c:setStartUrl"/>
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}"/>
+    <aura:dependency resource="c:setStartUrl" type="EVENT"/>
+    <!-- Please uncomment
+    <aura:dependency resource="siteforce:registerQueryEventMap" type="EVENT"/>
+    -->
+    <aura:handler event="c:setStartUrl" action="{!c.setStartUrl}"/>
+    <aura:handler event="c:setExpId" action="{!c.setExpId}"/>    
+    <aura:dependency resource="c:setExpId" type="EVENT"/> 
+    
+    <aura:html tag="style">
+       .errorMessage {
+            position: absolute!important;
+            /* left: 33%!important; */
+            font-weight: bold;
+            color: #800000;
+            text-align: center;
+            font-size: 25px;
+            width: 100%;
+        }
+		/* --------------------- Banner Section Starts ------------------------------------------ */
+		.row{
+        	margin:0px !important;
+        }
+        #LoginInputSection{
+        	text-align:center;
+        }
+    #loginSection{
+        background-color:#fadbd3;
+    }
+    #bannerImageMobile{
+        display: none;
+    }
+        #bannerImageMobile img{
+            width: 100%;
+        }
+    #loginSectionHead{
+        text-align: center;
+        font-size: 50px;
+        font-family: 'Beatrice-light';
+        padding-top: 187px;
+        color: #000000;
+    }
+    #loginSectionSubhead{
+        position: relative;
+        padding-bottom: 33px;
+        text-align: center;
+        font-size: 21px;
+        font-family: 'Beatrice-light';
+        color: #000000;
+    }
+     #registerbannerImage {
+    	height: 474px;
+	}
+   .loginUsername {
+        width: 800px !important;
+        padding: 25px 40px !important;
+        font-size: 21px !important;
+        font-family: 'Neue_Haas_Unica_Pro-bold';
+        /* margin-left: 248px !important; */
+        margin: 0 auto !important;
+        margin-top: 33px !important;
+        border: 1px solid #707070 !important;
+        display: block;
+    }
+    .loginpassword{
+        width: 800px !important;
+        padding: 25px 40px !important;
+        font-size: 21px !important;
+        font-family: 'Neue_Haas_Unica_Pro-bold';
+        /* margin-left: 248px !important; */
+        margin: 0 auto !important;
+        margin-top: 33px !important;
+        border: 1px solid #707070 !important;
+        display: block;
+        margin-bottom: 61px !important;
+    }
+    #forgetPassword{
+        text-align: center;
+        font-size: 21px;
+        font-family: 'Beatrice-light';
+        color: #000000;
+    }
+    #forgetPassword a{
+        color: #000000 !important;
+    }
+   .LoginButton {
+        width: 401px;
+        text-align: center;
+        font-size: 30px;
+        padding: 25px 50px;
+        color: #ffffff;
+        font-family: Helvetica;
+        background-color: #000000;
+        margin: 0 auto;
+        display: block;
+        margin-top: 50px;
+        /* margin-left: 401px; */
+        margin-bottom: 150px;
+    }     
+        #RegisterContent{
+           text-align: center;
+            font-size: 31px;
+            font-family: 'Beatrice-light';
+            color: rgba(167,117,110,1);
+            margin-top: 133px;
+        }
+        .registerButton {
+            width: 401px;
+            text-align: center;
+            font-size: 30px;
+            padding: 25px 50px;
+            color: #ffffff;
+            background-color: #000000;
+            margin: 0 auto;
+            display: block;
+            margin-top: 29px;
+            /* margin-left: 101px; */
+            margin-bottom: 145px;
+        }
+        
+        .row{
+        margin:0px;
+        }
+        
+       
+        
+        
+@media screen and (max-width: 1600px) and (min-width: 1280px) {
+        .errorMessage{
+        font-size:19px;
+        }
+        
+          .LoginButton {
+            width: 280px;
+            text-align: center;
+            font-size: 19px;
+            padding: 12px;
+            color: #ffffff;
+            background-color: #000000;
+            margin-top: 27px;
+            /* margin-left: 262px; */
+            margin-bottom: 105px;
+        }
+        #forgetPassword{
+          font-size: 16px;
+        }
+        .loginUsername {
+            width: 470px !important;
+            padding: 9px 15px !important;
+            font-size: 17px !important;
+            margin-top: 22px !important;
+        }
+        .loginpassword {
+            width: 470px !important;
+            padding: 9px 15px !important;
+            font-size: 17px !important;
+           	margin-top: 12px !important;
+            margin-bottom: 47px !important;
+        }
+       #loginSectionHead {
+            font-size: 35px;
+            padding-top: 140px;
+        }
+        #loginSectionSubhead {
+            position: relative;
+            padding-bottom: 22px;
+            text-align: center;
+            font-size: 16px;
+            font-family: 'Beatrice-light';
+            color: #000000;
+        }
+        #RegisterContent{
+          margin-top:68px;
+          font-size: 24px;
+        }
+        .registerButton {
+            width: 280px;
+            text-align: center;
+            font-size: 19px;
+            padding: 12px;
+            color: #ffffff;
+            background-color: #000000;
+            margin-top: 24px;
+        }
+        
+        #registerbannerImage {
+            height: 329px;
+            background-size: 100% 100%;
+        }
+        }
+          
+@media screen and (max-width: 1280px) and (min-width: 992px) {
+        .errorMessage{
+        font-size:15px;
+        }
+        
+          .LoginButton {
+           width: 250px;
+            text-align: center;
+            font-size: 16px;
+            padding: 9px;
+            color: #ffffff;
+            background-color: #000000;
+            margin-top: 27px;
+            /* margin-left: 262px; */
+            margin-bottom: 76px;
+        }
+        #forgetPassword{
+          font-size: 13px;
+        }
+        .loginUsername {
+            width: 415px !important;
+            padding: 7px 13px !important;
+            font-size: 14px !important;
+            margin-top: 18px !important;
+        }
+        .loginpassword {
+           width: 415px !important;
+            padding: 7px 13px !important;
+            font-size: 14px !important;
+            margin-top: 10px !important;
+            margin-bottom:39px !important;
+        }
+       #loginSectionHead {
+            font-size: 29px;
+            padding-top: 112px;
+        }
+       #loginSectionSubhead {
+            position: relative;
+            padding-bottom: 18px;
+            text-align: center;
+            font-size: 13px;
+            font-family: 'Beatrice-light';
+            color: #000000;
+        }
+        #RegisterContent{
+          margin-top:64px;
+          font-size: 20px;
+        }
+        .registerButton {
+            width: 250px;
+            text-align: center;
+            font-size: 16px;
+            padding: 9px;
+            color: #ffffff;
+            background-color: #000000;
+            margin-top: 24px;
+        }
+        
+        #registerbannerImage {
+           height: 268px;
+    		background-size: 100% 100%;
+        }
+        }
+        @media screen and (max-width: 992px) and (min-width: 600px) {
+         #bannerImageMobile{
+        display:contents;
+        padding:0px;
+        }
+        #registerbannerImage{
+       	display:none;
+        }
+        
+        .errorMessage{
+        font-size:15px;
+        }
+        
+        .LoginButton {
+            width: 204px;
+            text-align: center;
+            font-size: 16px;
+            padding: 13px;
+            color: #ffffff;
+            background-color: #000000;
+            margin-top: 27px;
+            /* margin-left: 262px; */
+            margin-bottom: 31px;
+        }
+        #forgetPassword{
+          font-size: 16px;
+        }
+        .loginUsername {
+            width: 406px !important;
+            padding: 7px 13px !important;
+            font-size: 18px !important;
+            margin-top: 15px !important;
+        	background-color:#fadbd3;
+        }
+        .loginpassword {
+           width: 406px !important;
+            padding: 7px 13px !important;
+            font-size: 18px !important;
+            margin-top: 15px !important;
+            margin-bottom:25px !important;
+        	background-color:#fadbd3;
+        }
+       #loginSectionHead {
+            font-size: 35px;
+            padding-top: 29px;
+        }
+       #loginSectionSubhead {
+            position: relative;
+            padding-bottom: 18px;
+            text-align: center;
+            font-size: 16px;
+            font-family: 'Beatrice-light';
+            color: #000000;
+        }
+        #RegisterContent{
+            margin-top: 29px;
+    		font-size: 21px;
+        }
+        .registerButton {
+            width: 201px;
+            text-align: center;
+            font-size: 16px;
+            padding: 13px;
+            color: #ffffff;
+            background-color: #000000;
+            margin-top: 24px;
+            margin-bottom: 41px;
+        }
+        
+        #registerbannerImage {
+           height: 268px;
+    		background-size: 100% 100%;
+        }
+        }
+        @media screen and (max-width: 600px) {
+        #bannerImageMobile{
+        display:block;
+        padding:0px;
+        }
+        #registerbannerImage{
+       	display:none;
+        }
+        
+        .errorMessage{
+        font-size:15px;
+        }
+        
+        .LoginButton {
+            width: 204px;
+            text-align: center;
+            font-size: 16px;
+            padding: 13px;
+            color: #ffffff;
+            background-color: #000000;
+            margin-top: 27px;
+            /* margin-left: 262px; */
+            margin-bottom: 31px;
+        }
+        #forgetPassword{
+          font-size: 16px;
+        }
+        .loginUsername {
+            width: 299px !important;
+            padding: 7px 13px !important;
+            font-size: 16px !important;
+            margin-top: 15px !important;
+        	background-color:#fadbd3;
+        }
+        .loginpassword {
+           width: 299px !important;
+            padding: 7px 13px !important;
+            font-size: 16px !important;
+            margin-top: 15px !important;
+            margin-bottom:25px !important;
+        	background-color:#fadbd3;
+        }
+       #loginSectionHead {
+            font-size: 35px;
+            padding-top: 29px;
+        }
+       #loginSectionSubhead {
+            position: relative;
+            padding-bottom: 18px;
+            text-align: center;
+            font-size: 16px;
+            font-family: 'Beatrice-light';
+            color: #000000;
+        }
+        #RegisterContent{
+            margin-top: 29px;
+    		font-size: 21px;
+        }
+        #LoginInputSection {
+            margin-top: 41px;
+        }
+        .registerButton {
+            width: 201px;
+            text-align: center;
+            font-size: 16px;
+            padding: 13px;
+            color: #ffffff;
+            background-color: #000000;
+            margin-top: 24px;
+            margin-bottom: 41px;
+        }
+        
+        #registerbannerImage {
+           height: 268px;
+    		background-size: 100% 100%;
+        }
+        }
+       
+    </aura:html>
+
+       <!-- <div class="login_wrapper">
+            <h3><strong>{!$Label.c.AGN_SPARK_LoginForm_Welcome_back_message} </strong></h3>
+            <p class="add_text">{!$Label.c.AGN_SPARK_LoginForm_LogintoAccessthesparkmessage}</p>
+            <aura:renderIf isTrue="{!v.showError}">
+                <div id="error" class="errorMessage">
+                    <ui:outputRichText value="{!v.errorMessage}"/>
+                </div>
+            </aura:renderIf>
+            <div class="user_pwd">
+                <ui:inputText value="" aura:id="username" placeholder="{!v.usernameLabel}" keyup="{!c.onKeyUp}" class="login_user"  labelClass="clearlabel"/>
+                <ui:inputSecret value="" aura:id="password" placeholder="{!v.passwordLabel}" keyup="{!c.onKeyUp}" class="login_pass"  labelClass="clearlabel"/>
+            </div>
+                <a class="forgot_link" href="{!if(v.communityForgotPasswordUrl == null, v.forgotPasswordUrl, v.communityForgotPasswordUrl)}" >{!$Label.c.AGN_SPARK_LoginForm_Forgottonyourlogindetailsalertmessage}</a>
+            <button class="loginlink_btn" onclick="{!c.handleLogin}">{!$Label.c.AGN_SPARK_LoginForm_LoginButton}</button>
+            
+            <c:AGN_SPARK_ZincCode pageName="LoginPage"/>
+        </div> -->
+    
+    		<div id="bannerLogin" class="row">
+                <div id="loginSection" class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
+                    <div id="loginSectionHead">
+                        Welcome Back
+                    </div>
+                    <div id="loginSectionSubhead">
+                        <!--{!$Label.c.AGN_SPARK_LoginForm_LogintoAccessthesparkmessage}-->
+                        Login to access the Spark
+                        <aura:renderIf isTrue="{!v.showError}">
+                            <div id="error" class="errorMessage">
+                                <ui:outputRichText value="{!v.errorMessage}"/>
+                            </div>
+                        </aura:renderIf>
+                    </div>
+                    <div id="LoginInputSection">
+                        <div>
+                            <ui:inputText value="" aura:id="username" placeholder="{!v.usernameLabel}" keyup="{!c.onKeyUp}" class="loginUsername"  labelClass="clearlabel"/>
+                        </div>
+                        <div>
+                            <ui:inputSecret value="" aura:id="password" placeholder="{!v.passwordLabel}" keyup="{!c.onKeyUp}" class="loginpassword"  labelClass="clearlabel"/>
+                        </div>
+                    </div>
+                    <div id="forgetPassword">
+                       <u> <a  href="{!if(v.communityForgotPasswordUrl == null, v.forgotPasswordUrl, v.communityForgotPasswordUrl)}" >{!$Label.c.AGN_SPARK_LoginForm_Forgottonyourlogindetailsalertmessage}</a></u>
+                    </div>
+                   <label class="LoginButton" onclick="{!c.handleLogin}">{!$Label.c.AGN_SPARK_LoginForm_LoginButton}</label>
+                   <c:AGN_SPARK_ZincCode pageName="LoginPage"/>
+                </div>
+                <div id="RegisterSection" class="col-sm-12 col-md-12 col-lg-4 col-xl-4" style="padding:0px; background-color:#eeeeee">
+                    <div id="registerbannerImage"></div>
+                    <div id="bannerImageMobile" class="col-sm-12 col-md-12 col-lg-0 col-xl-0">
+                        <img src="{!$Resource.SPARK_Rebranding_LoginLayout +'/images/AllerganAesthetics_Photography_02@2x.jpg'}"/>
+                        
+                    </div>
+                    <div id="RegisterContent">
+                        Not registered yet?
+                    </div>
+                    <label class="registerButton" onclick="{!c.clickRegister}">Register now</label>
+                </div>
+            </div>
+
+</aura:component>

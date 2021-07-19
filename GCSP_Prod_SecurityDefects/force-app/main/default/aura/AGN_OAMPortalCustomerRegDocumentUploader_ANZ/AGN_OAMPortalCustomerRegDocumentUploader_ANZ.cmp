@@ -1,0 +1,128 @@
+<aura:component implements="force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" controller="AGN_OAMPortalCustomerRegStep2Controller" access="global"> 
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="selectedCustRegID" type="String" description="Customer Registration Record Id" access="global"/>
+    
+    <aura:attribute name="objAGNCustAddr" type="Allergan_Customer_Address_AGN__c" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}" access="private" />
+    <aura:attribute name="objAGNCustReg" type="Allergan_Customer_Registration_AGN__c" default="{'sobjectType': 'Allergan_Customer_Registration_AGN__c'}" access="private" />
+    <aura:attribute name="objSpecialty" type="Specialty_Allergan_AGN__c" access="private" default="{'sobjectType': 'Specialty_Allergan_AGN__c'}"/>
+    <aura:attribute name="objMixType" type="sObject" access="private" default="{'sobjectType': 'sObject'}"/>
+    
+    <aura:attribute name="SAPCountryCode" type="String"/>
+    
+    <aura:attribute name="sectionHeaderMapDoc" type="Map" default="{}" access="global"/> 
+    <aura:attribute name="dropdownListMap" type="Map" default="{}" access="global" />
+    
+    <aura:attribute name="countryCode" type="String"/>
+    <aura:attribute name="customerType" type="String"/>
+    <aura:attribute name="customerSubType" type="String"/>
+    <aura:attribute name="customerGroup" type="String"/>
+    
+    <aura:attribute name="isAccOwner" type="Boolean" default="false"/>
+    <aura:attribute name="noFieldsAvailabel" type="Boolean" default="false"/>
+    
+    <aura:attribute name="isBlankComponent" type="Boolean" default="false"/>
+    <aura:attribute name="AttachmentList" type="Object"/>
+    
+    <aura:registerEvent name="notifyRegStepChange" type="c:AGN_Reg_Step_Chg_Evt" />
+    <aura:method name="displayFormStep3" action="{!c.showForm}">
+        <aura:attribute name="custRegID" type="String"/>
+    </aura:method>
+    
+    <aura:attribute name="isMandate" type="boolean" default="true"/>
+    <aura:handler name="isManadteDocmant" action="{!c.ondocumentUploadMandate}" event="c:AGN_MandateDocumentUpload_Evt" />
+    
+    <aura:attribute name="isTCAccepted" type="boolean" default="false"/>
+    <aura:attribute name="isdisabled" type="boolean" default="false"/>
+    
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end-->  
+    <aura:if isTrue="{! and(v.sectionHeaderMapDoc != null,not(empty(v.selectedCustRegID)))}">
+        <div class="regi_add_1 reg_add">            
+            <aura:iteration items="{!v.sectionHeaderMapDoc}" var="set" indexVar="key"> 
+                <section class="content bgcolor-7">
+                    <aura:iteration items="{!set.value}" var="fieldValue">
+                        <c:AGN_CommunityInputFieldCmp 
+                                                      aura:id="fieldId_Doc" 
+                                                      sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                      record="{!v.objMixType}" 
+                                                      fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                      customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                      required="{!fieldValue.Required_AGN__c}"
+                                                      fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                      customCountryCode = "{!v.SAPCountryCode}"
+                                                      cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"
+                                                      />
+                        
+                        
+                    </aura:iteration> 
+                    
+                </section>
+            </aura:iteration>            
+        </div> 
+       <!-- <c:AGN_CustRegStep2DocumentUploader aura:id="docId" AttachmentList="{!v.AttachmentList}" custRegId="{!v.selectedCustRegID}" /> -->
+         <c:AGN_OAMPortalCustomerRegStep3DocumentUploader_ANZ aura:id="docId" AttachmentList="{!v.AttachmentList}" custRegId="{!v.selectedCustRegID}" />        
+    </aura:if>
+    <br/><br/> 
+    <aura:if isTrue="{!and(v.customerType == 'HEALTHCARE PRACTITIONERS', v.isAccOwner)}">       
+        <div class="regi_add_1 reg_add"> 
+            <aura:if isTrue="{!v.customerSubType == 'NURSE PRACTITIONER'}">
+                <div class="regi_add_3">
+                    <div class="address_text Declt"><b>{!$Label.c.AGN_OAM_Body_Declaration}</b><br/>
+                        <p>                     
+                            {!$Label.c.AGN_OAM_NPDeclaration1} <br/>
+                        </p>
+                    </div>
+                    <div class="address_text Declt"><b>{!$Label.c.AGN_OAM_NPDeclaration2}</b><br/>
+                        <p>                     
+                            {!$Label.c.AGN_OAM_NPDeclaration3} &nbsp;
+                            {!$Label.c.AGN_OAM_NPDeclaration4}
+                        </p> 
+                    </div>
+                </div>
+            </aura:if>            
+            <aura:if isTrue="{!not(v.customerSubType == 'NURSE PRACTITIONER')}">
+                <div class="regi_add_3"> 
+                    <div class="address_text Declt"><b>{!$Label.c.AGN_OAM_Body_Declaration}</b><br/>
+                        <p>                     
+                            {!$Label.c.AGN_OAM_MPDeclaration1} <br/>
+                        </p>
+                    </div>
+                    <div class="address_text Declt"><b>{!$Label.c.AGN_OAM_NPDeclaration2}</b><br/>
+                        <p>                     
+                            {!$Label.c.AGN_OAM_MPDeclaration2} &nbsp;
+                            {!$Label.c.AGN_OAM_MPDeclaration3}
+                        </p> 
+                    </div>
+                </div>
+            </aura:if>
+            <br/><br/>
+            <div class="slds-form-element check_box_btn">
+                <div class="slds-form-element__control">
+                    <span componentreference-listbox_listbox="" title="{!$Label.c.AGN_OAM_GDPR_Terms_and_Conditions_HelpText}">
+                        <ui:inputCheckbox labelClass="myCheckbox" aura:id="chkTC" value="{!v.isTCAccepted}" label="{!$Label.c.AGN_OAM_NPMP_Accept_the_Terms_and_Conditions}" change="{!c.onChangeTcAccepted}"/>
+                    </span>
+                </div>
+            </div>
+        </div> 
+    </aura:if>
+    
+    <aura:if isTrue="{!v.isBlankComponent}">
+        <div class="address_text Declt">{!$Label.c.AGN_OAM_NoNeedToUploadDoc}</div>       
+    </aura:if>
+    
+    <div class="det_upload">
+        <ui:button aura:id="buttonSave" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Save_Continue}" press="{!c.validateAndUpsert}" disabled="{!v.isdisabled}"/>
+        <ui:button aura:id="button" class="add_btn cancel_btn" label="{!$Label.c.AGN_OAM_Body_Cancel}" press="{!c.resetBlock}"/>
+    </div>
+</aura:component>

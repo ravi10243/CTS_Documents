@@ -1,0 +1,33 @@
+.THIS h2 {
+    display: inline;
+}
+.THIS table, .THIS tr, .THIS td {
+    border: 1px solid #ececec;
+    margin: 20px 0 4px 0;
+}
+.THIS thead {
+    background: #000;
+}
+.THIS thead td {
+    color: #fff;
+    font-weight: bold;
+}
+.THIS td {
+    padding: 8px;
+}
+.THIS .completed {
+    color: #d9ffdf;
+}
+.THIS .incompleted {
+    color: #d4504c;
+}
+.THIS .gps {
+    color: white;
+    font-weight: bold;
+}
+
+/* PMO 3408: GPS Assessment: Start: For business unit multi select picklist */
+.THIS .slds-form-element__label.slds-form-element__legend{
+    font-weight: normal;
+}
+/* PMO 3408: GPS Assessment: Start: For business unit multi select picklist */

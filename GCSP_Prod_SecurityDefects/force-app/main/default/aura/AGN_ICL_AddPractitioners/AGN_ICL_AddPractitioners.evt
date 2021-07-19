@@ -1,0 +1,5 @@
+<!-- ****AGN_ICL_AddPractitioners***** -->
+<aura:event type="APPLICATION" description="Event template">
+    <!--<aura:attribute name="practitioner" type="Practitioner_Listing_AGN__c" description="Practitioner id" access="global" />-->
+    <aura:attribute name="practitionerid" type="String" description="Practitioner id" access="global" />
+</aura:event>

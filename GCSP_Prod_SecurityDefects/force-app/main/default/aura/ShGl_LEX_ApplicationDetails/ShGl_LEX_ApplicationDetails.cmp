@@ -1,0 +1,103 @@
+<aura:component controller = "ShGl_LEX_Applications" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name = "applicationdetails" type = "object" />
+    <aura:attribute name = "isOpen" type = "Boolean" default = "false"/>
+    <aura:attribute name = "isOpenHelp" type = "Boolean" default = "false"/>
+    <aura:attribute name = "isLoading" type = "Boolean" default = "false"/>
+    <!-- Component Body -->
+    <div class="slds-box slds-wrap slds-grid">
+        <p class="">
+            <b>{!v.applicationdetails.PortalLabel__c}</b>
+        </p>
+        <div class="">
+            <lightning:formattedRichText value="{!v.applicationdetails.PortalDescription__c}" />
+            <div class="slds-float_right slds-m-top_medium">
+                <aura:if isTrue="{!v.applicationdetails.HelpKey__c}">
+                    <lightning:button class="secondaryButton" variant="neutral" label="Help" onclick="{!c.showHelp}" /> 
+                </aura:if>
+                <lightning:button class="" variant="brand" label="Start Application" onclick="{!c.openStartApplication}"/>
+                
+            </div>
+        </div>
+    </div>
+     <lightning:overlayLibrary aura:id="appHelpPopup"/>
+    <lightning:overlayLibrary aura:id="appChecklistPopup"/>
+    <div class="slds-m-around_xx-large">
+        <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+        <aura:if isTrue="{!v.isOpen}">
+            
+            <!--###### MODAL BOX Start######--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header">
+                        <h1 class="slds-p-vertical_x-small slds-m-left_medium section-header-font">
+            				Before you start
+       				 	</h1>
+                    </header>
+                    <!--###### MODAL BOX BODY Part Start######-->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <p>
+                            <b>
+                                <ui:scrollerWrapper class="slds-p-around_small scrollerSize">
+                                	<lightning:formattedRichText value="{!v.applicationdetails.ShGl_CheckList__c}" />
+                                </ui:scrollerWrapper>
+                            </b> 
+                        </p>
+                    </div>
+                    <!--###### MODAL BOX FOOTER Part Start ######-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"  
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand"  
+                                          label="Start Application"
+                                          title="Start Application"
+                                          onclick="{! c.startApplication }"/>
+                        
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--###### MODAL BOX Part END Here ######-->
+            
+        </aura:if>
+    </div>
+    
+    <div class="slds-m-around_xx-large">
+        <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+        <aura:if isTrue="{!v.isOpenHelp}">
+            
+            <!--###### MODAL BOX Start######--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header">
+                        <h1 class="slds-p-vertical_x-small slds-m-left_medium section-header-font">
+            				Help
+       				 	</h1>
+                    </header>
+                    <!--###### MODAL BOX BODY Part Start######-->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <p>
+                            <b>
+                                <ui:scrollerWrapper class="slds-p-around_small scrollerSize">
+                                	<lightning:formattedRichText value="{!v.applicationdetails.ShGl_CheckList__c}" />
+                                </ui:scrollerWrapper>
+                            </b> 
+                        </p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"  
+                                              label="Cancel"
+                                              title="Cancel"
+                                              onclick="{! c.closeModel }"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--###### MODAL BOX Part END Here ######-->
+            
+        </aura:if>
+    </div>
+</aura:component>

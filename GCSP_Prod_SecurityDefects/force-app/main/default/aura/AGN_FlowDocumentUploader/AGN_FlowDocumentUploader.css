@@ -1,0 +1,21 @@
+.THIS .attach_btn_text{
+    background: #3d86ca;
+    color: white;
+    padding: 4px 16px;
+    border-radius: 4px;
+}
+.THIS .upload_file{
+    border: 1px solid;
+    border-color: #3d86ca;
+    padding: 3px 10px 3px 10px;
+    margin-left: 30px;
+    border-radius: 4px;
+}
+.THIS .photo_id_attach{
+    display: inline-block;
+}
+
+.THIS .file-input-box{
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+}

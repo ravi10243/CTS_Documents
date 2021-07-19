@@ -1,0 +1,38 @@
+.THIS .download_btn{
+        border: 1px solid;
+        border-color: #3d86ca;
+        height: auto;
+        width: 220px;
+        top: 0 !important;
+        color: #565656;
+        margin-left: 30px!important;
+        right: 0%;
+        padding: 5px 8px;
+        margin-top: -28px;
+        margin-right: -34px;
+        text-align: left;
+        overflow: hidden;
+        left: 0;
+        background: #fff;
+        text-decoration: none;
+    }
+    .THIS .docs_details{
+        display:inline-block;
+        /*width:auto;*/
+        width: 35%;
+    }
+    /*Mobile Portrait*/
+    @media only screen
+        and (max-device-width: 500px) and (min-device-width: 100px) {
+     .THIS .docs_details{
+            width: 100%;
+        }   
+        .THIS .download_btn{
+            margin: 0;
+            width: auto;
+            text-align: center;
+            margin-left: 0px!important;
+            float: left;
+            margin-top: 10px;
+        }
+    }

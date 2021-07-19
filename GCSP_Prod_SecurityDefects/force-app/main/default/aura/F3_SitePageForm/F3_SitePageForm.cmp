@@ -1,0 +1,52 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global">
+    <!--Attributes-->
+    <aura:attribute name="currentSitePage" type="Object"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    
+    <aura:attribute name="pageForm" type="Object"/>
+    <aura:attribute name="pageFormLabel" type="Object"/>
+    <aura:attribute name="pageFormDescription" type="Object"/>
+    <aura:attribute name="pageFormStepWrapper" type="Object"/>
+    <aura:attribute name="listPageFormSteps" type="Object"/>
+    <aura:attribute name="numberOfSteps" type="Integer"/>
+    <aura:attribute name="currentStepId" type="String"/>
+    <aura:attribute name="primaryFormObjectAPIName" type="Object"/>
+    <aura:attribute name="recordIdInContext" type="String"/>
+    <aura:attribute name="formStepSequence" type="String"/>
+    <aura:attribute name="currentStepType" type="String"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!--Body-->
+    <div  class="" style="background-color:#f1f1f1;">
+        <div style="background-color:#ffffff">
+            <aura:if isTrue="{!v.pageForm != null}">
+                <aura:if isTrue="{!v.currentStepType != 'Success'}">
+                    <aura:if isTrue="{!v.listPageFormSteps != null}">
+                        <aura:if isTrue="{!v.numberOfSteps > 1}">
+                            <c:F3_SitePageFormSteps renderMode="{!v.renderMode}"
+                                                    listPageFormSteps="{!v.listPageFormSteps}"
+                                                    currentStepId="{!v.currentStepId}" />
+                        </aura:if>    
+                    </aura:if>
+                </aura:if>
+            </aura:if>    
+        </div>
+        <aura:if isTrue="{!v.pageFormStepWrapper != null}">
+            <aura:if isTrue="{!v.numberOfSteps != null}">
+                <aura:if isTrue="{!v.formStepSequence != null}">
+                    <c:F3_SitePageFormStep recordIdInContext="{!v.recordIdInContext}"
+                                           pageFormStep="{!v.pageFormStepWrapper}"
+                                           currentStepId="{!v.currentStepId}"
+                                           numberOfSteps="{!v.numberOfSteps}"
+                                           renderMode="{!v.renderMode}"
+                                           formStepSequence="{!v.formStepSequence}"
+                                           primaryFormObjectAPIName="{!v.primaryFormObjectAPIName}"
+                                           currentSitePage="{!v.currentSitePage}"
+                                           />
+                </aura:if>    
+            </aura:if>    
+        </aura:if>
+    </div>
+</aura:component>

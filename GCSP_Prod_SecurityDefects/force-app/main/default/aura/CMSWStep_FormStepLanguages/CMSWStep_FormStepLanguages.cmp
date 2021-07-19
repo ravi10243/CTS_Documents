@@ -1,0 +1,114 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="MDFormBuilderController">
+	<!-- Attributes -->
+    <aura:attribute name = "renderMode" type = "String"/>
+    <aura:attribute name = "recordId" type = "String"/>
+    <aura:attribute name = "saveBtnLabel" type = "string" default = "Save"/>
+   	<aura:attribute name = "saveBtnVariant" type = "string" default = "brand"/>
+    <aura:attribute name = "saveBtnTitle" type = "string" default = "Save language details"/>
+    
+    <aura:attribute name="listLocalisedMDFormStep" type="Object" />
+    <aura:attribute name="selectedLocalisedFormStepId" type="Object" />
+    <aura:attribute name="newLocalisedFormStep" type="Object" />
+    <aura:attribute name="addNewMode" type="Boolean" default="false" />
+    <aura:attribute name="recordIdToDelete" type="String" />
+    
+    <!-- Aura Method -->
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Lightning Data Service for Record Deletion -->
+    <aura:if isTrue="{!v.recordIdToDelete}">
+        <force:recordData aura:id="recordtoDelete"
+                          recordId="{!v.recordIdToDelete}"
+                          fields="Id"
+                          recordUpdated="{!c.handleRecordUpdated}" 
+                          />
+    </aura:if>
+    
+    <!-- Componennt Body -->
+    <lightning:card iconName="custom:custom15" title="Show your form in multiple languages..">
+        <div class="slds-p-around_small">
+            <!-- For Already Created Records -->
+            <aura:iteration items="{!v.listLocalisedMDFormStep}" var="localRecord">
+                <div class="slds-p-top_small">
+                    <!-- Show Record Title -->
+                    <c:CMS_RecordTitleBox>
+                        <aura:set attribute="box">
+                            L
+                        </aura:set>
+                        <aura:set attribute="boxtitle">
+                            {!localRecord.Language__c}
+                        </aura:set>
+                        <aura:set attribute="boxaction">
+                            <lightning:buttonIcon variant="bare" iconName="utility:edit"  size="small" name="{!localRecord}"  value="{!localRecord.Id}" title="Edit Language" onclick="{!c.OnEdit}"/>
+                            <lightning:buttonIcon variant="bare" iconName="utility:delete"  size="small" value="{!localRecord.Id}" title="Delete Language" onclick="{!c.OnDelete}"/>
+                        </aura:set>
+                    </c:CMS_RecordTitleBox>
+                    <div class="slds-p-around_small">
+                        <!-- Show Record Edit Form when selected -->
+                        <aura:if isTrue="{!v.selectedLocalisedFormStepId == localRecord.Id}">
+                            <lightning:recordEditForm aura:id="editformStep"
+                                                      onsuccess="{!c.OnFormSubmitSuccess}"
+                                                      onerror="{!c.OnSubmitFormError}"
+                                                      onsubmit="{!c.OnFormSubmit}"
+                                                      recordId="{!localRecord.Id}"
+                                                      objectApiName="MDLocalisedFormStep__c">
+                                <!-- the messages component is for error messages -->
+                                <lightning:messages />
+                                <lightning:inputField fieldName="Language__c" value="{!v.localRecord.Language__c}" />
+                                <lightning:inputField fieldName="LocalisedShortName__c" value="{!v.localRecord.LocalisedShortName__c}" />
+                                <lightning:inputField fieldName="LocalisedLongName__c" value="{!v.localRecord.LocalisedLongName__c}" />                                
+                                <lightning:inputField class="slds-hidden" fieldName="MDFormStep__c" value="{!v.localRecord.MDFormStep__c}" />
+                            </lightning:recordEditForm>
+                            <div class="slds-align_absolute-center slds-p-top_small">
+                                <lightning:button label="Cancel" title="Cancel" onclick="{!c.OnCloseProperty}" />
+                                <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.OnSubmitFormClick}" />
+                            </div>
+                        </aura:if>    
+                    </div>
+                </div>    
+            </aura:iteration>
+            <!-- Add new localised record -->
+            <div class="slds-p-top_small">
+                <c:CMS_RecordTitleBox>
+                    <aura:set attribute="box">
+                        L
+                    </aura:set>
+                    <aura:set attribute="boxtitle">
+                        New Language
+                    </aura:set>
+                    <aura:set attribute="boxaction">
+                        <lightning:buttonIcon variant="bare" iconName="utility:edit"  size="small"  title="Edit Language" onclick="{!c.OnAddNew}"/>
+                    </aura:set>
+                </c:CMS_RecordTitleBox>
+                <aura:if isTrue="{!v.addNewMode}">
+                    <div class="slds-p-around_small">
+                        <lightning:recordEditForm aura:id="editformStep"
+                                                  onsuccess="{!c.OnFormSubmitSuccess}"
+                                                  onerror="{!c.OnSubmitFormError}"
+                                                  onsubmit="{!c.OnFormSubmit}"
+                                                  objectApiName="MDLocalisedFormStep__c">
+                            <!-- the messages component is for error messages -->
+                            <lightning:messages />
+                            <lightning:inputField fieldName="Name" value="{!v.newLocalisedFormStep.Name}" />
+                            <lightning:inputField fieldName="Language__c" value="{!v.newLocalisedFormStep.Language__c}" />
+                            <lightning:inputField fieldName="LocalisedShortName__c" value="{!v.newLocalisedFormStep.LocalisedShortName__c}" />
+                            <lightning:inputField fieldName="LocalisedLongName__c" value="{!v.newLocalisedFormStep.LocalisedLongName__c}" />                           
+                            <lightning:inputField class="slds-hidden" fieldName="MDFormStep__c" value="{!v.newLocalisedFormStep.MDFormStep__c}" />
+                        </lightning:recordEditForm>
+                        <div class="slds-align_absolute-center slds-p-top_small">
+                            <lightning:button label="Cancel" title="Cancel" onclick="{!c.OnCloseProperty}" />
+                            <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.OnSubmitFormClick}" />
+                        </div>
+                    </div>    
+                </aura:if>    
+            </div>    
+        </div>
+    </lightning:card>
+</aura:component>

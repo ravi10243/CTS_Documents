@@ -1,0 +1,282 @@
+<aura:component  controller="AGN_ICL_AllInputFieldForOAM" implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="sobjectName" type="String" required="true" />
+    <aura:attribute name="fieldName" type="String" required="true" />
+    <aura:attribute name="record" type="SObject" required="true" />
+    <aura:attribute name="displayType" type="String" />
+    <aura:attribute name="isPicklist" type="Boolean" />
+    <aura:attribute name="containsValue" type="Boolean" default="false"/>
+    <aura:attribute name="TypeofAccount" type="String" />
+    <aura:attribute name="PickListValues" type="List" />
+    <aura:attribute name="picklistOptions" type="Object[]" />
+    <aura:attribute name="variant" type="String" default="form" description="Options: form (default) and bare" />
+    <aura:attribute name="render" type="Boolean" default="true" />
+    <aura:attribute name="disabled" type="Boolean" />
+    <aura:attribute name="required" type="Boolean" />
+    <aura:attribute name="addRequiredCSS" type="Boolean" default="false"/>
+    <aura:attribute name="fieldValueMissing" type="Boolean" default="false"/>
+    <aura:attribute name="currencyIsoCode" type="String" />
+    <aura:attribute name="customLabel" type="String" />
+    <aura:attribute name="isFormatValid" type="Boolean" default="true" />
+    <aura:attribute name="fieldRegex" type="String" />
+    <aura:attribute name="fieldMetadata" type="Object" access="private" />
+    <aura:attribute name="fieldValue" type="String" access="public" />
+    <aura:attribute name="customLabelName" type="String" access="public"/>
+    <aura:attribute name="customCountryCode" type="String" access="public"/>
+    <aura:attribute name="cmpHelpText" type="String" access="public" default=''/>
+    <aura:attribute name="Clinic_Admin_details" type="Account" default="{'sobjectType':'Account'}"/>
+    <aura:attribute name="Address_details" type="Address_vod__c" default="{'sobjectType':'Address_vod__c'}"/>
+    <aura:attribute name="clinicID" type="Id"/>
+    <aura:attribute name="Clinic_details" type="Account" default="{'sobjectType':'Account'}"/>
+    
+    <aura:attribute name="Locator_Listing" type="Locator_Listing_AGN__c"/>
+    <aura:attribute name="CountryWiseFieldsMap" type="Map" />
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.record}" action="{!c.handleRecordChanged}" />
+    <!--<aura:handler name="change" value="{!v.fieldValue}" action="{!c.handleFieldValueChanged}" /> -->
+    <aura:handler name="change" value="{!v.handleBlur}" action="{!c.validateFieldValue}" /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <!--// <link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+    <link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}" afterScriptsLoaded="{!c.scriptsLoaded}" />
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS+'/ICL/js/bootstrap.js'}"/> -->
+    
+    <!-- BOOLEAN -->
+    <aura:if isTrue="{!v.displayType == 'BOOLEAN'}">
+        <div class="col-md-3">
+            <div class="form-group check-input">
+                <ui:inputCheckbox value="{!v.fieldValue}" required="{!v.required}" class="check-input" />
+                &nbsp;
+                <label >
+                    <span >{!v.customLabelName}<span class="requiredField">{!v.required ? '*' : ''}</span></span>
+                </label>
+            </div>
+        </div>
+    </aura:if>
+    
+    <!-- CURRENCY -->
+    <aura:if isTrue="{!v.displayType == 'CURRENCY'}">
+        <div class="col-md-3">
+            <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                <ui:inputCurrency aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')}" 
+                                  blur="{!c.handleBlur}" format="{!'######0.00 ' + v.currencyIsoCode}"
+                                  />
+                <label >
+                    <span >{!v.customLabelName}<span class="requiredField">{!v.required ? '*' : ''}</span></span>
+                </label>
+            </div>
+        </div>
+    </aura:if>
+    
+    <!-- DATE -->
+    <aura:if isTrue="{!v.displayType == 'DATE'}">
+        <div class="col-md-3">
+            <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                <ui:inputDate aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}"  displayDatePicker="true"
+                              blur="{!c.handleBlur}"
+                              />
+            </div>
+        </div>
+    </aura:if>
+    
+    <!-- DATETIME -->
+    <aura:if isTrue="{!v.displayType == 'DATETIME'}">
+        <div class="col-md-3">
+            <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                <ui:inputDatetime aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" displayDatePicker="true"
+                                  blur="{!c.handleBlur}"
+                                  />
+                <label >
+                    <span >{!v.customLabelName}<span class="requiredField">{!v.required ? '*' : ''}</span></span>
+                </label>
+            </div>
+        </div>
+    </aura:if>
+    
+    <!-- INTEGER -->
+    <aura:if isTrue="{!and(v.fieldName == 'Clinic_Experience_AGN__c', v.displayType == 'INTEGER')}">
+        <div class="col-md-3">
+            <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                <ui:inputNumber aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+                                blur="{!c.handleBlur}" format=".0"
+                                />
+                <label >
+                    <span class="field-label" ><span class="requiredField">{!v.required ? '*' : ''}</span>{!v.customLabelName}</span>
+                </label>
+            </div>
+        </div>
+    </aura:if>
+    
+    <!-- EMAIL -->
+    <aura:if isTrue="{!v.displayType == 'EMAIL'}">
+        
+        <aura:if isTrue="{!or(v.fieldName == 'Email' ,v.fieldName == 'PersonEmail')}">
+            <div class="col-md-3">
+                
+                <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                    <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+                                  blur="{!c.handleBlur}" disabled = "True"/>
+                    
+                    <label >
+                        <span class="field-label" ><span class="requiredField">{!v.required ? '*' : ''}</span>{!v.customLabelName}</span>
+                    </label>
+                    <aura:if isTrue="{!v.fieldName == 'PersonEmail'}">
+                        <p class="helper_txt"><lightning:formattedText value="{!$Label.c.AGN_ICL_Clinic_Admin_Email_Help_text}" /></p>
+                    </aura:if>
+                    
+                </div> 
+                
+                
+            </div>
+            <aura:set attribute="else">
+                <div class="col-md-3">
+                    <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                        <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+                                      blur="{!c.handleBlur}" disabled = "false"
+                                      />
+                        
+                        <label >
+                            <span class="field-label" ><span class="requiredField">{!v.required ? '*' : ''}</span>{!v.customLabelName}</span>
+                        </label>
+                        <aura:if isTrue="{!v.fieldName == 'Email_AGN__c'}">
+                            <p class="helper_txt"><lightning:formattedText value="{!$Label.c.AGN_ICL_Email_Help_Text}" /></p>
+                        </aura:if>
+                    </div>
+                    
+                    
+                </div>
+            </aura:set>
+        </aura:if>
+        
+    </aura:if>
+    
+    
+    <!-- MULTIPICKLIST or PICKLIST -->
+    <aura:if isTrue="{!or(v.displayType == 'MULTIPICKLIST', v.displayType == 'PICKLIST')}">
+        
+        <aura:if isTrue="{!v.fieldName == 'Salutation'}">
+            <div class="col-md-3">
+                
+                <div class="form-group input-effect" data-inputFiedlValue="{!v.Clinic_Admin_details.Salutation}">
+                    <ui:inputText aura:id="inputField" value="{!v.Clinic_Admin_details.Salutation}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" 
+                                  blur="{!c.handleBlur}" disabled = "true"
+                                  />
+                    
+                    <label >
+                        <span class="requiredField">{!v.required ? '*' : ''}</span> <span class="field-label" >{!v.customLabelName}</span>
+                    </label>
+                </div>
+            </div>
+            <aura:set attribute="else">
+                <div class="col-md-3">
+                    <aura:if isTrue="{!and(v.sobjectName == 'Locator_Listing_AGN__c', v.fieldName=='Country_AGN__c')}">
+                        
+                    </aura:if> 
+                    <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                        <ui:inputSelect aura:id="inputField" required="{!v.required}" change="{!c.SetPickListValue}"
+                                        blur="{!c.handleBlur}" multiple="{!v.displayType == 'MULTIPICKLIST'}" value ="{!v.fieldValue}" disabled = "{!v.editBtn}"
+                                        class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"  >
+                            <aura:iteration items="{!v.PickListValues}" var="picklistOption">
+                                <ui:inputSelectOption label="{!picklistOption.label}" text="{!picklistOption.value}" value="{!picklistOption.selected}"/>
+                            </aura:iteration> 
+                        </ui:inputSelect>
+                        
+                        <label >
+                            <span class="requiredField">{!v.required ? '*' : ''}</span><span class="field-label" >{!v.customLabelName}</span>
+                        </label>
+                    </div> 
+                </div>
+            </aura:set>
+            
+        </aura:if>
+    </aura:if>
+    
+    <!-- PERCENT -->
+    <aura:if isTrue="{!v.displayType == 'PERCENT'}">
+        <div class="col-md-3">
+            <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                <ui:inputNumber aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+                                blur="{!c.handleBlur}"
+                                />
+                <label >
+                    <span class="requiredField">{!v.required ? '*' : ''}</span><span class="field-label">{!v.customLabelName}</span>
+                </label>
+            </div>
+        </div>
+    </aura:if>
+    
+    <!-- PHONE -->
+    <aura:if isTrue="{!v.displayType == 'PHONE'}">
+        <div class="col-md-3">
+            <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                <ui:inputPhone aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" 
+                               blur="{!c.handleBlur}"
+                               />
+                <label >
+                    <span class="field-label" >{!v.customLabelName}<span class="requiredField">{!v.required ? '*' : ''}</span></span>
+                </label>
+            </div>
+        </div>
+    </aura:if>
+    
+    <!-- TEXT -->
+    <aura:if isTrue="{!v.displayType == 'TEXT'}">
+        
+        
+        <aura:if isTrue="{!v.fieldName=='Name' || v.fieldName =='FirstName' || v.fieldName=='LastName' || v.fieldName=='Street_AGN__c' || v.fieldName=='City_AGN__c' || v.fieldName=='State_Providence_Region_AGN__c' || v.fieldName=='Zip_Code_AGN__c' || v.fieldName=='Country_AGN__c'}">
+            <div class="col-md-3">
+                
+                <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                    <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" 
+                                  blur="{!c.handleBlur}" disabled = "true"
+                                  />
+                    
+                    
+                    <label >
+                        <span class="field-label" ><span class="requiredField">{!v.required ? '*' : ''}</span>{!v.customLabelName}</span>
+                    </label>
+                </div> 
+            </div>
+            <aura:set attribute="else">
+                <div class="col-md-3">
+                    <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                        <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" 
+                                      blur="{!c.handleBlur}" disabled = "false"
+                                      />
+                        <label >
+                            <span class="field-label" ><span class="requiredField">{!v.required ? '*' : ''}</span>{!v.customLabelName}</span>
+                        </label>
+                        
+                    </div>
+                </div>
+            </aura:set>
+            
+            
+        </aura:if> 
+    </aura:if> 
+    
+    
+    
+    
+    
+    <!-- URL -->
+    <aura:if isTrue="{!v.displayType == 'URL'}">
+        <div class="col-md-3">
+            <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+                <ui:inputURL aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+                             blur="{!c.handleBlur}"
+                             />
+                <label >
+                    <span class="field-label">{!v.customLabelName}<span class="requiredField">{!v.required ? '*' : ''}</span></span>
+                </label>
+                <aura:if isTrue="{!v.required == 'true'}">
+                    <div class='required'/>
+                </aura:if>
+            </div>
+        </div>
+    </aura:if>
+    <!--</aura:if>-->
+</aura:component>

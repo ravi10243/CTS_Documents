@@ -1,0 +1,72 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="currentUserViewMode" type="String" default="WIZARD" />
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="builder" type="Aura.Component[]" />
+    
+    <!-- Component Body -->
+    <aura:if isTrue="{!v.recordId}">
+        <div>
+            <div class="slds-grid slds-wrap lex-form-actionpanel slds-p-around_small">
+                <div class="slds-col slds-large-size_2-of-12">
+                    <!--Designer 360-->
+                </div>
+                <div class="slds-col 12 slds-large-size_8-of-12">
+                    <!--Form developer Name {!v.recordId} -->
+                </div>
+                <div class="slds-col slds-large-size_2-of-12">
+                    <div class="slds-float_right">
+                        <lightning:button label="Deploy" iconName="utility:touch_action" iconPosition="left" class="slds-m-right_x-small" />
+                        <lightning:button label="Help" iconName="utility:help" iconPosition="left" class="slds-m-right_x-small" />
+                    </div>
+                </div>
+            </div>
+            <div class="slds-grid slds-p-around_medium" style="background:#f1f1f1;width:100%">
+                <div class="slds-col slds-large-size_2-of-12">
+                    Components/Steps
+                </div>
+                <div class="slds-col slds-large-size_8-of-12">
+                    <div class="slds-float_left">
+                        <aura:if isTrue="{!v.currentUserViewMode=='WIZARD'}">
+                            <lightning:buttonGroup aura:id="buttonGroupWizard">
+                                <lightning:button variant="neutral" onclick="{!c.changeViewToWizard}" iconName="utility:snippet" label="Wizard Mode" value="WIZARD" />
+                                <lightning:buttonMenu alternativeText="Show menu" onselect="{!c.onChangeViewModeClick}" class="slds-button_last">
+                                    <lightning:menuItem iconName="utility:screen" label="Designer Mode" value="DESIGNER" />
+                                </lightning:buttonMenu>
+                            </lightning:buttonGroup>
+                        </aura:if>    
+                        <aura:if isTrue="{!v.currentUserViewMode=='DESIGNER'}">
+                            <lightning:buttonGroup aura:id="buttonGroupDesigner">
+                                <lightning:button variant="neutral" onclick="{!c.changeViewToDesigner}" iconName="utility:screen" label="Designer Mode" value="DESIGNER" />
+                                <lightning:buttonMenu alternativeText="Show menu" onselect="{!c.onChangeViewModeClick}" class="slds-button_last">
+                                    <lightning:menuItem iconName="utility:snippet" label="Wizard Mode" value="WIZARD" />
+                                </lightning:buttonMenu>
+                            </lightning:buttonGroup>
+                        </aura:if>    
+                        <lightning:button label="Refresh" onclick="{!c.refreshCurrentView}" iconName="utility:refresh" iconPosition="left" class="slds-m-right_x-small" />
+                        <lightning:button label="Preview" onclick="{!c.openPreview}" iconName="utility:preview" iconPosition="left" class="slds-m-right_x-small" />
+                    </div>
+                </div>
+                <div class="slds-col slds-large-size_2-of-12">
+                    Properties
+                </div>
+            </div>
+            <div class="slds-grid slds-p-around_small slds-border_top" style="background:#f1f1f1;width:100%">
+                <div class="slds-col slds-large-size_2-of-12 ">
+                    <c:CMS_ComponentsInDesigner recordId="{!v.recordId}" />
+                </div>
+                <div class="slds-col slds-large-size_7-of-12" style="background:#ffffff;">
+                    {!v.builder}
+                    <!--<c:CMS_BuilderInDesigner currentUserViewMode="{!v.currentUserViewMode}" recordId="{!v.recordId}" />-->
+                </div>
+                <div class="slds-col slds-large-size_3-of-12">
+                    <c:CMS_PropertiesInDesigner  recordId="{!v.recordId}" />
+                </div>
+            </div>
+        </div>
+    </aura:if>    
+</aura:component>

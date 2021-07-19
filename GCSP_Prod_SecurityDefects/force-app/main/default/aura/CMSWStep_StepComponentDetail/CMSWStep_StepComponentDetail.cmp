@@ -1,0 +1,219 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    
+    <aura:attribute name="componentType" type="String" />
+    <aura:attribute name="componentTypeLabel" type="String" />
+    <aura:attribute name="componentTypeIcon" type="String" />
+    <aura:attribute name="formStepId" type="String" />
+    <aura:attribute name="formStepDeveloperName" type="String" />
+    <aura:attribute name="dataFieldAPIName" type="String" />
+    <aura:attribute name="dataFieldLabel" type="String" />
+    
+    <aura:attribute name = "renderMode" type = "String"/>
+    <aura:attribute name = "recordId" type = "String"/>
+    
+    <!-- RegisterEvent -->
+    <aura:registerEvent name="CMS_BuilderRefreshEvent" type="c:CMS_BuilderRefreshEvent"/>
+    
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    
+    <!--
+    {!v.recordId} <br/>
+    {!v.componentType} <br/>
+   	{!v.componentTypeLabel} <br/>
+    {!v.componentTypeIcon} <br/>
+    {!v.formStepId} <br/>
+    {!v.formStepDeveloperName} <br/>
+    {!v.dataFieldAPIName} <br/>
+    {!v.dataFieldLabel} <br/>
+    -->
+    
+    <lightning:card iconName="doctype:gform" title="Component Detailss">
+        <p class="slds-p-around_small">
+            
+            <lightning:recordEditForm aura:id="editComponent"
+                                      onload="{!c.onRecordFormLoad}"
+                                      onsuccess="{!c.onFormSuccess}"
+                                      onsubmit="{!c.handleSubmit}"
+                                      recordId="{!v.recordId}"
+                                      objectApiName="MDComponent__c">
+                <!--<lightning:inputField fieldName="Name"/>-->
+                <lightning:inputField fieldName="DeveloperName__c" aura:id = "developerName"/>
+                <lightning:inputField fieldName="SortOrder__c" aura:id = "sortOrder"/>
+                <lightning:inputField fieldName="IsActive__c" />
+                <aura:if isTrue="{!v.recordId==null}">
+                    <aura:if isTrue="{!v.componentType=='SectionHeader'}">
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                    </aura:if> 
+                    <aura:if isTrue="{!v.componentType=='HTMLControl'}">
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if> 
+                    <aura:if isTrue="{!v.componentType=='FAQ'}">
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='ImportantInfo'}">
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='SuccessMessage'}">
+                        <lightning:inputField fieldName="PortalLabel__c" />
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='FailureMessage'}">
+                        <lightning:inputField fieldName="PortalLabel__c" />
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='ChildObjectOne'}">
+                        <lightning:inputField fieldName="PortalLabel__c" />
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='ChildObjectMany'}">
+                        <lightning:inputField fieldName="PortalLabel__c" />
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='InlineHelp'}">
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='PlainText'}">
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='HTMLTable'}">
+                        <label for="htmlTableJSON" style = "font-size: .75rem;">HTML Table JSON</label>
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "htmlTableJSON" variant="label-hidden"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='RichTextControl'}">
+                        <lightning:inputField fieldName="ContainerRichText__c" aura:id = "richText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='ObjectField'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField disabled="true" value="{!v.dataFieldAPIName}" fieldName="DataFieldAPIName__c" />
+                        <lightning:inputField fieldName ="Component_Display_Type__c" aura:id="displayType" />
+                        <lightning:inputField fieldName ="IsHidden__c" aura:id="isHidden" />
+                        <lightning:inputField fieldName ="ReadOnly__c" aura:id="readOnly" />
+                        <lightning:inputField fieldName ="DefaultValue__c" aura:id="defaultValue" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='TranslatedPicklist'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField fieldName="DataFieldAPIName__c" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='SurveyRadioPicklist'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField fieldName="DataFieldAPIName__c" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='SurveyCheckboxPicklist'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField fieldName="DataFieldAPIName__c" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='SurveyIconPicklist'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField fieldName="DataFieldAPIName__c" />
+                    </aura:if>
+                    <lightning:inputField style="display:none" disabled="true" value="{!v.componentType}" fieldName="ComponentType__c" />
+                    <lightning:inputField style="display:none" disabled="true" value="{!v.componentTypeLabel}" fieldName="ComponentTypeLabel__c" />
+                    <lightning:inputField style="display:none" disabled="true" value="{!v.componentTypeIcon}" fieldName="ComponentTypeIcon__c" />
+                    <lightning:inputField style="display:none" disabled="true" value="{!v.formStepId}" fieldName="MDFormStep__c" />
+                </aura:if>
+                <aura:if isTrue="{!v.recordId!=null}">
+                    <aura:if isTrue="{!v.componentType=='SectionHeader'}">
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                    </aura:if> 
+                    <aura:if isTrue="{!v.componentType=='HTMLControl'}">
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if> 
+                    <aura:if isTrue="{!v.componentType=='ImportantInfo'}">
+                        <lightning:inputField fieldName="PortalLabel__c" />
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='FAQ'}">
+                       
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='SuccessMessage'}">
+                        <lightning:inputField fieldName="PortalLabel__c" />
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='FailureMessage'}">
+                        <lightning:inputField fieldName="PortalLabel__c" />
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='ChildObjectOne'}">
+                        <lightning:inputField fieldName="PortalLabel__c" />
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='ChildObjectMany'}">
+                        <lightning:inputField fieldName="PortalLabel__c" />
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='InlineHelp'}">
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='PlainText'}">
+                        <lightning:inputField fieldName="ContainerTextHtml__c" aura:id = "containerText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='RichTextControl'}">
+                        <lightning:inputField fieldName="ContainerRichText__c" aura:id = "richText"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='ObjectField'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField disabled="true" value="{!v.dataFieldAPIName}" fieldName="DataFieldAPIName__c" />
+                        <lightning:inputField fieldName ="Component_Display_Type__c" aura:id="displayType" />
+                        <lightning:inputField fieldName ="IsHidden__c" aura:id="isHidden" />
+                        <lightning:inputField fieldName ="ReadOnly__c" aura:id="readOnly" />
+                        <lightning:inputField fieldName ="DefaultValue__c" aura:id="defaultValue" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='TranslatedPicklist'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField fieldName="DataFieldAPIName__c" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='SurveyRadioPicklist'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField fieldName="DataFieldAPIName__c" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='SurveyCheckboxPicklist'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField fieldName="DataFieldAPIName__c" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.componentType=='SurveyIconPicklist'}">
+                        <lightning:inputField fieldName="Required__c" />
+                        <lightning:inputField fieldName="PortalLabel__c" aura:id = "portalLabel"/>
+                        <lightning:inputField fieldName="PortalQuickHelpText__c" />
+                        <lightning:inputField fieldName="DataFieldAPIName__c" />
+                    </aura:if>
+                    <lightning:inputField style="display:none" disabled="true" fieldName="ComponentType__c" />
+                    <lightning:inputField style="display:none" disabled="true" fieldName="ComponentTypeLabel__c" />
+                    <lightning:inputField style="display:none" disabled="true" fieldName="ComponentTypeIcon__c" />
+                    <lightning:inputField style="display:none" disabled="true" fieldName="MDFormStep__c" />
+                </aura:if>
+                <lightning:inputField style="display:none" fieldName="CreatedById" />
+            </lightning:recordEditForm>
+            <lightning:notificationsLibrary aura:id="notifLib"/>
+            <aura:if isTrue="{!v.renderMode == 'BUILDER'}"> 
+                <div class="slds-align_absolute-center slds-p-top_small">
+                    <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.doSaveDetails}" />
+                </div>
+            </aura:if>
+        </p>
+    </lightning:card>
+    
+</aura:component>

@@ -1,0 +1,224 @@
+<!-- ***** AGN_ICL_EditPractitionerInputFields ***** -->
+<aura:component controller="AGN_ICL_AddPractitionerDetailsController" implements="flexipage:availableForAllPageTypes">
+	<!--08_Apr_2019 start-->
+	<aura:attribute name="sobjectName" type="String" required="true"/>
+	<aura:attribute name="fieldName" type="String" required="true"/>
+	<aura:attribute name="record" type="SObject" required="true"/>
+	<aura:attribute name="displayType" type="String"/>
+	<aura:attribute name="isPicklist" type="Boolean"/>
+	<aura:attribute name="containsValue" type="Boolean" default="false"/>
+	<aura:attribute name="TypeofAccount" type="String"/>
+	<aura:attribute name="PickListValues" type="List"/>
+	<!--<aura:attribute name="PickListValues" type="String[]" /> -->
+	<aura:attribute name="picklistOptions" type="Object[]"/>
+	<aura:attribute name="variant" type="String" default="form" description="Options: form (default) and bare"/>
+	<aura:attribute name="render" type="Boolean" default="true"/>
+	<aura:attribute name="disabled" type="Boolean"/>
+	<aura:attribute name="required" type="Boolean"/>
+	<aura:attribute name="addRequiredCSS" type="Boolean" default="false"/>
+	<aura:attribute name="fieldValueMissing" type="Boolean" default="false"/>
+	<aura:attribute name="currencyIsoCode" type="String"/>
+	<aura:attribute name="customLabel" type="String"/>
+	<aura:attribute name="isFormatValid" type="Boolean" default="true"/>
+	<aura:attribute name="fieldRegex" type="String"/>
+	<aura:attribute name="fieldMetadata" type="Object" access="private"/>
+	<aura:attribute name="fieldValue" type="String" access="public"/>
+	<aura:attribute name="customLabelName" type="String" access="public"/>
+	<aura:attribute name="customCountryCode" type="String" access="public"/>
+    <aura:attribute name="twoLayerLayout" type="Boolean" />
+	<aura:attribute name="cmpHelpText" type="String" access="public" default=''/>
+	<aura:attribute name="practitioner" type="Practitioner_Listing_AGN__c" default="{ 'sObjectType': 'Practitioner_Listing_AGN__c'}"/>
+	<aura:registerEvent name="CloseSpinner" type="c:AGN_ICL_EditSpinner"/>
+	<!-- Handlers -->
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:handler name="change" value="{!v.record}" action="{!c.handleRecordChanged}"/>
+	<!--<aura:handler name="change" value="{!v.fieldValue}" action="{!c.handleFieldValueChanged}" /> -->
+	<aura:handler name="change" value="{!v.handleBlur}" action="{!c.validateFieldValue}"/>
+	<!--08_Apr_2019 end-->
+	<!-- BOOLEAN -->
+	<aura:if isTrue="{!v.displayType == 'BOOLEAN'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="booleanDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group check-input">
+				<ui:inputCheckbox aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" blur="{!c.handleBlur}"/>&nbsp;
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+	<!-- CURRENCY -->
+	<aura:if isTrue="{!v.displayType == 'CURRENCY'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="currencyDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputCurrency aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')}" blur="{!c.handleBlur}" format="{!'######0.00 ' + v.currencyIsoCode}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+	<!-- DATE -->
+	<aura:if isTrue="{!v.displayType == 'DATE'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="dateDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputDate aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" displayDatePicker="true" blur="{!c.handleBlur}"/>
+			</div>
+		</div>
+	</aura:if>
+	<!-- DATETIME -->
+	<aura:if isTrue="{!v.displayType == 'DATETIME'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="datetimeDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputDatetime aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" displayDatePicker="true" blur="{!c.handleBlur}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+	<!-- DOUBLE or INTEGER -->
+	<aura:if isTrue="{!or(v.displayType == 'DOUBLE', v.displayType == 'INTEGER')}">
+		<!-- <div class="columns"> -->
+         <div aura:id="IntegerDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputNumber aura:id="inputField" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" blur="{!c.handleBlur}" value="{!v.fieldValue}" format=".0" required="{!v.required}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+ <!-- NUMBER Canada Requirement-->  
+    <aura:if isTrue="{!v.displayType == 'NUMBER'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="IntegerDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputNumber aura:id="inputField" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" blur="{!c.handleBlur}" value="{!v.fieldValue}" required="{!v.required}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+ <!-- NUMBER Canada Requirement--> 
+	<aura:if isTrue="{!v.displayType == 'EMAIL'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="emailDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" blur="{!c.handleBlur}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+	<!-- MULTIPICKLIST or PICKLIST -->
+	<aura:if isTrue="{!or(v.displayType == 'MULTIPICKLIST',v.displayType == 'PICKLIST')}">
+		<!-- <div class="columns"> -->
+         <div aura:id="picklistDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<div class="drop-down-block">
+					<ui:inputSelect aura:id="inputField" required="{!v.required}" change="{!c.SetPickListValue}" blur="{!c.handleBlur}" multiple="{!v.displayType == 'MULTIPICKLIST'}" class="{!'effect-16 form-control form-control-select' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}">
+						<aura:iteration items="{!v.PickListValues}" var="picklistOption">
+							<ui:inputSelectOption label="{!picklistOption.label}" text="{!picklistOption.value}" value="{!picklistOption.selected}"/>
+						</aura:iteration>
+					</ui:inputSelect>
+					<label>
+						<span>{!v.customLabelName}
+							<span class="required">{!v.required ? '*' : ''}</span>
+						</span>
+					</label>
+				</div>
+			</div>
+		</div>
+	</aura:if>
+	<!-- PERCENT -->
+	<aura:if isTrue="{!v.displayType == 'PERCENT'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="percentDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputNumber aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" blur="{!c.handleBlur}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+	<!-- PHONE -->
+	<aura:if isTrue="{!v.displayType == 'PHONE'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="phoneDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputPhone aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" blur="{!c.handleBlur}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+	<!-- TEXT -->
+	<aura:if isTrue="{!v.displayType == 'TEXT'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="textDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" blur="{!c.handleBlur}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+	<!-- TEXTAREA -->
+	<aura:if isTrue="{!v.displayType == 'TEXTAREA'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="textareaDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" blur="{!c.handleBlur}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span>{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+			</div>
+		</div>
+	</aura:if>
+	<!-- URL -->
+	<aura:if isTrue="{!v.displayType == 'URL'}">
+		<!-- <div class="columns"> -->
+         <div aura:id="urlDiv" class="{! v.twoLayerLayout ? 'columns columns2' : 'columns' }">	
+			<div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+				<ui:inputURL aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" blur="{!c.handleBlur}"/>
+				<label>
+					<span>{!v.customLabelName}
+						<span class="required">{!v.required ? '*' : ''}</span>
+					</span>
+				</label>
+				<aura:if isTrue="{!v.required == 'true'}">
+					<div class='required'/>
+				</aura:if>
+			</div>
+		</div>
+	</aura:if>
+</aura:component>

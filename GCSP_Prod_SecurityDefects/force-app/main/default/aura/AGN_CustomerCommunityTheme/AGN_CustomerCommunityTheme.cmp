@@ -1,0 +1,180 @@
+<aura:component implements="forceCommunity:themeLayout" access="global" description="Allergan Customer Community">
+    <aura:attribute name="profileMenu" type="Aura.Component[]" required="false"/>
+    <aura:attribute name="footer" type="Aura.Component[]" required="false"/>
+    <ltng:require styles="{!$Resource.AGN_CustomerAccount + '/css/acc_det.css'}"/>    
+    <ltng:require styles="{!$Resource.AGN_CustomerPortal + '/css/footer.css'}" scripts="{!$Resource.AGN_CustomerPortalJQuery}" afterScriptsLoaded="{!c.scriptsLoaded}"/>   
+    <div class="header" style="height: 90px;">		
+		<div class="container">
+			<div class="allergan_logo"></div>
+			<div class="logo_text"><span></span><span>{!$Label.c.AGN_OAM_Header_CustomerPortal}</span></div>
+			<div class="toll_free_text"><span>{!$Label.c.AGN_OAM_Header_TollFreeNumber}</span><span> 0808 238 1500</span></div>
+			<div><a href="tel:08082381500" class="toll_free_phone"></a></div>
+            <!--<div class="dropdown closed">-->
+            	{!v.profileMenu}
+            <!--</div>-->
+		</div>
+	</div>
+    <div class="container">       
+    	{!v.body}                 
+    </div>
+	<div class="footer">
+        {!v.footer}
+        <!--Copyright © 2017 Allergan.com, inc. All rights reserved. | <span class="privacy-statement">Privacy Statement</span> |  <span class="condition-use">Condition of Use</span>-->
+        <!--<div class="footer_popup">
+        	<div class="footer_popup_in privacy-text">
+        		<div class="footer_popup_text">
+
+                <b>Privacy Policy</b><br/>
+                Allergan Pharmaceuticals International Limited ("Allergan"), in compliance with EC directive 95/46 and with the provisions of Leg. Dec. 196/03 (Personal data protection Law), respects users' concerns about privacy and values the relationship with them. This privacy policy describes the type of personal information that we gather through this website, its subdomains and/or directories, its applications and functionalities and any related communications and information, including email addresses (the "Website"), the methods of use of the information and the parties with whom it may be shared. Our privacy policy also describes the measures we implement in order to protect the security of personal information. We also inform users about how to contact us if they have any questions about our privacy practices.
+                Access to and use of this website by the users is subject to this privacy policy, the terms and conditions of use and all applicable laws and regulations. All users must carefully read this privacy policy. In the event of disagreement with any of the terms and conditions presented herein, we ask that you do not access the Website and/or do not provide pertinent personal information.
+                By accessing the Website and navigating its pages, the user claims full understanding of and agreement with this privacy policy.<br/><br/>
+
+                <b>Information gathered and its use</b><br/>
+
+                In certain areas of the Website, in order to respond to queries, make use of specific areas/contents/functionalities, or to participate in certain activities, users must provide information, some of which may contain personal data. Users may always opt not to provide the requested information, but this might prevent them from participating in a particular activity that requires said information, or access to specific contents, areas or functionalities.<br/>
+                We may use personal information provided through the Website for internal purposes, which include Website management, data analysis, as well as to comply with laws, policies and procedures.
+                If pertinent, we may collect personal information about the health care providers who register as users on our website, from public information sources or from third parties, in order to verify their professional identity and credentials.<br/>
+                Also, while users are browsing the Website, we aim to collect, via automated means, specific data, such as the number of users who visit the Website, the date of the last visit to the Website and the pages browsed. This information is collected using "cookies" and IP addresses, as described above, mainly to improve the quality of the user experience at our website and to allow us to gather summative statistics about our users. In some cases, the data will help us select content best suited to our users' interests or will help us avoid asking for the same information during a subsequent visit to our Website.<br/><br/>
+
+                
+                <b>Cookie</b><br/>
+                A cookie is a small piece of data sent from the web servers to the hard drive of the users' computer, where Internet browser files are stored. Cookies allow websites to store small pieces of information on the users' computers in order to retrieve them at a later date. Allergan intends to use the following cookies: - cookies that keep track of the user's browsing history on the Website (pages visited, date and time the pages were browsed). This type of cookie does not allow us to identify the user, but rather aims at gathering summative statistics about the website's general usage.<br/><br/>
+                
+                <b>IP Address</b><br/>
+                An IP Address is a unique identifier that some electronic devices use to communicate with each other and with the Internet. During user visits to our Website, we may receive information about the IP address of the device used by the users to connect to the Internet.<br/><br/>
+
+
+                <b>Information we share</b><br/>
+                We do not sell, grant for rent or exchange personal information that users submit through our Website nor do we publish it by any other means, with the exception of what is described in this privacy policy. Personal information is at all times handled with discretion and in compliance with applicable law. We have the right to share the users' personal information among Allergan affiliate companies within the European Union, for purposes described in this privacy policy. We may also share the information with service providers in charge of carrying out data processing services on our behalf, only for the purposes of data processing and in compliance with applicable law. Please note that some of these service providers may be located in countries outside the European Union, but which have been acknowledged as having the ability to guarantee a good level of protection with regards to the personal information of the users, or in countries outside the European Union that do not provide the same level of data protection as within the European Union. However, we shall contractually request the guarantee of sufficient protections of security and privacy by the service providers, so as to ensure an adequate level of protection of the users' information, which must always be divulged in compliance with applicable law.<br/>
+                These service providers are not authorized by us to use or divulge the information, except in the measure needed to carry out their duties on our behalf or in order to fulfil any legal requirements. Furthermore, we may also divulge information about our users in the event that the request was put forth due to legal obligations or procedures, in response to a request by the Authorities or other State officials, or whenever we deem that divulging information may be appropriate in order to avoid material or financial damages or in relation to an investigation into suspected or corroborated illegal activities.<br/>
+                We reserve the right to transfer any information we may possess about our users in the event of sale or transfer of all of or part of our activities and assets, in compliance with applicable law. In the event of such sale or transfer, we will make every reasonable effort to request that the beneficiary use the personal information provided by the users of this website in a manner that is congruent with this privacy policy.<br/><br/>
+
+                <b>Link to other websites</b><br/>
+                Occasionally, for the convenience of and to inform our users, we provide links to other websites. These websites operate independently from our Website, are not under our control and may have their own privacy notices and conditions for use, which we recommend users to read if they decide to visit these websites by following the provided links. We are not liable for the contents of these websites, their products or services nor for any use of the websites whose links we provide. Please refer to the Terms and Conditions of the Website for further information on this subject.<br/><br/>
+                
+                <b>How we protect personal data</b><br/>
+                In compliance with applicable law, we have administrative, technical and physical safeguards in place on our Website aimed at protecting all information collected from any losses, undue uses, unauthorized accesses, undue disclosures, modifications or destructions.<br/><br/>
+                
+                <b>Modification of the privacy policy</b><br/>
+                To the extent allowed by applicable Laws, Allergan has the authority to, at any moment, review the terms and conditions of this privacy policy, which regulates the use of this Website. In the event that a term or condition contained herein is modified, the amended policy will be published on the Website. Users are bound by these revisions and must therefore periodically review these terms and conditions.
+                Access to personal information and related corrections and deletions<br/>
+                We guarantee users access to their personal information provided via the Website, and the ability to exercise the rights described in art. 7 and subsequent of Leg. Dec. 196/03, including the ability to verify, correct and delete said personal information. If you wish to update your personal contact information or if you wish to request the deletion of your personal information from any area of the Website or to cancel your enrolment to a given service, please contact us:<br/>
+                
+                via email:<br/>
+                <b>UKCustomerServices@Allergan.com</b><br/>
+                
+                via mail:<br/>
+                <b>
+                Allergan Limited <br/>
+                Marlow International <br/>
+                The Parkway <br/>
+                Marlow, Bucks<br/>
+                SL7 1YL, UK.To the attention of the Legal Office<br/>
+                </b>
+        	
+        		</div>
+        	</div>
+        	<div class="footer_popup_in condition-text">
+        		<div class="footer_popup_text">
+        	
+
+                <b>Terms and Conditions</b><br/>
+               	The website www.allergancustomer.com ("the Website") is owned by Allergan Pharmaceuticals International Limited, Clonshaugh Industrial Estate, Coolock, Dublin 17, Ireland.<br/>
+				Access to this website, its sub-domains and/or directories, applications and functionalities and any related use, information or communications are subject to the following terms and conditions, to the privacy policy and to all applicable laws and regulations. All users must carefully read the legal notices. In the event of disagreement with any of the terms and conditions presented herein, we ask that you do not access the Website. <br/>
+				By accessing this Website and navigating its pages, the user claims full understanding, acceptance of and agreement with these terms and conditions, as well as with any other notices or instructions that may be provided to users by Allergan during access to the Website or while browsing its pages.<br/><br/>
+
+                <b>Intended Use</b><br/>
+
+                This Website was designed by Allergan to enable prospective customers to create an account and for existing customers to view/edit their account. Users accept that neither the contents nor use of this Website may ever modify or amend the contractual obligations of any written agreement signed between the user and Allergan with regards to the sale of products, and that every transaction related with the sale of products will remain subject to said agreements. In the absence of a written agreement between Allergan and the buyer, the Allergan standards ("Contractual conditions") for invoicing terms and sales conditions will apply to every product sale. Users agree to not use the Website to offer their own services and/or products or the services and/or products of third parties, to conduct advertising or commercial activities directly or indirectly linked to said services or products, or for any other illegal or immoral purpose, or any other purpose that goes against the public order or that in any way violates these terms and conditions.<br/>
+				The views and advices expressed by the Website's users are solely their own and must not be interpreted as an approval or endorsement by Allergan with regards to any particular product or service. Users may navigate the Website freely, download materials from the Website solely for personal and non-commercial purposes, with the condition that every copyright notice and other proprietary notices contained in the material or displayed on the Website are maintained. Users do not have the right to copy, distribute, modify, transmit, reuse, republish, connect to via hyperlink or use the contents of this Website for commercial and/or public purposes, including (by way of example and not limited to) texts, photographs, charts, tables, images, icons, technologies, software, audio and video content, graphics, source or object codes, email addresses and links, without prior written authorization from Allergan, which, if granted, may be withdrawn by Allergan at any moment.<br/>
+				Allergan makes every reasonable effort to ensure that access to its Website and its related contents occurs in compliance with every applicable law, code and regulation, but it does not guarantee that the information contained in this Website is adequate or available to be used outside of Ireland or by people that do not fit the description of recipients as described on the Website's homepage. Use by individuals that do not fit the description of recipients and/or accessing this website from territories where its contents may be deemed illegal or inappropriate are forbidden. Those who choose to access this Website from other locations do so on their own initiative and are responsible for complying with any applicable local laws.<br/><br/>
+
+                
+                <b>Security</b><br/>
+                By using our Website, users are responsible for maintaining their access data (such as the password) confidential, and for limiting access to their own computers. Users accept responsibility for every activity performed using their access data, including (but not limited to) any fraudulent behaviour, any modifications or updates to the credit card information, modifications to the parties authorized to access with the user's information and to perform transactions in their name, etc. Users agree to immediately notify Allergan with regards to any unauthorized access to their authentication credentials or any other breach of security. If a user is unable to keep its credentials private and secure, said user may be deemed legally liable for any losses suffered by Allergan or any other user of or visitor to the Website as caused by any third parties using the aforementioned credentials.<br/>
+				The right of users to make use of this Website is non transferrable.<br/>
+				Users are forbidden from breaching or attempting to breach the Website's security, including, but not limited to:<br/>
+				a. Accessing data that does not concern said user or accessing a server or another
+				account that the user is not authorized to access; <br/>
+				b. using the Website for non-intended purposes or attempting to modify the Website's behaviour; <br/>
+				c. exploring, analyzing and testing the vulnerability of a system or network or trying to breach the security or authentication measures without proper authorization;<br/> 
+				d. trying to interfere with the service provided to any other user, host or network; <br/>
+				e. forging any type of communication in the name of the Website (impersonating the Website) or for the Website (impersonating a valid user). Sending unsolicited and unauthorized emails in the name of Allergan, as well as promoting and/or advertising products or services, is strictly forbidden.<br/>
+				Breaching the system or network's security may have civil and criminal legal consequences.<br/>
+				Users agree not to use any device, software, routine or data in such a way as to interfere or to attempt to interfere with the Website's standard operation or with any activity occurring within the Website. Users also agree not to use or attempt to use any search engine, tool, query, database or other device or mechanism in order to browse or perform searches on the Website, other than the search engine and queries provided by Allergan or by browsers commonly available to the general public.<br/><br/>
+                
+                <b>Termination of use</b><br/>
+				Allergan may, at its own incontestable discretion, close any user's account, as well as forbid use of the Website at any moment. Users are personally and civilly liable for all orders placed or for debits made prior to being shut down. Allergan reserves the right to modify, suspend or interrupt any and all Website functionalities at any moment and without any obligation to notify.<br/><br/>
+				
+				<b>Copyright Protection</b><br/>
+				Users must assume that everything they see or read on this Website is subject to copyright (unless otherwise specified in writing) and may not be used, except when described in the terms and conditions or in the Website's text, without Allergan's prior written authorization. Allergan does not claim nor guarantee that the use of materials included on the Website does not violate the rights of third parties not owned by Allergan or related to it.<br/>
+				The brand names, company names, logos and service brands (collectively referred to as the "Brands") displayed on this Website are registered and non-registered Allergan Trademarks, of its global affiliates or of other companies. None of the contents of this Website are to be considered a concession, whether implicit, or through a preclusion, or in any other manner, of any license or right to use Brands displayed on the Website, without prior written authorization by Allergan or third parties who own the Brands displayed on the Website. The use of the Brands displayed on the Website or of any other contents of the Website by the users is strictly forbidden, unless established in these terms and conditions. Please note that Allergan will exercise its industrial and/or intellectual property rights to the full extent of the law, including, when applicable, through legal means.<br/><br/>
+				
+				<b>Potential interruptions of Service</b><br/>
+				Access to the Website may become unavailable, delayed, limited, or slow, as a result of, among other reasons:<br/>
+				a. defective hardware, including, among other issues, defective computers (including the user's computer) servers, networks, telecommunication lines and connections and any other electronic or mechanical hardware; <br/>
+				b. defective software, including, among other issues, bugs, viruses, configuration problems, incompatibility of systems, devices or applications, firewalls or control software operations, unreadable codes or anomalies within specific documents or other contents;<br/> 
+				c. system capability overload; <br/>
+				d. damage caused by severe weather conditions, earthquakes, wars, insurrections, revolts, uprisings, death, accidents, fire, floodings, explosions, mechanical breakdowns or natural disasters; <br/>
+				e. Partial or total interruption of the power supply or other functional utilities; <br/>
+				f. strike or other labour interruptions (whether partial or total);<br/>
+				g. government or regulatory restrictions, changes in regulations, civil or criminal court orders or any other type of human intervention; h. any other cause (like or unlike the ones described above) beyond Allergan's control<br/><br/>
+
+				<b>Limited warranty and liability</b><br/>
+				Although Allergan makes every reasonable effort to ensure that its Website contains accurate and updated information (following its own internal procedures for the review and approval of all content), the company does not guarantee its accuracy. Allergan rejects any responsibility, to the extent allowed by Law, over any errors or omissions in the Website's contents. Without limitations to the above, every content of this Website is provided to the users "as is", without guarantees of any kind, whether explicit or implicit, including, by way of example and not limited to, implicit guarantees of marketability and suitability for a specific use or non-violation . Please note that some jurisdictions may not authorize the exclusion of implicit guarantees; therefore, a few of the aforementioned rejections of responsibility may not apply to any users. Users must verify their local laws in order to identify any potential restrictions or limitations related to the rejection of implicit guarantees.<br/>
+				Allergan is not responsible for and may not be deemed liable for any Website usage that goes against these terms and conditions, the privacy policy or any applicable laws, codes and regulations. Users are solely responsible for their use of the Website.<br/>
+				Although Allergan makes every reasonable effort to implement and maintain high technical standards and effective measures, users use and browse the Website at their own risk. Neither Allergan nor any other party involved in the creation, development or publishing of the Website may be deemed liable for direct, accidental, consequential, indirect or punitive damages that may result from the users' access to the Website or its actual use. Allergan rejects any responsibility and may not be deemed liable for any damages or viruses affecting the users' computer devices or other property after accessing, using or browsing the Website, or after downloading materials, data, text or images from the Website, or as a result of technical problems that may totally or partially affect the Website's availability and proper functioning.<br/><br/>
+
+				<b>Applicable Law</b><br/>
+				These Terms and Conditions and their related compliance are regulated by Irish Law, regardless of any pertinent legal conflicts. Users agree to submit to the exclusive authority of Irish courts with regards to all matters related to any disputes and incidents that may arise from the use of this Website and from this agreement.<br/>
+				This text was written in English and the parties agree that the English version will prevail in the event of any incongruence in the translated versions of this document.<br/>
+				To the extent allowed by law, Allergan is authorized to, at any moment, modify and/or remove or suspend temporarily or permanently all or part of this Website and its related contents, functionalities or services.<br/>
+				To the extent allowed by applicable Laws, Allergan may, at any moment, review the terms and conditions of this agreement, which regulates the use of this Website. In the event that the terms and conditions contained in these legal notes are modified, the modified legal notes will be published on the Website. The user is obligated to comply with such revisions and therefore must periodically review the aforementioned terms and conditions.<br/><br/>
+
+				<b>Links to other websites</b><br/>
+				Occasionally, for the convenience of and to inform our users, we provide links to other websites. These websites operate independently from our Website, are not under our control and may have their own privacy notices and conditions for use, which we recommend users to read if they decide to visit these websites by following the provided links. We are not liable for the contents of these websites, their products or services nor for any use of the websites whose links we provide. Please refer to the Terms and Conditions of the Website for further information on this subject.<br/><br/>
+
+				<b>How we protect personal data</b><br/>
+				In compliance with applicable law, we have administrative, technical and physical safeguards in place on our Website aimed at protecting all information collected from any losses, undue uses, unauthorized accesses, undue disclosures, modifications or destructions. For further information please refer to the Privacy Policy.<br/><br/>
+
+				<b>Modification of the privacy policy</b><br/>
+				To the extent allowed by applicable Laws, Allergan has the authority to, at any moment, review the terms and conditions of this privacy policy, which regulates the use of this Website. In the event that a term or condition contained herein is modified, the amended policy will be published on the Website. Users are bound by these revisions and must therefore periodically review these terms and conditions.<br/><br/>
+				
+				<b>Access to personal information and related corrections and deletions</b><br/>
+				We guarantee users access to their personal information provided via the Website, and the ability to exercise the rights described in art. 7 and subsequent of Leg. Dec. 196/03, including the ability to verify, correct and delete said personal information. If you wish to update your personal contact information or if you wish to request the deletion of your personal information from any area of the Website or to cancel your enrolment to a given service, please contact us:<br/>
+
+				via email:<br/>
+				<b>UKCustomerServices@Allergan.com</b><br/>
+				via mail: <br/>
+				<b>
+				Allergan Limited<br/>
+				Marlow International <br/>
+				The Parkway<br/>
+				Marlow, Bucks <br/>
+				SL7 1YL, UK.To the attention of the Legal Office</b>
+				<br/><br/>
+
+				<b>Reporting Adverse Effects</b><br/>
+				This Website is not intended for receiving Reports of Adverse Effects of drugs and medical devices. If you need to report Adverse Effects related to drugs marketed by Allergan, please contact Allergan's Pharmacovigilance Service.<br/>
+				Phone: +714.246.7766 (24 hours a day)+1 800 433 8871. email: IR-Pharmacovigilance.com@allergan.com<br/>
+				In the event of complaints about a pharmaceutical product or of reports related to medical devices marketed by Allergan, contact Allergan's Quality Assurance Service:<br/>
+				email for technical complaints about pharmaceutical products: <br/>
+				IR-Pharmacovigilance.com@allergan.com<br/>
+				email for complaints about medical devices:<br/>
+				Productsurveillance_EAME@allergan.com<br/><br/>
+
+				<b>Contacts</b><br/>
+				If you have questions about Allergan's General Contract Conditions, customer service is available from Monday through Friday from 8:30 AM to 5:30 PM<br/>
+				Phone: 0808 2381500 <br/>
+				Email: UKCustomerServices@Allergan.com<br/>
+				Mailing Address: <br/>
+				Allergan Pharmaceuticals International Limited <br/>
+				Clonshaugh Industrial Estate, <br/>
+				Coolock,<br/>
+				Dublin 17,<br/>
+				Ireland<br/>
+        		</div>
+        	</div>        
+    	</div>-->
+ 	</div>    
+</aura:component>

@@ -1,0 +1,24 @@
+<template>
+
+    <template if:true={showLoadingSpinner}>
+        <lightning-spinner alternative-text="Uploading......" size="medium"></lightning-spinner>
+    </template>
+   
+    <div class="label_heading"> 
+        <template if:true={attachment.isRequired}><abbr class="slds-required">*</abbr> </template>
+   {attachment.label}
+        <!-- Document DownLoad  button -->
+        <div if:true={isDownload} class="btn_wrapper">
+            <a class="download_btn" href={downloadlink} download={attachment.label}>{label.AGN_OAM_Download_Button}</a>
+        </div>
+    </div>
+    <lightning-input required={attachment.isRequired} label="" name="file uploader"
+    onchange={uploadAttachmentLargeFile} type="file" class="upload_box"></lightning-input>
+
+    <template if:true={showDelete}>
+        <div class="attachment_name">{attachmentname}</div>
+        <lightning-button-icon icon-name="utility:delete" size="x-small" variant="Error" onclick={deleteAttachment} class="del_btn">
+        </lightning-button-icon>        
+    </template>
+      
+</template>

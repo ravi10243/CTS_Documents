@@ -1,0 +1,43 @@
+<aura:component controller="AGN_OAMCustomerRegStep2Controller" >
+    <aura:attribute name="record" type="SObject" required="true" />
+    <aura:attribute name="fieldName" type="String" required="true" />
+    <aura:attribute name="selectedCustomerType" type="String" />
+    <aura:attribute name="selectedCustomerTypeVal" type="String" />
+    <aura:attribute name="selectedSubTyp" type="String" />
+    <aura:attribute name="picklistOptions" type="String[]" default="[]"/>
+    <aura:attribute name="index" type="String" required="true" />
+    <aura:attribute name="obj_addNewShipTo" type="Allergan_Customer_Address_AGN__c[]" />
+    <aura:attribute name="customerTypeConfig" type="Customer_Type_Configuration_AGN__c[]"/>
+    <aura:attribute name="picklistSubTypeOptions" type="String[]" default="[]"/>
+    
+    
+    <span class="input input--nariko inputtextValue input-identifier required-identifier" data-inputFiedlValue="{!v.selectedCustomerType +'_' + newShipToKey}" >
+        <ui:inputSelect aura:id="inputSelectCustomerType" 
+                        value="{#v.selectedCustomerType}" 
+                        class='input__field input__field--nariko input-select inputtextValue' 
+                        change="{!c.handleCustomerTypeChange}">
+            <ui:inputSelectOption text="" label="" />
+            <aura:iteration items="{!v.picklistOptions}" var="lst" indexVar="keyType">
+                <ui:inputSelectOption label="{!lst.val}" text="{!lst.key}" /> 
+            </aura:iteration>
+        </ui:inputSelect>
+        <label class="input__label input__label--nariko">
+            <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_CustomerType}<span class="upload_i"> </span></span>
+        </label>    
+    </span>
+    
+    
+    <span class="input input--nariko inputtextValue input-identifier required-identifier" data-inputFiedlValue="{!v.selectedSubType}">
+        <ui:inputSelect aura:id="inputSelectSubType" value="{#v.selectedSubType}" 
+                        class='input__field input__field--nariko input-select inputtextValue' 
+                        change="{!c.handleCustomerSubTypeChange}">
+            <ui:inputSelectOption text="" label="" />
+            <aura:iteration items="{!v.picklistSubTypeOptions}" var="lst" indexVar="keySubeType">
+                <ui:inputSelectOption label="{!lst.val}" text="{!lst.key}" />
+            </aura:iteration>
+        </ui:inputSelect>
+        <label class="input__label input__label--nariko" for="input-19">
+            <span  class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_SubType}<span class="upload_i"> </span></span>
+        </label>
+    </span>
+</aura:component>

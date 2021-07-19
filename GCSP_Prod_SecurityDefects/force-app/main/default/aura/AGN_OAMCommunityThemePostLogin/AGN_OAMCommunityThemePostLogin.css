@@ -1,0 +1,73 @@
+.THIS .footer_popup_in{
+    height: 232px;
+}
+.THIS.footer span {
+    text-decoration: none !important;
+}
+.THIS .dropdown{
+    text-align: left;
+    font-size: 0.9em;
+    float: right;
+    position: relative;
+    top: -20px;
+    z-index: 1;
+    right: -8px;
+    clear: both;
+}
+
+@media only screen and (min-device-width:100px) and (max-device-width:500px){
+    .THIS .dropdown{
+        position: absolute;
+        top: 30px;
+        right: 5px;
+    }
+}
+@media only screen and (min-device-width:501px) and (max-device-width:767px){
+    .THIS .dropdown{
+        position: absolute;
+        top: 30px;
+        right: 5px;
+    }
+}
+
+@media only screen and (min-device-width:768px) and (max-device-width:1024px) and (orientation : portrait){
+    .THIS .dropdown{
+        top: -11px;
+        display: block;
+       /* left: 306px;*/
+        right: 0px;
+    }
+}
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape){
+    .THIS .dropdown{
+        top: 32px;
+        display: block;
+        left: 306px;
+        right: 0px;
+    }
+}
+@media only screen 
+    
+    and (min-device-width : 812px) and (min-device-width : 812px) 
+   and (-webkit-device-pixel-ratio : 3) { 
+    .THIS .dropdown{
+        top: -16px;
+        display: block;
+        left: 306px;
+        right: 0;
+    }
+}
+@media only screen 
+and (min-device-width : 1024px) 
+and (max-device-width : 1366px) 
+and (orientation : portrait){
+    .THIS .dropdown{
+        top: 29px;
+        display: block;
+        left: 306px;
+        right: 0px;
+    }
+}

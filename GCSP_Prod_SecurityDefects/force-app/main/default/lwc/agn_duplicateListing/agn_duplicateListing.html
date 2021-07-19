@@ -1,0 +1,117 @@
+<!--
+@FileName:          agn_duplicateListing.html 
+@Version:           1.0
+@Author:            Ayush Basak (ayush.basak@cognizant.com)
+@Purpose:           Identify and list possible duplicate business account, based on the information captured 
+                    on the Allergan Customer Address record. It also allows users to map and unmap identified 
+                    business accounts with the Allergan Customer Address Record
+@ Change history:   28.12.2020 / Ayush Basak / Created the file.
+-->
+<template>
+    <lightning-card title={label.componentTitle}>
+
+        <!-- Spinner to display before server side data is recieved -->
+        <template if:false={rendered}>
+            <div>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </div>
+        </template>
+        <lightning-button-icon icon-name="utility:refresh" 
+                                slot="actions"
+                                name="Refresh" 
+                                onclick={handleNavigation}>
+        </lightning-button-icon>
+        <!-- Once data is recieved, display the table -->
+        <template if:true={rendered}>
+            <!-- Manual Validation checkbox, to be updated by user to verify they have checked the list -->
+            <div class="slds-box slds-box_xx-small slds-m-around_x-small">
+                <lightning-input type="checkbox" 
+                                 label={label.checkboxLabel} 
+                                 name="validationBox" 
+                                 value={validationBox} 
+                                 onchange={checkboxHandler} 
+                                 checked={validationBox}>
+                </lightning-input>
+            </div> 
+            <!-- Checking if records have been returned after creating the component -->
+            <template if:true={duplicateRecordsDisplay}>
+
+                <!-- Checking if any records have been return or null has been returned -->
+                <template if:true={recordsReturned}> 
+
+                    <!-- Displaying cards for each of the account records returned -->
+                    <template for:each={duplicateRecordsDisplay} for:item="record">
+                        <lightning-card  title={record.name} 
+                                        key={record.accountId} 
+                                        icon-name="standard:account">
+
+                            <!-- Button to associate the current account with ACA record. 
+                                Rendered only if id of this account does not match account id on ACA record-->
+                            <lightning-button label="Assign" 
+                                            slot="actions" 
+                                            onclick={assignAccount} 
+                                            data-key={record.accountId} 
+                                            if:false={record.isMapped}></lightning-button>
+                            <!-- Button to de-associate the current account with ACA record. 
+                                Rendered only if id of this account matches account id on ACA record-->
+                            <lightning-button label="Unassign" 
+                                            slot="actions" 
+                                            onclick={unassignAccount} 
+                                            data-key={record.accountId} 
+                                            if:true={record.isMapped}></lightning-button>
+
+                            <!-- Displaying record data fields -->
+                            <template for:each={record.dataSet} for:item="dataSet">
+                                <div class="slds-p-horizontal_small slds-grid slds-wrap" key={dataSet.key}>
+                                    <p class="slds-size_1-of-3">{dataSet.key} :</p>
+                                    <p class="slds-size_2-of-3">{dataSet.value}</p>
+                                </div>
+                            </template>
+                            
+                        </lightning-card>
+                    </template>
+                    <div class="slds-align_absolute-center">
+                        <div>
+                            Page {currentPage} of {totalPages}
+                        </div>
+                    </div>
+                    <div class="slds-align_absolute-center">
+                        <!-- Naivagtaion button group -->
+                        <div>
+                            <lightning-button-group>
+                                <lightning-button-icon icon-name="utility:jump_to_left" 
+                                                        name="First" 
+                                                        onclick={handleNavigation}>
+                                </lightning-button-icon>
+                                <lightning-button-icon icon-name="utility:chevronleft" 
+                                                        name="Previous" 
+                                                        onclick={handleNavigation}>
+                                </lightning-button-icon>
+                                <lightning-button-icon icon-name="utility:chevronright" 
+                                                        name="Next" 
+                                                        onclick={handleNavigation}>
+                                </lightning-button-icon>
+                                <lightning-button-icon icon-name="utility:jump_to_right" 
+                                                        name="Last" 
+                                                        onclick={handleNavigation}>
+                                </lightning-button-icon>
+                            </lightning-button-group>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- In case, no records have been return, display relavant text -->
+                <template if:false={recordsReturned}>
+                    <div class="slds-align_absolute-center" >{label.noRecords}</div>
+                </template>
+            </template>
+
+            <!-- Checking if error has been returned after creating the component -->
+            <template if:true={wireError}>
+                <div class="slds-align_absolute-center slds-p-around_small" >
+                    {label.loadErrors}{wireError}
+                </div>
+            </template>
+        </template>
+    </lightning-card>
+</template>

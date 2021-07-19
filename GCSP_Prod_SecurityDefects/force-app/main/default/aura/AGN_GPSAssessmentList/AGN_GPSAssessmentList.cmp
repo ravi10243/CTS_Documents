@@ -1,0 +1,122 @@
+<aura:component access="public" controller="GPSAssessmentToolController">
+
+    <!-- Private Attributes -->
+    <aura:attribute name="displaySpinner" type="Boolean" access="private" default="false" />
+    <aura:attribute name="assessments" type="GPS_Assessment__c[]" access="private" />
+    <aura:attribute name="sortField" type="String" access="private" default="Name" />
+    <aura:attribute name="sortArrow" type="String" access="private" default="&nbsp;  &#9650;" />
+    <aura:attribute name="sortIsAsc" type="Boolean" access="private" default="true" />
+    <aura:attribute name="pageNumber" type="Integer" access="private" default="1" />
+    <aura:attribute name="totalRecords" type="Integer" access="private" />
+    <aura:attribute name="totalPages" type="Integer" access="private" />
+
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}" />
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}" />
+    <aura:handler event="c:AGN_GPSAssessmentUpdatedEvt" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.sortField}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.sortIsAsc}" action="{!c.doInit}" default="true" />
+    <aura:handler name="change" value="{!v.recordsPerPage}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.pageNumber}" action="{!c.doInit}" />
+
+    <!-- Events -->
+    <aura:registerEvent name="showAssessmentEvent" type="c:AGN_GPSShowAssessmentEvt" />
+
+    <!-- Markup -->
+    <aura:if isTrue="{!v.displaySpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <lightning:spinner variant="brand" size="large" />            
+        </div>
+    </aura:if>
+    <c:AGN_GPSAssessmentHeader showBanner="true" />
+    <h2 style="font-weight:bold;font-size:24px;"><c:sobjectLabel sobjectName="GPS_Assessment__c" variant="labelPlural" /></h2>
+    <lightning:button label="{!$Label.c.Create_New}" onclick="{!c.createAssessment}" class="gps-primary-action" />
+    <table class="gps-table">
+        <thead>
+            <tr>
+                <th class="slds-is-sortable" scope="col" data-fieldname="Name" onclick="{!c.sortByField}">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Name" /></span>
+                        <aura:if isTrue="{!v.sortField == 'Name'}">{!v.sortArrow}</aura:if>
+                    </a>
+                </th>
+                <th class="slds-is-sortable" scope="col" data-fieldname="Assessment_Type_AGN__c" onclick="{!c.sortByField}">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Assessment_Type_AGN__c" /></span>
+                        <aura:if isTrue="{!v.sortField == 'Assessment_Type_AGN__c'}">{!v.sortArrow}</aura:if>
+                    </a>
+                </th>
+                <th scope="col">
+                    <c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Product_List_AGN__c" />
+                </th>
+                <th scope="col">
+                    <c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Time_Frame_AGN__c" />
+                </th>
+                <th class="slds-is-sortable" scope="col" data-fieldname="Due_Date_AGN__c" onclick="{!c.sortByField}">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Due_Date_AGN__c" /></span>
+                        <aura:if isTrue="{!v.sortField == 'Due_Date_AGN__c'}">{!v.sortArrow}</aura:if>
+                    </a>
+                </th>
+                <th class="slds-is-sortable" scope="col" data-fieldname="Status_AGN__c" onclick="{!c.sortByField}">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate"><c:fieldLabel sobjectName="GPS_Assessment__c" fieldName="Status_AGN__c" /></span>
+                        <aura:if isTrue="{!v.sortField == 'Status_AGN__c'}">{!v.sortArrow}</aura:if>
+                    </a>
+                </th>
+                <th class="slds-is-sortable" scope="col" data-fieldname="CreatedBy.Name" onclick="{!c.sortByField}">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate">{!$Label.c.Created_By}</span>
+                        <aura:if isTrue="{!v.sortField == 'CreatedBy.Name'}">{!v.sortArrow}</aura:if>
+                    </a>
+                </th>
+                <th class="slds-is-sortable" scope="col" data-fieldname="CreatedDate" onclick="{!c.sortByField}">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate">{!$Label.c.Created_Date}</span>
+                        <aura:if isTrue="{!v.sortField == 'CreatedDate'}">{!v.sortArrow}</aura:if>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <aura:iteration items="{!v.assessments}" var="assessment">
+            <tr>
+                <td>
+                    <a onclick="{!c.viewAssessmentDetail}" id="{!assessment.Id}" class="clickable_list_item">{!assessment.Name}</a>
+                </td>
+
+                <td role="gridcell">{!assessment.Assessment_Type_AGN__c}</td>
+                <td role="gridcell"><ui:outputText value="{!assessment.Product_List_AGN__c}" /></td>
+                <td role="gridcell">{!assessment.Time_Frame_AGN__c}</td>
+                <td role="gridcell"><ui:outputDate value="{!assessment.Due_Date_AGN__c}" /></td>
+                <td role="gridcell">{!assessment.Status_AGN__c}</td>
+                <td role="gridcell">
+                    <a href="{! '/' + assessment.CreatedById}" target="_blank">{!assessment.CreatedBy.Name}</a>
+                </td>
+                <td role="gridcell"><ui:outputDatetime value="{!assessment.CreatedDate}" /></td>
+            </tr>
+        </aura:iteration>
+    </table>
+    <div class="slds-page-header" role="banner">
+        <ui:inputSelect aura:id="recordsPerPage" label="{!$Label.c.records_Per_Page + ': '}" change="{!c.doInit}">
+            <ui:inputSelectOption text="25" label="25" value="true"/>
+            <ui:inputSelectOption text="50" label="50"/>
+            <ui:inputSelectOption text="100" label="100"/>
+        </ui:inputSelect>
+        <aura:if isTrue="{!v.pageNumber &gt; 1}">
+           <lightning:button onclick="{!c.previousPage}" label="{!$Label.c.Previous_Page}"/>
+        </aura:if>
+        <aura:if isTrue="{!v.pageNumber &lt; v.totalPages}">
+           <lightning:button aura:id="nextbtn" onclick="{!c.nextPage}" label="{!$Label.c.Next_Page}"/>
+        </aura:if>
+
+       &nbsp;{!v.totalRecords}&nbsp;{!$Label.c.total_records} • {!$Label.c.page_number}&nbsp; {!v.pageNumber} / {!v.totalPages}
+    </div>
+
+</aura:component>

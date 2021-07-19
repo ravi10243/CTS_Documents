@@ -1,0 +1,91 @@
+.THIS.content-header {
+    padding: 0;
+}
+.THIS.content-header.content-header-type-trail .content-type{
+    color: rgba(255,255,255,0.75);
+}
+.THIS.content-header .content-type {
+    text-transform: capitalize;
+    color: rgba(0,0,0,0.5);
+    letter-spacing: 1px;
+    font-size: 18px;
+    width: 100%;
+    line-height: 23px;
+}
+.THIS.content-header .content-title {
+    font-size: 30px;
+    line-height: 35px;
+    font-weight: bold;
+    color: inherit;
+    letter-spacing: 0.2px;
+    margin: 0 0 10px;
+    word-break: break-word;
+}
+.THIS.content-header .content-description {
+    color: inherit;
+    font-size: 16px;
+    line-height: 20px;
+    word-break: break-word;
+}
+.THIS.slds-m-vertical--large, .THIS.slds-m-vertical_large {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.THIS.content-header .content-tags .tag {
+    font-size: 14px;
+    line-height: 30px;
+    padding: 0 18px;
+    float: right;
+    margin: 0 0 0 10px;
+    color: #fff;
+}
+.THIS.a, .THIS.button {
+    cursor: pointer;
+}
+.THIS.tag {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    line-height: 25px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 4px;
+    padding: 0 10px;
+    text-decoration: none;
+}
+.THIS.slds-grid--vertical-align-center, .THIS.slds-grid_vertical-align-center {
+    align-items: center;
+    align-content: center;
+}
+.THIS.slds-grid--align-spread, .THIS.slds-grid_align-spread {
+    justify-content: space-between;
+}
+.THIS.content-header .progress-information {
+    width: 250px;
+}
+.THIS.content-header .content-tags {
+    padding: 0;
+    overflow: hidden;
+}
+.THIS.slds-is-relative {
+    position: relative;
+}
+.THIS.slds-p-horizontal--large, .THIS.slds-p-horizontal_large {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+}
+.THIS.slds-p-top--large, .THIS.slds-p-top_large {
+    padding-top: 1.5rem;
+}
+.THIS.slds-container--center, .THIS.slds-container_center {
+    margin-left: auto;
+    margin-right: auto;
+}
+.THIS.slds-container--x-large, .THIS.slds-container_x-large {
+    max-width: 80rem;
+}
+.THIS.th-color--white {
+    color: #fff;
+}
+.THIS.slds-grow {
+    flex-grow: 1;
+}

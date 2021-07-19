@@ -1,0 +1,451 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" 
+                controller="AGN_SPARK_PrivacyPolicy">
+    <aura:html tag="style">
+        
+        
+/* --------------------- Banner Section Starts ------------------------------------------ */
+
+#banner{
+	height: 980px;
+}
+.container-fluid{
+    padding:0px;
+}
+#bannerImage{
+	background: url("../images/AllerganAesthetics_Photography_36.jpg") no-repeat;
+	background-size: cover;
+	width: 1134px;
+}
+#bannerImageMobile{
+    display: none;
+}
+#bannerImageMobile img{
+    width: 100%;
+    height: 100%;
+}
+#bannerContent{
+	background-color: #000000;
+}
+#Group_88{
+    top: 48%;
+}
+#titlePrivacyPolicy {
+    white-space: nowrap;
+    text-align: left;
+    font-family: Beatrice-light;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 50px;
+    color: #ffffff;
+    padding: 451px 118px;
+}
+#clearFloat{
+	clear: both;
+}
+
+        .row{
+        	margin:0px !important;
+        }
+/* ---------------------- Banner Section Ends ---------------------------- */
+
+/* ---------------------- Content Section Starts ------------------------- */
+#content{
+	padding: 39px 115px
+}
+#contentHead{
+	text-align: center;
+    font-size: 50px;
+    font-family: Beatrice-light;
+    padding: 25px 0px;
+    padding-bottom: 81px;
+    color: rgba(167,117,110,1);
+}
+.contentQuestion{
+	text-align: left;
+    font-size: 30px;
+    font-family: Beatrice-light;
+    color: rgba(167,117,110,1);
+    margin-bottom: 0.2rem;
+    padding-top: 15px;
+}
+.contentAnswer{
+	text-align: left;
+    font-size: 21px;
+    font-family: Neue_Haas_Unica_Pro-light;
+    color: #000000;
+    line-height:40px;
+        letter-spacing:1.26px;
+}
+
+#querySection{
+	padding: 39px 115px;
+    background-color:#F5F5F5;
+    
+}
+
+/* ---------------------- Content Section ends ------------------------- */
+
+@media screen and (max-width: 1620px) and (min-width: 1280px) {
+    #titlePrivacyPolicy {
+    text-align: left;
+    font-size: 38px;
+    padding: 351px 51px;
+    }
+    #banner {
+        height: 755px;
+    }
+    #Group_88{
+        top: 46%;
+    }    
+    #contentHead {
+        text-align: center;
+        font-size: 34px;
+        /* width: 100%; */
+        padding: 25px 0px;
+        color: rgba(167,117,110,1);
+    }
+    #content {
+        padding: 39px 51px;
+    }
+    .contentQuestion {
+        font-size: 22px;
+        padding-top: 17px;
+    }    
+    .contentAnswer {
+        font-size: 17px;
+        line-height:33px;
+    }
+    #querySection {
+        padding: 39px 51px;
+    }
+}
+    /* desktop/laptop View ends----------------------------------------- */
+
+/* laptop/tablet View starts----------------------------------------- */
+@media screen and (max-width: 1280px) and (min-width: 992px) {
+
+    #titlePrivacyPolicy {
+        text-align: left;
+        font-size: 32px;
+        padding: 301px 42px;
+        }
+        #banner {
+            height: 646px;
+        }
+        #contentHead {
+            text-align: center;
+            font-size: 26px;
+            /* width: 100%; */
+            padding: 25px 0px;
+            color: rgba(167,117,110,1);
+        }
+        #content {
+            padding: 39px 42px;
+        }
+        .contentQuestion {
+            font-size: 17px;
+        }    
+        .contentAnswer {
+            font-size: 14px;
+        	line-height:26px;
+        }
+        #querySection {
+            padding: 39px 42px;
+        }
+    }
+/* laptop/tablet View ends----------------------------------------- */
+
+
+/* tablet/mobile View starts----------------------------------------- */
+
+    @media screen and (max-width: 991px) and (min-width: 600px) {
+
+      #contentLeft{
+          margin-bottom: 0px !important;
+      }
+    #titlePrivacyPolicy {
+        text-align: left;
+        font-size: 50px;
+        padding: 200px 39px;
+        }
+        #bannerContent{
+            height: 476px;
+        }
+        #banner {
+            height: 100%;
+        }
+        #bannerImage{
+            display:none
+        }
+        #bannerImageMobile{
+            padding:0px;
+            display: block;
+        }
+        #contentHead {
+            text-align: center;
+            font-size: 36px;
+            font-family: SourceSansPro-It;
+            /* width: 100%; */
+            padding: 25px 0px;
+            color: rgba(167,117,110,1);
+        }
+        #content {
+            padding: 0px 39px 39px 39px;
+        }
+        .contentQuestion {
+            padding-top: 0px;
+            font-size: 23px;
+        	width: 100%;
+        	line-height:30px;
+        }    
+        .contentAnswer {
+            font-size: 19px;
+        	line-height:28px;
+        }
+        #contentRight{
+          padding-left:15px !important;
+        	padding-top:25px;
+        }
+        #querySection .contentQuestion{
+        padding-bottom:25px;
+        }
+        #querySection {
+            padding: 39px 39px;
+        }
+        #querySection .contentQuestion,#querySection .contentAnswer {
+            text-align: center;
+        }
+        }
+    /* tablet/mobile View ends----------------------------------------- */
+
+/* mobile View starts----------------------------------------- */
+@media only screen and (max-width: 600px) {
+    #titlePrivacyPolicy {
+        text-align: left;
+        font-size: 34px;
+        padding: 150px 23px;
+        }
+        #contentLeft{
+            margin-bottom: 0px !important;
+        }
+        #bannerContent{
+            height: 350px;
+        }
+        #banner {
+            height: 100%;
+        }
+        #bannerImage{
+            display:none
+        }
+        #bannerImageMobile{
+            display: block;
+            padding:0px;
+        }
+        #contentHead {
+            text-align: center;
+            font-size: 22px;
+            padding: 0px 0px 20px 0px;
+            color: rgba(167,117,110,1);
+        }
+        #contentLeft{
+        padding-right:23px !important;
+        padding-left:23px;
+        }
+        #contentRight{
+        padding-left:23px !important;
+        padding-right:23px;
+        }
+        #content {
+            padding: 39px 23px;
+        }
+        #querySection .contentQuestion{
+        padding-bottom:25px;
+        }
+        .contentQuestion {
+           padding-top: 15px;
+            font-size: 19px;
+            line-height: 21px;
+       		 width:100%;
+        }    
+        .contentAnswer {
+            font-size: 15px;
+        	line-height:26px;
+        }
+        #querySection {
+            padding: 39px 23px;
+        }
+        #querySection .contentQuestion,#querySection .contentAnswer {
+            text-align: center;
+        }
+}
+/*mobile View ends----------------------------------------- */
+
+        
+        
+    </aura:html>
+    
+    <aura:attribute name="AGNSPARKImage" type="object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div id="PRIVACYPOLICY" class="container-fluid" style="padding:0px">
+        <div id="banner" class="row">
+            <div id="bannerContent" class="col-sm-12 col-md-12 col-lg-5 col-xl-5" >
+                <div id="titlePrivacyPolicy">{!$Label.c.AGN_SPARK_Privacy_Policy_Title }</div>
+            </div>
+            <div id="bannerImage" class="col-sm-0 col-md-0 col-lg-7 col-xl-7" style="{!'background: url(' + $Resource.AGN_SPARK_Rebranding_PrivacyPolicy + '/images/AllerganAesthetics_Photography_36.jpg' +') no-repeat; background-size: cover;'}">
+                <div id="Group_88">
+                    <a aura:id="facebook" id = "facebook" class="facebook" target="_blank" href="https://www.facebook.com/AllerganSparkUK/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-facebook" viewBox="0.562 0.562 28.095 28.043">
+                          <path id="Icon_awesome-facebook" d="M 28.65703392028809 14.66943073272705 C 28.65703392028809 6.876489162445068 22.36974906921387 0.5624998807907104 14.60976696014404 0.5624998807907104 C 6.849785327911377 0.5624998807907104 0.5625001192092896 6.876489162445068 0.5625001192092896 14.66943073272705 C 0.5625001192092896 21.71038436889648 5.699381828308105 27.54655647277832 12.41488075256348 28.60571670532227 L 12.41488075256348 18.74736022949219 L 8.84642219543457 18.74736022949219 L 8.84642219543457 14.66943073272705 L 12.41488075256348 14.66943073272705 L 12.41488075256348 11.561354637146 C 12.41488075256348 8.026090621948242 14.51064205169678 6.073303699493408 17.72055625915527 6.073303699493408 C 19.25782585144043 6.073303699493408 20.86533164978027 6.348616123199463 20.86533164978027 6.348616123199463 L 20.86533164978027 9.818466186523438 L 19.09356498718262 9.818466186523438 C 17.34898567199707 9.818466186523438 16.80465126037598 10.90606498718262 16.80465126037598 12.02153778076172 L 16.80465126037598 14.66943073272705 L 20.70050430297852 14.66943073272705 L 20.07743835449219 18.74736022949219 L 16.80465126037598 18.74736022949219 L 16.80465126037598 28.60571670532227 C 23.52015495300293 27.54655647277832 28.65703392028809 21.71038436889648 28.65703392028809 14.66943073272705 Z">
+                          </path>
+                         </svg>
+                      ]]>
+                    </a>
+                    <a aura:id="instagram" id ="instagram" class="instagram" target="_blank" href="https://www.instagram.com/allergansparkuk/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-instagram" viewBox="-0.005 2.238 27.89 27.888">
+                          <path id="Icon_awesome-instagram" d="M 13.94292449951172 9.031681060791016 C 9.985723495483398 9.031681060791016 6.793830394744873 12.22409343719482 6.793830394744873 16.18193817138672 C 6.793830394744873 20.1397819519043 9.985723495483398 23.33219528198242 13.94292449951172 23.33219528198242 C 17.90012359619141 23.33219528198242 21.09201431274414 20.13977813720703 21.09201431274414 16.18193817138672 C 21.09201431274414 12.22409439086914 17.90012359619141 9.031681060791016 13.94292449951172 9.031681060791016 Z M 13.94292449951172 20.83053588867188 C 11.38567733764648 20.83053588867188 9.295080184936523 18.74582290649414 9.295080184936523 16.18193626403809 C 9.295080184936523 13.6180477142334 11.37945556640625 11.5333366394043 13.94292449951172 11.5333366394043 C 16.50639343261719 11.5333366394043 18.59076690673828 13.6180477142334 18.59076690673828 16.18193626403809 C 18.59076690673828 18.74582290649414 16.50017356872559 20.83053588867188 13.94292449951172 20.83053588867188 Z M 23.05195045471191 8.739198684692383 C 23.05195045471191 9.666430473327637 22.30530548095703 10.40697002410889 21.38445091247559 10.40697002410889 C 20.45736885070801 10.40697002410889 19.71695327758789 9.66020679473877 19.71695327758789 8.739198684692383 C 19.71695327758789 7.818192481994629 20.46359443664551 7.071429252624512 21.38445091247559 7.071429252624512 C 22.30530548095703 7.071429252624512 23.05195045471191 7.818192481994629 23.05195045471191 8.739198684692383 Z M 27.78690147399902 10.43186283111572 C 27.68112754821777 8.197796821594238 27.17092132568359 6.218875408172607 25.5345344543457 4.588443279266357 C 23.90436363220215 2.958010911941528 21.9257640838623 2.447722434997559 19.69206237792969 2.335709095001221 C 17.38991928100586 2.205025196075439 10.48970603942871 2.205025196075439 8.187561988830566 2.335709095001221 C 5.960081100463867 2.441499948501587 3.981481075286865 2.951788425445557 2.345092296600342 4.582220077514648 C 0.708703339099884 6.212652206420898 0.2047198414802551 8.191572189331055 0.09272374957799911 10.42563819885254 C -0.03793852031230927 12.72815704345703 -0.03793852031230927 19.62948989868164 0.09272374957799911 21.93201065063477 C 0.1984979659318924 24.16607666015625 0.7087030410766602 26.14500045776367 2.345092296600342 27.77542877197266 C 3.981481075286865 29.40586090087891 5.953859329223633 29.9161491394043 8.187561988830566 30.02816009521484 C 10.48970603942871 30.15884399414062 17.38991928100586 30.15884399414062 19.69206237792969 30.02816009521484 C 21.92576599121094 29.92237091064453 23.90436553955078 29.41208267211914 25.5345344543457 27.77542877197266 C 27.16470146179199 26.14499282836914 27.67490577697754 24.16607284545898 27.78690147399902 21.93201065063477 C 27.91756439208984 19.62948989868164 27.91756439208984 12.73437881469727 27.78690147399902 10.43186092376709 Z M 24.81277847290039 24.40254974365234 C 24.32746124267578 25.62226486206055 23.38793563842773 26.56193923950195 22.16220092773438 27.05355834960938 C 20.32670974731445 27.78165435791016 15.97130012512207 27.61362838745117 13.94292449951172 27.61362838745117 C 11.91454792022705 27.61362838745117 7.552917003631592 27.77542877197266 5.723643779754639 27.05355834960938 C 4.504129886627197 26.56816101074219 3.564606189727783 25.62848663330078 3.073067426681519 24.40254974365234 C 2.345091819763184 22.5667610168457 2.513086318969727 18.21064376831055 2.513086318969727 16.18193817138672 C 2.513086318969727 14.15323162078857 2.351313829421997 9.790890693664551 3.073067426681519 7.961321353912354 C 3.55838418006897 6.741610050201416 4.497908115386963 5.801933765411377 5.723643779754639 5.310314178466797 C 7.55913782119751 4.582221031188965 11.91454792022705 4.750241756439209 13.94292449951172 4.750241756439209 C 15.97130012512207 4.750241756439209 20.33293151855469 4.588443279266357 22.16220092773438 5.310314178466797 C 23.38171577453613 5.795710563659668 24.32123947143555 6.735385894775391 24.81277847290039 7.961321353912354 C 25.54075241088867 9.797114372253418 25.37276077270508 14.15323066711426 25.37276077270508 16.18193817138672 C 25.37276077270508 18.21064376831055 25.54075241088867 22.57298278808594 24.81277847290039 24.40254974365234 Z">
+                          </path>
+                         </svg>
+                     ]]>
+                    </a> 
+                </div>
+            </div>
+        
+		<div id="bannerImageMobile" class="col-sm-12 col-md-12 col-lg-0 col-xl-0">
+            <img src="{!$Resource.AGN_SPARK_Rebranding_PrivacyPolicy +'/images/AllerganAesthetics_Photography_36@2x.jpg'}"/>
+		</div>
+        </div>
+        <div id="content" class="row">
+            <div class="row" style = "width:100%;margin:0px;">
+                <h2 id="contentHead" class="col-sm-12">
+                    GDPR Website Privacy Statement<br/>
+                    Effective Date: May 25, 2018
+                </h2>
+            </div>
+            <div id="contentLeft" class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="padding-right:40px;">
+                <div id="question1">
+                    <p class="contentQuestion">What is the scope of this Privacy Statement?</p>
+                    <p class="contentAnswer">This Privacy Statement applies to websites, mobile applications, and digital services that link to or post this Privacy Statement. This Privacy Statement is intended to let you know what Personal Data Allergan Aesthetics plc, including our affiliated entities (referred to collectively as “Allergan Aesthetics,” “we,” “our,” or “us”) may collect about you, how we collect your Personal Data, for what purposes we use your Personal Data, to whom we may disclose your Personal Data, and what rights you may have to limit our use of your Personal Data. In this Privacy Statement, we will collectively refer to the websites, applications, and digital services that may link to or post this Privacy Statement as “websites.”</p>
+                </div>
+                <div id="question2">
+                    <p class="contentQuestion"><br/>What Personal Data may we collect about you?</p>
+                    <p class="contentAnswer">Through our websites linking to this Privacy Statement, we will collect and process Personal Data that does not directly identify you by name (such as IP Address) or include your contact information, but which may be used to identify that a specific computer or device has accessed our website and which if combined with certain other information could be used to identify you. We receive this Personal Data through your interactions with our websites</p>
+                    <p class="contentAnswer">The Personal Data we process about you through our websites linking to this Privacy Statement may include the following categories of Personal Data:</p>
+                    <p class="contentAnswer">Demographic data;<br/>
+                        Online identifiers;<br/>
+                        IP address;<br/>
+                        Data from our cookies;<br/>
+                        3rdparty cookies; and/or<br/>
+                        Social media use and utilization</p>
+                    <p class="contentAnswer">Where we collect directly identifiable Personal Data about you, the following privacy notices will provide you with additional information around what we may collect, how we will collect it, for what purposes we may collect it, to whom we may disclose it, and what rights you may have to limit our use of it. Please click on the following privacy notices that are applicable to your interactions with us:</p>
+                </div>
+                <div id="question3">
+                    <p class="contentQuestion"><br/>How will we use your Personal Data?</p>
+                    <p class="contentAnswer">Processing of your Personal Data includes where we may record, organize, structure, store, adapt or alter, retrieve, consult, use, disclose by transmission, dissemination, or otherwise make available, align or combine, restrict, erase, or destroy your Personal Data.</p>
+                    <p class="contentAnswer">We may process your Personal Data for the following purposes:</p>
+                    <p class="contentAnswer">Our company compliance and facility and network security purposes;</p>
+                    <p class="contentAnswer">Authorizing, granting, administering, monitoring, and terminating access to or use of Allergan Aesthetics systems, facilities, records, property, and infrastructure;<br/>
+                        Tracking your interactions with us;<br/>
+                        Auditing our programs and services for compliance purposes;<br/>
+                        Where we have Legal obligations to process the personal data;<br/>
+                        Statistical analysis, including analytics performed by our vendors;<br/>
+                        Website administration; and/or<br/>
+                        Marketing Activities, including Third Party Cookie Tracking and Creating an Interest-based Profile related to your interactions with us or others</p>
+                    <p class="contentAnswer">For any additional purposes where we are required to notify you and get your consent, including those purposes required by local law, we will obtain your consent before we process your Personal Data for those purposes.</p>
+                </div>
+                <div id="question4">
+                    <p class="contentQuestion"><br/>How will we use your Personal Data?</p>
+                    <p class="contentAnswer">The applicable legal basis for which we process your Personal Data for the specific purposes listed above, include the following:</p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;"><br/>Based on your consent:</span> some cases, we may ask you for your consent to collect and process your Personal Data. If you choose to provide us with your consent, you may later withdraw your consent (or opt-out) by contacting us as described in the “how do you contact us” section below. Please note that if you withdraw your consent it will not affect any processing of your Personal Data that has already occurred. Where we process your Personal Data based on consent, we will provide more detailed information to you at the time when we obtain your consent.</p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;"><br/>Compliance with applicable laws or performance of a contract:</span> In specific circumstances, we may need to process your Personal Data to comply with a relevant law/regulation or to fulfil our obligations under a contract to which you are subject. Where we process your Personal Data to meet our legal obligations, you will likely not be permitted to object to this processing activity, but you will usually have the right to access or review this information unless it would impede our legal obligations. Where we are processing to fulfil our contract obligations under a contract where you are a party, you might not be able to object to this processing, or if you do choose to opt-out or object to our processing, it may impact our ability to perform a contractual obligation that you are owed.</p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;"><br/>Our legitimate interest:</span> We may process your Personal Data based on our legitimate interests in communicating with you and managing our interactions with you regarding our products and services, scientific research, and education opportunities. In addition to the other rights you may have described below, you have the right to object to such processing of your Personal Data. You can register your objection by contacting us as described in the “how do you contact us” section below.</p>
+                </div>
+                
+                <div id="question5">
+                    <p class="contentQuestion"><br/>Cookies and Similar Technologies that collect Personal Data <br/><br/></p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Web beacons </span><br/>Our websites may use a technology known as web beacons that allows the collection of web log information. A web beacon is a tiny graphic on a web page or in an e-mail message designed to track pages viewed or messages opened. Web log information is gathered when you visit one of our websites by the computer that hosts our website (called a “webserver”).<br/></p>
+                    <p class="contentAnswer">On certain web pages or in emails we send to you, we may utilize a technology called a “web beacon” (also known as an “action tag” or “clear GIF technology”). We may use web beacons to help determine which email messages sent by us were opened and whether a message was acted upon. Web beacons also help analyze the efectiveness of websites by measuring the number of visitors to a site or how many visitors clicked on key elements of a site.<br/><br/></p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Cookies</span> <br/> This website may use a technology called a “cookie”. A cookie is a small data file that a website can place on your computer’s hard drive, where your internet browser files are kept. A cookie saves you the trouble of re-entering certain information in some registration areas because cookies can be used to enable a site to “remember” information a visitor has previously inputted. A cookie also helps deliver content used-specific information to you and track how sections of the website are used. Cookies can be placed on your computer both by us and by third parties with whom we have a contractual relationship, such as web analytic services and advertising network services. With most Internet browsers or other software, you can change your browser settings to erase cookies from your computer hard drive, block all cookies, or receive a warning before a cookie is stored. Please check your browser instructions to learn more about these functions. If you reject cookies, functionality of the site may be limited, and you may not be able to take advantage of many of the site’s features.<br/><br/></p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Do Not Track</span> <br/> There are different ways you can prevent tracking of your online activity. One of them is setting a preference in your browser that alerts websites you visit that you do not want them to collect certain information about you. This is referred to as a Do-Not-Track (“DNT”) signal. Please note that currently our websites and web-based resources do not respond to these signals from web browsers. At this time, there is no universally accepted standard for what a company should do when a DNT signal is detected.<br/><br/></p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Google Analytics</span><br/> Google Analytics may be used to help make our website work better and to help us understand what parts of the website are being utilized. Google Analytics uses technical tools such as, first-party cookies and JavaScript code, to collect information about visitors. Google Analytics service tracks visitors to the site who have JavaScript enabled. Google Analytics anonymously tracks how visitors interact with a website, including where they came from and what they did on a site. Google Analytics collects the information set forth above from users.<br/><br/></p>
+                    <p class="contentAnswer">This information is used to administer and update the website, and we will also assess whether the visitors to the site match the expected site demographics and determine how key audiences are navigating the content.</p><br/>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">1. Opt-Out Provision:</span><br/> Google analytics others an opt-out provision for website visitors who do not want their data to be collected. You can receive more information about this option here:<br/> https://tools.google.com/dlpage/gaoptout.<br/><br/></p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">2. Google’s Use of Data:</span><br/> Google and its wholly owned subsidiaries may retain and use, subject to the terms of its Privacy Policy (located at <br/> https://www.google.com/privacy.html, or such other URL as Google may provide from time to time), information collected in your use of the Google Analytics Information Disclosures and Sharing.</p>
+                </div>
+            </div>
+            <div id="contentRight" class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="padding-left:56px;">
+                <div id="question6">
+                    <p class="contentQuestion">Social Media Plugins</p>
+                    <p class="contentAnswer">Our websites may use Social Media Plugins to enable you to easily share information with others. When you visit our websites, the operator of the social media plugin that is on our website can place a cookie on your computer that lets that operator recognize individuals on their website who have previously visited our sites. If you have previously logged into the social media website while browsing on our website, social media plugins may allow that social media website to receive directly identifiable information about you that shows you have visited our website. The social media plugin may collect this information for visitors who have logged into social networks, whether or not they specifically interact with the plugin on our website. Social media plugins also allow the social media website to share information about your activities on our website with other users of their social media website. Allergan Aesthetics does not control any of the content from social media plugins. For more information about social plugins from social media websites you should refer to those sites’ privacy and data sharing statements.</p>
+                </div>
+                <div id="question7">
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;"><br/>Children’s Personal Data<br/></span>This site is not intended for or designed for individuals under the age of 16. We do not knowingly collect Personal Data from any person under the age of 16.</p>
+                </div>
+                <div id="question8">
+                    <p class="contentQuestion"><br/>How do we protect your Personal Data?</p>
+                    <p class="contentAnswer">We use industry-standard administrative, technical, and physical safeguards to protect your Personal Data against loss, theft, misuse, unauthorized access, modification, disclosure, and destruction. We restrict access to your Personal Data to only those employees and third parties acting on our behalf who have a legitimate business need for such access. We will only transfer your Personal Data to third parties acting on our behalf where we have received written assurances that your Personal Data will be protected in a manner consistent with this Privacy Notice and our privacy policies and procedures.</p>
+                </div>
+                <div id="question9">
+                    <p class="contentQuestion"><br/>To whom and when will we disclose or share your Personal Data?</p>
+                    <p class="contentAnswer">We will share or disclose your Personal Data with the following entities:</p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;"><br/>Our global affiliates, as we discuss below.<br/></span>
+                        Third parties with whom we contract to carry out services on our behalf to perform activities or functions related to the processing purposes regarding your Personal Data that are described above. If we do, we will require that these third parties acting on our behalf protect the confidentiality and security of your Personal Data that we share with them. Unless otherwise specifically stated in this Privacy Statement, these third parties must contractually agree that they will not use or disclose your Personal Data for any other purposes than necessary to provide us services, perform services on our behalf, or to comply with applicable laws or regulations.
+                        Government agencies, auditors, and authorities. We may disclose your Personal Data to government agencies, authorities, and auditors in response to authorized information requests or as otherwise required by laws, regulations, or industry codes.<br/>
+                        Potential or actual third party purchasers. If we decide to reorganize or divest our business through a sale, merger, or acquisition, we may share your Personal Data with actual or prospective purchasers. We will require that any such purchasers treat your Personal Data consistently with this Privacy Notice of your Personal Data. You can register your objection by contacting us as described in the “how do you contact us” section below.</p>
+                </div>
+                <div id="question10">
+                    <p class="contentQuestion"><br/>How do we transfer your Personal Data internationally?</p>
+                    <p class="contentAnswer">We may transmit your Personal Data to our other global affiliates. Allergan Aesthetics affiliate names and contact details can be found at https://www.allergan.com/home. Additionally, these affiliates may further transmit your Personal Data to our other global affiliates. Some of our affiliates and their database locations may be in countries that do not ensure an adequate level of data protection similar to the laws in the country in which you reside. Regardless, all our affiliates are required to treat your Personal Data in accordance with this Privacy Notice and our privacy and data protection policies and procedures.</p>
+                    <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;"><br/>EU-US and Swiss-US Privacy Shield Notice:</span> Allergan Aesthetics and its affiliates in the United States may receive Personal Data from individuals in the European Economic Area (EEA) and Switzerland. We comply with the EU-US and Swiss-US Privacy Shield Principles (Privacy Shield Principles), with respect to the collection, use, and retention of Personal Data from the EEA and Switzerland. If there is any conflict between the terms of this Privacy Notice and the Privacy Shield Principles, the Privacy Shield Principles will govern. For more information about the Privacy Shield Framework and to view our certification, go to https://www.privacyshield.gov/. The International Centre for Dispute Resolution (ICDR) acts as our third-party dispute resolution provider, as required by the Privacy Shield Framework. If you have a complaint about our Privacy Shield compliance, you can contact us directly or contact the ICDR at https://go.adr.org/privacyshield.html. In certain circumstances it may be possible for you to invoke binding arbitration. We are subject to the investigatory and enforcement powers of the US Federal Trade Commission regarding our adherence to the Privacy Shield Principles.</p>
+                    <p class="contentAnswer">We may transmit your Personal Data to our third parties with whom we contract to carry out services on our behalf to perform activities or functions related to the processing purposes regarding your Personal Data that are described above. Our third parties are contractually obligated to comply with applicable laws or regulations, including having a valid EU Personal Data cross-border transfer mechanism in place to receive the EU personal data, which can include an “adequacy” determination by the European Commission, EU-US and/or Swiss-US Privacy Shield certifications, and/or executing EU Standard Contractual Clauses with us.</p>
+                    <p class="contentAnswer">For more information about our cross-border transfers of your Personal Data, please contact us using the information as described in the “how do you contact us” section below.</p>
+                </div>
+                <div id="question11">
+                    <p class="contentQuestion"><br/>How long do we retain your Personal Data?</p>
+                    <p class="contentAnswer">Your Personal Data will be maintained for the duration of your relationship with us. We will store and retain the Personal Data we collect about you in accordance with our Corporate Record Retention Policy, after which it will be archived or deleted. A detailed schedule of our retention practices can be found at https://www.allergan.com/home. Please note that certain information could be retained for longer periods of time if we have continuing obligations to you or if required by local law.</p>
+                </div>
+                <div id="question12">
+                    <p class="contentQuestion"><br/>Links to Third Party Websites</p>
+                    <p class="contentAnswer">As a convenience to our visitors, this website may contain links to other sites owned and operated by third parties that we believe may offer useful information. The policies and procedures we describe here do not apply to those sites. We are not responsible for the collection or use of Personal Data by or on any third party sites. Therefore, we disclaim any liability for any third party’s use of Personal Data obtained through using the third party web site. We suggest contacting those sites directly for information on their privacy, security, data collection, and distribution policies.</p>
+                </div>
+                <div id="question13">
+                    <p class="contentQuestion"><br/>What are your rights?</p>
+                    <p class="contentAnswer">You have the right to see and get a copy of your Personal Data, including an electronic copy, that we have as well as to ask us to make any corrections to inaccurate or incomplete Personal Data we have about you. You can also request that we erase your Personal Data when it is no longer needed for the purposes for which you provided it, restrict how we process your Personal Data to certain limited purposes where erasure is not possible, or object to our processing of your Personal Data. In certain circumstances you may be able to request that we send a copy of your Personal Data to a third party of your choosing.</p>
+                    <p class="contentAnswer">To exercise any of these rights, please contact us as set forth in the “how do you contact us” section below. You also have the right to lodge a complaint with the supervisory authority (see details under “remedies” below) where you believe that your rights have been violated.</p>
+                </div>
+                <div id="question14">
+                    <p class="contentQuestion"><br/>What if we revise this Privacy Notice?</p>
+                    <p class="contentAnswer">From time to time we may make changes to this Privacy Notice to reflect changes in our legal obligations or the ways in which we process your Personal Data. We will communicate to you any material edits to this Privacy Notice and it will become effective when it is communicated.</p>
+                </div>
+                
+            </div>
+        </div>
+        <div id="querySection" class="row">
+            <div class="col-sm-12">
+                <p class="contentQuestion">How do you contact us if you have any questions or concerns?</p>
+                <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Please contact Allergan Aesthetics EU Data Protection Officer (DPO) using the below information to:</span></p>
+                <p class="contentAnswer">Ask questions;</p>
+                <p class="contentAnswer">File a concern or complaint;<br/>
+                    Opt-out of a program or service; and/or<br/>
+                    To exercise any of your rights listed above, including access, correction, portability, objection, restriction, and erasure.<br/>
+                    Allergan Aesthetics EU DPO</p>	
+                <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Mailing Address:</span><br/>
+                    Allergan Aesthetics Ltd, Marlow International, The Parkway, Marlow, Buckinghamshire, SL7 1YL, UK</p>
+                <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Email Address:</span><br/>
+                    IR-EUDPO@allergan.com</p>	
+                <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">What remedies do you have available?</span><br/>
+                    For more information about your privacy and data protection rights, or if you are not able to resolve a problem directly with us and wish to make a complaint, please contact your country-specific data protection authority or Allergan Aesthetics lead data protection supervisory authority:<br/><br/>Irish Data Protection Commissioner</p>			
+                <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Mailing Address:</span><br/>
+                    Canal House, Station Road, Portarlington, R32 AP23 Co. Laois</p>
+                <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Phone Numbers:</span><br/>
+                    +353 57 8684800<br/>
+                    +353 (0)761 104 800<br/></p>	
+                <p class="contentAnswer"><span style="font-family: Neue_Haas_Unica_Pro-bold;">Email Address:</span><br/>
+                    info@dataprotection.ie</p>
+            </div>
+        </div>
+    </div>
+    <c:AGN_SPARK_ZincCode pageName="PrivacyPolicy"/>
+</aura:component>

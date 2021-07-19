@@ -1,0 +1,60 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global" 
+                controller = "F3_LEXCaseFormController">
+    <aura:attribute name="recordId" type="String" />
+    
+    <aura:attribute name="listCaseForms" type="list"/>
+    <aura:attribute name="listCaseFormSteps" type="list"/>
+    
+    <aura:attribute name="formObj" type="Object"/>
+    <aura:attribute name="formStepObj" type="Object"/>
+    
+    <aura:attribute name="currentFormId" type="String"/>
+    <aura:attribute name="currentFormStepId" type="String"/>
+    
+    <aura:attribute name="IsFirstStep" type="Boolean"/>
+    <aura:attribute name="IsLastStep" type="Boolean"/>
+    
+    <aura:attribute name="hasValidationErrors" type="Boolean" default="false"/>
+    <aura:attribute name="progressIndicatorStyle" type="String" />
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Events -->
+    <aura:handler event="c:F3_GotObjectRecordIdInContext" action="{!c.onGotObjectRecordIdInContextHandler}"/>
+    <aura:handler event="c:F3_FormStepChangeEvent" action="{!c.onFormStepChangeEventHandler}"/>
+    
+    <!--Body-->
+    <div style="background-color:#f1f1f1;" class="slds-p-around_small">
+        <div style="background-color:#ffffff">
+            <div >
+                <aura:if isTrue="{!v.listCaseForms}">
+                    <div class="slds-p-around_medium" style="{!v.progressIndicatorStyle}">
+                        <aura:if isTrue="{!v.listCaseForms}">
+                            <lightning:progressIndicator currentStep="{!v.currentFormId}" type="path" variant ="path" hasError="{!v.hasValidationErrors}" >
+                                <aura:iteration items="{!v.listCaseForms}" var="pageForm" indexVar="index">
+                                    <lightning:progressStep label="{!pageForm.Portal_Label__c}" value="{!pageForm.Id}"/>
+                                </aura:iteration>    
+                            </lightning:progressIndicator>
+                        </aura:if>
+                    </div>
+                    <div class="slds-p-around_medium" style="{!v.progressIndicatorStyle}">
+                        <aura:if isTrue="{!v.listCaseFormSteps}">
+                            <lightning:progressIndicator currentStep="{!v.currentFormStepId}" type="base" variant="base" hasError="{!v.hasValidationErrors}" >
+                                <aura:iteration items="{!v.listCaseFormSteps}" var="pageFormStep" indexVar="index">
+                                    <lightning:progressStep label="{!pageFormStep.Name}" value="{!pageFormStep.Id}"/>
+                                </aura:iteration>    
+                            </lightning:progressIndicator>
+                        </aura:if>    
+                    </div>   
+                </aura:if>
+            </div>
+            <aura:if isTrue="{!v.currentFormStepId}">
+                <c:F3_LEXCaseFormStep aura:id="currentCaseFormStep" currentStepId="{!v.currentFormStepId}"
+                                      IsFirstStep="{!v.IsFirstStep}" IsLastStep="{!v.IsLastStep}"
+                                      parentCaseRecordId="{!v.recordId}"/>
+            </aura:if>    
+        </div>
+    </div>    
+</aura:component>

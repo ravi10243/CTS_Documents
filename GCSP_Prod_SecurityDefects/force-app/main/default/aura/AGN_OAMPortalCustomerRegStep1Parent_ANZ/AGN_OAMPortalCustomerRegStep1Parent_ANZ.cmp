@@ -1,0 +1,62 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="AGN_OAMPortalCustomerRegStep2Controller">
+    <!--<ltng:require scripts="{!$Resource.AGN_CustomerPortal + '/js/function.js'}"/>-->
+    <aura:attribute name="language" type="String" />
+    <aura:attribute name="countryCode" type="string"/>
+    <aura:attribute name="isCompleted" type="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="formHeaderChange" action="{!c.onSelectListChange}" event="c:AGN_CustRegHdr_Evt"/>
+    <aura:handler name="messageStep1Completion" action="{!c.onStep1Completed}" event="c:AGN_CustRegOnStep1Completed_Evt"/>
+    <aura:attribute name="isChrome" type="boolean" default="false"/>
+    <aura:handler name="refreshChildComponent" event="c:RefreshChild" action="{!c.refreshChild}" />
+    
+    <div class="container"> 
+        <!--  <aura:if isTrue="{!v.isChrome}"> -->
+        <div class="hd">{!$Label.c.AGN_OAM_Header_CustomerRegistration}</div>        
+        <aura:if isTrue="{!and(!v.isCompleted, v.countryCode != '')}">            
+            <c:AGN_OAMPortalCustomerRegCountryHeader_ANZ/>             
+        </aura:if>
+        <div class="basic_details">
+            <li class="basic_detail">
+                <aura:if isTrue="{!!v.isCompleted}">
+                    <div class="no_det active">
+                        <span>1</span>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.isCompleted}">
+                    <div class="no_det active complete-step">
+                        <img  src="{!$Resource.AGN_CustomerPortal + '/images/tick.png'}" styleClass="tick"/>
+                    </div>
+                </aura:if>                
+                <span class="no_det_text">{!$Label.c.AGN_OAM_Body_BasicInformation}</span>
+                
+                <c:AGN_OAMPortalCustomerRegStep1_ANZ aura:id="formStep1" /> 
+                
+                
+                <aura:if isTrue="{!v.isCompleted}">
+                    <!--<div class="success_com com_fully"><span>{!$Label.c.AGN_OAM_Body_Confirm_Youhave} {!$Label.c.AGN_OAM_Body_Confirm_SuccessfullyCompleted} {!$Label.c.AGN_OAM_Body_Confirm_FirstStep}</span></div>-->
+                    <div class="com_fully"><span>{!$Label.c.AGN_OAM_Body_Confirm_Youhave}&nbsp;{!$Label.c.AGN_OAM_Body_Confirm_SuccessfullyCompleted}&nbsp;{!$Label.c.AGN_OAM_Body_Confirm_FirstStep}</span></div>
+                    <div class="divider"></div>
+                </aura:if>
+            </li>
+            <li>
+                <div class="no_det">2</div><span class="no_det_text">{!$Label.c.AGN_OAM_Body_AddressDetail}</span>
+                <div class="divider"></div>
+            </li>
+            <li>
+                <div class="no_det">3</div><span class="no_det_text">{!$Label.c.AGN_OAM_Body_UploadDocuments}</span>                
+                <div class="divider"></div>
+            </li>
+            <li>
+                <div class="no_det">4</div><span class="no_det_text">{!$Label.c.AGN_OAM_Body_Confirmation}</span>
+            </li>
+        </div>
+        <!-- Display message for current browser is not in Chrome -->
+        <aura:set attribute="else">
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                <span class="slds-assistive-text">error</span>                     
+                <h2>This application is supported on Google Chrome browser only.</h2>
+            </div>
+        </aura:set>
+        <!-- </aura:if> -->
+    </div>
+</aura:component>

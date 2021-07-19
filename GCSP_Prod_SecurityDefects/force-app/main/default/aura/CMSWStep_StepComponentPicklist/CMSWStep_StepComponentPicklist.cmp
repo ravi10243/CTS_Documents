@@ -1,0 +1,60 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                access="global"
+                controller="MDFormBuilderController">
+    
+    <!-- Attributes -->
+    <aura:attribute name="renderMode" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="selectedLocalisedStepComponentId" type="String" />
+    <aura:attribute name="listLocalisedMDStepComponent" type="Object" />
+    
+    <!-- stores values of picklist element derived from JSON-->
+    <aura:attribute name="picklistValues" type ="List" />
+    <!-- Added by Mona start -->
+    <!-- Aura Method -->
+    <aura:method name="saveComponentData">
+        <aura:attribute name="isSuccess" type="Boolean"/>
+    </aura:method>
+    <!-- Added by Mona end -->
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    <!-- Componennt Body -->
+    
+    <lightning:card iconName="custom:custom15" title="Localised picklist options, Yes !!">
+        <div class="slds-p-around_small">
+            <aura:iteration items="{!v.listLocalisedMDStepComponent}" var="localRecord">
+                <div class="slds-p-top_small">
+                    <!-- Show Record Title -->
+                    <c:CMS_RecordTitleBox>
+                        <aura:set attribute="box">
+                            L
+                        </aura:set>
+                        <aura:set attribute="boxtitle">
+                            {!localRecord.Language__c}
+                        </aura:set>
+                        <aura:set attribute="boxaction">
+                            <lightning:buttonIcon variant="bare" iconName="utility:edit"  size="small" name="{!localRecord}"  value="{!localRecord.Id}" title="Edit Language" onclick="{!c.OnEdit}"/>
+                        </aura:set>
+                    </c:CMS_RecordTitleBox>
+                    <aura:if isTrue="{!v.selectedLocalisedStepComponentId==localRecord.Id}">
+                        <div class="slds-m-around_small">
+                            <aura:if isTrue ="{!v.picklistValues!=null}" >
+                                <!--** Iteration for picklist values  **-->
+                                <aura:iteration items="{!v.picklistValues}" var  ="item">
+                                    <div class="slds-box slds-m-top_x-small">
+                                        <lightning:input label="{!item.OptionLabel}" value="{!item.TranslatedLabel}" />
+                                        <lightning:input type="checkbox" label="Include?" checked="{!item.Include}" />
+                                    </div>
+                                </aura:iteration>
+                            </aura:if>
+                        </div>    
+                        <div class="slds-align_absolute-center slds-p-top_small">
+                            <lightning:button label="Cancel" title="Cancel" onclick="{!c.OnCloseProperty}" />
+                            <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.OnSaveTranslatedPicklist}" />
+                        </div>
+                    </aura:if>
+                </div>    
+            </aura:iteration>
+        </div>    
+    </lightning:card>    
+</aura:component>

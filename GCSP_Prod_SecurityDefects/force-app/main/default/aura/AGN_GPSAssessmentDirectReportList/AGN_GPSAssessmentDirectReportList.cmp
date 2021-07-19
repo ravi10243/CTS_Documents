@@ -1,0 +1,68 @@
+<aura:component controller="GPSAssessmentToolController">
+
+    <!-- Static Resources -->
+    <ltng:require styles="{!$Resource.gps_common_styles}" />
+
+    <!-- Public Attributes -->
+    <aura:attribute name="userId" type="Id" />
+    <aura:attribute name="wrapperList" type="GPSAssessmentToolController.wrapperClass"/>
+    <!-- Private Attributes -->
+    <aura:attribute name="directReports" type="User[]" access="private" />
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="assessments" type="Account_GPS_Assessment__c[]" access="private" />
+    <aura:attribute name="page" type="integer" description="using for store page Number"/>
+    <aura:attribute name="pages" type="integer" description="using for store All Pages page Number"/>
+    <aura:attribute name="total" type="integer" description="total records count store "/>
+
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:if isTrue="{!v.isOpen == false}">
+        <c:AGN_GPSAssessmentHeader showBanner="true" />
+        <h2><c:sobjectLabel sobjectName="GPS_Assessment__c" variant="labelPlural" /></h2>
+        <table class="gps-table" role="grid">
+            <thead>
+                <tr>
+                    <td role="gridcell"><c:fieldLabel sobjectName="User" fieldName="Name" /></td>
+                    <td role="gridcell"><c:fieldLabel sobjectName="User" fieldName="Email" /></td>
+                    <td role="gridcell"><c:sobjectLabel sobjectName="UserRole" /></td>
+                    <td role="gridcell">{!$Label.c.Number_of_Accounts_Customers}</td>
+                    <td role="gridcell">{!$Label.c.Number_of_Assessments}</td>
+                </tr>
+            </thead>
+
+            <aura:iteration var="directReport" items="{!v.wrapperList}" indexVar="indx">
+                <tr>
+                    <td role="gridcell">
+                        <a onclick="{!c.showUserAssessments}" id="{!directReport.objUser.Id}">{!directReport.objUser.Name}</a>
+                    </td>
+                    <td role="gridcell">{!directReport.objUser.Email}</td>
+                    <td role="gridcell">{!directReport.objUser.UserRole.Name}</td>
+                    <td role="gridcell">{!directReport.assessmentCount}</td>
+                    <td role="gridcell">{!directReport.gpsAssessmentCount}</td>
+                </tr>
+            </aura:iteration>
+        </table>
+        <div class="slds-page-header" role="banner">
+            <ui:inputSelect aura:id="recordSize" label="Records Per Page: " change="{!c.onSelectChange}">
+                <ui:inputSelectOption text="25" label="25" value="true"/>
+                <ui:inputSelectOption text="50" label="50"/>
+                <ui:inputSelectOption text="100" label="100"/>
+            </ui:inputSelect>
+            <aura:if isTrue="{!v.page &gt; 1}">
+               <ui:button press="{!c.previousPage}" label="Previous Page"/>
+            </aura:if>
+            <aura:if isTrue="{!v.page &lt; v.pages}">
+               <ui:button aura:id="nextbtn" press="{!c.nextPage}" label="Next Page"/>
+            </aura:if>
+
+             {!v.total}&nbsp;<c:sobjectLabel sobjectName="User" variant="labelPlural" /> • Page {!v.page} / {!v.pages}
+
+          </div>
+     </aura:if>
+     <aura:if isTrue="{!v.isOpen}">
+         <lightning:button label="{!$Label.c.Back_To_Rep_List}" onclick="{!c.closeModal}" />
+         <c:AGN_GPSAssessmentAssignmentList aura:id="assessmentAssignments" />
+     </aura:if>
+
+</aura:component>

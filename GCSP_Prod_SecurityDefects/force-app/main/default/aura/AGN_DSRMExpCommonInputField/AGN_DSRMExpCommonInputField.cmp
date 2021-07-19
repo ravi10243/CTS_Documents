@@ -1,0 +1,59 @@
+<aura:component
+    implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+    access="global">
+
+    <!-- Attributes -->
+    <aura:attribute name="questionId" type="String" required="true" />
+    <aura:attribute name="questionName" type="String" required="true" />
+    <aura:attribute name="questionDisplayType" type="String" required="true" />
+    <aura:attribute name="picklistOptions" type="Object[]" />
+    <aura:attribute name="required" type="Boolean" default="false" />
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="readonly" type="Boolean" default="false" />
+    <aura:attribute name="fieldMetadata" type="Object" access="private" />
+    <aura:attribute name="fieldValue" type="Object" access="public" />
+    <aura:attribute name="fieldValueChb" type="List" access="public" />
+    <aura:attribute name="answerChoices" type="List" default="[]" />
+
+    <!-- aura method -->
+    <aura:method name="checkReportValidity" action="{!c.showReportValidity}" access="public"></aura:method>
+
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <div class="slds-col slds-size_12-of-12 slds-m-top_x-small slds-p-left_x-large slds-p-right_x-large slds-m-bottom_x-small">
+        <div class="outer_padding">
+
+            <!-- TEXT -->
+            <aura:if isTrue="{!v.questionDisplayType == 'TEXT'}">
+                <lightning:input aura:id="inputField" value="{!v.fieldValue}" label="{!v.questionName}"
+                    onchange="{!c.handleFieldValueChanged}" maxlength="{!v.fieldMetadata.maxLength}" required="{!v.required}"
+                    disabled="{!v.readonly}" />
+            </aura:if>
+            
+            <!-- PICKLIST -->
+            <aura:if isTrue="{!v.questionDisplayType == 'PICKLIST'}">
+                <lightning:select aura:id="inputField" label="{!v.questionName}" value="{!v.fieldValue}"
+                    required="{!v.required}" disabled="{!v.readonly}" onchange="{!c.handleFieldValueChanged}">
+                    <aura:iteration items="{!v.picklistOptions}" var="picklistOption">
+                        <option text="{!picklistOption.label}" value="{!picklistOption.value}" />
+                    </aura:iteration>
+                </lightning:select>
+            </aura:if>
+            
+            <!-- RADIOGROUP -->
+            <aura:if isTrue="{!v.questionDisplayType == 'RADIOGROUP'}">
+                <lightning:radioGroup aura:id="inputField" label="{!v.questionName}" options="{!v.picklistOptions}"
+                    value="{!v.fieldValue}" type="radio" onchange="{!c.handleFieldValueChanged}" required="{!v.required}"
+                    disabled="{!v.readonly}" class="customRadioCls" />
+            </aura:if>
+            
+            <!-- CHECKBOXGROUP -->
+            <aura:if isTrue="{!v.questionDisplayType == 'CHECKBOXGROUP'}">
+                <lightning:checkboxGroup aura:id="inputField" label="{!v.questionName}" options="{!v.picklistOptions}"
+                    value="{!v.fieldValueChb}" onchange="{!c.handleFieldValueChanged}" required="{!v.required}"
+                    disabled="{!v.readonly}" />
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

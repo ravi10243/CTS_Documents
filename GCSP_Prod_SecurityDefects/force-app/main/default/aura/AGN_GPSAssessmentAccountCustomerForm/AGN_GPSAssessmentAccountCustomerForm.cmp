@@ -1,0 +1,393 @@
+<aura:component controller="GPSAssessmentToolController">
+
+    <!-- Static Resources -->
+    <ltng:require styles="{!$Resource.gps_common_styles}" />
+
+    <!-- Public Attributes -->
+    <aura:attribute name="userId" type="Id" />
+    <aura:attribute name="assessmentId" type="Id" />
+    <aura:attribute name="accountAssessmentId" type="Id" />
+    <aura:attribute name="wrapperList" type="GPSAssessmentToolController.AccountCustomerAssessmentWrapper" />
+    <aura:attribute name="accountList" type="Account[]" />
+    <aura:attribute name="isOpen" type="Boolean" default="false" />
+
+    <!-- Private Attributes -->
+    <aura:attribute name="disableForm" type="Boolean" access="private" default="false" />
+    <aura:attribute name="allowAccountCustomerDeletions" type="Boolean" default="false" />
+    <!-- PMO 3408: GPS Assessment: Start: Added for questions -->
+    <aura:attribute name="gpsAssessment" type="GPS_Assessment__c" access="private" />
+    <aura:attribute name="showBusinessSize" type="Boolean" access="private" default="true" />
+    <aura:attribute name="showAGNShare" type="Boolean" access="private" default="true" />
+    <aura:attribute name="showCustomQuestions" type="Boolean" access="private" default="true" />
+    <aura:attribute name="stakeholderCapture" type="Boolean" default="false" />
+    <aura:attribute name="consentForDigitalCapture" type="Boolean" default="false" />
+    <aura:attribute name="digitalOnlyCapture" type="Boolean" default="false" />
+    <aura:attribute name="businessSizeQstnMandatory" type="Boolean" default="false" />
+    <aura:attribute name="agnUsageQstnMandatory" type="Boolean" default="false" />
+    <aura:attribute name="customQuestion1Availability" type="Boolean" default="false" />
+    <aura:attribute name="customQuestion2Availability" type="Boolean" default="false" />
+    <aura:attribute name="customQuestion3Availability" type="Boolean" default="false" />
+    <aura:attribute name="customQuestion4Availability" type="Boolean" default="false" />
+    <aura:attribute name="customQuestionColspan" type="Integer" access="private" default="0" />
+    <aura:attribute name="custPicklistOptionsCustomQuestion1" type="Object[]" access="private" />
+    <aura:attribute name="custPicklistOptionsCustomQuestion2" type="Object[]" access="private" />
+    <aura:attribute name="custPicklistOptionsCustomQuestion3" type="Object[]" access="private" />
+    <aura:attribute name="custPicklistOptionsCustomQuestion4" type="Object[]" access="private" />
+	<!-- PMO 3408: GPS Assessment: End: Added for questions -->
+    
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.accountAssessmentId}" action="{!c.doInit}" />
+
+    <!-- Markup -->
+    <aura:if isTrue="{!v.disableForm == false}">
+        <lightning:buttonGroup >
+            <lightning:button label="{!$Label.c.Add + ' ' + $Label.c.Customer}" onclick="{!c.addCustomer}" />
+            <lightning:button label="{!$Label.c.Save}" class="gps-primary-action" onclick="{!c.save}" />
+        </lightning:buttonGroup>
+    </aura:if>
+
+    <!-- <table class="slds-table slds-table_bordered slds-table_striped slds-max-medium-table_stacked-horizontal formTable">-->
+    <!-- <div class="floatThead-container" style="overflow-x:scroll; overflow-y:auto;-webkit-overflow-scrolling:touch; max-height:60vw;"> -->
+    <div class="floatThead-container" style="overflow-x:scroll; overflow-y:hidden;-webkit-overflow-scrolling:touch; max-height:60vw;">
+        <!-- PMO 3408: GPS Enhancement -->
+        <!-- <table class="slds-table slds-table_bordered slds-table_cell-buffer"> -->
+        <table class="slds-table slds-table_bordered slds-table_striped slds-max-medium-table_stacked-horizontal formTable">
+            <thead >
+                
+                <!-- PMO 3408: GPS Enhancement: Start: Contribution (Percentage) header removed -->
+                <!--  
+                <tr rowspan="2">
+
+                    <td class="gps-header" colspan="4"></td> -->
+                   <!-- <td class="gps-header" colspan="2">Contribution (Percentage)</td>-->
+                    <!-- <td title="Contribution (Percentage)" onclick="{!c.toggleBusinessSize}" rowspan="3" colspan="2" class="gps-header gps-header-business-size">{!$Label.c.Contribution_Percentage}</td>
+                    <td class="gps-header"></td>
+
+                </tr>
+                -->
+                <!-- PMO 3408: GPS Enhancement: End: Contribution (Percentage) header removed -->
+                
+                <tr></tr>
+                <tr></tr>
+                <!--PMO 3408: GPS Assessment -->
+                <!-- <tr style="border:1px solid gray;"> -->
+                <tr style="topHeading">
+                    <!--
+                 	<th scope="col">
+                     <c:fieldLabel sobjectName="Account" fieldName="Veeva_Id_AGN__c" showHelpText="true" />
+                      </th>
+                    <th scope="col">{!$Label.c.Customer}</th>
+					-->
+                    <!-- <th scope="col">Account Name</th> -->
+                    
+                    <th scope="col" style="border:none"></th>
+                    <th scope="col" style="border:none"></th>
+                    <th scope="col" style="border:none"></th>
+                    <aura:if isTrue="{!v.stakeholderCapture}"><td class="gps-header" /></aura:if>
+                    <!-- PMO 3408: GPS Assessment: Start: Added Digital fields -->
+                        <aura:if isTrue="{!v.digitalOnlyCapture}"><td class="gps-header" /></aura:if>
+                        <aura:if isTrue="{!v.consentForDigitalCapture}"><td class="gps-header" /></aura:if>
+					<!-- PMO 3408: GPS Assessment: End: Added Digital fields -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Start: Account-Customer question addition -->
+                    <!--
+                    <aura:if isTrue="{!v.stakeholderCapture}">
+                    	<th scope="col"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="KOL_AGN__c" /></th>
+                    </aura:if>
+                    <aura:if isTrue="{!v.digitalOnlyCapture}">
+                        <th scope="col"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Digital_Only_Acc_Cust_Assessment_AGN__c" /></th>
+                    </aura:if>
+                	<aura:if isTrue="{!v.consentForDigitalCapture}">
+                    	<th scope="col"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Consent_for_Digital_Acc_Cust_Assessment__c" /></th>
+                    </aura:if>
+                    -->
+                    
+                    <!-- PMO 3408: GPS Assessment: Business Size -->
+                    <aura:if isTrue="{!and(v.showBusinessSize == false, v.businessSizeQstnMandatory)}">
+                        <td title="Business Size" onclick="{!c.toggleBusinessSize}" rowspan="3" class="gps-header gps-header-collapsed gps-header-business-size">&#9658;</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showBusinessSize, v.businessSizeQstnMandatory)}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleBusinessSize}" class="gps-header gps-header-business-size">&#9668; {!$Label.c.Business_Size}</td>
+                    </aura:if>
+                    
+                    <!-- PMO 3408: GPS Assessment: AGN Share -->
+                    <aura:if isTrue="{!v.showAGNShare == false}">
+                        <td  title="AGN Share" onclick="{!c.toggleAGNShare}" rowspan="3" class="gps-header gps-header-collapsed gps-header-agn-share">&#9658;</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showAGNShare, v.agnUsageQstnMandatory == True)}">
+                        <td colspan="{!v.colspan}" onclick="{!c.toggleAGNShare}" class="gps-header gps-header-agn-share">&#9668; {!$Label.c.AGN_Usage}</td>
+                    </aura:if>
+                    
+                    <!-- Custom Questions -->
+                    <aura:if isTrue="{!v.showCustomQuestions == false}">
+                        <td  title="{!$Label.c.Additional_Questions}" onclick="{!c.toggleCustomQuestions}" rowspan="3" class="gps-header gps-header-collapsed gps-header-custom-question">&#9658;</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestionColspan > 0)}">
+                        <td colspan="{!v.customQuestionColspan}" onclick="{!c.toggleCustomQuestions}" class="gps-header gps-header-custom-question">&#9668; {!$Label.c.Additional_Questions}</td>
+                    </aura:if>
+                    
+                    <!--
+                    <th scope="col"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Customer_Contribution_AGN__c" /></th>
+                    <th scope="col">{!$Label.c.Total}</th>
+                    <th scope="col"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Rationale_AGN__c" /></th>
+                    <th scope="col">{!$Label.c.Total_Practice_Size}</th>
+					-->
+                    <!--
+                    <aura:if isTrue="{!v.businessSizeQstnMandatory}">
+                        <th scope="col">Business Size</th>
+                        <th scope="col">Business Size Response</th>  
+                    </aura:if>
+                    <aura:if isTrue="{!v.agnUsageQstnMandatory}">
+                        <th scope="col">AGN Usage</th>
+                        <th scope="col">AGN Usage Response</th>
+                    </aura:if>
+                    <aura:if isTrue="{!v.customQuestion1Availability}">
+                        <th scope="col">Additional Question 1</th>
+                        <th scope="col">Additional Question 1 Response</th>
+                    </aura:if>
+                    <aura:if isTrue="{!v.customQuestion2Availability}">
+                        <th scope="col">Additional Question 2</th>
+                        <th scope="col">Additional Question 2 Response</th>    
+                    </aura:if>
+                    <aura:if isTrue="{!v.customQuestion3Availability}">
+                        <th scope="col">Additional Question 3</th>
+                        <th scope="col">Additional Question 3 Response</th>    
+                    </aura:if>
+                    <aura:if isTrue="{!v.customQuestion4Availability}">
+                        <th scope="col">Additional Question 4</th>
+                        <th scope="col">Additional Question 4 Response</th>    
+                    </aura:if>
+					--> 
+                    <!-- PMO 3408: GPS Assessment: End: Account-Customer question addition -->
+                </tr>
+                <!-- PMO 3408: GPS Assessment: End -->
+                <tr style="questionHeading">
+                    
+                    <th scope="col" style="border:none"></th>
+                    <th scope="col" style="border:none"></th>
+                    <th scope="col" style="border:none"></th>
+                    <!-- PMO 3408: GPS Assessment: Start: Added Digital fields -->
+                    <aura:if isTrue="{!v.stakeholderCapture}"><td class="gps-header" /></aura:if>
+                    <aura:if isTrue="{!v.digitalOnlyCapture}"><td class="gps-header" /></aura:if>
+                    <aura:if isTrue="{!v.consentForDigitalCapture}"><td class="gps-header" /></aura:if>
+					<!-- PMO 3408: GPS Assessment: End: Added Digital fields -->
+                    
+                    <aura:if isTrue="{!and(v.showBusinessSize, v.businessSizeQstnMandatory)}">
+                        <td colspan="{!v.colspan}" class="gps-header gps-header-question">
+                            {!v.gpsAssessment.Business_Size_Question_Override_AGN__c != null ? v.gpsAssessment.Business_Size_Question_Override_AGN__c : v.gpsAssessment.Business_Size_Question_AGN__c}
+                        </td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showAGNShare, v.agnUsageQstnMandatory == True)}">
+                        <td colspan="{!v.colspan}" class="gps-header gps-header-question">
+                            {!v.gpsAssessment.AGN_Share_Absolute_Question_Override_AGN__c != null ? v.gpsAssessment.AGN_Share_Absolute_Question_Override_AGN__c : v.gpsAssessment.AGN_Share_Absolute_Question_AGN__c}
+                        </td>
+                    </aura:if>
+                    <!-- Custom Questions -->
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion1Availability)}">
+                        <td class="gps-header gps-header-question">{!v.gpsAssessment.Custom_Question_1_AGN__c}</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion2Availability)}">
+                        <td class="gps-header gps-header-question">{!v.gpsAssessment.Custom_Question_2_AGN__c}</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion3Availability)}">
+                        <td class="gps-header gps-header-question">{!v.gpsAssessment.Custom_Question_3_AGN__c}</td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion4Availability)}">
+                        <td class="gps-header gps-header-question">{!v.gpsAssessment.Custom_Question_4_AGN__c}</td>
+                    </aura:if>
+                </tr>
+                <tr style="subHeading">
+                    <th scope="col"></th>
+                 	<th scope="col">
+                     <c:fieldLabel sobjectName="Account" fieldName="Veeva_Id_AGN__c" showHelpText="true" />
+                      </th>
+                    <th scope="col">{!$Label.c.Customer}</th>
+                    <!-- PMO 3408: GPS Assessment: Start: Account-Customer question addition -->
+                    <aura:if isTrue="{!v.stakeholderCapture}">
+                    	<th scope="col"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="KOL_AGN__c" /></th>
+                    </aura:if>
+                    <aura:if isTrue="{!v.digitalOnlyCapture}">
+                        <th scope="col"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Digital_Only_Acc_Cust_Assessment_AGN__c" /></th>
+                    </aura:if>
+                	<aura:if isTrue="{!v.consentForDigitalCapture}">
+                    	<th scope="col"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Consent_for_Digital_Acc_Cust_Assmnt_AGN__c" /></th>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showBusinessSize, v.businessSizeQstnMandatory)}">
+                        <td class="gps-subheader-business-size"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Business_Size_Acc_Cust_Assessment_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showAGNShare, v.agnUsageQstnMandatory == True)}">
+                        <td class="gps-subheader-agn-share"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="AGN_Usage_Acc_Cust_Assessment_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                    <!-- Custom Questions -->
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion1Availability)}">
+                        <td class="gps-subheader-custom-question"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Custom_Question_1_Response_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion2Availability)}">
+                        <td class="gps-subheader-custom-question"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Custom_Question_2_Response_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion3Availability)}">
+                        <td class="gps-subheader-custom-question"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Custom_Question_3_Response_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion4Availability)}">
+                        <td class="gps-subheader-custom-question"><c:fieldLabel sobjectName="Account_Customer_GPS_Assessment_AGN__c" fieldName="Custom_Question_4_Response_AGN__c" showHelpText="true" /></td>
+                    </aura:if>
+                </tr>
+            </thead>
+            <tbody style="border:1px solid gray;">
+                <aura:iteration var="accountCustomerAssessment" items="{!v.wrapperList.accountCustomerAssessments}" indexVar="indx">
+                    <tr>
+                        <td role="gridcell">
+                            <aura:if isTrue="{!v.allowAccountCustomerDeletions}">
+                                <lightning:buttonIcon iconName="utility:delete" class="delete"
+                                    onclick="{!c.deleteAccountCustomerAssessment}" value="{!accountCustomerAssessment.Id}"
+                                />
+                            </aura:if>
+                        </td>
+                        <td role="gridcell">{!accountCustomerAssessment.Customer_AGN__r.Veeva_Id_AGN__c} </td>
+                        <td role="gridcell">
+                            <a href="{! '/' + accountCustomerAssessment.Customer_AGN__c}" target="_blank">{!accountCustomerAssessment.Customer_AGN__r.Name}</a>
+                        </td>
+                        <!-- <td role="gridcell">{!accountCustomerAssessment.Customer_AGN__r.Primary_Parent_vod__r.Name}</td> -->
+                        
+                        <!-- PMO 3408: GPS Assessment: Start: Account-Customer question addition -->
+                        <aura:if isTrue="{!v.stakeholderCapture}">
+                            <td role="gridcell">
+                                <c:inputField sobjectName="Account_Customer_GPS_Assessment_AGN__c" record="{!accountCustomerAssessment}" fieldName="KOL_AGN__c"
+                                    variant="bare" disabled="{!v.disableForm}" />
+                            </td>
+                        </aura:if>
+                        <!--
+                        <td role="gridcell">
+                            <c:inputField sobjectName="Account_Customer_GPS_Assessment_AGN__c" record="{!accountCustomerAssessment}" fieldName="Customer_Contribution_AGN__c"
+                                variant="bare" disabled="{!v.disableForm}" />
+                        </td>
+                        <td role="gridcell" class="{! 'center ' + if(accountCustomerAssessment.Total_Account_Contribution_AGN__c != 100, 'red', '')}">
+                            {!accountCustomerAssessment.Total_Account_Contribution_AGN__c}
+                        </td>
+                        <td role="gridcell">
+                            <c:inputField sobjectName="Account_Customer_GPS_Assessment_AGN__c" record="{!accountCustomerAssessment}" fieldName="Rationale_AGN__c"
+                                variant="bare" disabled="{!v.disableForm}" />
+                        </td>
+                        <td role="gridcell" style="text-align:center;">
+                            <ui:outputNumber value="{!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.Business_Size_Current_AGN__c}" />
+                        </td>
+                        -->
+                        <aura:if isTrue="{!v.digitalOnlyCapture}">
+                            <td role="gridcell" >
+                                <c:inputField sobjectName="Account_Customer_GPS_Assessment_AGN__c" record="{!accountCustomerAssessment}" fieldName="Digital_Only_Acc_Cust_Assessment_AGN__c"
+                                              variant="bare" disabled="{!v.disableForm}" />
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!v.consentForDigitalCapture}">
+                            <td role="gridcell" >
+                                <c:inputField sobjectName="Account_Customer_GPS_Assessment_AGN__c" record="{!accountCustomerAssessment}" fieldName="Consent_for_Digital_Acc_Cust_Assmnt_AGN__c"
+                                              variant="bare" disabled="{!v.disableForm}" />
+                            </td>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.showBusinessSize == false}"><td class="gps-header gps-header-collapsed gps-header-business-size"/></aura:if>
+                        <aura:if isTrue="{!and(v.showBusinessSize, v.businessSizeQstnMandatory)}">
+                            <!--
+                            <td role="gridcell">
+                                {!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Business_Size_Question_Override_AGN__c != null ? accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Business_Size_Question_Override_AGN__c : accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Business_Size_Question_AGN__c}
+                            </td>
+							-->
+                            <td role="gridcell">
+                                <ui:inputNumber value="{!accountCustomerAssessment.Business_Size_Acc_Cust_Assessment_AGN__c}" class="slds-input" disabled="{!v.disableForm}" />
+                            </td>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.showAGNShare == false}"><td class="gps-header gps-header-collapsed gps-header-agn-share"/></aura:if>
+                        <aura:if isTrue="{!and(v.showAGNShare, v.agnUsageQstnMandatory)}">  
+                            <!--
+                            <td role="gridcell">
+                                {!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.AGN_Share_Absolute_Question_Override_AGN__c != null ? accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.AGN_Share_Absolute_Question_Override_AGN__c : accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.AGN_Share_Absolute_Question_AGN__c}
+                            </td>
+							-->
+                            <td role="gridcell">
+                                <ui:inputNumber value="{!accountCustomerAssessment.AGN_Usage_Acc_Cust_Assessment_AGN__c}" class="slds-input" disabled="{!v.disableForm}" />
+                            </td>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.showCustomQuestions == false}"><td class="gps-header gps-header-collapsed gps-header-custom-question"/></aura:if>
+                        <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion1Availability)}">
+                            <!--
+                            <td role="gridcell"> 
+                                {!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Custom_Question_1_AGN__c} 
+                            </td>
+                            -->
+                            <td role="gridcell">                            
+                                <c:inputField sobjectName="Account_Customer_GPS_Assessment_AGN__c" record="{!accountCustomerAssessment}" fieldName="Custom_Question_1_Response_AGN__c"
+                                              variant="bare" disabled="{!v.disableForm}" displayType="{!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Custom_Question_1_Type_AGN__c}"
+                                              picklistOptions="{!v.custPicklistOptionsCustomQuestion1}"/>
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion2Availability)}">
+                            <!--
+                            <td role="gridcell"> 
+                                {!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Custom_Question_2_AGN__c} 
+                            </td>
+                            -->
+                            <td role="gridcell">                            
+                                <c:inputField sobjectName="Account_Customer_GPS_Assessment_AGN__c" record="{!accountCustomerAssessment}" fieldName="Custom_Question_2_Response_AGN__c"
+                                              variant="bare" disabled="{!v.disableForm}" displayType="{!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Custom_Question_2_Type_AGN__c}"
+                                              picklistOptions="{!v.custPicklistOptionsCustomQuestion2}"/>
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion3Availability)}">
+                            <!--
+                            <td role="gridcell"> 
+                                {!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Custom_Question_3_AGN__c} 
+                            </td>
+                            -->
+                            <td role="gridcell">                            
+                                <c:inputField sobjectName="Account_Customer_GPS_Assessment_AGN__c" record="{!accountCustomerAssessment}" fieldName="Custom_Question_3_Response_AGN__c"
+                                              variant="bare" disabled="{!v.disableForm}" displayType="{!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Custom_Question_3_Type_AGN__c}"
+                                              picklistOptions="{!v.custPicklistOptionsCustomQuestion3}"/>
+                            </td>
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.showCustomQuestions, v.customQuestion4Availability)}">
+                            <!--
+                            <td role="gridcell"> 
+                                {!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Custom_Question_4_AGN__c} 
+                            </td>
+                            -->
+                            <td role="gridcell">                            
+                                <c:inputField sobjectName="Account_Customer_GPS_Assessment_AGN__c" record="{!accountCustomerAssessment}" fieldName="Custom_Question_4_Response_AGN__c"
+                                              variant="bare" disabled="{!v.disableForm}" displayType="{!accountCustomerAssessment.Account_GPS_Assessment_AGN__r.GPS_Assessment_AGN__r.Custom_Question_4_Type_AGN__c}"
+                                              picklistOptions="{!v.custPicklistOptionsCustomQuestion4}"/>
+                            </td>
+                        </aura:if>
+                        <!-- PMO 3408: GPS Assessment: End: Account-Customer question addition -->
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+
+    <c:modal title="{!$Label.c.Add + ' ' + $Label.c.Customer}" isOpen="{!v.isOpen}"
+        primaryAction="{!c.createAccountCustomers}" primaryActionClass="gps-primary-action" primaryActionLabel="{!$Label.c.Add + ' ' + $Label.c.Customer}"
+    >
+        <aura:set attribute="body">
+            <table class="slds-table slds-table_bordered slds-table_striped slds-max-medium-table_stacked-horizontal">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">{!$Label.c.Customer}</th>
+                        <th scope="col"><c:fieldLabel sobjectName="Account" fieldName="Target__c" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.accountList}" var="account">
+                        <tr>
+                            <td><input type="checkbox" name="checkbox" data-customerid="{!account.Id}" /></td>
+                            <td><a href="{!'/' + account.Id}" target="_blank">{!account.Name}</a></td>
+                            <td><ui:outputCheckbox value="{!account.Target__c}" /></td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </aura:set>
+    </c:modal>
+</aura:component>

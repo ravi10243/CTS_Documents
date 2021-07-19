@@ -1,0 +1,47 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="AGN_OAMPortalAccountDetailController"  access="global" >
+    <aura:attribute name="customer" type="Contact"/>
+   <!-- <aura:attribute name="customer" type="Account"/> -->
+    <aura:attribute name="custConfig" type="Customer_Type_Configuration_AGN__c"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <div class="cus_details acc_det">
+        <section class="content bgcolor-7" >
+            <span class="input input--nariko inputtextValue">
+                <ui:outputText value="{!v.customer.Account.Country_vod__r.AGN_Country_Name__c}" class="input__field input__field--nariko inputtextValue" />                
+                <label class="input__label input__label--nariko" for="input_account">
+                    <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Header_Country}</span>
+                </label>
+            </span>
+            <span class="input input--nariko inputtextValue">
+                <ui:outputText value="{!v.custConfig.Category_Label_AGN__c}" class="input__field input__field--nariko inputtextValue" />                
+                <label class="input__label input__label--nariko" for="input_cus_type">
+                    <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_CustomerType}</span>
+                </label>
+            </span>
+            <span class="input input--nariko inputtextValue">
+            <!--    value="{!v.customer.Primary_Parent_vod__r.Customer_Sub_Category_AGN__c}" -->
+                <ui:outputText value="{!v.custConfig.Sub_Category_Label_AGN__c}" class="input__field input__field--nariko inputtextValue" />               
+                <label class="input__label input__label--nariko" for="input_cus_sub_type">
+                    <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_SubType}</span>
+                </label>
+            </span>            
+            <span class="input input--nariko inputtextValue">
+                <ui:outputText value="{!v.customer.LastName}" class="input__field input__field--nariko inputtextValue" />                
+                <label class="input__label input__label--nariko" for="input_surname">
+                    <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Surname}</span>
+                </label>
+            </span>
+            <span class="input input--nariko inputtextValue">
+                <ui:outputText value="{!v.customer.FirstName}" class="input__field input__field--nariko inputtextValue" />                
+                <label class="input__label input__label--nariko" for="input_name">
+                    <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Name}</span>
+                </label>
+            </span>
+            <span class="input input--nariko inputtextValue">
+                <ui:outputText value="{!v.customer.Salutation}" class="input__field input__field--nariko inputtextValue" />                
+                <label class="input__label input__label--nariko" for="input_title">
+                    <span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Title}</span>
+                </label>
+            </span>
+        </section>
+    </div>	
+</aura:component>

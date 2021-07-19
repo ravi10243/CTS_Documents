@@ -1,0 +1,61 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="AGN_GCSP_PortalAccountDetailController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="adOktaSSOUrl" type="String"/>
+    <aura:attribute name="registrationCompleted" type="Boolean" default="false"/>
+    <aura:attribute name="hasAlleganDirectAccess" type="Boolean" default="false"/>
+    <!-- <aura:attribute name="category" type="String"/> -->
+    <aura:attribute name="customerAcc" type="Account"/>
+    <!-- Is ICL Enabled -->
+    <aura:attribute name="isClinic" type="Boolean" default="false"/>
+    <aura:attribute name="isICLEnabled" type="Boolean" default="false"/>
+    <aura:attribute name="isICLEnabledInAccount" type="Boolean" default="false"/>
+    <aura:if isTrue="{!v.registrationCompleted}"> 
+        <div class="outer_wrapper">
+            <div class="panel_wrapper">
+                <div class="slds-app-launcher__content slds-p-around_medium">
+                    <div class="slds-section slds-is-open">
+                        <ul class="slds-grid slds-grid_pull-padded slds-wrap">
+                            <li class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <div class="slds-app-launcher__tile" onclick="{!c.goToCustomerUpdate}">
+                                    <div class="slds-app-launcher__tile-figure">
+                                        <span class="slds-avatar slds-avatar_large icon_container">
+                                            <span class="slds-icon_container slds-icon-utility-announcement">
+                                                <lightning:icon iconName="standard:person_account" size="small" alternativeText="Manage Accounts" class="test_icon"/>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="slds-app-launcher__tile-body">
+                                        <a class="panel_title" href="customerupdate">{!$Label.c.AGN_OAM_Manage_My_Account}
+                                        </a>
+                                        <p>{!$Label.c.AGN_OAM_Add_new_or_update_address}
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                             <!-- AD-->                            
+                            <aura:if isTrue="{!and(v.adOktaSSOUrl,v.hasAlleganDirectAccess)}"> 
+                                <li class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <div class="slds-app-launcher__tile" onclick="{!c.goToADOktaSSOUrl}">
+                                        <div class="slds-app-launcher__tile-figure">
+                                            <span class="slds-avatar slds-avatar_large icon_container">
+                                                <span class="slds-icon_container slds-icon-utility-announcement">
+                                                    <lightning:icon iconName="standard:orders" size="small" alternativeText="Place Order" class="test_icon"/>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="slds-app-launcher__tile-body">
+                                            <a class="panel_title" target="_blank" href="{!v.adOktaSSOUrl}">{!$Label.c.AGN_OAM_Place_Order}
+                                            </a>
+                                            <p>{!$Label.c.AGN_OAM_Navigate_To_ProductsPage}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </aura:if>                          
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if> 
+</aura:component>

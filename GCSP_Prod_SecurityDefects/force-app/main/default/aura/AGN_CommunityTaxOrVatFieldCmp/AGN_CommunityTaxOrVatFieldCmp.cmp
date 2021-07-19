@@ -1,0 +1,34 @@
+<aura:component >
+    <aura:attribute name="VatNumberMissing" type="boolean" />
+    <aura:attribute name="TaxNumberMissing" type="boolean" />
+    <aura:attribute name="required" type="Boolean" default="false"/>
+    
+    <aura:attribute name="record" type="Sobject" access="public" />
+    <aura:attribute name="countryCode" type="String"/>   
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+       
+    <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.record.VAT_Number_AGN__c}" data-fieldValueMissing="{!v.VatNumberMissing}" >
+        <ui:inputText aura:id="inputFieldVatNew" value="{!v.record.VAT_Number_AGN__c}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.VatNumberMissing ? 'required' : '')}" blur="{!c.handleBlur}"/>
+        <label class="input__label input__label--nariko">
+            <span class="input__label-content input__label-content--nariko inputHasValue">
+                {!$Label.c.AGN_OAM_VAT_Number}                                    
+            </span>
+        </label>                
+    </span>                    
+    
+     <aura:if isTrue= "{!v.countryCode == 'IT'}">
+        <!--20R1 Major Req No.2795, Helptext for CIF and NIF number for IT--> 
+        <lightning:helptext content="{!$Label.c.AGN_OAM_HelpText_SocialReason}" />
+     </aura:if>
+    <span class="{!'input input--nariko inputtextValue input-identifier' + ' ' +(v.required ? 'required-identifier' : '')}" data-inputFiedlValue="{!v.record.Tax_Number_AGN__c}" data-fieldValueMissing="{!v.TaxNumberMissing}" >
+        <ui:inputText aura:id="inputField" value="{!v.record.Tax_Number_AGN__c}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.TaxNumberMissing ? 'required' : '')}" blur="{!c.handleBlur}"/>
+        <label class="input__label input__label--nariko">
+            <span class="input__label-content input__label-content--nariko inputHasValue">
+                {!$Label.c.AGN_OAM_Tax_Number}                                    
+            </span>
+        </label>                
+    </span>       
+    
+    
+</aura:component>

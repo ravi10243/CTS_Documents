@@ -1,0 +1,98 @@
+<aura:component implements="lightning:availableForFlowScreens,forceCommunity:availableForAllPageTypes" access="global" controller="AGN_OAMPortalDocumentUploaderStep3Utils">
+    <aura:attribute name="custRegId" type="String" description="Customer Registration Record Id" access="global"/>
+    <aura:attribute name="isSingleAttachment" type="Boolean" description="Is this for uploading single file" default="false" access="global"/>
+    <aura:attribute name="singleAttachmentLabel" type="String" description="Customer Registration Record Id" default="Upload Document" access="global"/>
+    <aura:attribute name="singleAttachmentName" type="String" description="File Name of the Attachment" access="global"/>
+    <aura:attribute name="singleAttachmentIsRequired" type="Boolean" description="Customer Registration Record Id" default="false" access="global"/>
+    <aura:attribute name="AttachmentList" type="Object" description="List of Attachments by Customer Group" access="global"/>
+    <aura:attribute name="WebSiteList" type="String[]" description="List of Websites by Customer Group" access="global"/>
+    <aura:attribute name="MissingAttachment" type="Boolean" description="Missing required attachmentas per customer group"  default="false" access="global"/>
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    <aura:attribute name="setIntervalId" type="Integer"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:registerEvent name="isManadteDocmant" type="c:AGN_MandateDocumentUpload_Evt" />    
+    
+    
+    <aura:if isTrue="{!v.showSpinner ? true : false}">
+        <div id="LoaderAnimation">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.50; z-index: 1000; background-color: #e3e3e3;">
+                &nbsp;
+            </div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 25% 45%">
+                
+                <div align="center" class="loader"></div>
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.isSingleAttachment? true:false}">
+        <div class="section_header"><b><aura:if isTrue="{!v.singleAttachmentIsRequired? true:false}"><span style="color:red">*</span></aura:if>{!v.singleAttachmentLabel}</b>           
+            <div class="file-input-box">
+                
+                <label for="single-file">
+                    <span class="photo_id_attach"><br/>
+                        <span class="attach_btn_text">{!$Label.c.AGN_OAM_Upload_File}</span><br/>
+                    </span>
+                </label>
+                
+                <aura:if isTrue="{!v.singleAttachmentName==null ? false : true}"><span class="upload_file">{!v.singleAttachmentName}</span></aura:if>
+                <!-- <input type="file" class="file" aura:id="single-file" data-description= "{!v.singleAttachmentLabel}" id ="single-file" style="visibility:hidden;" onchange="{!c.uploadAttachment}" /> -->
+                
+                <!-- this button is uploading upto 5.7 mb -->
+                <input type="file" class="file" aura:id="{!attachment.inputFileHtmlId}"  data-attachmentid= "{!attachment.file.Id}" data-description= "{!attachment.file.Description}" id ="{!attachment.inputFileHtmlId}" style="visibility:hidden;" onchange="{!c.uploadAttachmentLargeFile}" /> 
+                
+                
+            </div>
+        </div>  
+    </aura:if>   
+    
+    <!--   <br/>
+    <aura:iteration items="{!v.WebSiteList}" var="webSiteUrl">   
+        <aura:if isTrue="{!v.isSingleAttachment? false:true}">
+            <a href="{!webSiteUrl}" target = "_blank">{!webSiteUrl}</a><br/>
+        </aura:if>
+    </aura:iteration> <br/> -->
+    <aura:iteration items="{!v.AttachmentList}" var="attachment">
+        <aura:if isTrue="{!v.isSingleAttachment? false:true}">
+            <div class="section_header"><b class="docs_details"><aura:if isTrue="{!attachment.isRequired? true:false}"><span style="color:red">*</span></aura:if>{!attachment.label}</b>
+                
+                <!-- Document DownLoad  button -->
+                <aura:if isTrue="{!attachment.isDownload? true:false}">                  
+                    <a class="download_btn" href="{!attachment.downloadLink}" download="{!attachment.label}">{!$Label.c.AGN_OAM_Download_Button}</a>  
+                </aura:if>
+                
+                
+                <div class="file-input-box">
+                    
+                    <label for="{!attachment.inputFileHtmlId}">
+                        <span class="photo_id_attach"><br/>
+                            <img  src="{!$Resource.AGN_CustomerPortal + '/images/attach_icon.png'}"/>
+                            <span class="attach_btn_text">{!$Label.c.AGN_OAM_Upload_File}</span><br/>
+                        </span>
+                    </label>
+                    <aura:if isTrue="{!attachment.file.Name==null ? false : true}"><span class="upload_file">
+                        <!--Document Delete button-->
+                        <button name="lead" class="slds-button">
+                            <span title='{!$Label.c.AGN_OAM_Click_here_to_delete_this_attachment}' data-value="{!attachment.file.Id}" onclick="{!c.deleteAttachment}">
+                                <lightning:icon iconName="utility:delete" size="x-small" variant="Error"/>
+                            </span>
+                        </button>
+                        &nbsp;
+                        <!--End of Document Delete button-->
+                        {!attachment.file.Name} 
+                        </span>
+                    </aura:if>
+                    
+                    <!-- this button is uploading upto 2.5 mb -->
+                    <!--  <input type="file" class="file" aura:id="{!attachment.inputFileHtmlId}"  data-attachmentid= "{!attachment.file.Id}" data-description= "{!attachment.file.Description}" id ="{!attachment.inputFileHtmlId}" style="visibility:hidden;" onchange="{!c.uploadAttachment}" /> -->
+                    
+                    <!-- this button is uploading upto 5.7 mb -->
+                    <input id ="{!attachment.inputFileHtmlId}" type="file" class="file"   data-attachmentid= "{!attachment.file.Id}" data-description= "{!attachment.file.Description}"  style="visibility:hidden;" onchange="{!c.uploadAttachmentLargeFile}" />
+                   
+                </div>
+            </div>  
+        </aura:if>
+    </aura:iteration> 
+    
+</aura:component>

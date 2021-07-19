@@ -1,0 +1,114 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" controller="CaseAction_GDPR_AGN_controller">             
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="AssetList" type="Asset_Register_AGN__c[]" />
+    <aura:attribute name="selectedCount" type="integer" default="0"/>
+    <aura:attribute name="norender"  type="boolean" default="true"/>
+    <aura:attribute name="render"  type="boolean" default="false"/>
+    <aura:attribute name="renderCCPA"  type="boolean" default="false"/>
+    <aura:attribute name="renderGDPR"  type="boolean" default="false"/>
+    <aura:attribute name="caseRecordType" type="string" default=""/>
+    <aura:if isTrue="{!v.norender}">    
+        <aura:html tag="style">
+            .slds-backdrop {
+            background: rgba(43, 40, 38, 0) !important;  
+            }
+            .slds-fade-in-open {
+            display:none !important;
+            }
+        </aura:html>
+    </aura:if>
+    <aura:if isTrue="{!v.render}">       
+        <div aura:id="thecontainer" class="thecontainer" id="thecontainer"> 
+            <div role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open slds-modal--large" >       
+                <div class="slds-modal__container " >
+                    <div class="slds-modal__header" >
+                        <h2 id="header43" class="slds-text-heading--medium">
+                            <h1 class="title slds-text-heading--medium" > {!$Label.c.AGN_GDPR_Asset} </h1>
+                            <h1 class="slds-badge"> {!$Label.c.AGN_GDRP_Selected_Assets} : {!v.selectedCount}</h1>
+                        </h2>
+                    </div>
+                    
+                    <div class="slds-modal__content slds-scrollable slds-p-top--x-large slds-p-around--medium" aura:id="modalbody" id="modalbody">
+                        <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                            <thead>
+                                <tr class="slds-text-title--caps">
+                                    <th style="width:3.25rem;" class="slds-text-align--right">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-checkbox">
+                                                    <!--header checkbox for select all-->
+                                                    <ui:inputCheckbox aura:id="box3" change="{!c.selectAll}"/>
+                                                    <span class="slds-checkbox--faux"></span>
+                                                    <span class="slds-form-element__label text"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <span class="slds-truncate" title="Name">{!$Label.c.AGN_GDPR_Name} </span>
+                                    </th>
+                                    <th>       
+                                        <span class="slds-truncate" title="DataSubject">{!$Label.c.AGN_GDPR_Data_Subject} </span>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="BusinessOwner">{!$Label.c.AGN_GDPR_Business_Owner}</div>
+                                    </th>
+                                    <aura:if isTrue="{!v.renderCCPA}"> 
+                                        <th >
+                                            <div class="slds-truncate" title="Queue Assignment">{!$Label.c.AGN_GDPR_AssignTask_QueueAssignment}</div>
+                                        </th>
+                                        <th >
+                                            <div class="slds-truncate" title="Business Unit">{!$Label.c.AGN_GDPR_AssignTask_BusinessUnit}</div>
+                                        </th>
+                                    </aura:if>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <aura:iteration items="{!v.AssetList}" var="asst">
+                                    <tr>
+                                        <td scope="row" class="slds-text-align--right" style="width:3.25rem;">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <label class="slds-checkbox">
+                                                        <ui:inputCheckbox text="{!asst.Id}" aura:id="boxPack" value="" change="{!c.checkboxSelect}"/>
+                                                        <span class="slds-checkbox--faux"></span>
+                                                        <span class="slds-form-element__label text"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td scope="row">
+                                            <div class="slds-grow slds-cell-wrap" title="{!asst.Name}">{!asst.Name}</div>
+                                        </td>
+                                        <td scope="row">
+                                            <div class="slds-grow slds-cell-wrap" title="{!asst.Data_Subject_GDPR_AGN__c}">{!asst.Data_Subject_GDPR_AGN__c}</div>
+                                        </td>
+                                        <td scope="row">
+                                            <div class="slds-grow slds-cell-wrap"  title="{!asst.Business_Owner_GDPR_AGN__c}">{!asst.Business_Owner_GDPR_AGN__r.Name}</div>
+                                        </td>
+                                        <aura:if isTrue="{!v.renderCCPA}">
+                                            <td scope="row">
+                                                <div class="slds-grow slds-cell-wrap"  title="Queue Assignment">{!asst.AGN_Assign_Primary_Owner_in_queue__c}</div>
+                                            </td>                                        
+                                            <td scope="row">
+                                                <div class="slds-grow slds-cell-wrap"  title="Business Unit">{!asst.Top_Level_Business_Unit_GDPR_AGN__c}</div>
+                                            </td>
+                                        </aura:if>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                        <div class="slds-modal__footer">
+                            <div class="forceChangeRecordTypeFooter">
+                                <lightning:button label="{!$Label.c.AGN_GDPR_AssignTask}" class="slds-button slds-button--neutral .slds-modal__close"  onclick="{!c.createTaskSelected}" aura:id="btnSave" />
+                                <lightning:button label="{!$Label.c.AGN_GDPR_Cancel}" class="slds-button_brand" onclick="{!c.Cancel}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>                
+    </aura:if>
+</aura:component>

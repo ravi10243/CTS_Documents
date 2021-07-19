@@ -1,0 +1,16 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="AGN_SPARK_ContactUs_SendEmail" access="global" >
+	
+    <aura:attribute name="isEmailSend" type="Boolean" default="false"/>
+    <aura:attribute name="EmailSendMessage" type="String" default=""/>
+    <aura:attribute name="SparkMessage" type="Map" default="{'name':'', 'email':'', 'message':''}"/>
+    
+    <aura:if isTrue="{!not(v.isEmailSend)}">
+        <lightning:input class="forname" variant="label-hidden" aura:id="messageForm" id="contactName"  name="Name"  placeholder="Name" messageWhenValueMissing="Please enter name" required="true" value="{!v.SparkMessage.name}" style="background-color:#faf6f5"/>
+        <lightning:input class="forname" variant="label-hidden" aura:id="messageForm" id="contactEmail" name="Email" type="email" placeholder="Email" messageWhenValueMissing="Please enter email" required="true" value="{!v.SparkMessage.email}" style="background-color:#faf6f5"/>
+        <lightning:textarea variant="label-hidden" placeholder="Message" aura:id="messageForm" id="contactMessage" messageWhenValueMissing="Please enter message" required="true" value="{!v.SparkMessage.message}" style="background-color:#faf6f5"/>
+        <lightning:button name="modal" class="contacSubmit" label="Submit" onclick="{!c.sendEmail}" />
+   </aura:if> 
+    <aura:if isTrue="{!v.isEmailSend}">
+               	<h3 class="email_error">{!v.EmailSendMessage}</h3>
+    </aura:if>
+</aura:component>

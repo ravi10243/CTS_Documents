@@ -1,0 +1,49 @@
+/************************************************************************************************************
+@FileName:          agnAccountHierarchyNode.css
+@Version:           1.0
+@Author:            Ayush Basak (ayush.basak@cognizant.com)
+@Purpose:           This component is created to act as the individual nodes on the account hierarchy tree
+-------------------------------------------------------------------------------------------------------------
+@ Change history: 04.01.2021 / Ayush Basak / Created the file.
+*************************************************************************************************************/
+
+/* Importing common styling component */
+@import 'c/agnAccountHierarcyCssLib';
+
+.accordion {
+    --sds-c-accordion-heading-font-size : 0.75rem;
+    --sds-c-accordion-section-spacing-block-start : 0.25rem;
+    --sds-c-accordion-section-spacing-inline-end : 0rem;
+    --sds-c-accordion-section-spacing-block-end : 0rem;
+    --sds-c-accordion-section-spacing-inline-start : 0.5rem;
+    --sds-c-accordion-heading-text-color : black;
+    --sds-c-accordion-heading-line-height : 0.5rem;
+    --lwc-squareIconUtilitySmall : 0.75rem;
+    --lwc-tableCellSpacing : 0.15rem;
+    --lwc-fontSize3 : 0.65rem;
+}
+
+.current {
+    background-color: #DDD !important; 
+}
+
+.node {
+    margin-left: 0.5rem;
+    border-top: gray 1px solid;
+    background-color: white;
+    /*border-bottom: gray 1px solid; */
+    /*border-left: gray 1px dashed;*/
+}
+/*
+.marker { 
+    width: 1.5rem;
+    height: 0.90rem;
+    position: absolute;
+    border-bottom: gray 1px dashed;
+}
+*/
+.action-buttons {
+    height: 1.25rem!important;
+    font-size: 0.75rem;
+    padding: 0.5rem;
+}

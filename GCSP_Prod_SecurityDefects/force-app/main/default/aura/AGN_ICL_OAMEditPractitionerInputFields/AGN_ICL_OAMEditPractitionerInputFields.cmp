@@ -1,0 +1,213 @@
+<!-- ***** AGN_ICL_OAMEditPractitionerInputFields ***** -->
+<aura:component  controller="AGN_ICL_AddPractitionerDetailsController" implements="flexipage:availableForAllPageTypes">
+   
+    <!--08_Apr_2019 start-->
+    <aura:attribute name="sobjectName" type="String" required="true" />
+    <aura:attribute name="fieldName" type="String" required="true" />
+    <aura:attribute name="record" type="SObject" required="true" />
+    <aura:attribute name="displayType" type="String" />
+    <aura:attribute name="isPicklist" type="Boolean" />
+    <aura:attribute name="containsValue" type="Boolean" default="false"/>
+    <aura:attribute name="TypeofAccount" type="String" />
+    <!--<aura:attribute name="PickListValues" type="List" /> -->
+    <aura:attribute name="PickListValues" type="String[]" />
+    <aura:attribute name="picklistOptions" type="Object[]" />
+    <aura:attribute name="variant" type="String" default="form" description="Options: form (default) and bare" />
+    <aura:attribute name="render" type="Boolean" default="true" />
+    <aura:attribute name="disabled" type="Boolean" />
+    <aura:attribute name="required" type="Boolean" />
+    <aura:attribute name="addRequiredCSS" type="Boolean" default="false"/>
+    <aura:attribute name="fieldValueMissing" type="Boolean" default="false"/>
+    <aura:attribute name="currencyIsoCode" type="String" />
+    <aura:attribute name="customLabel" type="String" />
+    <aura:attribute name="isFormatValid" type="Boolean" default="true" />
+    <aura:attribute name="fieldRegex" type="String" />
+    <aura:attribute name="fieldMetadata" type="Object" access="private" />
+    <aura:attribute name="fieldValue" type="String" access="public" />
+    <aura:attribute name="customLabelName" type="String" access="public"/>
+    <aura:attribute name="customCountryCode" type="String" access="public"/>
+    <aura:attribute name="cmpHelpText" type="String" access="public" default=''/>
+    <aura:attribute name="practitioner" type="Practitioner_Listing_AGN__c" default="{ 'sObjectType': 'Practitioner_Listing_AGN__c'}"/>
+
+    <aura:registerEvent name="CloseSpinner" type="c:AGN_ICL_EditSpinner" />
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.record}" action="{!c.handleRecordChanged}" />
+    <!--<aura:handler name="change" value="{!v.fieldValue}" action="{!c.handleFieldValueChanged}" /> -->
+    <aura:handler name="change" value="{!v.handleBlur}" action="{!c.validateFieldValue}" /> 
+     <!--08_Apr_2019 end-->
+    <!-- BOOLEAN -->
+    
+   <aura:if isTrue="{!v.displayType == 'BOOLEAN'}">
+     <div class="col-md-3">
+       <div class="form-group check-input">
+         <ui:inputCheckbox aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+          blur="{!c.handleBlur}"/>&nbsp;
+            <label>
+               <span >{!v.customLabelName}
+                  <span class="required">{!v.required ? '*' : ''}</span>
+               </span>
+            </label>
+       </div>
+     </div>
+    </aura:if>   
+     <!-- CURRENCY -->
+   <aura:if isTrue="{!v.displayType == 'CURRENCY'}">
+     <div class="col-md-3">
+       <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+           <ui:inputCurrency aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')}" 
+            blur="{!c.handleBlur}" format="{!'######0.00 ' + v.currencyIsoCode}"/>
+              <label>
+                <span >{!v.customLabelName}
+                    <span class="required">{!v.required ? '*' : ''}</span>
+                </span>
+              </label>
+        </div>
+      </div>
+    </aura:if>
+    <!-- DATE -->
+    <aura:if isTrue="{!v.displayType == 'DATE'}">
+      <div class="col-md-3">
+         <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+           <ui:inputDate aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}"  displayDatePicker="true"
+           blur="{!c.handleBlur}"/>
+         </div>
+      </div>
+    </aura:if>
+    
+    <!-- DATETIME -->
+    <aura:if isTrue="{!v.displayType == 'DATETIME'}">
+      <div class="col-md-3">
+        <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+          <ui:inputDatetime aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'input__field input__field--nariko inputtextValue' + ' ' +(v.fieldValueMissing ? 'required' : '')}" displayDatePicker="true"
+           blur="{!c.handleBlur}"/>
+            <label>
+                <span>{!v.customLabelName}
+                    <span class="required">{!v.required ? '*' : ''}</span>
+                </span>
+            </label>
+        </div>
+      </div>
+    </aura:if>
+    <!-- DOUBLE or INTEGER -->
+    <aura:if isTrue="{!or(v.displayType == 'DOUBLE', v.displayType == 'INTEGER')}">
+     <div class="col-md-3">
+      <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+        <ui:inputNumber aura:id="inputField" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+                        blur="{!c.handleBlur}" value="{!v.fieldValue}" format=".0" required="{!v.required}"></ui:inputNumber>
+            <label>
+              <span>{!v.customLabelName}
+                  <span class="required">{!v.required ? '*' : ''}</span>
+              </span>
+            </label>
+      </div>
+     </div>
+    </aura:if>
+    <aura:if isTrue="{!v.displayType == 'EMAIL'}">
+      <div class="col-md-3">
+        <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+          <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+           blur="{!c.handleBlur}"></ui:inputText>
+             <label>
+               <span >{!v.customLabelName}
+                 <span class="required">{!v.required ? '*' : ''}</span>
+               </span>
+             </label>
+        </div>
+      </div>
+    </aura:if>
+    <!-- MULTIPICKLIST or PICKLIST -->
+    <aura:if isTrue="{!or(v.displayType == 'MULTIPICKLIST',v.displayType == 'PICKLIST')}">
+      <div class="col-md-3">
+        <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+            <ui:inputSelect aura:id="inputField" required="{!v.required}" change="{!c.SetPickListValue}"
+             blur="{!c.handleBlur}" multiple="{!v.displayType == 'MULTIPICKLIST'}" 
+             class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" >
+                <aura:iteration items="{!v.PickListValues}" var="picklistOption">
+                  <ui:inputSelectOption label="{!picklistOption.label}" text="{!picklistOption.value}" value="{!picklistOption.selected}"/>
+                </aura:iteration>
+            </ui:inputSelect>
+            <label>
+               <span>{!v.customLabelName}
+                   <span class="required">{!v.required ? '*' : ''}</span>
+               </span>
+            </label>
+        </div>
+      </div>
+    </aura:if>
+    
+    <!-- PERCENT -->
+    <aura:if isTrue="{!v.displayType == 'PERCENT'}">
+      <div class="col-md-3">
+         <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+           <ui:inputNumber aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+            blur="{!c.handleBlur}"/>
+            <label >
+                <span >{!v.customLabelName}
+                   <span class="required">{!v.required ? '*' : ''}</span>
+                </span>
+            </label>
+        </div>
+      </div>
+    </aura:if>
+     <!-- PHONE -->
+    <aura:if isTrue="{!v.displayType == 'PHONE'}">
+      <div class="col-md-3">
+        <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+          <ui:inputPhone aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" 
+           blur="{!c.handleBlur}"/>
+             <label >
+                <span >{!v.customLabelName}
+                    <span class="required">{!v.required ? '*' : ''}</span>
+                </span>
+            </label>
+        </div>
+      </div>
+    </aura:if>
+    <!-- TEXT -->
+    <aura:if isTrue="{!v.displayType == 'TEXT'}">
+      <div class="col-md-3">
+        <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+          <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" 
+           blur="{!c.handleBlur}"/>
+             <label>
+                <span>{!v.customLabelName}
+                  <span class="required">{!v.required ? '*' : ''}</span>
+                </span>
+             </label>
+        </div>
+     </div>
+    </aura:if>
+     <!-- TEXTAREA -->
+    <aura:if isTrue="{!v.displayType == 'TEXTAREA'}">
+      <div class="col-md-3">
+        <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+          <ui:inputText aura:id="inputField" value="{!v.fieldValue}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}" 
+           blur="{!c.handleBlur}"/>
+             <label>
+               <span>{!v.customLabelName}
+                   <span>{!v.required ? '*' : ''}</span>
+               </span>
+             </label>
+        </div>
+      </div>
+    </aura:if>
+    
+    <!-- URL -->
+    <aura:if isTrue="{!v.displayType == 'URL'}">
+      <div class="col-md-3">
+        <div class="form-group input-effect" data-inputFiedlValue="{!v.fieldValue}">
+          <ui:inputURL aura:id="inputField" value="{!v.fieldValue}" required="{!v.required}" class="{!'effect-16 form-control' + ' ' +(v.fieldValueMissing ? 'required' : '')+' '+(v.containsValue? 'has-content' : '')}"
+           blur="{!c.handleBlur}"/>
+               <label>
+                  <span>{!v.customLabelName}
+                       <span class="required">{!v.required ? '*' : ''}</span>
+                  </span>
+               </label>
+               <aura:if isTrue="{!v.required == 'true'}">
+                    <div class='required'/>
+               </aura:if>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,499 @@
+<!--
+  @description       : 
+  @author            : Ravi Sirigiri
+  @group             : 
+  @last modified on  : 06-09-2021
+  @last modified by  : Ravi Sirigiri
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   01-21-2021   Ravi Sirigiri   Initial Version
+-->
+<template>
+    <template if:false={isRegistrationCompleted}>
+        <div hidden={hidemaindiv}>
+            <div class="outer_wrapper">
+                <div class="reg_step4">
+                    <!--- *************** Steps Banner Code Starts********************************-->
+                    <div class="StepsBanner">
+                        <div class="Banner notranslate">
+                            <!-- <div class="Step1">1</div> -->
+                            <div class="stepcomplete"> </div>
+                            <div class="line"></div>
+                            <div class="stepcomplete"> </div>
+                            <div class="line"></div>
+                            <div class="stepcomplete"> </div>
+                            <div class="line"></div>
+                            <div class="Step">{label.AGN_GCSP_STEP4}</div>
+                            <template if:true={isCS}>
+                                <div class="line"></div>
+                                <div class="Step">{label.AGN_GCSP_STEP5}</div>
+                            </template>
+                        </div>
+                        <!--<div class="Bannertext">
+                            <div class="Step1text">Basic Information</div>								
+                            <div class="Step2text">Address Details</div>							
+                            <div class="Step3text">Document Upload</div>			
+                            <div class="Step4text">Confirmation</div>								
+                        </div>-->
+                        <div class="Bannertext">
+                            <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                            <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                            <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                            <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>
+                            <template if:true={isCS}>
+                                <div class="Steptext">{label.AGN_OAM_Contact_Affiliation}</div> 
+                            </template> 
+                        </div>
+                    </div>
+                    <div class="show-toast">
+                        <c-agn_gcsp_custom-toast title="" message={error} variant={variant} auto-close="true">
+                        </c-agn_gcsp_custom-toast>
+                    </div>
+                    <!--- *************** Steps Banner Code Ends ********************************-->
+                    <!--<div class="instruction">{label.AGN_OAM_Fields_Mandatory}</div> -->
+                    <!--{label.AGN_CP_AMIAllFieldMandatory}-->
+
+                    <div class="content_center">
+
+                        <div class="hd">{label.AGN_OAM_Header_CustomerRegistration}--{label.AGN_OAM_BillingDetails_Confirmation}</div>
+                        <template if:true={soldToAddressFields}>
+
+                            <div class="soldtoaddress_bankdetails">
+                                <div class="cheading cheadingbold1">{label.AGN_OAM_Body_RegisteredAddress}</div>
+                                <div class="soldtoaddress_bank11">
+                                    <div class="soldtoaddress" key={fieldvalue}>
+                                        <template for:each={soldToAddressFields} for:item='fieldvalue'>
+                                            <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+                                                instancetype='old' 
+                                                objecttype='soldto'
+                                                index='1'
+                                                sobjectname={fieldvalue.SObject_Name_AGN__c}
+                                                fieldname={fieldvalue.Field_Name_AGN__c}
+                                                required={fieldvalue.Required_AGN__c} 
+                                                record={soldToAddr}
+                                                record-value='{soldToAddr}'
+                                                regex={fieldvalue.Field_Regex_AGN__c}
+                                                customlabel={fieldvalue.Field_Custom_Label_AGN__c} 
+                                                country={country}
+                                                step='4' 
+                                                picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                                objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                                iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                                helptext={fieldvalue.Help_Text_AGN__c}
+                                                rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                                oncontrollingfieldevent={handleControllingFieldEvent}
+												onzipcodevalue={handleZipCodeValueChange}
+                                                class="">
+                                            </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                        </template>
+                                    </div>
+                                    <div class="soldtoaddress_bank" key={fieldvalue}>
+                                        <template if:true={isPaymentInfo}>
+                                            <c-agn_gcsp_payment-form if:true={showPaymentSection} key={fieldvalue}
+                                                objecttype='soldto' 
+                                                instancetype='old'
+                                                paymentmethod={PaymentMethod}
+                                                customer-type-config='{customerTypeConfig}' 
+                                                customer-type={customerType}
+                                                customer-sub-type={customerSubType} 
+                                                source={source} 
+                                                step-no="4"
+                                                countrycode='{country}' 
+                                                record='{soldToAddr}' 
+                                                paymentmap={paymentTermMap}
+                                                onpaymentselection={paymentHandler}>
+                                            </c-agn_gcsp_payment-form>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                       
+                        <!-- existing billto section -->
+
+						<template if:true={showBillToSection}>
+                        <div class="addressbank_container">
+                            <div class="cheading cheadingboldnew">{label.AGN_OAM_Biling_Address}</div>
+                            <div class="slds-grid">
+                                <lightning-input type="checkbox" onchange={checkboxHandler}
+                                    label={label.AGN_OAM_BiillTo_Same_Name_Add} value={billToSameAsSoldTo}
+                                    checked={billToSameAsSoldTo} name="sameassoldto" class="sameaddchk">
+                                </lightning-input>
+                            </div>
+                           <!-- <template if:true={billtoExists}>-->
+                                <template if:true={billToAddr} for:each={billToAddr} for:item='record' for:index="indx">
+                                    
+                                    <div class="billtoaddress_bankdetails" key={record}>
+                                        <c-agn_gcsp_address-delete key={record} record-id={record.Id}
+                                        onshiptoaddressdelete={deleteBillTo} index={indx} instancetype='old'
+                                        class="deletebtn">
+                                        </c-agn_gcsp_address-delete>
+                                        <div key={record} class="cheading cheadingbold2">{label.AGN_OAM_Existing_Address}</div>
+                                        <div class="billtoaddress" key={record}>
+                                            <template for:each={billToAddressFields} for:item='fieldvalue'>
+                                                <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+                                                    instancetype='old' objecttype='billto'
+                                                    sobjectname={fieldvalue.SObject_Name_AGN__c}
+                                                    fieldname={fieldvalue.Field_Name_AGN__c}
+                                                    required={fieldvalue.Required_AGN__c} record={record}
+                                                    record-value='{record}'
+                                                    regex={fieldvalue.Field_Regex_AGN__c}
+                                                    customlabel={fieldvalue.Field_Custom_Label_AGN__c} country={country}
+                                                    picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                                    objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                                    iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                                    helptext={fieldvalue.Help_Text_AGN__c}
+                                                    rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                                    oncontrollingfieldevent={handleControllingFieldEvent}
+													onzipcodevalue={handleZipCodeValueChange}
+                                                    class="">
+                                                </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                            </template>
+                                        </div> 
+                                        <br key={record} />
+                                        <div class="billtoaddress_bank" key={record}>
+                                            <template if:true={isPaymentInfo}>
+                                                <c-agn_gcsp_payment-form if:true={showPaymentSection}
+                                                    key={record}
+                                                    objecttype='billto'
+                                                    paymentmethod={PaymentMethod}
+                                                    section-payment-map={sectionPaymentMap} 
+                                                    record={record}
+                                                    instancetype='old' 
+                                                    paymentmap={paymentTermMap}                                                    
+                                                    customer-type-config='{customerTypeConfig}' 
+                                                    customer-type={customerType}
+                                                    customer-sub-type={customerSubType} 
+                                                    source={source} step-no="4"
+                                                    countrycode='{country}'
+                                                    onpaymentselection={paymentHandler}>                                                    
+                                                </c-agn_gcsp_payment-form>                                                
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <br key={record} />
+                                </template>
+                           <!--</template>-->
+
+                            <!-- new shipto section -->
+                            <template if:true={showNewBillto}>
+                                <template for:each={billingMap} for:item='set' for:index="indx">
+                                    <!-- <div key={set.key} class="cheading cheadingboldnew">{label.AGN_OAM_New_Biling_Address}-->
+                                    <!--{label.AGN_CP_ADD_NEW_BILLING_ADDRESS}-->
+                                    <!-- </div><br key={set.key} /> -->
+                                    <!-- delete button -->
+                                    
+                                    <!-- input component -->
+                                    <div class="shownewbill_bankdetails" key={set.key}>
+                                        <c-agn_gcsp_address-delete key={set.key} onshiptoaddressdelete={deleteBillTo}
+                                        index={indx} shipping-map-counter={billingMapCounter} instancetype='new'
+                                        class="deletebtn"></c-agn_gcsp_address-delete>
+                                        <div key={set.key} class="cheading cheadingbold2">
+                                            {label.AGN_OAM_New_Biling_Address}
+                                            <!--{label.AGN_CP_ADD_NEW_BILLING_ADDRESS}-->
+                                        </div>
+                                        <div class="shownewbill" key={set.key}>
+                                            <template for:each={set.value} for:item="fieldvalue" for:index="index">
+                                                <c-a-g-n_-g-c-s-p_-common-input-field-component key={fieldvalue.Id}
+                                                    instancetype='new' 
+                                                    objecttype='billto' 
+                                                    index={indx}
+                                                    sobjectname={fieldvalue.SObject_Name_AGN__c}
+                                                    fieldname={fieldvalue.Field_Name_AGN__c}
+                                                    required={fieldvalue.Required_AGN__c} record=''
+                                                    regex={fieldvalue.Field_Regex_AGN__c}
+                                                    customlabel={fieldvalue.Field_Custom_Label_AGN__c} country={country}
+                                                    picklist-option-values={fieldvalue.Picklist_Options_AGN__c}
+                                                    objectfieldtype={fieldvalue.Object_Field_Type_AGN__c}
+                                                    iscontrollingfield={fieldvalue.Is_Controlling_Field_AGN__c}
+                                                    helptext={fieldvalue.Help_Text_AGN__c}
+                                                    rendered={fieldvalue.Default_Display_On_Load_AGN__c}
+                                                    oncontrollingfieldevent={handleControllingFieldEvent}
+													onzipcodevalue={handleZipCodeValueChange}
+                                                    class="">
+                                                </c-a-g-n_-g-c-s-p_-common-input-field-component>
+                                            </template>
+                                        </div>
+                                        <div class="shownewbill_bank" key={set.key}>
+                                            <template if:true={isPaymentInfo}>
+                                                <c-agn_gcsp_payment-form if:true={showPaymentSection} 
+                                                    index={indx}
+                                                    key={set.key} 
+                                                    instancetype='new'
+                                                    objecttype='billto' 
+                                                    paymentmethod={PaymentMethod}
+                                                    section-payment-map={sectionPaymentMap} 
+                                                    record=''
+                                                    paymentmap={paymentTermMap}                                                    
+                                                    customer-type-config='{customerTypeConfig}' 
+                                                    customer-type={customerType}
+                                                    customer-sub-type={customerSubType} 
+                                                    source={source} step-no="4"
+                                                    countrycode='{country}'
+                                                    onpaymentselection={paymentHandler}>
+                                                </c-agn_gcsp_payment-form>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <br key={set.key} />
+                                </template>                                                        
+                                <div class="newshipto_info">
+                                    {label.AGN_OAM_AdditionalBillingHelpTxt}
+                                </div>
+                                <br />
+                                <div class="btn_container addShipAddr">
+                                    <lightning-button variant="brand" label={label.AGN_OAM_New_BillTO} title={label.AGN_OAM_NewBillTo}
+                                        onclick={addNewBillTo} class="gradient_border_btn">
+                                    </lightning-button>
+                                </div>
+                            </template>
+                        </div>
+						</template> 
+                        <template if:false={isCS}>
+                            <template if:true={showBankDeclaration}>
+                                <div class="declartionpart">
+                                    <div class="cheading cheadingbold">{label.AGN_OAM_Communication}</div>
+                                        <div class="address_text Declt1">
+                                            <p>{label.AGN_OAM_Declaration}</p>
+                                        </div>
+                                        <div class="address_text Declt2">
+                                        <template if:false={isANZ}>
+                                            <p>{label.AGN_OAM_Confirm_Bank_details}</p>
+                                        </template>
+                                        <template if:true={isANZ}>
+                                            <p>{label.AGN_OAM_Declaration_ANZ}&nbsp;{label.AGN_OAM_Declaration2_ANZ}</p>
+                                        </template>
+                                        </div>
+                                        <div class="slds-grid chk_box">
+                                            <lightning-input type="checkbox" onchange={checkboxHandler}
+                                                label={label.AGN_OAM_Accept} title={label.AGN_OAM_Accept}
+                                                name="banktermsncondns" class="li_width">
+                                            </lightning-input>  
+                                        </div>
+                                </div> 
+                            </template>                            
+                             <template if:true={showCanadaDeclaration}>
+                                <div class="declartionpart">
+                                    <div class="cheading cheadingbold">{label.AGN_OAM_Communication}</div>
+                                        <div class="address_text Declt1">
+                                            <p>{label.AGN_OAM_Declaration}</p>
+                                        </div>
+                                        <div class="address_text Declt2">
+                                            <p>{label.AGN_OAM_Declaration_Canada}</p>
+                                            <p>{label.AGN_OAM_Declaration2_Canada}</p>
+                                        </div>
+                                        <div class="slds-grid chk_box">
+                                            <lightning-input type="checkbox" onchange={checkboxHandler}
+                                                label={label.AGN_OAM_I_Accept_the_GDPR_Terms_and_Conditions} title={label.AGN_OAM_I_Accept_the_GDPR_Terms_and_Conditions}
+                                                name="banktermsncondns" class="li_width">
+                                            </lightning-input>  
+                                        </div>
+                                </div> 
+                            </template>
+                        </template>
+
+						<template if:false={isCS}>	
+                        	<template if:true={displayNLdeclaration}>
+                                <div class="declartionpart">
+                                    <div class="address_text NLDeclt1">
+                                        <p>{label.AGN_OAM_Declaration}</p>
+                                    </div>
+                                    <div class="slds-grid chk_box" >
+                                        <p><lightning-input type="checkbox"
+                                            label={label.AGN_OAM_Mandatory_Declaration} title={label.AGN_OAM_Mandatory_Declaration}
+                                            name="nlDeclaration" class="li_width nlChkBox">
+                                        </lightning-input></p>  
+                                    </div>
+                                </div>
+                            </template>
+                            <template if:true={showBrazilDeclaration}>		
+                                <div class="declartionpart">		
+                                    <div class="cheading cheadingbold">{label.AGN_OAM_Body_Confirmation}</div>		
+                                    <!--{label.AGN_CP_COMMUNICATION}-->		
+                                        <div class="address_text Declt1">		
+                                            <p>{label.AGN_OAM_Body_Declaration}</p>		
+                                        </div>		
+                                        <div class="address_text Declt2">		
+                                            <p>{label.AGN_OAM_Body_step4a}</p>		
+                                            <br/>		
+                                            <p>{label.AGN_OAM_Body_step4b}</p>	
+                                            <br/>	
+                                            <p>{label.AGN_OAM_Body_step4c} <a href={LGPDpdfLink} target="_blank">{label.AGN_OAM_Body_step4d}</a>	
+                                            </p>		
+                                        </div>		
+                                        <div class="slds-grid add_dec_chk_box">		
+                                            <!--lightning-input type="checkbox" onchange={checkboxHandler}		
+                                                label={label.AGN_OAM_Accept} title={label.AGN_OAM_Accept}		
+                                                name="banktermsncondns" class="li_width">		
+                                            </lightning-input-->	
+                                            <div class="checkbox_text"  onchange={openModal}>		
+                                                <template if:true={isOnlineRegistration}>		
+                                                <!-- <lightning-input type="checkbox" onchange={checkboxHandler} label=""		
+                                                        name="termsncondns" class="checkbox">		
+                                                    </lightning-input>-->		
+                                                 <!-- <div class="totalchkbox" onchange={openModal}>  -->		
+                                                        <lightning-input type="checkbox"  label="" onchange={checkboxHandler}		
+                                                        name="banktermsncondns" data-id="tncCheckBox" class="checkbox tncchkbox">		
+                                                        </lightning-input>		
+                                                        	
+                                                        <div class="chktxt">		
+                                                            <template if:true={ShowTermsAndConditions}>		
+                                                                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">		
+                                                                <div class="slds-modal__container">		
+                                                                    <!-- modal header start -->		
+                                                                    <header class="slds-modal__header">		
+                                                                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeAccModal}>		
+                                                                            <lightning-icon icon-name="utility:close"		
+                                                                            alternative-text="close"		
+                                                                            variant="inverse"		
+                                                                            size="small" ></lightning-icon>		
+                                                                            <span class="slds-assistive-text">{label.AGN_OAM_Body_Cancel}</span>		
+                                                                        </button>		
+                                                                        <!--h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.AGN_OAM_TnC_Header}</h2-->		
+                                                                    </header>		
+                                                                    <!-- modal body start -->		
+                                                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">		
+                                                                        <p>  <lightning-formatted-rich-text		
+                                                                            value={label.AGN_OAM_Body_ClickOkToAgree}></lightning-formatted-rich-text>		
+                                                                        </p>		
+                                                                        <!--button class="slds-button slds-button_neutral acceptbtn" onclick={acceptTNC}>{label.AGN_OAM_Body_Ok}</button-->		
+                                                                    </div>		
+                                                                        	
+                                                                    <!-- modal footer start-->		
+                                                                    <footer class="slds-modal__footer">		
+                                                                        <button class="slds-button slds-button_neutral" onclick={acceptTNC}>{label.AGN_OAM_Body_Ok}</button>		
+                                                                        <button class="slds-button slds-button_neutral" onclick={closeAccModal}>{label.AGN_OAM_Body_Cancel}</button>		
+                                                                    </footer>		
+                                                                </div>		
+                                                                </section>		
+                                                                <div class="slds-backdrop slds-backdrop_open"></div>		
+                                                            </template>		
+                                                            {label.AGN_OAM_Body_Agree} <a href={LGPDpdfLink} target="_blank">{label.AGN_OAM_Body_TermsConditions2}</a>                                        		
+                                                        </div>		
+                                                 <!--</div> -->		
+                                                </template>		
+                                            </div>  		
+                                        </div>		
+                                        	
+                                    <!--<div class="slds-grid chk_box">		
+                                        <lightning-input type="checkbox" onchange={checkboxHandler}		
+                                            label={label.AGN_OAM_Accept}		
+                                            title={label.AGN_OAM_Accept} name="termsncondns"		
+                                            class="li_width">		
+                                        </lightning-input>		
+                                    </div>-->		
+                                </div> 		
+                            </template>		
+                        </template>
+                        <div class="btn_container btn_margin">
+                            <lightning-button-group class="btn_group">
+                                <lightning-button variant="brand" label={label.AGN_OAM_Previous}
+                                    title={label.AGN_OAM_Previous} onclick={handlePrevious}
+                                    class="gradient_border_btn prev">
+                                </lightning-button>
+                                <!--{label.AGN_CP_AMIPrevious}-->
+                                <div class="btn_next">
+                                    <lightning-button variant="brand" label={label.AGN_OAM_Save}
+                                        title={label.AGN_OAM_Save} onclick={handleSave}
+                                        class="gradient_border_btn saveCont" >
+                                    </lightning-button><!-- onclick={handleSave}-->
+                                </div>
+                                <template if:false={isCS}>
+                                    <div class="btn_next">
+                                        <!--disabled={disableFinishBtn}-->
+                                        <lightning-button variant="brand" label={label.AGN_OAM_Body_Finish}
+                                            title={label.AGN_OAM_Body_Finish} onclick={handleFinish}
+                                            class="gradient_btn next" >
+                                        </lightning-button>
+                                    </div>
+                                </template>
+                                <template if:true={isCS}>
+                                    <div class="btn_next">
+                                        <lightning-button variant="brand" label={label.AGN_OAM_Next}
+                                            title={label.AGN_OAM_Next} onclick={handleFinish} class="gradient_btn next">
+                                        </lightning-button>
+                                    </div>
+                                </template>
+                            </lightning-button-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div if:true={showLoader}>
+            <div class="spinnnerdiv" style="height:10rem;">                    
+                <lightning-spinner  class="slds-is-absolute" alternative-text={label.AGN_OAM_Loading} variant="brand" size="large" ></lightning-spinner>
+            </div>
+        </div>
+    </template>
+    <template if:true={isRegistrationCompleted}>
+        <div class="StepsBanner">
+            <div class="Banner notranslate">
+                <!-- <div class="Step1">1</div> -->
+                <div class="stepcomplete"> </div>
+                <div class="line"></div>
+                <div class="stepcomplete"> </div>
+                <div class="line"></div>
+                <div class="stepcomplete"> </div>
+                <div class="line"></div>
+                <div class="stepcomplete"> </div>
+                <template if:true={isCS}>
+                    <div class="line"></div>
+                    <div class="Step">{label.AGN_GCSP_STEP5}</div>
+                </template>
+            </div>            
+            <!--<div class="Bannertext">
+                        <div class="Step1text">Basic Information</div>								
+                        <div class="Step2text">Address Details</div>							
+                        <div class="Step3text">Document Upload</div>			
+                        <div class="Step4text">Confirmation</div>								
+                    </div>-->
+            <div class="Bannertext">
+                <div class="Steptext">{label.AGN_OAM_Basic_Information_Heading}</div>
+                <div class="Steptext">{label.AGN_OAM_Address_Details_Heading}</div>
+                <div class="Steptext">{label.AGN_OAM_Document_Upload_Heading}</div>
+                <div class="Steptext">{label.AGN_OAM_Confirmation_Heading}</div>
+                <template if:true={isCS}>
+                    <div class="Steptext">{label.AGN_OAM_Contact_Affiliation}</div>
+                </template>
+            </div>
+        </div>
+        <section class="regSuccessMsg">
+            <template if:false={isCS}>
+                <div class="div_oam">
+                    <div class="right_cont">
+                        <div class="regSuccessMsg_bg"></div>
+                    </div>
+                    <div class="left_cont">
+                        <div class="para_txt">
+                            <template if:true={isBRoam}>
+                                <span>{label.AGN_OAM_Confirmation_finalstep_BR}</span>
+                            </template>
+                            <template if:false={isBRoam}>
+                                <span>{label.AGN_OAM_Body_Confirm_Youhave}&nbsp;{label.AGN_OAM_Body_Confirm_SuccessfullyCompleted}&nbsp;{label.AGN_OAM_Body_Confirm_CheckInbox}</span>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <!--<template if:true={isCS}>
+                        <div class="div_cs">
+                            <div class="right_cont">
+                                <div class="regSuccessMsg_bg"></div>
+                            </div>
+                            <div class="left_cont">
+                                <div class="para_txt">                                
+                                    <span>{label.AGN_OAM_Body_Confirm_Youhave}&nbsp;{label.AGN_OAM_Body_Confirm_SuccessfullyCompleted}&nbsp;{label.AGN_OAM_Body_Confirm_CheckInbox}</span> 
+                                </div>                            
+                            </div>                    
+                        </div>
+                    </template>-->
+        </section>
+
+        <!--<div class="success_com com_fully">
+            <span>{label.AGN_OAM_Body_Confirm_Youhave}&nbsp;{label.AGN_OAM_Body_Confirm_SuccessfullyCompleted}&nbsp;{label.AGN_OAM_Body_Confirm_CheckInbox}</span> 
+            <c-agn_cp_registration_successmsg success-msg={successMsg} show-button="true" redirect-page="home"> 
+            </c-agn_cp_registration_successmsg>  
+        </div>-->
+    </template>
+</template>

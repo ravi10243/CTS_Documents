@@ -1,0 +1,59 @@
+.THIS .check-input{
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: #2c5596;
+}
+.THIS .check-input label{
+	font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+.THIS .col-md-3{
+    min-height: 50px !important;
+}
+.THIS .Test{
+    color: #FFFF00;
+}
+.THIS .required{
+    color: red;
+}
+.THIS .input-effect .effect-16{    
+    box-shadow: none;}
+.THIS .input-effect .effect-16 ~ label{
+    color: #2c5596;
+    padding-left: 0;
+}
+.THIS .input-effect .effect-16:focus ~ label, .THIS .effect-16 ~ label{
+    color: #2c5596;
+}
+ .THIS .uiInput--input.input:focus, .THIS .uiInput--input.input:active, .THIS .uiInputSelect:focus{
+    background: transparent;
+    outline: none!important;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+.THIS .drop-down-block {
+	margin: 5px 0;
+	position:relative;
+}
+.THIS .drop-down-block:after {
+    top: calc(50% + 6px);
+    right: 2.5%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0);
+    border-top-color: #000000;
+    border-width: 5px;
+    margin: 0;
+    z-index: 100;
+    transform:translateY(-50%);
+}
+.THIS .drop-down-block .form-control-select{
+    position: relative;
+    background: none;
+    padding: 0;
+}

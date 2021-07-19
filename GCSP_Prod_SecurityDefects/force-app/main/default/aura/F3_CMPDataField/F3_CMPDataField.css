@@ -1,0 +1,12 @@
+.THIS [lightning-textarea_textarea-host] label {
+    display: none ;
+}
+.THIS [lightning-textarea_textarea-host] lightning-helptext {
+    display: none ;
+}
+.THIS .slds-noshadow{
+  box-shadow: none;
+}
+.THIS [lightning-textarea_textarea-host] lightning-helptext {
+    display: none ;
+}

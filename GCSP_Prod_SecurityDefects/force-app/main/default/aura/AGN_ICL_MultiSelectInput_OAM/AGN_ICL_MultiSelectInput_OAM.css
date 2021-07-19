@@ -1,0 +1,23 @@
+.THIS .brand{
+    margin-top: 0;
+    margin-left: 1.2%;
+}
+.THIS .brand-info{
+    background-color: #bfbdbd;
+    padding: 3px 9PX;
+    border-radius: 50%;
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+}
+.THIS .slds-picklist__label{
+    padding: 10px;
+}
+.THIS .brand-select{
+    margin: 0;
+}
+.THIS .slds-picklist .slds-dropdown{
+    margin: 0;
+    width: 100%;
+    max-width: none;
+}

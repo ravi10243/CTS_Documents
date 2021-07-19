@@ -1,0 +1,1577 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" controller="AGN_SPARK_TrainingCtrl" >
+    
+    <aura:attribute name="urlMap" type="Map" />
+    <aura:handler name="init" value="{!this}" action="{!c.getpdfAndVisitSiteUrl}"/>
+    
+    <aura:attribute name="backgroundImageURL" type="string" default="{!v.urlMap.TrainingBanner}"/>
+    <ltng:require styles="{!join(',',
+                          $Resource.AGN_SPARK_Rebranding_TrainingAndEvents + '/css/TrainingandEvents.css'
+                          )}"
+              />
+    <aura:html tag="style">
+        
+
+/* --------------------- Banner Section Starts ------------------------------------------ */
+
+#banner{
+	height: auto;
+}
+
+#content button{
+    outline: none;
+    border-color: black;
+}
+#bannerImageTe{
+    width: 100%;
+	background-position: unset;
+    background-size: cover;
+    height: 958px;
+}
+#bannerContentTraining{
+    background-color: #a7756e;
+    height: auto;
+    display: flex;
+    padding-left: 130px;
+    align-items: center; 
+}
+#title{
+	white-space: pre-line;
+    text-align: left;
+    font: normal normal 300 50px/120px Beatrice-light;
+    letter-spacing: 0px;
+    color: white;
+    line-height: initial;
+}
+#sub-title{
+    font-weight: 400;
+    color: #000000;
+    padding: 50px 134px 317px 118px;
+    line-height: initial;
+    font-size:28px;
+}
+#clearFloat{
+	clear: both;
+}
+
+.owl-dots{
+        display:none;
+        }
+/* ---------------------- Banner Section Ends ---------------------------- */
+
+/* ---------------------- Content Section Starts ------------------------- */
+body{
+    overflow-x: hidden;
+}
+#Home{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid black;
+    margin: 1em 0;
+    width: 95%;
+    padding: 0;
+}
+#bulletContainer{
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+#aimsSection{
+    background-color: white;
+    padding-top: 70px;
+    padding-left: 60px;
+    padding-right: 30px;
+}
+#aimsDetails{
+    margin-bottom: 70px;
+}
+#aimsHead{
+    text-align: left;
+    font: normal normal 300 50px/60px Beatrice-light;
+    letter-spacing: 0px;
+    color: #A7756E;
+    border-bottom: black 1px solid;
+    padding-bottom: 30px;
+    width: 95%;
+}
+#number{
+    font: normal normal 300 45px/60px Beatrice-light;
+    letter-spacing: 0px;
+        color:black;
+}
+#aimDesc{
+    font: normal normal 300 21px/31px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 0px;
+        color:black;
+    padding-top: 0px;
+    padding-right: 70px;
+}
+#contentHead{
+	text-align: center;
+    font-size: 52px;
+    font-family: SourceSansPro-It;
+    padding: 25px 243px 81px 324px;
+    color: rgba(167,117,110,1);
+}
+#contactName{
+    width: 613px;
+    margin: 28px 92px 0px 57px;
+    font-size: 27px;
+    padding: 12px;
+}
+#contactEmail{
+    width: 613px;
+    margin: 29px 92px 0px 57px;
+    font-size: 27px;
+    padding: 12px;
+}
+#contactMessage{
+    width: 613px;
+    margin: 28px 92px 0px 57px;
+    font-size: 27px;
+    padding: 12px;
+}
+#Group_88 {
+    top: 428px !important;
+}
+
+/* New change */
+#viewResource{
+    background-color: black;
+    text-align: center;
+    font: normal normal bold 27px/30px Helvetica;
+    letter-spacing: 1.62px;
+    color: #FFFFFF;
+    margin: 145px 94px 0px 115px;
+    width: 70%;
+    padding: 20px 0px;
+}
+
+#articlesButton{
+    background-color: black;
+    color: white;
+    text-align: center;
+    letter-spacing: 2px;
+    font-size: 28px;
+    width: 360px;
+    margin-bottom: 30px;
+    padding: 14px 0px;
+}
+#articlesContent{
+    padding:130px 90px 0px 90px;
+}
+#articlesHead{
+    font-size: 64px;
+    color: #a7756e;
+    line-height: normal;
+}
+#articlesCont{
+    font-size: 25px;
+    line-height: 40px;
+    padding-top: 20px;
+    margin-bottom: 85px;
+}
+#welcomeSectionContent{
+    text-align: left;
+    font: normal normal 300 21px/31px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.26px;
+    color: #000000;
+    padding-bottom: 30px;
+    line-height: 41px;
+    padding-left: 115px;
+    padding-right: 17px;
+}
+.hubArticleSection{
+    height: 895px;
+    border-bottom: 1px solid #000000;
+}
+#articles{
+    background-color: #a7756e;
+}
+#articlesSec{
+    height: 896px;;
+}
+#articlesImage{
+	background-position: top right;
+    background-size: cover;
+}
+#trainingImage{
+	background-size: contain;
+    background-position: right;
+    margin-top: 157px;
+}
+#webinarsImage{
+	background-size: cover;
+    margin-top: 162px;
+}
+.firstWidth{
+    width:500px !important;
+    outline: none;
+}
+         button.owl-prev.disabled {
+    opacity: 0.3;
+}
+        button.owl-next.disabled {
+    opacity: 0.3;
+}
+.firstWidth img,.owl-carousel .owl-item img{
+    height: 300px !important;
+    width: 92% !important;
+}
+.gutter-remove{
+    margin-left: -16px;
+}
+.multiple-items{
+    width: 1500px; /*11th*/
+    height: auto;
+        margin-left:0px;
+}
+.articleTitle{
+    font: normal normal 300 26px/35px Beatrice-light;
+	letter-spacing: 1.56px;
+	color: #4D5258;
+    margin-top: 10px;
+    min-height: 75px;
+}
+.articleDesc{
+    margin-top: 15px;
+    font: normal normal 300 17px/21px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 0px;
+    margin-bottom: 20px;
+}
+.articleDetails a{
+    font: normal normal normal 18px/24px Beatrice-light;
+    letter-spacing: 1.08px;
+    color: #A7756E;
+    cursor: pointer;
+}
+#businessImage{
+	background-size: cover;
+}
+#webinarsDetails,#webinarsIncludes{
+    background-color:#FADBD3;
+}
+#businsessSection,#businsessIncludes{
+    background-color:rgba(219,163,154,1)
+}
+#webinarsDetailsHead{
+    text-align: left;
+    font: normal normal 300 46px/60px Beatrice-light;
+    letter-spacing: 0px;
+    color: black;
+    padding-bottom: 20px;
+    padding-top: 76px;
+    padding-left: 60px;
+}
+#includeHead{
+    text-align: left;
+    font: normal normal 300 46px/60px Beatrice-light;
+    letter-spacing: 0px;
+    color: black;
+    padding-bottom: 32px;
+    padding-top: 76px;
+    width:90%;
+    border-bottom: black 1px solid;
+}
+#businsessSection #webinarsDetailsContent{
+    font-size: 21px;
+}
+#webinarsDetailsContent{
+    text-align: left;
+    font: normal normal 300 21px/31px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 1.26px;
+    color: #000000;
+    padding-bottom: 30px;
+    padding-left: 60px;
+    padding-right: 25px;
+}
+/* New change */
+#download{
+    background-color: black;
+    color:white;
+    text-align: center;
+    font: normal normal bold 27px/31px Helvetica;
+    letter-spacing: 1.62px;
+    margin: 272px 94px 65px 60px;
+    width: 75%;
+    padding: 20px 0px;
+}
+.padding-left{
+    padding-left: 115px !important;
+}
+.margin-left{
+    margin-left: 115px !important;
+}
+/* New change */
+#downloadBusiness{
+    background-color: black;
+    color:white;
+    text-align: center;
+    font: normal normal bold 27px/31px Helvetica;
+    letter-spacing: 1.62px;
+    margin: 150px 94px 65px 110px;
+    width: 75%;
+    padding: 20px 0px;
+}
+#businsessIncludes{
+    padding-left: 60px;
+}
+#businsessIncludes #includeHead{
+    width: 95%;
+}
+#webinarsDesc{
+    font: normal normal 300 21px/31px Neue_Haas_Unica_Pro-light;
+    letter-spacing: 0px;
+    padding-right: 65px;
+}
+#webinarsContainer{
+    margin-bottom: 50px;
+    margin-top: 10px;
+}
+#welcomeSectionArticle{   
+    justify-content: center;
+    margin: 0 auto;    
+}
+#welcomeSectionArticle #welcomeSectionHead{
+	padding: 50px 22px 50px 0px;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+#welcomeSectionHead{
+    text-align: left;
+    font: normal normal 300 50px/60px Beatrice-light;
+    letter-spacing: 0px;
+    color: #A7756E;
+    padding-bottom: 50px;
+    padding-top: 70px;
+    padding-left: 115px;
+    padding-bottom: 50px;
+    margin: 0 auto;   
+    display: block;
+    width: 100%;
+}
+.articleDetails{
+    padding-right: 25px;
+}
+.slick-prev, .slick-next{
+    top: 27%;
+}
+.slick-prev{
+    left: -30px;
+}
+.slick-next{
+    right: 16px;
+}
+.slick-prev:before{
+    content: ' \003C';
+}
+.slick-next:before{
+    content: '>';
+}
+.slick-prev:before, .slick-next:before{
+    color:black;
+    font-size: 28px;
+    font-weight: 900;
+}
+.container-readmore{
+    margin-bottom: 0px;
+}
+#webinarsDetails, #webinarsIncludes,#businsessIncludes{
+    margin-left: -1px;
+}
+        button.owl-prev.disabled {
+    opacity: 0.3;
+}
+        button.owl-next.disabled {
+    opacity: 0.3;
+}
+button.owl-prev span,button.owl-next span {
+    font-size: 40px;
+    top: 20%;
+        position:absolute;
+}
+button.owl-prev span{
+    left: -2%;
+}
+button.owl-next span{
+    right: 0.2%;
+}
+/* ---------------------- Content Section ends ------------------------- */
+
+/* laptop specific styles */
+@media screen and (min-width: 1970px){
+         .multiple-items {
+        width: 1594px;
+        }
+    #webinarsDetails, #webinarsIncludes,#businsessIncludes{
+        margin-left: -1px;
+    }
+        #bannerImageTe{
+        height: 1040px;
+        }
+}
+@media screen and (max-width: 1652px) and (min-width: 1591px) {
+    #welcomeSectionHead,#welcomeSectionContent{
+        padding-left: 45px;
+    }
+    #viewResource{
+        margin-left: 45px;
+    }
+    #welcomeSection{
+        margin-left: -16px;
+    }
+    #webinarsDetails, #webinarsIncludes,#businsessIncludes{
+        margin-left: -1px;
+    }
+}
+ /*----------------------Desktop Views-----------------------------*/            
+@media screen and (max-width: 1590px) and (min-width: 1533px) {
+    #webinarsDetailsHead,#welcomeSectionHead,#aimsHead,#includeHead{
+        font-size: 50px;
+    }
+        #welcomeSectionHead{
+        font-size: 40px;
+        }
+    #webinarsDetails, #webinarsIncludes,#businsessIncludes{
+        margin-left: -1px;
+    }
+    #includeHead{
+        width: 95%;
+    }
+    #welcomeSection{
+        margin-left: -16px;
+    }
+    .slick-slide img {
+        height: 260px;
+        width: 75%;
+    }
+    .firstWidth {
+        width: 398px !important;
+    }
+    .multiple-items {
+        width: 1187px;
+    }
+          #title{
+        font-size:43px;
+        }
+}
+ /*----------------------Desktop Views -----------------------------*/            
+@media screen and (max-width: 1532px) and (min-width: 1440px) {
+    #title{
+        font-size: 43px;
+    }
+         button.owl-prev.disabled {
+    opacity: 0.3;
+}
+        button.owl-next.disabled {
+    opacity: 0.3;
+}
+        button.owl-prev span,button.owl-next span {
+    font-size: 40px;
+    top: 20%;
+        position:absolute;
+}
+button.owl-prev span{
+    left: -2%;
+}
+button.owl-next span{
+    right: -1%;
+}
+    #welcomeSectionHead,#welcomeSectionContent{
+        padding-left: 45px;
+    }
+    #viewResource{
+        margin-left: 45px;
+    }
+    #welcomeSection{
+        margin-left: -16px;
+    }
+    #includeHead{
+        width: 95%;
+    }
+    #webinarsDetails{
+        margin-right: -1px;
+    }
+    #webinarsDetailsHead,#welcomeSectionHead,#aimsHead,#includeHead{
+        font-size: 48px;
+    }
+    #number {
+        font-size: 50px;
+    }
+    #businsessIncludes{
+        margin-left: -1px;
+    }
+        #bannerContentTraining{
+        padding-left:52px;
+        }
+    .firstWidth img,.owl-carousel .owl-item img{
+        height: 252px !important;
+        width: 90% !important;
+    }
+         button.owl-prev.disabled {
+    opacity: 0.3;
+}
+        button.owl-next.disabled {
+    opacity: 0.3;
+}
+        .articleTitle{
+        	min-height:108px;
+        }
+    .firstWidth {
+        width: 407px !important;
+    }
+    .multiple-items {
+        width: 1190px;
+    }
+         #welcomeSectionArticle #welcomeSectionHead {
+            margin-left: 5px;
+    padding-left: 0px;
+        font-size:40px;
+        }
+}
+@media screen and (max-width: 1439px) and (min-width: 1418px) {
+    .slick-slide img {
+        height: 260px;
+        width: 75%;
+    }
+        #welcomeSectionArticle #welcomeSectionHead{
+        margin-left: 5px;
+    padding-left: 0px;
+    font-size: 40px;
+        }
+    .firstWidth {
+        width: 388px !important;
+    }
+    .multiple-items {
+        width: 1113px;
+    }
+        #title{
+        font-size:42px;
+        }
+}
+ /*----------------------Laptop and Small Desktop Views -----------------------------*/            
+@media screen and (max-width: 1417px) and (min-width: 1340px) {
+    .slick-slide img {
+        height: 260px;
+        width: 92%;
+    }
+    .firstWidth {
+        width: 388px !important;
+    }
+    .slick-next{
+        right: -35px;
+    }
+        button.owl-next span {
+        right: -0.9%;
+    }
+        #aimsHead{
+        width:width: 100%;
+        }
+    .multiple-items {
+        width: 1113px;
+    }
+    #title{
+        font-size: 47px;
+    }
+    #bannerContentTraining{
+        padding-left: 54px;
+        height:auto;
+    }
+    #bannerImageTe{
+        background-position: top !important;
+        background-size: cover !important;
+            height: 760px;
+    }
+    #welcomeSectionHead,#welcomeSectionContent{
+        padding-left: 39px;
+    }
+    #welcomeSectionContent{
+        font: normal normal 300 21px/31px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 1px;
+        padding-right: 15px;
+    }
+    #welcomeSectionHead,#aimsHead{
+        font-size: 45px;
+    }
+    #webinarsDetailsHead,#includeHead{
+        font-size:45px;
+    }
+        #webinarsDetailsHead{
+        font-size: 42px;
+        }
+    #aimsSection,#webinarsDetailsHead,#webinarsDetailsContent{
+        padding-left: 45px;
+    }
+    #webinarsDetailsContent,#businsessSection #webinarsDetailsContent{
+        font-size: 21px;
+    }
+    #download,#downloadBusiness{
+     margin-left: 45px;   
+     font-size: 22px;
+    }
+    #trainingImage{
+        background-size: cover;
+        background-position: left;
+        margin-top: 157px;
+    }
+    #viewResource{
+        margin-left: 39px;
+        font-size: 22px;
+        margin-top:155px
+    }
+    #number{
+        font-size: 38px;
+        padding-right: 0px;
+    }
+    #aimDesc{
+        font: normal normal 300 21px/31px Neue_Haas_Unica_Pro-light;
+        padding-right: 20px;
+    }
+    hr{
+        width: 100%;
+    }
+    #webinarsIncludes{
+        margin-left: -1px;
+        padding-left: 40px !important;
+    }
+    #includeHead{
+        width: 95%;
+    }
+    #webinarsDesc{
+        font: normal normal 300 21px/31px Neue_Haas_Unica_Pro-light;
+        padding-right: 35px;
+    }
+    .padding-left{
+        padding-left: 39px !important;
+    }
+    .margin-left{
+        margin-left: 39px !important;
+    }
+    #businsessIncludes #aimsDetails hr{
+        width: 95%;
+    }
+    #webinarsContainer{
+        margin-top: 20px;
+        margin-bottom: 45px;
+    }
+    #download{
+        margin-top: 170px;
+    }
+    #webinarsImage {
+        background-size: cover;
+        background-position: bottom;
+        margin-top: 162px;
+        height: 437px;
+    }
+    #downloadBusiness{
+        margin-top: 118px;
+    }
+    #businessImage{
+        background-position: top left;
+        height: 548px;
+    }
+        #webinarsDetailsHead{
+    padding-bottom: 20px;        
+        }
+        #welcomeSectionArticle #welcomeSectionHead{
+        padding-left:0px;
+        }
+        #welcomeSection #webinarsDetailsContent{
+        padding-bottom:0px;
+        }
+       
+}
+/*----------------------IPad Pro Views -----------------------------*/    
+@media screen and (max-width: 1339px) and (min-width: 1121px) {
+    .slick-slide img {
+        height: 260px;
+        width: 92%;
+    }
+    .firstWidth {
+        width: 388px !important;
+    }
+    .slick-next{
+        right: -35px;
+    }
+    .multiple-items {
+        width: 1113px;
+    }
+    #title{
+        font-size: 32px;
+    }
+    #bannerContentTraining{
+        padding-left: 54px;
+        height: auto;
+    }
+    #banner{
+        height: auto;
+    }
+    #bannerImageTe{
+        width: 100%;
+        background-position: top left;
+        background-size: cover;
+        height: 682px;
+    }
+    #welcomeSectionHead,#welcomeSectionContent{
+        padding-left: 39px;
+    }
+    #welcomeSectionContent{
+        font: normal normal 300 16px/31px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 0px;
+        padding-right: 15px;
+    }
+    #welcomeSectionHead,#aimsHead{
+        font-size: 31px;
+    }
+    #webinarsDetailsHead,#includeHead{
+        font-size:31px;
+    }
+    #aimsSection,#webinarsDetailsHead,#webinarsDetailsContent{
+        padding-left: 45px;
+    }
+    #webinarsDetailsContent{
+        font-size: 16px;
+    }
+    #download,#downloadBusiness{
+     margin-left: 45px;   
+     font-size: 16px;
+    }
+    #trainingImage{
+        background-size: cover;
+        background-position: left;
+        margin-top: 160px;
+    }
+    #viewResource{
+        margin-left: 39px;
+        font-size: 16px;
+        margin-top: 118px;
+        padding: 10px 0px;
+    }
+    #number{
+        font-size: 30px;
+        padding-right: 0px;
+    }
+    #bulletContainer{
+        margin-bottom: 20px;
+    }
+    #aimDesc{
+        font: normal normal 300 16px/31px Neue_Haas_Unica_Pro-light;
+        padding-right: 20px;
+    }
+    hr{
+        width: 100%;
+    }
+    #webinarsIncludes{
+        margin-left: -1px;
+        padding-left: 40px !important;
+    }
+    #includeHead{
+        width: 95%;
+    }
+    #webinarsDesc{
+        font: normal normal 300 16px/31px Neue_Haas_Unica_Pro-light;
+        padding-right: 35px;
+    }
+    .padding-left{
+        padding-left: 39px !important;
+    }
+    .margin-left{
+        margin-left: 39px !important;
+    }
+    #businsessIncludes #aimsDetails hr{
+        width: 85%;
+    }
+    #webinarsContainer{
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    #download{
+        margin-top: 125px;
+        margin-bottom: 0px;
+    }
+    #webinarsImage {
+        background-size: cover;
+        background-position: top;
+        margin-top: 222px;
+        height: 318px;
+    }
+    #downloadBusiness{
+        margin-top: 135px;
+    }
+    #businsessIncludes #includeHead,#businsessIncludes #aimsDetails hr{
+        width: 96%;
+    }
+    #businessImage{
+        background-position: top left;
+        height: 548px;
+    }
+    #businsessSection #webinarsDetailsContent{
+        font-size: 16px;
+    }
+    #businsessIncludes{
+        padding-left: 45px;
+    }
+        #welcomeSectionArticle #welcomeSectionHead{
+        padding-left:0px;
+          padding-right:8px;
+        }
+        
+}
+ /*----------------------IPad Landscape and Ipad Pro View -----------------------------*/            
+@media screen and (max-width: 1120px) and (min-width: 992px) {
+    .slick-slide img {
+        height: 220px;
+        width: 92%;
+    }
+    .firstWidth {
+        width: 300px !important;
+    }
+    .slick-next{
+        right: -35px;
+    }
+    .multiple-items {
+        width: 880px;
+    }
+    .slick-prev, .slick-next{
+        top:20%
+    }
+        button.owl-next span {
+        right: -0.8% !important;
+    }
+    #title{
+        font-size: 32px;
+    }
+    #bannerContentTraining{
+        padding-left: 54px;
+        height: auto;
+    }
+    #banner{
+        height: auto;
+    }
+    #bannerImageTe{
+        width: 100%;
+        background-position: top left;
+        background-size: cover;
+        height: 682px;
+    }
+    #welcomeSectionHead,#welcomeSectionContent{
+        padding-left: 39px;
+    }
+    #welcomeSectionContent{
+        font: normal normal 300 17px/31px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 0px;
+        padding-right: 15px;
+    }
+    #welcomeSectionHead,#aimsHead{
+        font-size: 31px;
+    }
+    #webinarsDetailsHead,#includeHead{
+        font-size:37px;
+    }
+    #aimsSection,#webinarsDetailsHead,#webinarsDetailsContent{
+        padding-left: 45px;
+    }
+    #webinarsDetailsContent{
+        font-size: 17px;
+    }
+    #download,#downloadBusiness{
+     margin-left: 45px;   
+     font-size: 22px;
+    }
+    #trainingImage{
+        background-size: cover;
+        background-position: left;
+        margin-top: 172px;
+    }
+    #viewResource{
+        margin-left: 39px;
+        font-size: 16px;
+        margin-top: 145px;
+        padding: 10px 0px;
+    }
+    #number{
+        font-size: 30px;
+        padding-right: 0px;
+    }
+    #bulletContainer{
+        margin-bottom: 20px;
+    }
+    #aimDesc{
+        font: normal normal 300 16px/31px Neue_Haas_Unica_Pro-light;
+        padding-right: 20px;
+    }
+    hr{
+        width: 100%;
+    }
+    #webinarsIncludes{
+        margin-left: -1px;
+        padding-left: 40px !important;
+    }
+    #includeHead{
+        width: 95%;
+    }
+    #webinarsDesc{
+        font: normal normal 300 19px/31px Neue_Haas_Unica_Pro-light;
+        padding-right: 35px;
+    }
+    .padding-left{
+        padding-left: 39px !important;
+    }
+    .margin-left{
+        margin-left: 39px !important;
+    }
+    #businsessIncludes #aimsDetails hr{
+        width: 85%;
+    }
+    #webinarsContainer{
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    #download{
+        margin-top: 25px;
+        margin-bottom: 0px;
+    }
+    #webinarsImage {
+        background-size: cover;
+        background-position: top;
+        margin-top: 222px;
+        height: 318px;
+    }
+    #downloadBusiness{
+        margin-top: 12px;
+    }
+    #businsessIncludes #includeHead,#businsessIncludes #aimsDetails hr{
+        width: 96%;
+    }
+    #businessImage{
+        background-position: top left;
+        height: 548px;
+    }
+    #businsessSection #webinarsDetailsContent{
+        font-size: 16px;
+    }
+    #businsessIncludes{
+        padding-left: 45px;
+    }
+        #welcomeSectionArticle #welcomeSectionHead{
+        padding-left: 0px;
+        }
+}
+ /*----------------------IPad and Tablet Views -----------------------------*/            
+@media screen and (max-width: 991px) and (min-width: 600px) {
+    #bannerContentTraining{
+        padding-left: 51px;
+        height: 500px;
+    }
+    .container-readmore {
+    margin-bottom: 50px;
+	}
+    #title{
+            white-space: normal;
+    font: normal normal 300 40px/57px Beatrice-light;
+    }
+    #bannerImageTe {
+        height: 500px;
+        background-size: cover;
+    }
+    #welcomeSectionHead{        
+        letter-spacing: 0px;
+        padding-top: 30px;        
+        font: normal normal 300 35px/40px Beatrice-light;            
+    	text-align: left;
+    	margin: 0 auto !important;
+    	display: block;
+        padding-top: 40px;
+        margin-left:0px;
+        padding-left: 51px;
+    }
+    #businsessIncludes {
+        padding-left: 51px;
+    }
+    #welcomeSectionContent{
+        padding-left: 51px !important;
+        padding-right: 0px;
+        font: normal normal 300 21px/28px Neue_Haas_Unica_Pro-light;
+    }
+    #welcomeSection #aimsSection{
+        padding-left: 51px;
+        padding-top: 0px;
+    }
+    #welcomeSection #aimsSection #aimsHead{
+        font: normal normal 300 35px/40px Beatrice-light;
+        padding-bottom: 20px;
+        width: 95%;
+    }
+    #welcomeSection #aimsSection #number{
+        font: normal normal 300 27px/36px Beatrice-light;
+    }
+    #welcomeSection #aimsSection #aimDesc{
+        font: normal normal 300 21px/28px Neue_Haas_Unica_Pro-light;
+        padding-right: 0px;
+    }
+    #viewResource {
+        margin: 0 auto;
+        display:block;
+        width: 500px;
+        font: normal normal bold 21px/30px Helvetica;
+        padding: 20px 0px;
+    }
+    #trainingImage {
+        background-size: cover;
+        background-position: center;
+        margin-top: 80px;
+        height: 500px;
+    }
+    #webinarsDetailsHead{
+       font: normal normal 300 35px/40px Beatrice-light;
+        padding-top: 50px;
+        padding-left: 51px !important;
+        text-align:left;
+      }
+    #webinarsIncludes #webinarsDetailsContent{
+        padding-left: 0px !important;
+    }
+    #webinarsDetailsContent{
+        padding-left: 51px !important;
+        font: normal normal 300 21px/28px Neue_Haas_Unica_Pro-light;
+    }
+    #webinarsDetails #webinarsIncludes{
+        padding-left: 51px;
+    }
+    #webinarsDetails #includeHead{
+        padding-left: 51px;
+        padding-top: 0px;
+        font: normal normal 300 35px/40px Beatrice-light;
+    }
+    #webinarsDetails #number{
+        font: normal normal 300 27px/36px Beatrice-light;
+    }
+    #webinarsDetails #webinarsDesc{
+        font: normal normal 300 21px/28px Neue_Haas_Unica_Pro-light;
+        padding-right: 0px;
+    }
+    #webinarsDetails #download{
+        margin-top: 36px;    
+    font: normal normal bold 21px/30px Helvetica;
+    width: 500px;
+    display: block;
+    margin: 0 auto;
+    }
+    #webinarsDetails #webinarsImage {
+        background-size: cover;
+        background-position: bottom;
+        margin-top: 80px; 
+        height: 500px;
+    }    
+    #businsessSection #businsessIncludes #includeHead{
+        padding-top: 0px;
+        font: normal normal 300 35px/40px Beatrice-light;
+    }
+    #businsessSection #businsessIncludes #number{
+        font: normal normal 300 27px/36px Beatrice-light;
+    }
+    #businsessSection #businsessIncludes #aimDesc{
+        font: normal normal 300 21px/28px Neue_Haas_Unica_Pro-light;
+        margin-left: -40px;
+    }
+    #businsessSection #downloadBusiness{
+        font: normal normal bold 21px/30px Helvetica;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+    width: 500px;
+    }
+ #businsessSection{
+        padding-bottom:80px;
+}        
+    #welcomeSectionArticle{
+    	font: normal normal 300 35px/40px Beatrice-light;            
+    	text-align: left;
+    	margin: 0 auto;
+    	display: block;
+        padding-top: 20px;
+        margin-left:0px;
+    }    
+    .repeating-content .firstWidth{
+        width: 600px !important;
+    	margin: 0 auto;
+    }
+    .repeating-content .firstWidth img{
+        width: 100% !important;
+    }
+    
+       #welcomeSectionArticle #welcomeSectionHead{
+        padding-left: 0px;
+        }
+       #businessImage {
+        background-position: top;
+    height: 500px;
+        }
+    .articleDetails{
+        padding-right: 0px;
+    }
+    .articleTitle{
+        font: normal normal 300 20px/36px Neue_Haas_Unica_Pro-light;
+    	letter-spacing: 1.56px;
+    	min-height: 0px !important;
+    }
+    .articleDesc{
+        margin-top: 0px;
+    	margin-bottom: 0px;
+    }
+    .articleDetails a{
+        font: normal normal normal 22px/28px Beatrice-light;
+    	letter-spacing: 1.08px;
+    	color: #A7756E !important;
+    	cursor: pointer;
+    }
+    .d-xs-block{
+        display: block !important;
+    }
+    .d-xs-none{
+        display: none !important;
+    }
+}
+
+/*----------------------Mobile View -----------------------------*/              
+@media screen and (max-width: 600px) and (min-width: 300px) {
+    #bannerContentTraining{
+        padding-left: 35px;
+        height: 283px;
+    }
+        .container-readmore {
+    margin-bottom: 50px;
+}
+    #title{
+        white-space: normal;
+        font: normal normal 300 35px/47px Beatrice-light;
+        text-align:left;
+    }
+    #bannerImageTe {
+        width: 100%;
+        height: 325px;
+        background-size: cover;
+    }   
+        #welcomeSectionHead{        
+    	font: normal normal 300 30px/47px Beatrice-light;
+    	letter-spacing: 0px;
+    padding: 30px 0px 30px 30px;    
+    margin-left: 0px !important;
+    text-align: left;
+    width: 100%;
+    display: block;
+    margin: 0 auto;   
+    }
+    #businsessIncludes {
+        padding-left: 35px;
+    }
+    #welcomeSectionContent{
+        padding-left: 35px !important;
+        padding-right: 30px;
+        text-align:left;
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+    }
+    #welcomeSection #aimsSection{
+        padding-left: 35px;
+        padding-top: 0px;
+        padding-right: 25px;
+    }
+    #welcomeSection #aimsSection #aimsHead{
+        font: normal normal 300 30px/47px Beatrice-light;
+    padding-bottom: 20px;
+    width: 95%;
+    }
+    
+    #welcomeSection #aimsSection #number{
+        font: normal normal 300 27px/36px Beatrice-light;
+        max-width: 0%;
+    }
+    #welcomeSection #aimsSection #aimDesc{
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+        padding-right: 20px;
+        max-width: 76%;
+        margin-left: 12%;        
+    }
+    #viewResource {            
+   width: 300px;
+    height: 66px;
+    font: normal normal bold 21px/30px Helvetica;
+    letter-spacing: 1.26px;
+    padding: 15px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    }
+    #aimsDetails {
+        margin-bottom: 30px;
+    }
+    #trainingImage {
+        background-size: cover;
+    background-position: top left;
+    margin-top: 80px;
+    height: 321px;
+    }
+    #webinarsDetails #webinarsDetailsHead{
+        font: normal normal 300 30px/40px Beatrice-light;
+    padding-top: 50px;
+    text-align: left;
+    padding-left: 45px !important;
+    }
+    #businsessSection #webinarsDetailsHead{
+        padding-left: 0px !important;
+    font: normal normal 300 30px/40px Beatrice-light;
+    text-align: center;    
+    width: 100%;
+        padding-top:50px;
+}   
+    #webinarsIncludes #webinarsDetailsContent{
+        padding-left: 0px !important;
+    }
+    #webinarsDetailsContent{
+        padding-left: 51px !important;
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+    }
+    #webinarsDetails #webinarsIncludes{
+        padding-left: 51px;
+    }
+    #webinarsDetails #includeHead{
+        padding-left: 51px;
+        padding-top: 0px;
+        font: normal normal 300 30px/40px Beatrice-light;
+    }
+    #webinarsDetails #number{
+        font: normal normal 300 27px/36px Beatrice-light;
+            max-width: 0%;
+    }
+    #webinarsDetails #webinarsDesc{
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+        padding-right: 34px;
+    max-width: 76%;
+    margin-left: 12%;
+    }
+    #webinarsDetails #download{        
+    font: normal normal bold 21px/30px Helvetica;
+    width: 300px;
+    height: 66px;
+    margin: 0 auto;
+    display: block;
+    padding: 15px;
+}
+    
+    #webinarsDetails #webinarsImage {
+        background-size: contain;
+        margin-top: 30px;
+        background-position: bottom;
+        height: 299px;
+    }
+    #businsessSection #webinarsDetailsContent {
+        font-size: 16px;
+        padding-left: 35px !important;
+    }
+    #businsessSection #businsessIncludes #includeHead{
+        padding-top: 0px;
+        font: normal normal 300 30px/40px Beatrice-light;
+    }
+    #businsessSection #businsessIncludes #number{
+        font: normal normal 300 27px/36px Beatrice-light;
+        
+        max-width: 8%;
+    }
+    #businsessSection #businsessIncludes #aimDesc{
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+        max-width: 77%;
+    padding-right: 15px;
+    margin-left: 12%;
+    }
+    #businsessSection #downloadBusiness{
+      font: normal normal bold 21px/30px Helvetica;
+    margin-top: 0px;
+    width: 300px;
+    height: 66px;
+    padding: 15px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 30px;
+    }   
+    .repeating-content{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .repeating-content .firstWidth{
+       width: 88% !important;
+    margin: 0 auto;
+
+    }
+    .repeating-content .firstWidth img{
+        width: 510px !important;
+    	height: 250px !important;
+    	margin: 0 auto;
+    }                   
+    #welcomeSectionArticle{        
+    	    font: normal normal 300 35px/40px Beatrice-light;
+    letter-spacing: 0px;
+    /* margin-left: 0px; */
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+}
+        
+    .articleDetails{
+        padding-right: 0px;
+        margin-left: 0px !important;
+    }
+    .articleTitle{
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+    	letter-spacing: 0px;    	
+        text-align:left !important;
+        width: 85%;
+        min-height: 0px !important;
+    }
+    .articleDesc{
+        margin-top: 0px;
+        margin-bottom:0px;
+    }
+    .articleDetails a{
+        font: normal normal normal 18px/24px Beatrice-light;
+        letter-spacing: 1.08px;
+        color: #A7756E !important;
+        cursor: pointer;
+    }        
+       
+    .d-xs-block{
+        display: block !important;
+    }
+    .d-xs-none{
+        display: none !important;
+    }
+        #businessImage {
+        background-position: bottom;
+    height: 345px;
+        }
+        .container-readmore {
+        text-align: left;
+		}
+        #welcomeSectionArticle #welcomeSectionHead{
+        	padding-left:0px;
+        }
+}
+/*----------------------Mobile View -----------------------------*/              
+@media screen and (max-width: 320px) and (min-width: 300px) {
+    #businsessSection #businsessIncludes #aimDesc {
+    font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+    max-width: 70%;
+    padding-right: 15px;
+    margin-left: 12%;
+}        
+    </aura:html>
+    <div class="home-content">
+        <div id="banner" class="row">
+            <div id="bannerContentTraining" class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12" >
+                <div id="title">Training and Events
+                    
+                </div>
+            </div>
+            <div id="bannerImageTe" class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12">
+                <div id="Group_88">
+                    <a aura:id="facebook" id = "facebook" class="facebook" target="_blank" href="https://www.facebook.com/AllerganSparkUK/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-facebook" viewBox="0.562 0.562 28.095 28.043">
+                          <path id="Icon_awesome-facebook" d="M 28.65703392028809 14.66943073272705 C 28.65703392028809 6.876489162445068 22.36974906921387 0.5624998807907104 14.60976696014404 0.5624998807907104 C 6.849785327911377 0.5624998807907104 0.5625001192092896 6.876489162445068 0.5625001192092896 14.66943073272705 C 0.5625001192092896 21.71038436889648 5.699381828308105 27.54655647277832 12.41488075256348 28.60571670532227 L 12.41488075256348 18.74736022949219 L 8.84642219543457 18.74736022949219 L 8.84642219543457 14.66943073272705 L 12.41488075256348 14.66943073272705 L 12.41488075256348 11.561354637146 C 12.41488075256348 8.026090621948242 14.51064205169678 6.073303699493408 17.72055625915527 6.073303699493408 C 19.25782585144043 6.073303699493408 20.86533164978027 6.348616123199463 20.86533164978027 6.348616123199463 L 20.86533164978027 9.818466186523438 L 19.09356498718262 9.818466186523438 C 17.34898567199707 9.818466186523438 16.80465126037598 10.90606498718262 16.80465126037598 12.02153778076172 L 16.80465126037598 14.66943073272705 L 20.70050430297852 14.66943073272705 L 20.07743835449219 18.74736022949219 L 16.80465126037598 18.74736022949219 L 16.80465126037598 28.60571670532227 C 23.52015495300293 27.54655647277832 28.65703392028809 21.71038436889648 28.65703392028809 14.66943073272705 Z">
+                          </path>
+                         </svg>
+                     	]]>
+                    </a>
+                    <a aura:id="instagram" id ="instagram" class="instagram" target="_blank" href="https://www.instagram.com/allergansparkuk/">
+                        <![CDATA[
+                         <svg class="Icon_awesome-instagram" viewBox="-0.005 2.238 27.89 27.888">
+                          <path id="Icon_awesome-instagram" d="M 13.94292449951172 9.031681060791016 C 9.985723495483398 9.031681060791016 6.793830394744873 12.22409343719482 6.793830394744873 16.18193817138672 C 6.793830394744873 20.1397819519043 9.985723495483398 23.33219528198242 13.94292449951172 23.33219528198242 C 17.90012359619141 23.33219528198242 21.09201431274414 20.13977813720703 21.09201431274414 16.18193817138672 C 21.09201431274414 12.22409439086914 17.90012359619141 9.031681060791016 13.94292449951172 9.031681060791016 Z M 13.94292449951172 20.83053588867188 C 11.38567733764648 20.83053588867188 9.295080184936523 18.74582290649414 9.295080184936523 16.18193626403809 C 9.295080184936523 13.6180477142334 11.37945556640625 11.5333366394043 13.94292449951172 11.5333366394043 C 16.50639343261719 11.5333366394043 18.59076690673828 13.6180477142334 18.59076690673828 16.18193626403809 C 18.59076690673828 18.74582290649414 16.50017356872559 20.83053588867188 13.94292449951172 20.83053588867188 Z M 23.05195045471191 8.739198684692383 C 23.05195045471191 9.666430473327637 22.30530548095703 10.40697002410889 21.38445091247559 10.40697002410889 C 20.45736885070801 10.40697002410889 19.71695327758789 9.66020679473877 19.71695327758789 8.739198684692383 C 19.71695327758789 7.818192481994629 20.46359443664551 7.071429252624512 21.38445091247559 7.071429252624512 C 22.30530548095703 7.071429252624512 23.05195045471191 7.818192481994629 23.05195045471191 8.739198684692383 Z M 27.78690147399902 10.43186283111572 C 27.68112754821777 8.197796821594238 27.17092132568359 6.218875408172607 25.5345344543457 4.588443279266357 C 23.90436363220215 2.958010911941528 21.9257640838623 2.447722434997559 19.69206237792969 2.335709095001221 C 17.38991928100586 2.205025196075439 10.48970603942871 2.205025196075439 8.187561988830566 2.335709095001221 C 5.960081100463867 2.441499948501587 3.981481075286865 2.951788425445557 2.345092296600342 4.582220077514648 C 0.708703339099884 6.212652206420898 0.2047198414802551 8.191572189331055 0.09272374957799911 10.42563819885254 C -0.03793852031230927 12.72815704345703 -0.03793852031230927 19.62948989868164 0.09272374957799911 21.93201065063477 C 0.1984979659318924 24.16607666015625 0.7087030410766602 26.14500045776367 2.345092296600342 27.77542877197266 C 3.981481075286865 29.40586090087891 5.953859329223633 29.9161491394043 8.187561988830566 30.02816009521484 C 10.48970603942871 30.15884399414062 17.38991928100586 30.15884399414062 19.69206237792969 30.02816009521484 C 21.92576599121094 29.92237091064453 23.90436553955078 29.41208267211914 25.5345344543457 27.77542877197266 C 27.16470146179199 26.14499282836914 27.67490577697754 24.16607284545898 27.78690147399902 21.93201065063477 C 27.91756439208984 19.62948989868164 27.91756439208984 12.73437881469727 27.78690147399902 10.43186092376709 Z M 24.81277847290039 24.40254974365234 C 24.32746124267578 25.62226486206055 23.38793563842773 26.56193923950195 22.16220092773438 27.05355834960938 C 20.32670974731445 27.78165435791016 15.97130012512207 27.61362838745117 13.94292449951172 27.61362838745117 C 11.91454792022705 27.61362838745117 7.552917003631592 27.77542877197266 5.723643779754639 27.05355834960938 C 4.504129886627197 26.56816101074219 3.564606189727783 25.62848663330078 3.073067426681519 24.40254974365234 C 2.345091819763184 22.5667610168457 2.513086318969727 18.21064376831055 2.513086318969727 16.18193817138672 C 2.513086318969727 14.15323162078857 2.351313829421997 9.790890693664551 3.073067426681519 7.961321353912354 C 3.55838418006897 6.741610050201416 4.497908115386963 5.801933765411377 5.723643779754639 5.310314178466797 C 7.55913782119751 4.582221031188965 11.91454792022705 4.750241756439209 13.94292449951172 4.750241756439209 C 15.97130012512207 4.750241756439209 20.33293151855469 4.588443279266357 22.16220092773438 5.310314178466797 C 23.38171577453613 5.795710563659668 24.32123947143555 6.735385894775391 24.81277847290039 7.961321353912354 C 25.54075241088867 9.797114372253418 25.37276077270508 14.15323066711426 25.37276077270508 16.18193817138672 C 25.37276077270508 18.21064376831055 25.54075241088867 22.57298278808594 24.81277847290039 24.40254974365234 Z">
+                          </path>
+                         </svg>
+                    	]]>
+                    </a> 
+                </div>
+            </div>
+        </div>
+        <div id="content">
+            <div id="welcomeSection" class="row" >
+                <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                    <div id="welcomeSectionHead">
+                        Clinical Training
+                    </div>
+                    <div id="welcomeSectionContent">
+                        <p>Keep your injectable training up to date with our list of independent training providers:</p>
+                    </div>
+                    <div id="aimsSection" class="col-sm-12 col-md-12 col-lg-0 col-xl-0 d-lg-none d-xl-none d-sm-block d-md-block d-xs-block">
+						<div id="aimsHead">
+							Includes
+						</div>
+						<div id="aimsDetails">
+							<div id="bulletContainer" class="row">
+								<span id="number" class="col-xl-2 col-lg-2 col-sm-2 col-md-2 col-xs-1"> 01</span>
+								<span id="aimDesc" class="col-xl-10 col-lg-10 col-sm-10 col-md-10 col-xs-11">Training to suit all levels</span>
+							</div>
+							<hr/>
+							<div id="bulletContainer" class="row">
+								<span id="number" class="col-xl-2 col-lg-2 col-sm-2 col-md-2 col-xs-1"> 02</span>
+								<span id="aimDesc" class="col-xl-10 col-lg-10 col-sm-10 col-md-10 col-xs-11">Courses for Allergan Aesthetics facial injectables</span>
+							</div>
+							<hr/>
+							<div id="bulletContainer" class="row">
+								<span id="number" class="col-xl-2 col-lg-2 col-sm-2 col-md-2 col-xs-1"> 03</span>
+								<span id="aimDesc" class="col-xl-10 col-lg-10 col-sm-10 col-md-10 col-xs-11">List of UK based training providers who use the Allergan Aesthetics facial portfolio</span>
+							</div>
+						</div>
+					</div>
+                    <button id ="viewResource" onclick="{!c.viewResourceButton}">{!$Label.c.AGN_SPARK_ClinicalTrainingButton}</button>
+                </div>
+                <div id="aimsSection" class="col-sm-12 col-md-12 col-lg-4 col-xl-4 d-lg-block d-xl-block d-sm-none d-md-none d-xs-none">
+                    <div id="aimsHead">
+                        Includes
+                    </div>
+                    <div id="aimsDetails">
+                        <div id="bulletContainer" class="row">
+                            <span id="number" class="col-xl-2 col-lg-2"> 01</span>
+                            <span id="aimDesc" class="col-xl-10 col-lg-10">Training to suit all levels</span>
+                        </div>
+                        <hr/>
+                        <div id="bulletContainer" class="row">
+                            <span id="number" class="col-xl-2 col-lg-2"> 02</span>
+                            <span id="aimDesc" class="col-xl-10 col-lg-10">Courses for Allergan Aesthetics facial injectables</span>
+                        </div>
+                        <hr/>
+                        <div id="bulletContainer" class="row">
+                            <span id="number" class="col-xl-2 col-lg-2"> 03</span>
+                            <span id="aimDesc" class="col-xl-10 col-lg-10">List of UK based training providers who use the Allergan Aesthetics facial portfolio</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="trainingImage" class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                </div>
+            </div>
+            <div id="welcomeSection" class="row gutter-remove" >
+                <div id="webinarsImage" class="col-sm-12 col-md-12 col-lg-4 col-xl-4 d-lg-block d-xl-block d-sm-none d-md-none d-xs-none" style="{!'background: url(' + $Resource.AGN_SPARK_Rebranding_TrainingAndEvents + '/images/AllerganAesthetics_Photography_-5@2x.jpg' +') no-repeat; background-size: cover;'}">
+                </div>
+                <div  id="webinarsDetails" class="col-sm-12 col-md-12 col-lg-4 col-xl-4 pl-0 pr-0">
+                    <div id="webinarsDetailsHead">
+                        Webinars &amp; Events
+                    </div>
+                    <div id="webinarsDetailsContent">
+                        <p>Keep up to date with upcoming events and Allergan Aesthetics training webinars:</p>
+                    </div>
+                    <div id="webinarsIncludes" class="col-sm-12 col-md-12 col-lg-0 col-xl-0 d-lg-none d-xl-none d-sm-block d-md-block d-xs-block">
+						<div id="includeHead" class="pl-0">
+							Includes
+						</div>
+						<div id="webinarsDetailsContent" class="pl-0">
+							<div id="webinarsContainer" class="row">
+								<span id="number" class="col-sm-2"> 01</span>
+								<span id="webinarsDesc" class="col-sm-10">Refreshers on injecting techniques</span>
+							</div>
+							<hr/>
+							<div id="webinarsContainer" class="row">
+								<span id="number" class="col-sm-2"> 02</span>
+								<span id="webinarsDesc" class="col-sm-10">New injecting techniques</span>
+							</div>
+							<hr/>
+							<div id="webinarsContainer" class="row">
+								<span id="number" class="col-sm-2"> 03</span>
+								<span id="webinarsDesc" class="col-sm-10">Face to face events with Allergan Aesthetics representatives</span>
+							</div>
+						</div>
+					</div>
+                    <a href="{!v.urlMap.webinarsAndEventsPDF}" target="_blank">
+                    	<button id ="download">{!$Label.c.AGN_SPARK_WebinarsAndEventsButton}</button>
+                    </a>
+                    <div id="webinarsImage" class="col-sm-12 col-md-12 col-lg-0 col-xl-0 d-lg-none d-xl-none d-sm-block d-md-block d-xs-block">
+					</div>
+                </div>
+                <div id="webinarsIncludes" class="col-sm-0 col-md-0 col-lg-4 col-xl-4 pl-0 pr-0 d-lg-block d-xl-block d-sm-none d-md-none d-xs-none">
+                    <div id="includeHead" class="pl-0">
+                        Includes
+                    </div>
+                    <div id="webinarsDetailsContent" class="pl-0">
+                        <div id="webinarsContainer" class="row">
+                            <span id="number" class="col-sm-2"> 01</span>
+                            <span id="webinarsDesc" class="col-sm-10">Refreshers on injecting techniques</span>
+                        </div>
+                        <hr/>
+                        <div id="webinarsContainer" class="row">
+                            <span id="number" class="col-sm-2"> 02</span>
+                            <span id="webinarsDesc" class="col-sm-10">New injecting techniques</span>
+                        </div>
+                        <hr/>
+                        <div id="webinarsContainer" class="row">
+                            <span id="number" class="col-sm-2"> 03</span>
+                            <span id="webinarsDesc" class="col-sm-10">Face to face events with Allergan Aesthetics representatives</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="welcomeSection" class="row" >
+                <div id="businsessSection" class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                    <div id="webinarsDetailsHead" class="padding-left">
+                        Business Training
+                    </div>
+                    <div id="webinarsDetailsContent" class="padding-left">
+                        <p>Keep your business growing with Allergan Aesthetics business services:</p>
+                    </div>
+                    <div id="businsessIncludes" class="col-sm-12 col-md-12 col-lg-0 col-xl-0 d-lg-none d-xl-none d-sm-block d-md-block d-xs-block">
+						<div id="includeHead">
+							Includes
+						</div>
+						<div id="aimsDetails">
+							<div id="bulletContainer" class="row">
+								<span id="number" class="col-sm-3"> 01</span>
+								<span id="aimDesc" class="col-sm-9">Downloadable resources</span>
+							</div>
+							<hr/>
+							<div id="bulletContainer" class="row">
+								<span id="number" class="col-sm-3"> 02</span>
+								<span id="aimDesc" class="col-sm-9">Video-based training</span>
+							</div>
+							<hr/>
+							<div id="bulletContainer" class="row">
+								<span id="number" class="col-sm-3"> 03</span>
+								<span id="aimDesc" class="col-sm-9">Business tools</span>
+							</div>
+						</div>
+					</div>
+                    <a href="{!v.urlMap.businessTraining}" target="_blank">
+                    	<button id ="downloadBusiness">{!$Label.c.AGN_SPARK_BusinessTrainingButton}</button>
+                    </a>
+                </div>
+                <div id="businsessIncludes" class="col-sm-0 col-md-0 col-lg-4 col-xl-4 d-lg-block d-xl-block d-sm-none d-md-none d-xs-none">
+                    <div id="includeHead">
+                        Includes
+                    </div>
+                    <div id="aimsDetails">
+                        <div id="bulletContainer" class="row">
+                            <span id="number" class="col-sm-3"> 01</span>
+                            <span id="aimDesc" class="col-sm-9">Downloadable resources</span>
+                        </div>
+                        <hr/>
+                        <div id="bulletContainer" class="row">
+                            <span id="number" class="col-sm-3"> 02</span>
+                            <span id="aimDesc" class="col-sm-9">Video-based training</span>
+                        </div>
+                        <hr/>
+                        <div id="bulletContainer" class="row">
+                            <span id="number" class="col-sm-3"> 03</span>
+                            <span id="aimDesc" class="col-sm-9">Business tools</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="businessImage" class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                </div>
+            </div>
+            <c:AGN_SPARK_ArticleCorousel KnowledgeArticlesType="Getting_Started_Clinical__c"/>
+        </div>
+    </div>
+    <c:AGN_SPARK_ZincCode pageName="TrainingPage"/>
+</aura:component>

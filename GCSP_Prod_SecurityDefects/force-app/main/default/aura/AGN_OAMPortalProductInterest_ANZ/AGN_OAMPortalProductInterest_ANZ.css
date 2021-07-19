@@ -1,0 +1,19 @@
+.THIS .inputCheckboxValue {
+    max-width: 30%;
+    padding-left: 5px;
+    display: inline-flex;
+    vertical-align: baseline;
+}
+.THIS .required-identifier{
+    color:red;
+}
+@media only screen and (min-device-width : 320px) and (max-device-width : 767px) {
+.THIS .inputCheckboxValue {
+    max-width: 100%;
+    }
+}
+@media only screen and (min-device-width : 320px) and (max-device-width : 767px) and (orientation : landscape){
+.THIS .inputCheckboxValue {
+    max-width: 30%;
+    }
+}

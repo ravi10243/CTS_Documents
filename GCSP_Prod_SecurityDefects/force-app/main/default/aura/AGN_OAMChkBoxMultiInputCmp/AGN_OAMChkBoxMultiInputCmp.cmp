@@ -1,0 +1,38 @@
+<aura:component >
+    
+    <aura:attribute name="index" type="Integer" />
+    <aura:attribute name="DependantFields" type="List" access="public" />
+    <aura:attribute name="record" type="SObject" required="true" />
+    <aura:attribute name="selectedCountryCode" type="String"/>
+    <aura:attribute name="required" type="Boolean" default = "false" access="public" />
+    <aura:attribute name="clearValues" type="Boolean" default = "false" />
+    <aura:attribute name="showDependantFields" type="Boolean" default = "false" />
+    <aura:attribute name="labelVal" type="String"/>
+    <aura:attribute name="fieldValue" type="Object" access="public" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--<aura:handler name="render" value="{!this}" action="{!c.onRender}"/>-->
+    
+	<div class="slds-form-element">
+                    <span class="input input--nariko inputCheckboxValue" data-inputFiedlValue="{!v.isUSLicensedHCP}" >
+                            <label class="slds-checkbox_toggle slds-grid"> 
+                            <span class="slds-form-element__label input__Checkboxlabel--nariko">
+                                    {!v.labelVal}
+                            </span> 
+                            <ui:inputCheckbox aura:id="ctrlChkBox" change="{!c.handleCheckBoxChange}" class="slds-input slds-checkbox uiInput--checkbox"/>               
+                            <span id="toggle-desc" class="slds-checkbox_faux_container " aria-live="assertive">                     
+                                    <span class="slds-checkbox_faux"></span>
+                            </span>
+                            </label> 
+                    </span>
+					<aura:renderIf isTrue="{!v.showDependantFields}" >
+							<c:AGN_OAMCheckboxDependentParent aura:id="licenseField"
+												   USLicenseDependantFields= "{#v.DependantFields}"  
+												   record = "{!v.record}"
+												   selectedCountryCode = "{!v.selectedCountryCode}" 
+												   required = "{!v.required}" 
+												   clearValues = "{!v.clearValues}" 
+                                                   fieldValue = "{!v.fieldValue}" />
+					</aura:renderIf>
+            </div>
+</aura:component>

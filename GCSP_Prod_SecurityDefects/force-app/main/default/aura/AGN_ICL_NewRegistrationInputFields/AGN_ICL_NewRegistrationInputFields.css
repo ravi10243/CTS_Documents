@@ -1,0 +1,87 @@
+.THIS .check_input{
+    display: inline-block;
+    float: left;
+    margin-top: 11px;
+    margin-bottom: 0;
+    color: #2c5596;
+	width: 16px;
+	height: 16px;
+}
+.THIS input.uiInput--checkbox[type="checkbox"]:checked::after {
+    /* border-bottom-width: 3px;
+    border-left-width: 3px;
+    bottom: 4px;
+    right: 3px; */
+}
+.THIS .check-input-wrap label{
+	font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    color: #2c5596;
+}
+.THIS .Test{
+    color: #FFFF00;
+}
+.THIS .required{
+    color: red;
+}
+.THIS .requiredBorder{
+    border-color: red;
+}
+.THIS .helper_txt{
+    margin-top: 25px;
+    position: relative;
+    float: left;
+    font-size: 10px;
+    margin-left: 10px;
+}
+.THIS .form-group.input-effect,
+.THIS .form-group.check-input-wrap{
+	float: none;
+	margin: 0;
+}
+.THIS .drop-down-block {
+    margin: 0;
+    position: relative;
+}
+.THIS .drop-down-block:after {
+    top: 50%;
+    right: 3%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0);
+    border-top-color: #000000;
+    border-width: 5px;
+    margin: 0;
+    z-index: 100;
+    transform: translateY(-50%);
+}
+.THIS .drop-down-block .form-control.select {
+    position: relative;
+    background: none;
+    padding: 0;
+    margin-left:1px;
+}
+.THIS input[type=checkbox]::-ms-check {
+    border-color:#d3d3d3;
+}
+ 
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px){
+   .THIS .check_input{
+        margin-top: 12px !important;
+        margin-bottom: 0;
+        width: 16px !important;
+        height: 16px !important;
+	}
+}
+@media only screen and (max-device-width: 500px) and (min-device-width: 100px) and (orientation: portrait){
+.THIS input.uiInput--checkbox[type="checkbox"] {
+        margin-top: 8px !important;
+    }
+}

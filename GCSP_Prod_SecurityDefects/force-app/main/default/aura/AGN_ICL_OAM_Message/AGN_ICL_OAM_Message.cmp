@@ -1,0 +1,25 @@
+<!-- **** AGN_ICL_OAM_Message **** -->
+<aura:component controller="AGN_ICL_OAM_MessageController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+	<aura:attribute name="spinner" type="Boolean" default="false"/>
+    <aura:attribute name="isApprovelpending" type="Boolean" default="false"/>
+    <aura:attribute name="Message" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+    <link href="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+    <ltng:require scripts="{!$Resource.AGN_ICL_OAM_CSS + '/ICL/js/jquery11.js'}" afterScriptsLoaded="{!c.scriptsLoaded}" />
+    <ltng:require scripts="{!$Resource.AGN_ICL_OAM_CSS+'/ICL/js/bootstrap.js'}"/>
+    <aura:if isTrue="{!v.spinner == true}">
+        <div class="spinnerLoad">
+            <lightning:spinner alternativeText="Loading" size="medium" />
+        </div>
+    </aura:if> 
+    <div>
+        <p>{!v.Message}</p>
+        <ui:button class="reg-submit back btnSubmit" aura:id="editBtnId" label="{!$Label.c.AGN_ICL_Back}" press="{!c.backButton}"/> 
+    </div>
+    
+</aura:component>

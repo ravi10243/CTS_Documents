@@ -1,0 +1,170 @@
+<!-- **** AGN_ICL_ClinicDetailList ****-->
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" controller="AGN_ICL_ClinicDetailListCntrl">
+    
+    <ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}" /> 
+    <aura:attribute type="Locator_Listing_AGN__c[]" name="clinicDetails"/> 
+    <aura:attribute type="Locator_Listing_AGN__c[]" name="paginationclinicDetails"/> 
+    <aura:attribute type="String" name="UserName"/>
+    <aura:attribute type="Integer" name="start"/>
+    <aura:attribute type="Integer" name="end"/>
+    <aura:attribute type="Integer" name="previous"/>
+    <aura:attribute type="boolean" name="ispreviousdisable"/>
+    <aura:attribute type="boolean" name="isnextdisable"/>
+    <aura:attribute name="openModal" type="boolean" default="false"/>
+    <aura:attribute name="countryCode" type="String"/>
+      <!--GTM-->
+    <aura:attribute name="showGAInit" type="Boolean" default="false"/>
+    <aura:attribute name="fireLogout" type="Boolean" default="false"/>
+    <aura:attribute name="GTMPageURL" type="String" default=""/>
+    <aura:attribute name="GTMPageTitle" type="String" default=""/>
+    <aura:attribute name="GTMCountry" type="String" default=""/>
+    <!--TM2.0 Portal banner related change-->
+    <aura:attribute name="isSiteUnderMaintenance" type="Boolean" default="false"/>
+     <!--TM2.0 Portal banner related change-->
+      <!--GTM-->
+    <aura:handler name="init" value="{!this}" action="{!c.fetchClinic}"/>
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+    <link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+    <!--<link href="{!$Resource.AGN_ICL_TempScripts+'/AGN_ICL_TEST_CSS/mystyle.css'}" rel="stylesheet"/>-->
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}" afterScriptsLoaded="{!c.scriptsLoaded}" />
+    <ltng:require scripts="{!$Resource.AGN_ICL_CSS+'/ICL/js/bootstrap.js'}"/>
+    
+    <div class="slds"> 
+        <aura:if isTrue="{!v.showGAInit}">
+                <iframe aura:id="vfFrame" style="display:none;visibility:hidden" src="{!$Label.c.AGN_ICL_GTMPageRedirction+'?type=login&amp;curl='+v.GTMPageURL+'&amp;ctitle='+v.GTMPageTitle+'&amp;country='+v.GTMCountry}"/>
+       </aura:if>
+         <aura:if isTrue="{!v.fireLogout}">
+                <iframe aura:id="vfFrame" style="display:none;visibility:hidden" src="{!$Label.c.AGN_ICL_GTMPageRedirction+'?type=logout&amp;curl='+v.GTMPageURL+'&amp;ctitle='+v.GTMPageTitle}"/>
+       </aura:if>
+        <div class="ICL_page_content registration_wrapper">
+            <div class="header" >
+                <div class="allergan-logo"></div>
+                <div class="{!v.countryCode=='CA' ? 'logo-txt logo-txt-tcl' : 'logo-txt' }">
+                    <span></span>
+                    <span>{!$Label.c.AGN_ICL_CUSTOMER_PORTAL}</span>
+                </div>
+                
+                <div class="header-right">
+                    <!--<p>{!$Label.c.AGN_ICL_Header_TollFreeNumber} : {!$Label.c.AGN_ICL_Customer_Portal_Toll_Free_Number}</p>-->
+                    <p>
+                        <div class="dropdown closed">
+                            <span class="profile_img" ><img src="{!v.userDetail.SmallPhotoUrl}"/></span>
+                            <div class="title">{!$Label.c.AGN_ICL_Login_Greeting}&nbsp;<span>{!v.UserName} &nbsp;</span> </div>
+                            <ul>                           
+                                <ui:button label="{!$Label.c.AGN_ICL_Logut}" class="log-btn button" press="{!c.logout}"/>          
+                            </ul>
+                        </div>
+                    </p>
+                </div>
+                
+            </div>
+            <!--TM2.0 Portal banner related change-->
+            <aura:if isTrue="{!v.isSiteUnderMaintenance}">
+            <div style="margin-left: 255px;background-color: #2C5596; color: #f7f7fa; text-align: center; width: 736px;font-size:23px;">                
+                {!$Label.c.AGN_ICL_Maintenance_Message}                   
+            </div>
+            </aura:if>
+             <!--TM2.0 Portal banner related change-->
+            <div class="container">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 style="font-weight: bold;padding-top: 8px;" class="panel-title pull-left">
+                            {!$Label.c.AGN_ICL_CLINIC_DETAILS_LIST}
+                        </h3>
+                        
+                        <!--<a href="#">--><button class="btn btn-default pull-right" onclick="{!c.NewClinic}">{!$Label.c.AGN_ICL_Add_New_Clinic}</button><!--</a>-->
+                        <div class="clearfix"></div>
+                    </div>
+                    <div style="margin-bottom: 50px;background-color: #fff;" class="table-responsive panel-body">
+                        
+                        <table id="clinic_list" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col"><span class="slds-truncate">{!$Label.c.AGN_ICL_Clinic_Name}</span></th>
+                                    <th scope="col"><span class="slds-truncate">{!$Label.c.AGN_ICL_Address}</span></th>
+                                    <th scope="col"><span class="slds-truncate">{!$Label.c.AGN_ICL_Phone_Number}</span></th>
+                                    <th scope="col"><span class="slds-truncate">{!$Label.c.AGN_ICL_Clinic_Email}</span></th>
+                                    <!--<th scope="col"><span class="slds-truncate">{!$Label.c.AGN_ICL_Edit}</span></th> -->
+                                    <th scope="col"><span class="slds-truncate">{!$Label.c.AGN_ICL_Delete}</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.paginationclinicDetails}" var="clinic" indexVar ="index">
+                                    <tr>
+                                        <!--<td><a href="#" value="{!clinic.id}" onclick="{!c.RedirectDetailPage}">{!clinic.Name}</a></td>-->
+                                        <td><lightning:button value="{!clinic.Id}"   class="columnWidth" onclick="{!c.RedirectDetailPage}" >{!clinic.Name}</lightning:button></td>
+                                        <td>
+                                            <aura:if isTrue="{!clinic.Street_AGN__c != NULL}">
+                                                {!clinic.Street_AGN__c},
+                                            </aura:if> 
+                                            <aura:if isTrue="{!clinic.City_AGN__c != NULL}">
+                                                {!clinic.City_AGN__c},
+                                            </aura:if> 
+                                            <aura:if isTrue="{!clinic.State_Providence_Region_AGN__c != NULL}">
+                                                {!clinic.State_Providence_Region_AGN__c},
+                                            </aura:if> 
+                                            <aura:if isTrue="{!clinic.Zip_Code_AGN__c != NULL}">
+                                                {!clinic.Zip_Code_AGN__c},
+                                            </aura:if> 
+                                            <aura:if isTrue="{!clinic.Country_AGN__c != NULL}">
+                                                {!clinic.Country_AGN__c}
+                                            </aura:if> 
+                                        </td>
+                                        <td>{!clinic.Phone_Number_AGN__c}</td>
+                                        <td>{!clinic.Email_AGN__c}</td> 
+                                       <!-- <td>
+                                            <p data-placement="top" data-toggle="tooltip" title="{!$Label.c.AGN_ICL_Edit}">
+                                                <lightning:button value="{!clinic.Id}" aura:id="btnId" variant="brand"  class="btn btn-xs" onclick="{! c.editClinic}">
+                                                    <span class="glyphicon glyphicon-pencil"></span>  
+                                                </lightning:button>
+                                            </p>
+                                        </td> -->
+                        				<td>
+                                            <p data-placement="top" data-toggle="tooltip" title="{!$Label.c.AGN_ICL_Delete}">
+                                                <aura:if isTrue="{!clinic.IsChildClinic_AGN__c == true}">
+                                                    <lightning:button aura:id="btnId" value="{!index}"  variant="brand" class="btn btn-danger btn-xs" onclick="{!c.deleteClinic}">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </lightning:button>
+                                                     <aura:set attribute="else">
+                                                        <lightning:button aura:id="btnId" value="{!index}" disabled="true" variant="brand" class="btn btn-danger btn-xs" onclick="{!c.deleteClinic}">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </lightning:button>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </p>
+                        				</td>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                  <td colspan="2" style="border:0;background:#fff;text-align:left">
+                                      <lightning:button class="page_prev" disabled="{!v.ispreviousdisable}" onclick="{!c.PreviousPage}" >{!$Label.c.AGN_ICL_Previous}</lightning:button>
+                                    </td>
+                                  <td colspan="3"  style="border:0;background:#fff;text-align:right;">
+                                    <lightning:button class="page_next"  disabled="{!v.isnextdisable}" onclick="{!c.NextPage}" >{!$Label.c.AGN_ICL_Next}</lightning:button> 
+                                   </td>  
+                                </tr>
+                            </tfoot>
+                        </table>
+                        
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Container -->
+    <div class="footer-wrapper">
+        <c:AGN_ICL_FooterLoggedIn/>
+        <!-- <p class="foot-text"></p>-->
+    </div>
+    
+</aura:component>

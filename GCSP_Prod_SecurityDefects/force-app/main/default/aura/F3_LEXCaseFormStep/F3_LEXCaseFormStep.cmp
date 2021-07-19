@@ -1,0 +1,296 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                access="global"
+                controller="F3_LEXCaseFormController">
+    
+    <!--Events-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!--Attributes-->
+    <aura:attribute name="currentStepId" type="String"/>
+    <aura:attribute name="parentCaseRecordId" type="String"/>
+    <aura:attribute name="IsFirstStep" type="Boolean" default="false"/>
+    <aura:attribute name="IsLastStep" type="Boolean" default="false"/>
+    <aura:attribute name="currentStepWrapper" type="Object"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    <aura:attribute name="primaryFormObjectAPIName" type="String"/>
+    <aura:attribute name="parentObjectRelationshipFieldAPIName" type="String"/>
+    
+    <aura:attribute name="formObjectRecordId" type="String"/>
+    
+    <aura:attribute name="listPageElements" type="Object"/>
+    
+    <aura:attribute name="requiredValidationFailed" type="Boolean" default="false" />
+    <aura:attribute name="requiredValidationFailedErrorTitle" type="String" default="Validation Errors" />
+    <aura:attribute name="requiredValidationFailedErrorMessage" type="String" default="Fields marked red/with * are mandatory."  />
+    <aura:attribute name="hasOtherErrors" type="Boolean" default="false" />
+    <aura:attribute name="hasOtherErrorsMessage" type="String" default="This form has some unexpected errors. Please try again or report it to contact center." />
+    <aura:attribute name="hasObjectFieldsOnUI" type="Boolean" default="true" />
+    
+    <aura:attribute name="saveButtonLabel" type="String" default="Save"/>
+    <aura:attribute name="savePreviousButtonLabel" type="String" default="Back"/>
+    <aura:attribute name="saveNextButtonLabel" type="String" default="Next"/>
+    
+    <aura:attribute name="clickedButtonType" type="String"/>
+    
+    <aura:attribute name="currentViewState" type="String"  />
+    
+    <!--Aura Method-->
+    <aura:method name="RefreshCurrentViewWithNewStep" description="Method to Load New Form Step.">
+        <aura:attribute name="currentStepId" type="String"/>
+        <aura:attribute name="parentCaseRecordId" type="String"/>
+        <aura:attribute name="isFirstStep" type="String"/>
+        <aura:attribute name="isLastStep" type="String"/>
+    </aura:method>
+    
+    <aura:handler name="fielddependentevent" event="c:F3_LEXViewStateChangeEvent" 
+                  action="{!c.componentViewStateHandler}" includeFacets="true"/>
+    
+    <!--Body-->
+    <div class="">
+       <!-- <div class="slds-grid slds-wrap lex-actionpanel" style="background-color: #f1f1f1">
+            <div class="slds-col slds-size_12-of-12 slds-p-around_small main-border" >
+                <div class="slds-clearfix slds-p-around_small">
+                    <div class="slds-align_absolute-center">
+                        <aura:if isTrue="{!!v.IsFirstStep}">
+                        	<lightning:button label="{!v.savePreviousButtonLabel}" iconName="action:back" iconPosition="left"
+                                          onclick="{!c.onClickSavePrevious}" 
+                                          class="slds-button slds-m-right_x-small"/>
+                        </aura:if>
+                        <lightning:button label="{!v.saveButtonLabel}" iconName="utility:save" iconPosition="left"
+                                          class="slds-button slds-m-right_x-small" onclick="{!c.onClickSave}" />
+                        <aura:if isTrue="{!!v.IsLastStep}">
+                            <lightning:button label="{!v.saveNextButtonLabel}" iconName="utility:forward" iconPosition="right"
+                                          onclick="{!c.onClickSaveNext}"  
+                                          class="slds-button slds-m-right_x-small" />
+                        </aura:if>    
+                        <lightning:button label="" iconName="utility:bookmark" iconPosition="right"
+                                          class="slds-button slds-button_brand slds-m-right_x-small" 
+                                          onclick="" />
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <div class="slds-grid slds-p-around_medium" >
+            <div class="slds-col slds-size_12-of-12">
+                <aura:if isTrue="{!v.listPageElements}">
+                    <lightning:recordEditForm
+                                              aura:id="editform"
+                                              recordId="{!v.formObjectRecordId}"
+                                              onload="{!c.onEditFormLoad}"
+                                              onsubmit="{!c.onSubmitForm}"
+                                              onsuccess="{!c.onSubmitSuccess}"
+                                              onerror="{!c.onSubmitError}"
+                                              objectApiName="{!v.primaryFormObjectAPIName}">
+                        <lightning:messages />
+                        <aura:if isTrue="{!v.requiredValidationFailed}">
+                            <ui:message title="{!v.requiredValidationFailedErrorTitle}" severity="error" closable="false">
+                                {!v.requiredValidationFailedErrorMessage}
+                            </ui:message>
+                            <hr/>
+                        </aura:if>
+                        <aura:if isTrue="{!v.hasOtherErrors}">
+                            <ui:message title="Errors" severity="error" closable="false">
+                                {!v.hasOtherErrorsMessage}
+                            </ui:message>
+                            <hr/>
+                        </aura:if>
+                        <aura:iteration items="{!v.listPageElements}" var="elementWrapper">
+                            <!-- SectionHeader -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='SectionHeader'}">
+                                <c:F3_CMPSectionHeader 
+                                                       aura:id="formstepComponent" 
+                                                       elementWrapper="{!elementWrapper}"
+                                                       renderMode="{!v.renderMode}"/>
+                            </aura:if>
+                            <!-- ImportantInfo -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='ImportantInfo'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_CMPImportantInfo 
+                                                           aura:id="formstepComponent" 
+                                                           elementWrapper="{!elementWrapper}" 
+                                                           renderMode="{!v.renderMode}"/>
+                                </div>
+                            </aura:if>
+                            <!-- FAQ -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='FAQ'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_CMPFAQ 
+                                                 aura:id="formstepComponent" 
+                                                 elementWrapper="{!elementWrapper}" 
+                                                 renderMode="{!v.renderMode}"/>
+                                    
+                                </div>
+                            </aura:if>
+                            <!-- InlineHelp -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='InlineHelp'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_CMPInlineHelp 
+                                                        aura:id="formstepComponent" 
+                                                        elementWrapper="{!elementWrapper}" 
+                                                        renderMode="{!v.renderMode}"/>
+                                </div>
+                            </aura:if>
+                            <!-- SuccessMessage -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='SuccessMessage'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_CMPSuccessMessage 
+                                                            aura:id="formstepComponent" 
+                                                            elementWrapper="{!elementWrapper}" 
+                                                            renderMode="{!v.renderMode}"/>
+                                </div>
+                            </aura:if>
+                            <!-- Failure Message -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='FailureMessage'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_CMPFailureMessage 
+                                                            aura:id="formstepComponent" 
+                                                            elementWrapper="{!elementWrapper}" 
+                                                            renderMode="{!v.renderMode}"/>
+                                </div>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!v.primaryFormObjectAPIName}">
+                                <!-- DataField -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='ObjectField'}">
+                                    <c:F3_CMPDataField 
+                                                       aura:id="formstepComponent" 
+                                                       elementWrapper="{!elementWrapper}"
+                                                       currentStepType="{!v.currentFormStep.StepType}"
+                                                       renderMode="{!v.renderMode}"/>
+                                </aura:if>
+                                <!-- TranslatedPicklist -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='TranslatedPicklist'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPTranslatedPicklist aura:id="formstepComponent"
+                                                                    elementWrapper="{!elementWrapper}" 
+                                                                    renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- SurveyRadioPicklist -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='SurveyRadioPicklist'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPSurveyRadio aura:id="formstepComponent"
+                                                             elementWrapper="{!elementWrapper}" 
+                                                             renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if> 
+                                <!-- SurveyIconPicklist -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='SurveyIconPicklist'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" > 
+                                        <c:F3_CMPSurveyIcons aura:id="formstepComponent"
+                                                             elementWrapper="{!elementWrapper}" 
+                                                             renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if>
+                                <!-- ChildObjectOne -->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='ChildObjectOne'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPChildObjectOne aura:id="formstepComponent"
+                                                                parentRecordId="{!v.recordId}"
+                                                                elementWrapper="{!elementWrapper}" 
+                                                                renderMode="{!v.renderMode}"
+                                                                currentSitePage="{!v.currentSitePage}"/>
+                                    </div>
+                                </aura:if>
+                                <!--Child Object many-->
+                                <aura:if isTrue="{!elementWrapper.ElementType=='ChildObjectMany'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_CMPChildObjectMany aura:id="formstepComponent"
+                                                                 parentRecordId="{!v.recordId}"
+                                                                 elementWrapper="{!elementWrapper}" 
+                                                                 renderMode="{!v.renderMode}"
+                                                                 currentSitePage="{!v.currentSitePage}"/>
+                                    </div>
+                                </aura:if>
+                            </aura:if>     
+                            <!-- PlainDisplayText -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='PlainText'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_CMPPlainDisplayText 
+                                                              aura:id="formstepComponent" 
+                                                              elementWrapper="{!elementWrapper}" 
+                                                              renderMode="{!v.renderMode}"/>
+                                </div>
+                            </aura:if>
+                            <!-- HTML Control -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='HTMLControl'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_CMPHTMLControl 
+                                                         aura:id="formstepComponent" 
+                                                         elementWrapper="{!elementWrapper}" 
+                                                         renderMode="{!v.renderMode}"/>
+                                </div>
+                            </aura:if>
+                            <!-- Rich Text Control -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='RichTextControl'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_CMPRichTextControl
+                                                             aura:id="formstepComponent" 
+                                                             elementWrapper="{!elementWrapper}" 
+                                                             renderMode="{!v.renderMode}"/>
+                                </div>
+                            </aura:if>
+                            <!-- File Upload Single -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='FileUploadSingle'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_FileUploadSIngle
+                                                           aura:id="formstepComponent" 
+                                                           elementWrapper="{!elementWrapper}" 
+                                                           renderMode="{!v.renderMode}"
+                                                           parentId="{!v.recordId}"/>
+                                </div>
+                            </aura:if>
+                            <!-- InlineReadOnlyDataTable -->
+                            <aura:if isTrue="{!elementWrapper.ElementType=='InlineReadOnlyDataTable'}">
+                                <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                    <c:F3_InlineTableCMP 
+                                                         aura:id="formstepComponent" 
+                                                         elementWrapper="{!elementWrapper}" 
+                                                         renderMode="{!v.renderMode}"
+                                                         parentId="{!v.parentCaseRecordId}"/>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!elementWrapper.ElementType=='InlineButtoGroup'}">
+                                    <div class="slds-m-top_x-small slds-m-bottom_x-small" >
+                                        <c:F3_InlineButtonCMP 
+                                                             aura:id="formstepComponent" 
+                                                             elementWrapper="{!elementWrapper}" 
+                                                             renderMode="{!v.renderMode}"/>
+                                    </div>
+                                </aura:if> 
+                        </aura:iteration>
+                        <!-- Parent Id -->
+                        <lightning:inputField aura:id="parentCaseRecordIdField" 
+                                              fieldName="{!v.parentObjectRelationshipFieldAPIName}"  
+                                              variant="label-hidden" value="{!v.parentCaseRecordId}"
+                                              disabled="true"/>
+                    </lightning:recordEditForm>
+                </aura:if>    
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap lex-actionpanel" style="background-color: #f1f1f1">
+            <div class="slds-col slds-size_12-of-12 slds-p-around_medium main-border" >
+                <div class="slds-clearfix slds-p-around_small">
+                    <div class="slds-align_absolute-center">
+                        <aura:if isTrue="{!!v.IsFirstStep}">
+                        	<lightning:button label="{!v.savePreviousButtonLabel}" iconName="action:back" iconPosition="left"
+                                          onclick="{!c.onClickSavePrevious}" 
+                                          class="slds-button slds-m-right_x-small"/>
+                        </aura:if>
+                        <!--<lightning:button label="{!v.saveButtonLabel}" iconName="utility:save" iconPosition="left"
+                                          class="slds-button slds-m-right_x-small" onclick="{!c.onClickSave}" /> 
+
+						-->
+                        <aura:if isTrue="{!!v.IsLastStep}">
+                            <lightning:button label="{!v.saveNextButtonLabel}" iconName="utility:forward" iconPosition="right"
+                                          onclick="{!c.onClickSaveNext}"  
+                                          class="slds-button slds-m-right_x-small" />
+                        </aura:if>                        
+                        <lightning:button label="" iconName="utility:bookmark" iconPosition="right"
+                                          class="slds-button slds-button_brand slds-m-right_x-small" onclick="{!c.onClickBookmark}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

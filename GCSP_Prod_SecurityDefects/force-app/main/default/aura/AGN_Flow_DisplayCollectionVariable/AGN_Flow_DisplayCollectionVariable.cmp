@@ -1,0 +1,23 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global" >
+    <!-- attributes -->
+    <aura:attribute name="data" type="Allergan_Customer_Address_AGN__c[]" default="[]"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="draftValues" type="Allergan_Customer_Address_AGN__c[]" />
+
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+
+    <!-- the container element determine the height of the datatable -->
+    <div style="height: 200px, width: 50%" >
+        <lightning:datatable
+            columns="{! v.columns }"
+            data="{!v.data }"
+            keyField="Company_Name_AGN__c"
+            draftValues="{!v.draftValues }"                 
+            hideCheckboxColumn="true"
+            onsave="{!c.handleSaveEdition}"
+            onrowaction="{! c.handleRowAction }"                 
+        />
+    </div>
+</aura:component>

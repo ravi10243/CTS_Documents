@@ -1,0 +1,10 @@
+.THIS .progressbar {
+  /*counter-reset: step;*/
+}
+
+.THIS.main-border {
+	border-top: 1px solid rgb(249, 249, 250);
+    border-bottom: 1px solid rgb(249, 249, 250);
+    border-left: 1px solid rgb(249, 249, 250);
+    border-right: 1px solid rgb(249, 249, 250);
+}

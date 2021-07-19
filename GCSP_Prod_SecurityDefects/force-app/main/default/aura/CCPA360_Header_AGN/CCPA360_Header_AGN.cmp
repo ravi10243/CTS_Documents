@@ -1,0 +1,6 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId" 
+                access="global">
+    <div class="slds-align_absolute-left" >
+        <img src="{!$Resource.Allergan_logo}"/>
+    </div>
+</aura:component>

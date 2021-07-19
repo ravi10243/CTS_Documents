@@ -1,0 +1,15 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <!-- Attributes -->
+    <aura:attribute name="elementWrapper" type="Object"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    
+    <!-- Component Body -->
+    <div name="{!v.elementWrapper.PageElement.Name}" 
+         class="{!v.elementWrapper.class != 'slds-hide' ? 'slds-m-top_x-small slds-p-around_x-small slds-m-bottom_x-small' : 'slds-hide'}">
+        <div class="slds-grid slds-gutters slds-p-around_small"  >
+            <div class="slds-col slds-size_11-of-12" >
+                <lightning:formattedRichText value="{!v.elementWrapper.ContainerHtmlText}" style="font-size: 12px;"/>
+            </div>
+        </div>
+    </div>        
+</aura:component>

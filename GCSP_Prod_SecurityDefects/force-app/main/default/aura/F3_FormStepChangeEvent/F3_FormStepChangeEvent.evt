@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="Event template" >
+    <aura:attribute name="currentStepId" type="String" />
+    <aura:attribute name="BUTTONTYPE" type="String" />
+</aura:event>

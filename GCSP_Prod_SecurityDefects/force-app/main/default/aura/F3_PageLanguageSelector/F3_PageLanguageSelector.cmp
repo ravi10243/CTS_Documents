@@ -1,0 +1,37 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global"
+                controller = "F3_PageLanguageSelectorController">
+    <aura:attribute name="bgColor" type="String" default="#ffffff;" />
+    <aura:attribute name="pageKey" type="String"/>
+    <aura:attribute name="langCode" type="String"/>
+    <aura:attribute name="stepId" type="String"/>
+    <aura:attribute name="selectedValue" type="String"/>
+    <aura:attribute name="languageOptions" type="list"/>
+    <aura:attribute name="renderMode" type="String" default="COMMUNITY"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    {!v.languageOptions}
+    <aura:if isTrue = "{!v.renderMode == 'COMMUNITY'}">
+        <lightning:select label="Choose language" name="ddlLanguage" aura:id = "langSelectorId" onchange="{!c.onLanguageChange}">
+            <aura:iteration items="{!v.languageOptions}" var = "lang">
+                <option value="{!lang.langCode}">{!lang.langName}</option>
+               
+            </aura:iteration>
+        </lightning:select>
+    </aura:if>
+    <aura:if isTrue = "{!v.renderMode == 'DESIGNER'}">
+        <div class="slds-grid slds-wrap" style="{!'background-color:'+v.bgColor}" >
+            <div class="slds-col slds-size_1-of-1 slds-large-size_10-of-12" >
+                &nbsp;
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-12">
+                <lightning:select disabled="true" name="ddlLanguage" value="{!v.selectedValue}">
+                    <option value="enGB">English (UK)</option>
+                    <option value="enUS">English (US)</option>
+                    <option value="fr">French</option>
+                    <option value="ge">German</option>
+                    <option value="ch">Chinese</option>
+                </lightning:select>
+            </div>
+        </div>
+    </aura:if>    
+</aura:component>

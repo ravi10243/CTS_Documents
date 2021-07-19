@@ -1,0 +1,72 @@
+.label_heading{
+    font-size: 1rem;
+    width: 30%!important;
+    margin-right: 2%;
+    word-break: break-word;
+}
+.attachment_name{
+    font-size: 1rem;
+    margin-left: 2%;
+    margin-right: 2%;
+    width: 30%!important;
+    word-break: break-word;
+}
+.upload_box{
+    margin:0;
+    width: 325px !important;
+    display:flex;
+}
+@media screen and (max-width: 1160px) and (min-width: 1025px){
+    .label_heading, .attachment_name{
+        width: 28%!important;        
+    }
+}
+@media screen and (max-width: 1024px) and (min-width: 941px){
+    .label_heading, .attachment_name{
+        width: 26%!important;        
+    }
+} 
+@media screen and (max-width: 940px) and (min-width:800px){
+    .label_heading, .attachment_name{
+        width: 45%!important;
+        display: inline-flex;        
+        margin: 3%;
+    }
+}
+@media screen and (max-width: 799px) and (min-width:768px){
+    .label_heading, .attachment_name{
+        width: 40%!important;
+        display: inline-flex;
+        margin: 3% 3% 3% 6%;
+    }
+}
+@media screen and (max-width: 767px) and (min-width:511px){
+    .label_heading, .attachment_name{
+        width: 45%!important;
+        display: inline-flex;
+        margin: 3% 3% 3% 6%;
+    }
+    .upload_box{
+        margin:0;
+        width: 190px !important;
+        width: fit-content;
+    }
+}
+@media screen and (max-width: 510px){ 
+    .label_heading, .attachment_name{
+        width: 100%!important;
+        display: block;
+        margin: 5% auto;
+        padding: 0 2%;
+        text-align: center;
+    }
+    .upload_box{
+        margin:0;       
+        width: fit-content !important;
+    }
+    .del_btn{
+        text-align: center;
+        margin: 3% auto;
+        display: block;
+    }
+}

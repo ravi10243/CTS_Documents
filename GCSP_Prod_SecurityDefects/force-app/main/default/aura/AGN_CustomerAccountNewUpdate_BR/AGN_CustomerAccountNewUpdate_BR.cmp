@@ -1,0 +1,194 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="AGN_CustomerAccountUpdateController" access="global" >
+
+	<ltng:require scripts="{!$Resource.AGN_CustomerPortalJQuery }" afterScriptsLoaded="{!c.scriptsLoaded}" />
+	<aura:attribute name="controller" type="AGN_CustomerAccountUpdateController"/>
+    <aura:attribute name="address" type="Allergan_Customer_Address_AGN__c" default="{ 'sobjectType': 'Allergan_Customer_Address_AGN__c'}"/>
+    <aura:attribute name="caseDetail" type="Case" default="{ 'CaseNumber': '000000'}"/>
+    <aura:attribute name="type" type="string"/>
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    <aura:attribute name="fieldValidation" type="boolean" default="false"/>
+    <aura:attribute name="activity" type="string"/>
+    <aura:attribute name="StateCode" type="AGN_CR_CountryRegionMapping__mdt[]"/>
+    <aura:attribute name="fileName" type="string"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <aura:handler event="aura:doneRendering" action="{!c.doneRendering}"/>
+
+    <aura:if isTrue="{!v.showSpinner ? true : false}">
+    <div id="LoaderAnimation">
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.50; z-index: 1000; background-color: #e3e3e3;">
+            &nbsp;
+        </div>
+        <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 25% 45%">
+            
+            <div align="center" class="loader"></div>
+        </div>
+    </div>
+	</aura:if>
+    <div class="container">
+    	<div class="basic_details com_save"> 
+			<div class="hd">{!v.type} : {!v.controller.newAddress.SAP_ID_AGN__c}</div>
+			<div class="infr_det">
+				<div class="infr_bg">
+					<div class="infr_details">
+                        <div class="section_header">{!$Label.c.AGN_OAM_Body_Address}<span></span></div>
+						<section class="content bgcolor-7">
+							<span class="input input--nariko inputtextValue input-identifier required-identifier "  data-inputFiedlValue = "{!v.controller.newAddress.Company_Name_AGN__c}">
+								<ui:inputText value="{!v.controller.newAddress.Company_Name_AGN__c}" class="input__field input__field--nariko inputtextValue" disabled="{!(v.activity=='delete')?'true':'false' }" />
+
+								<label class="input__label input__label--nariko" for="input-20">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_BusinessPracticeName}<span>*</span></span>
+								</label>
+								<div class='required'/>                                                                
+							</span>
+                            <span class="input input--nariko inputtextValue input-identifier " data-inputFiedlValue = "{!v.controller.newAddress.Department_Name_AGN__c}">
+								<ui:inputText value="{!v.controller.newAddress.Department_Name_AGN__c}" class="input__field input__field--nariko inputtextValue" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_DepartmentName}</span>
+								</label>                                                                
+							</span>                       
+						</section>
+						<section class="content bgcolor-7">
+                            <span class="input input--nariko inputtextValue  postCode-identifire input-identifier required-identifier"   data-inputFiedlValue = "{!v.controller.newAddress.Zip_AGN__c}">
+								<ui:inputText class="input__field input__field--nariko inputtextValue reg_code" value="{!v.controller.newAddress.Zip_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }" change="{!c.fetchAddress}"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_PostalCode}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span>
+                        </section>
+                        
+                        <section class="content bgcolor-7">
+                            <span class="input input--nariko  input-identifier required-identifier " data-inputFiedlValue = "{!v.controller.newAddress.Street_Name_AGN__c}" >
+								<ui:inputText class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.Street_Name_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Street}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span> 
+                            <span class="input input--nariko  input-identifier required-identifier " data-inputFiedlValue = "{!v.controller.newAddress.House_Number_AGN__c}" >
+								<ui:inputText class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.House_Number_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Number}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span>
+                            <span class="input input--nariko  input-identifier " data-inputFiedlValue = "{!v.controller.newAddress.Address_Line_2_AGN__c}" >
+								<ui:inputText class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.Address_Line_2_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Address_Line_2}</span>
+								</label>
+								<div class='required'/>									
+							</span> 
+                                                                                     
+                            
+                            <span class="input input--nariko  input-identifier required-identifier " data-inputFiedlValue = "{!v.controller.newAddress.Address_Line_3_AGN__c}" >
+								<ui:inputText class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.Address_Line_3_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Address_Line_3}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span>  
+                                  
+							<span class="input input--nariko inputtextValue  input-identifier required-identifier"   data-inputFiedlValue = "{!v.controller.newAddress.City_AGN__c}">
+								<ui:inputText class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.City_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_City}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span>		
+                            <span class="input input--nariko inputtextValue  input-identifier required-identifier input-state"   data-inputFiedlValue = "{!v.controller.newAddress.State_AGN__c}" style="display: none;/">
+                                <ui:inputSelect class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.Country_AGN__c}" aura:id="InputSelectCountry" change="{!c.onChange}" disabled="{!(v.activity=='delete')?'true':'false' }"/>                            
+                                <label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Country}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span>	
+							<span class="input input--nariko inputtextValue  input-identifier required-identifier input-state"   data-inputFiedlValue = "{!v.controller.newAddress.State_AGN__c}" style="/*padding-top: 21px;*/">
+                                <ui:inputSelect class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.State_AGN__c}" aura:id="InputSelectState" change="{!c.onChange}" disabled="{!(v.activity=='delete')?'true':'false' }">                                	
+                                	
+                                </ui:inputSelect>                            
+                                <label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_County}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span>								
+						</section>
+                        <section class="content bgcolor-7">
+                            <span class="input input--nariko inputtextValue phone-identifire input-identifier required-identifier" data-inputFiedlValue = "{!v.controller.newAddress.Phone_AGN__c}">
+								<ui:inputText class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.Phone_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Phone}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span>
+                            <span class="input input--nariko inputtextValue phone-identifire input-identifier " data-inputFiedlValue = "{!v.controller.newAddress.Phone_2_AGN__c}">
+								<ui:inputText class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.Phone_2_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Mobile}</span>
+								</label>																	
+							</span>
+                            <span class="input input--nariko inputtextValue email-identifire  input-identifier required-identifier" data-inputFiedlValue = "{!v.controller.newAddress.Email_AGN__c}">
+								<ui:inputText class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.Email_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Email}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span>
+							<span class="input input--nariko inputtextValue email-identifire  input-identifier required-identifier" data-inputFiedlValue = "{!v.controller.newAddress.Mapping_2_AGN__c}">
+								<ui:inputText class="input__field input__field--nariko inputtextValue" value="{!v.controller.newAddress.Mapping_2_AGN__c}" disabled="{!(v.activity=='delete')?'true':'false' }"/>
+								<label class="input__label input__label--nariko" for="input-21">
+									<span class="input__label-content input__label-content--nariko inputHasValue">{!$Label.c.AGN_OAM_Body_Email2}<span>*</span></span>
+								</label>
+								<div class='required'/>									
+							</span>                      
+                        </section>
+                        <aura:if isTrue="{!v.activity=='delete' ? false : true}">
+						<div class="section_header">{!$Label.c.AGN_OAM_Body_UploadDocuments} : 
+                            <label for="files">
+                                <span class="photo_id_attach">
+                                  <!--  <img src="{!$Resource.AGN_CustomerPortal+ 'images/attach_icon.png'}"/> -->
+                                    <span class="attach_btn_text">{!$Label.c.AGN_OAM_Body_Attach}</span>
+                                </span>
+                            </label>
+                            <aura:if isTrue="{!v.fileName==null ? false : true}"><span class="upload_file">{!v.fileName}</span></aura:if>
+							<input type="file" class="file" aura:id="fileDoc"  id ="files" style="visibility:hidden;" /> </div>
+						</aura:if>
+						       					
+                        <div class="det_btn">
+                        <div class="det_btns">  
+							<!-- <div class="add_btn continue_btn">Save</div>        
+                        	<div class="add_btn cancel_btn">Cancel</div>  -->
+                        	<ui:button aura:id="button" class="add_btn cancel_btn" label="Cancelar" press="{!c.gotoHome}"/>
+
+                            <aura:if isTrue="{!v.activity != 'delete' ? true : false}">
+                            	<ui:button aura:id="button" class="add_btn continue_btn" label="Enviar" press="{!c.saveRecord}"/>
+                            </aura:if>
+                            <aura:if isTrue="{!v.activity == 'delete' ? true : false}">
+                            	<ui:button aura:id="button" class="add_btn continue_btn" label="Excluir" press="{!c.saveRecord}"/>
+                            </aura:if>
+                            									
+							<div class="required_field">
+								<div class="blank_field" style="display:none"></div>
+							</div>
+						</div>	                        
+                        </div>																		
+					</div>
+				
+				</div>
+			</div>			
+	</div>
+	<!-- <aura:if isTrue="{!v.caseDetail.CaseNumber=='000000' ? false : true}"> -->
+		<div style="height: 80vh">
+       		<aura:if isTrue="{!v.activity == 'delete' ? true : false}">
+            	<div class="success_com" >O pedido de descativação da conta foi enviado <span>com sucesso</span>. O número do seu caso é{!(v.caseDetail.CaseNumber)} . Obrigado. <br/><ui:button aura:id="button" class="add_btn success_btn" label="Ok" press="{!c.gotoHome}"/></div>
+            </aura:if>
+            <aura:if isTrue="{!v.activity != 'delete' ? true : false}">
+            	<div class="success_com" >A sua solicitação de atualização de conta foi enviada <span> com sucesso. </span>O número do seu caso é {!(v.caseDetail.CaseNumber)} . Obrigado.<br/><ui:button aura:id="button" class="add_btn success_btn" label="Ok" press="{!c.gotoHome}"/></div>
+            </aura:if> 
+        </div>
+            <!-- </aura:if> -->
+    </div>
+    <div stye="position:relative;">
+				
+	</div>
+</aura:component>

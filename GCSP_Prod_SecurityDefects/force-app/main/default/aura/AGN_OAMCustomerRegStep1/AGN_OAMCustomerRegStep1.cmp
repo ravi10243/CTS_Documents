@@ -1,0 +1,180 @@
+<aura:component controller="AGN_OAMPortalCustomerRegStep1Controller" access="global">
+    
+    <aura:attribute name="objAGNCustAddr" type="Allergan_Customer_Address_AGN__c" default="{'sobjectType': 'Allergan_Customer_Address_AGN__c'}" access="private" />
+    <aura:attribute name="objAGNCustReg" type="Allergan_Customer_Registration_AGN__c" default="{'sobjectType': 'Allergan_Customer_Registration_AGN__c'}" access="private" />
+    <aura:attribute name="countryOptions" type="Country_vod__c[]"/>
+    <aura:attribute name="customerTypeConfig" type="Customer_Type_Configuration_AGN__c[]"/>
+    
+    <aura:attribute name="objMixType" type="sObject" access="private" default="{'sobjectType': 'sObject'}"/>
+    <aura:attribute name="fieldMetadata" type="AGN_Community_Layout_Setting__mdt[]" access="private" />
+    <aura:attribute name="sectionHeaderMap" type="Map" default="{}"/>
+    <aura:attribute name="openModal" type="boolean" default="true"/>
+    <aura:attribute name="requireFieldMissing" type="boolean" default="false"/>
+    <aura:attribute name="fieldWellFormated" type="boolean" default="true"/>
+    <aura:attribute name="isCaptchaValid" type="boolean" default="false"/>
+    <aura:attribute name="isTCAccepted" type="boolean" default="false"/>
+    <aura:attribute name="selectedCountryCode" type="String"/>
+    <aura:attribute name="selectedCustomerType" type="String"/>
+    <aura:attribute name="selectedCustomerSubType" type="String"/>
+    
+     <aura:attribute name="customerGroup" type="String"/>
+    
+    <aura:attribute name="tempLabel" type="String"/>
+    <aura:attribute name="sectionHeader" type="String"/>
+    <aura:attribute name="sectionLabelMap" type="Map" default="{}"/>
+    
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    
+    <aura:attribute name="communityBaseURL" type="String"/>
+    <aura:attribute name="communitySuffix" type="String"/>
+    <aura:attribute name="GDPRConsent" type="boolean" default="false" />
+    <aura:attribute name="SAPCountryCode" type="String" access="public" />
+    <aura:attribute name="CountryCode" type="String" access="public" />
+    
+    <aura:registerEvent name="messageStep1Completion" type="c:AGN_CustRegOnStep1Completed_Evt" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="aura:doneRendering" action="{!c.doneRendering}"/>
+    <aura:handler name="change" value="{!v.isCaptchaValid}" action="{!c.validateAndInsert}"/>
+    
+    <aura:method name="displayFormStep1" action="{!c.showForm}">
+        <aura:attribute name="countryCode" type="String"/>
+        <aura:attribute name="customerType" type="String"/>
+        <aura:attribute name="customerSubType" type="String"/>
+        <aura:attribute name="countryOptions" type="Country_vod__c[]"/>
+        <aura:attribute name="customerTypeConfig" type="Customer_Type_Configuration_AGN__c[]"/>
+    </aura:method>
+    <aura:attribute name="footerConsentsList" type="Allergan_Consent_Footer_Info__c" />
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.showSpinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end--> 
+    
+    
+    <div class="Basic_det">
+        <div class="divider"></div>
+        <div class="infr_det">
+            <div class="infr_bg">
+                <div class="infr_details">
+                    <aura:iteration items="{!v.sectionHeaderMap}" var="set" indexVar="key">
+                        <div class="slds-section-title--divider"><b>
+                            
+                            <!--{!set.value[0].Section_Header_Label_AGN__c} -->
+                            <c:AGN_OAMCustomerRegSectionHeader sectionHeaderLabel="{!set.value[0].Section_Header_Custom_Label_AGN__c}" />
+                            </b><span></span></div>
+                        <section class="content bgcolor-7"> 
+                            <aura:iteration items="{!set.value}" var="fieldValue">
+                                <!--<div class="section_header">{!$Label.c.AGN_OAM_Body_Address}<span></span></div>-->
+                                
+                                
+                                <aura:if isTrue="{!v.CountryCode == 'ES'}"> 
+                                    
+                                    <c:AGN_OAMCommunityInputFieldES 
+                                                                    aura:id="fieldId" 
+                                                                    sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                                    record="{!v.objMixType}" 
+                                                                    fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                                    customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                                    required="{!fieldValue.Required_AGN__c}"
+                                                                    fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                                    customCountryCode = "{!v.selectedCountryCode}"
+                                                                    cmpHelpText = "{!fieldValue.Help_Text_AGN__c}" 
+                                                                    customerGroup = "{!v.customerGroup}" 
+                                                                    customerTypeConfig = "{!v.customerTypeConfig}"
+                                                                    />  
+                                    
+                                    
+                                    
+                                </aura:if>
+                                <aura:if isTrue="{!v.CountryCode != 'ES'}">
+                                    
+                                    <c:AGN_CommunityInputFieldCmp 
+                                                                  aura:id="fieldId" 
+                                                                  sobjectName="{!fieldValue.SObject_Name_AGN__c}" 
+                                                                  record="{!v.objMixType}" 
+                                                                  fieldName="{!fieldValue.Field_Name_AGN__c}"
+                                                                  customLabel="{!fieldValue.Field_Custom_Label_AGN__c}"
+                                                                  required="{!fieldValue.Required_AGN__c}"
+                                                                  fieldRegex="{!fieldValue.Field_Regex_AGN__c}"
+                                                                  customCountryCode = "{!v.selectedCountryCode}"
+                                                                  cmpHelpText = "{!fieldValue.Help_Text_AGN__c}"
+                                                                  />    
+                                </aura:if>
+                            </aura:iteration>
+                        </section>
+                    </aura:iteration>                    
+                    <aura:if  isTrue="{!v.communityBaseURL != null}" >
+                        <div aura:id="openModal" id="openModal" class="modalDialog captcha-hide">
+                            
+                            <div class="openModal_content">	
+                                <!--   <a href="#close" title="Close" class="close">X</a> -->
+                                <span>{!$Label.c.AGN_OAM_Confirm_not_robot}</span>
+                                <iframe aura:id="vfFrame" src="{!v.communityBaseURL + v.communitySuffix +'/AGN_GoogleCAPTCHAv2'}" scrolling="no" frameborder="0" width="100%" height="100%" allowtransparency="true" />                    
+                                <!--   <div style="text-align: center;">
+                                     <button class="slds-button slds-button_outline-brand modal_close_btn">Submit</button> 
+                                </div>-->
+                            </div>
+                        </div>
+                    </aura:if>
+                    <div class="GDPRConsent" id="GDPR_Terms">
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                              
+                                    <!-- T&C Text -->
+                                    <lightning:formattedRichText value ="{!v.footerConsentsList.Footer_RichText_c__c}" />
+                                    
+                                    <!--<div class="btn_container">
+                                        <ui:button class="slds-button slds-button_neutral add_btn cancel_btn" aura:id="btnTCCancel" label="{!$Label.c.AGN_OAM_Cancel}" press="{!c.tcCancel}"/>
+                                        <ui:button class="slds-button slds-button_brand add_btn continue_btn" aura:id="btnTCAccept" label="{!$Label.c.AGN_OAM_Accept}" press="{!c.tcAccept}"/>
+                                        
+                                    </div>-->
+                                    <ui:button class="slds-button slds-button_neutral" aura:id="btnTCCancel" label="{!$Label.c.AGN_OAM_Cancel}" press="{!c.tcCancel}"/>
+                                    <ui:button class="slds-button slds-button_brand" aura:id="btnTCAccept" label="{!$Label.c.AGN_OAM_Accept}" press="{!c.tcAccept}"/>
+                                    
+                                </div>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open">
+                        </div>
+                    </div>  
+                    
+                    <div class="slds-form-element check_box_btn">
+                        <div class="slds-form-element__control">
+                            <ui:inputCheckbox labelClass="myCheckbox" aura:id="chkTC" value="{!v.isTCAccepted}" change="{!c.actionTCAccept}" label="{!$Label.c.AGN_OAM_I_Accept_the_GDPR_Terms_and_Conditions}"/>
+                        </div>
+                    </div>
+                    
+  <div class="det_btn">
+                        
+                        <aura:if isTrue="{!v.CountryCode != 'FR'}">
+                            <div class="det_btns">  
+                                <ui:button aura:id="button" class="add_btn cancel_btn" label="{!$Label.c.AGN_OAM_Body_Cancel}" press="{!c.resetBlock}"/>
+                                <!--<aura:renderIf isTrue="{!v.isCaptchaValid}"> -->
+                                <!--<ui:button aura:id="buttonSave" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Save_Continue}" press="{!c.validateAndInsert}" disabled="{!!v.isTCAccepted}"/>-->
+                                <ui:button aura:id="buttonSave" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Save_Continue}" press="{!c.validateAndInsert}" disabled="{!!v.isTCAccepted}"/>
+                                <!--</aura:renderIf> -->
+                            </div>	
+                       </aura:if> 
+                        <aura:if isTrue="{!v.CountryCode == 'FR'}">
+                            <div class="det_btns"> 
+                                
+                                <ui:button aura:id="button" class="add_btn cancel_btn" label="{!$Label.c.AGN_OAM_Body_Cancel}" press="{!c.resetBlock}"/>
+                                <ui:button aura:id="buttonSave" class="add_btn continue_btn" label="{!$Label.c.AGN_OAM_Body_Save_Continue}" press="{!c.validateAndInsert}" />
+                               
+                            </div>	
+                       </aura:if>                      
+                    </div>
+                    
+                </div>
+            </div>
+        </div>			
+    </div>
+    
+</aura:component>

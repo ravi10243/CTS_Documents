@@ -1,0 +1,84 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="MDFormBuilderController">
+    
+    <!-- Attributes -->
+    <aura:attribute name="renderMode" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="mdChildObjectOneConfig" type="Object"/>
+    <aura:attribute name="listFieldConfig" type="List" />
+    
+    <aura:attribute name="addNewMode" type="Boolean" default="false" />
+    <aura:attribute name="newFieldConfig" type="Object" />
+    
+    <!-- Handlers -->
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Componennt Body -->
+    <lightning:card iconName="custom:custom15" title="Child Object - Yes, no code!!">
+        <aura:if isTrue ="{!v.mdChildObjectOneConfig}" >
+            <div class="slds-p-around_small slds-grid slds-wrap ">
+                <div class="slds-col slds-large-size_12-of-12">
+                    <div class="slds-align_absolute-center slds-m-bottom_small">
+                        <lightning:button variant="brand" label="Save Configuration" title="Save Objects and Fields" onclick="{!c.OnSaveObjectsAndFields}" />
+                    </div>    
+                </div>
+                <div class="slds-col slds-large-size_12-of-12">
+                    <lightning:input reuired="true" label="Child Object API Name" value="{!v.mdChildObjectOneConfig.ChildObjectAPIName}" />
+                </div>
+                <div class="slds-col 12 slds-large-size_12-of-12">
+                    <lightning:input reuired="true" label="Relationship Field API Name" value="{!v.mdChildObjectOneConfig.RelationshipFieldAPIName}" />
+                </div>
+                <aura:if isTrue="{!!v.addNewMode}">
+                    <div class="slds-col 12 slds-large-size_12-of-12 slds-p-top_small">
+                        <div class="slds-align_absolute-center slds-p-top_small">
+                            <lightning:button label="Add New Field" title="Add New Field" onclick="{!c.OnAddNewFieldConfig}" />
+                        </div>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.addNewMode}">
+                    <div class="slds-col 12 slds-large-size_12-of-12 slds-p-top_small">
+                        <div class="slds-box slds-theme_shade">
+                            <div class="slds-box slds-theme_default slds-m-top_x-small">
+                                <lightning:input reuired="true" label="Developer Name" value="{!v.newFieldConfig.DeveloperName}" />
+                                <lightning:input reuired="true" label="Field API Name" value="{!v.newFieldConfig.FieldAPIName}" />
+                                <lightning:input reuired="true" label="Display Label" value="{!v.newFieldConfig.DisplayLabel}" />
+                                <lightning:input type="checkbox" label="Required?" checked="{!v.newFieldConfig.Required}" />
+                                <lightning:input label="Quick Help Text" value="{!v.newFieldConfig.QuickHelpText}" />
+                                <lightning:input label="Default Value" value="{!v.newFieldConfig.DefaultValue}" />
+                                <lightning:input type="checkbox" label="Is Hidden?" checked="{!v.newFieldConfig.IsHidden}" />
+                            </div>    
+                            <div class="slds-align_absolute-center slds-m-top_x-small">
+                                <lightning:button label="Cancel" title="Cancel" onclick="{!c.OnCancelAddNew}" />
+                                <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.OnSaveAddNew}" />
+                            </div>
+                        </div>
+                    </div>
+                </aura:if> 
+                <div class="slds-col 12 slds-large-size_12-of-12">
+                    <aura:if isTrue ="{!v.listFieldConfig}" >
+                        <!--** Iteration for picklist values  **-->
+                        <aura:iteration items="{!v.listFieldConfig}" var  ="item">
+                            <div class="slds-box slds-m-around_small slds-theme_shade">
+                                <lightning:card variant="Narrow" title="{!item.DeveloperName}" iconName="standard:account">
+                                    <aura:set attribute="actions">
+                                        <button id="{!item.DeveloperName}" onclick="{!c.deleteField}" class="slds-button slds-button_destructive">Delete</button>
+                                    </aura:set>
+                                    <p class="slds-p-horizontal_small">
+                                        <lightning:input reuired="true" label="Developer Name" value="{!item.DeveloperName}" />
+                                        <lightning:input reuired="true" label="Field API Name" value="{!item.FieldAPIName}" />
+                                        <lightning:input reuired="true" label="Display Label" value="{!item.DisplayLabel}" />
+                                        <lightning:input type="checkbox" label="Required?" checked="{!item.Required}" />
+                                        <lightning:input label="Quick Help Text" value="{!item.QuickHelpText}" />
+                                        <lightning:input label="Default Value" value="{!item.DefaultValue}" />
+                                        <lightning:input type="checkbox" label="Is Hidden?" checked="{!item.IsHidden}" />
+                                    </p>
+                                </lightning:card>
+                            </div>
+                        </aura:iteration>
+                    </aura:if>
+                </div>
+            </div>    
+        </aura:if>    
+    </lightning:card>
+</aura:component>

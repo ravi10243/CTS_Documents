@@ -1,0 +1,604 @@
+/* ---------------------- New UI Changes ------------------------- **/
+iframe {
+    height:500px !important;
+    width: 100%;
+    overflow:hidden;
+    overflow-y: hidden; 
+    overflow-x: hidden; 
+    border: 0px;
+    top:0;
+    margin-top: 2%;
+}
+iframe::-webkit-scrollbar {  
+    display: none;
+}
+.container{
+    width: 100%;
+    border: 1px solid #bfbfbf;
+    background: #fff;
+    margin: 25px auto 30px;
+   /* height: 130px;  */
+    height: auto;
+}
+.cus_basic_details{
+    width: 90%;
+    margin: 2% auto 3%;
+}
+.cus_input{  /* Apart from CA */
+    display: inline-block;    
+    margin-left: 2em;
+    max-width: 47%;
+    width: 100%;
+} 
+.cus_input_canada{   /*For CA*/
+    display: inline-block;    
+    margin-left: 2em;
+    margin-right: 0.4em;
+    max-width: 30%;
+    width: 100%;
+} 
+.cus_input_read{      /* Apart from CA - CS Side */
+    display: inline-block;
+    width: 50%;
+    margin-left: 2em;
+    margin-right: 0.7em;
+    padding-left: 10.5em;
+}
+.cus_input_read_canada{   /*For CA - CS Side*/
+    width: 50%;
+    padding-left: 2.5em;
+}
+ .slds-input{  /* Apart from CA */
+    width: 31.2em;
+    height: 45px;
+    border-radius: 0;
+    display: block;
+    font-size:0.95rem;
+}
+.slds-input_canada{   /*For CA*/
+    width: 20em;
+    height: 45px;
+    border-radius: 0;
+    display: block;
+    font-size:0.95rem;
+}
+.slds-scope{
+    display: flex;
+    width: 95%;
+    margin: 2% auto 0;
+    border: 1px solid #b8860b;
+}
+.showToast{
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:18em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+}
+.product_interest2{    
+    padding: 0 2%;
+    width: 90%;
+    margin: 0 auto;  
+}
+.basicstep1{
+    width: 100%;
+    border: 1px solid #bfbfbf;
+    margin: 0 auto;
+    background: #fff;   
+}
+.outer_wrapper{
+    /* fixing the width for outer_wrapper for CS side */
+   /* width: 1148px; */
+    width:100%;
+    max-width: 1366px;
+    margin: auto;
+    font-size: 0.8125rem;         
+}
+.instruction{
+    text-align:center;
+    margin-bottom:20px;
+}
+.hd{
+    font-size: 1.1rem;
+    font-weight: 700;  
+    width: 100%;
+    font-family: Arial,sans-serif;
+}
+
+.header-column {
+    padding: 1px 1px;
+}
+
+.reg_step1{
+    background-color:transparent;
+    padding:0;
+}
+.box{
+    display:contents;
+}
+.cheading{
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 auto 1%;
+    padding-left: 20px;   
+    width: 89%;   
+    color: #565656;
+    font-family: Arial,sans-serif;
+}
+.input__label-content--nariko{
+    padding-bottom: 25px;   
+    font-size: 0.9rem;    
+    color: #2c5596;
+    width: 25em;
+}
+.basic_info, .address_info, .communication_info{
+    width: 90%;
+    margin: 1% auto;
+}
+.openModal_content{    
+    width: 60%;
+    margin-top: 1%;    
+    float: left;     
+}
+.openModaltext{
+    font-size: 0.9rem;
+}
+.checkbox_text{        
+    display: flex;
+    margin: 0 auto;
+    width: 90%;   
+    font-size: 0.9rem;
+}
+.chktxt{
+    margin-top: 2px;
+  /*  margin-left: -230px; */
+    color: #2c5596;
+    font-size: 1rem;
+}
+/*.checkbox{
+    float: left;
+    width: 25px;
+}*/
+.btn_container {
+    float: right;
+    margin: 2% 0;        
+}
+.acceptbtn{
+    float:right;
+}
+.totalchkbox{    
+    display:flex;
+}
+/*  ----------- Brazil and Canada Changes ------------*/
+@media screen and (max-width: 1160px) and (min-width: 1061px){
+    .slds-input{
+        width: 29em;        
+    }
+    .slds-input_canada{
+        width: 18em;
+    }
+}
+@media screen and (max-width: 1060px) and (min-width: 1025px){
+    .cus_input{
+        margin-left: 1.8em;
+    }
+    .slds-input{
+        width: 27.2em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.8em;
+        margin-right: 0.4em;
+    }
+    .slds-input_canada{
+        width: 17em;
+    }
+}
+@media screen and (max-width: 1024px) and (min-width: 1001px){
+    .cus_input{
+        margin-left: 1.8em;
+    }
+    .slds-input{
+        width: 26.7em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.8em;
+        margin-right: 0.3em;
+    }
+    .slds-input_canada{
+        width: 17em;
+    }
+}
+@media screen and (max-width: 1000px) and (min-width: 941px){
+    .cus_input{
+        margin-left: 1.6em;
+    }
+    .slds-input{
+        width: 25.6em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.6em;
+        margin-right: 0.45em;
+    }
+    .slds-input_canada{
+        width: 16em;
+    }
+    .cheading{
+        width: 90%;
+    }
+    .checkbox_text{
+        width: 91%;
+    }
+}
+@media screen and (max-width: 940px) and (min-width: 885px){
+    .cus_input{
+        margin-left: 1.4em;
+    }
+    .slds-input{
+        width: 24.1em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.8em;
+        margin-right: 0.5em;
+    }
+    .slds-input_canada{
+        width:15em;
+    }
+    .cheading{
+        width: 90%;
+    }
+    .checkbox_text{
+        width: 91%;
+    }
+}
+@media screen and (max-width: 884px) and (min-width: 830px){
+    .cus_input{
+        margin-left: 1.4em;
+    }
+    .slds-input{
+        width: 22.5em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.4em;
+        margin-right: 0.4em;
+    }
+    .slds-input_canada{
+        width:14em;
+    }
+    .cheading{
+        width: 90%;
+    }
+    .checkbox_text{
+        width: 91%;
+    }
+}
+@media screen and (max-width: 829px) and (min-width: 771px){
+    .cus_input{
+        margin-left: 1.2em;
+    }
+    .slds-input{
+        width: 21em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.2em;
+        margin-right: 0.5em;
+    }
+    .slds-input_canada{
+        width: 13em;
+    }
+    .cheading{
+        width: 92%;
+    }
+    .checkbox_text{
+        width: 91%;
+    } 
+}
+@media screen and (max-width: 770px) and (min-width: 751px){
+    .cus_basic_details{
+        width: 85%;       
+    } 
+    .cus_input{
+        margin-left: 1.6em;
+        margin-right: .2em;
+        max-width: 44%;
+        width: 100%;
+    }
+    .slds-input{
+        width: 18em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.6em;
+        margin-right: 0em;
+        max-width: 44.5%;
+        width: 100%;
+    }
+    .slds-input_canada{
+        width: 18em;
+    }
+    .cheading{
+        width: 85%;
+    }
+    .checkbox_text{
+        width: 86%;
+    }
+}
+@media screen and (max-width: 750px) and (min-width: 671px){
+    .cus_basic_details{
+        width: 85%;       
+    } 
+    .cus_input{
+        margin-left: 1.5em;
+        margin-right: 0.2em;
+        max-width: 44%;
+        width: 100%;
+    }
+    .slds-input{
+        width: 16em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.5em;
+        margin-right: 0em;
+        max-width: 44.5%;
+        width: 100%;
+    }
+    .slds-input_canada{
+        width: 16em;
+    }
+    .cheading{
+        width: 85%;
+    }
+    .checkbox_text{
+        width: 86%;
+    }
+    .chktxt{
+        margin-left: 5px;
+    } 
+}
+@media screen and (max-width: 670px) and (min-width: 591px){
+    .cus_basic_details{
+        width: 85%;       
+    } 
+    .cus_input{
+        margin-left: 1.4em;
+        margin-right: 0em;
+        max-width: 44%;
+        width: 100%;
+    }
+    .slds-input{
+        width: 14em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.4em;
+        margin-right: 0em;
+        max-width: 44%;
+        width: 100%;
+    }
+    .slds-input_canada{
+        width: 14em;
+    }
+    .cheading{
+        width: 85%;
+    }
+    .checkbox_text{
+        width: 86%;
+    }
+    .chktxt{
+        margin-left: 5px;
+    }   
+}
+@media screen and (max-width: 590px) and (min-width: 566px){
+    .cus_basic_details{
+        width: 85%;       
+    } 
+    .cus_input{
+        margin-left: 1.2em;
+        margin-right: 0.1em;
+        max-width: 44%;
+        width: 100%;
+    }
+    .slds-input{
+        width: 12em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.2em;
+        margin-right: 0.1em;
+        max-width: 44%;
+        width: 100%;
+    }
+    .slds-input_canada{
+        width: 12em;
+    }
+    .cheading{
+        width: 87.5%;
+    }
+    .checkbox_text{
+        width: 88.5%;
+    }
+    .openModal_content{
+        width: 310px;    
+        display: block;
+        margin: 2% auto 0;
+        float:none;
+    }
+    .btn_container{
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        float:none;
+    } 
+    .chktxt{
+        margin-left: 5px;
+    }  
+}
+@media screen and (max-width: 565px) and (min-width: 511px){
+    .cus_basic_details{
+        width: 85%;       
+    } 
+    .cus_input{
+        margin-left: 1.2em;
+        margin-right: 0.1em;
+        max-width: 44%;
+        width: 100%;
+    }
+    .slds-input{
+        width: 12em;        
+    }
+    .cus_input_canada{
+        margin-left: 1.2em;
+        margin-right: 0.1em;
+        max-width: 44%;
+        width: 100%;
+    }
+    .slds-input_canada{
+        width: 12em;
+    }
+    .cheading{
+        width: 87%;
+    }
+    .checkbox_text{
+        width: 88%;
+    }
+    .openModal_content{
+        width: 310px;    
+        display: block;
+        margin: 2% auto 0;
+        float:none;
+    }
+    .btn_container{
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        float:none;
+    }
+    .chktxt{
+        margin-left: 5px;
+    }  
+}
+@media screen and (max-width: 510px) and (min-width: 421px){
+    .container{
+        height: auto;
+    } 
+    .cus_basic_details{
+        width: 100%;       
+    }
+    .cus_input, .cus_input_canada{
+        width: max-content;
+        margin: 0 auto 1em;
+        max-width: 100%;
+        display: block;
+    }
+    .slds-input, .slds-input_canada{
+        width: 20em;        
+    }
+    .cheading{
+        width: 342px;
+    }
+    .checkbox_text{
+        width: 304px;
+    }
+    .chktxt{
+        margin-left: 5px;
+    }
+    .product_interest2{
+        width: 335px;
+    }
+    .openModal_content{
+        width: 310px;    
+        display: block;
+        margin: 2% auto 0;
+        float:none;
+    }
+    .btn_container{
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        float:none;
+    }  
+}
+@media screen and (max-width: 420px) and (min-width: 351px){
+    .container{
+        height: auto;
+    }
+    .cus_basic_details{
+        width: 100%;       
+    } 
+    .cus_input, .cus_input_canada{
+        width: max-content;
+        margin: 0 auto 1em;
+        max-width: 100%;
+        display: block;
+    }
+    .slds-input, .slds-input_canada{
+        width: 16em;        
+    }
+    .cheading{
+        width: 284px;
+    }
+    .checkbox_text{
+        width: 246px;
+    } 
+    .product_interest2{
+        width: 270px;
+    } 
+    .chktxt{
+        margin-left: 5px;
+    }
+    .openModal_content{
+        width: 310px;    
+        display: block;
+        margin: 2% auto 0;
+        float:none;
+    }
+    .btn_container{
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        float:none;
+    }   
+}
+@media screen and (max-width: 350px){
+    .container{
+        height: auto;
+    }
+    .cus_basic_details{
+        width: 100%;       
+    } 
+    .cus_input, .cus_input_canada{
+        width: max-content;
+        margin: 0 auto 1em;
+        max-width: 100%;
+        display: block;
+    }
+    .slds-input, .slds-input_canada{
+        width: 14em;        
+    }
+    .cheading{
+        width: 252px;
+    }
+    .checkbox_text{
+        width: 214px;
+    } 
+    .product_interest2{
+        width: 232px;
+    } 
+    .chktxt{
+        margin-left: 5px;
+    } 
+    .openModal_content{
+        width: 310px;    
+        display: block;
+        margin: 2% auto 0;
+        float:none;
+        -webkit-transform: scale(0.80);
+        -webkit-transform-origin: 0 0;
+    }
+    .btn_container{
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        float:none;
+    }    
+}

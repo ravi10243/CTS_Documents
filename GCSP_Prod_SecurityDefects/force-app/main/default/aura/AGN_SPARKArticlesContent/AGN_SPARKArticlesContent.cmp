@@ -1,0 +1,949 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" 
+                controller="AGN_SPARKArticlesContent_controller" >
+    <aura:attribute name="searchIdValue" type="Id" default="" />
+    <aura:attribute name="parent" type="Aura.Component" required="true"/>
+    <aura:attribute name="article" type="object" />
+    <aura:attribute name="articleType" type="string" />
+    <aura:attribute name="articleSettings" type="AGN_SPARK_KnowledgeHub_Article_Setting__mdt[]" />
+    <aura:attribute name="backGroundImage" type="string" />
+    <aura:attribute name="vote" type="string" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:html tag="style">
+        
+        
+        /* --------------------- Banner Section Starts ------------------------------------------ */
+        #welcomeSectionArticle #welcomeSectionHead {
+        padding-bottom: 50px;
+        padding-top: 50px;
+        margin: 0 auto;
+        padding-left: 45px;
+        text-align: center;
+        font: normal normal 300 50px/60px Beatrice-light;
+        letter-spacing: 0px;
+        color: #A7756E;
+        display: block;
+        width: 100%;
+        }
+        
+        #clearFloat{
+        clear: both;
+        }
+        /* ---------------------- Banner Section Ends ---------------------------- */
+        
+        /* ---------------------- Content Section Starts ------------------------- */
+        body{
+        overflow-x: hidden;
+        }
+        #content{
+        
+        background-color: white;
+        }
+        #Home{
+        padding-left: 0px;
+        padding-right: 0px;
+        }
+        hr {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid black;
+        margin: 1em 0;
+        width: 100%;
+        padding: 0;
+        }
+        
+        .articleParaEnd {
+        display: inline-block;
+        height: 1px;
+        background-color:white;
+        border: 0;
+        border-top: 1px solid black;
+        margin-top:0px;
+        margin-left: 125px;
+        width: 87%;
+        padding: 0;
+        }
+        
+        #bulletContainer{
+        margin-bottom: 100px;
+        margin-top: 25px;
+        }
+        #articleSecHead{
+        padding-top:105px;
+        padding-left: 142px;
+        padding-right: 100px;
+        text-align: left;
+        font: normal normal 300 50px/60px Beatrice-light;
+        letter-spacing: 0px;
+        color: #A7756E;
+        }
+        
+        #articlePara #articlePara1 h2{
+        	text-align: left;
+            font: normal normal 300 50px/60px Beatrice-light;
+            letter-spacing: 0px;
+            color: #A7756E;
+        }
+        #articlePara{
+        margin-top: 70px;
+        margin-left: 130px;
+        margin-bottom: 50px;
+        }
+        #articlePara p a{
+        color: black;
+        }
+        #articlePara1{
+        padding-top: 20px;
+        text-align: left;
+        font: normal normal 300 24px/36px Neue_Haas_Unica_Pro-light !important;
+        letter-spacing: 1.44px;
+        color: #000000;
+        padding-right: 100px;
+        }
+        #articlePara1 .secPara{
+        margin-top: 40px;
+        margin-bottom: 40px;
+        }
+        #articlePara2{
+        overflow:hidden;
+        }
+        #usefulSec{
+        margin-top: 60px;
+        margin-bottom: 100px;
+        }
+        #usefulSec p{
+        text-align: left;
+        font: normal normal 300 21px/28px Beatrice-light;
+        letter-spacing: 1.26px;
+        color: #A7756E;
+        }
+        #usefulBtnContainer{
+        margin-top: 25px;
+        }
+        .vote{
+        background-color: black !important;
+        color: white !important;
+        }
+        #usefulBtnContainer button{
+        padding: 10px 0px;
+        width: 225px;
+        box-sizing: border-box;
+        border: 1px solid black;
+        border-radius: 4px;
+        font: normal normal bold 17px/26px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 1.02px;
+        color: #000000;
+        background-color: white;
+        }
+        #yes{
+        margin-right: 15px;
+        }
+        #para2Head{
+        text-align: center;
+        font: normal normal 300 50px/60px Beatrice-light;
+        letter-spacing: 0px;
+        color: #000000;
+        padding: 150px 50px 150px 50px;
+        }
+        #imageConainer{
+        height: 450px;
+        margin-left: 0px;
+        margin-right: 0px;
+        }
+        #img1{
+            width: 100%;
+            height: auto;
+        }
+        #img2{
+            width: 100%;
+            height: 100%;
+        }
+        #img3{
+            height:auto;
+            width: 100%;
+        }
+        #bulletSection{
+        padding-top: 135px;
+        padding-left: 135px;
+        padding-right: 115px;
+        }
+        #articlesFooter{
+        margin-top: 135px
+        }
+        #bulletDetails{
+        margin-bottom: 130px;
+        }
+        #bulletHead{
+        text-align: left;
+        font: normal normal 300 50px/60px Beatrice-light;
+        letter-spacing: 0px;
+        color: #A7756E;
+        border-bottom: black 1px solid;
+        padding-bottom: 40px;
+        width: 100%;
+        }
+        #number{
+        text-align: left;
+        font: normal normal 300 45px/60px Beatrice-light;
+        letter-spacing: 0px;
+        color: #000000;
+        }
+        #bulletDesc{
+        text-align: left;
+        font: normal normal 300 21px/31px Neue_Haas_Unica_Pro-light;
+        letter-spacing: 0px;
+        color: #000000;
+        padding-top: 0px;
+        padding-right: 70px;
+        }
+        #Group_88 {
+        top: 428px !important;
+        }
+        #welcomeSectionHead{
+        text-align: left;
+        font-size: 58px;
+        font-family: inherit;
+        font-weight: 400;
+        color: rgba(167,117,110,1);
+        padding-bottom: 30px;
+        padding-top: 70px;
+        padding-left: 90px;
+        }
+        #articles{
+        background-color: #a7756e;
+        }
+        .firstWidth{
+        width:500px !important;
+        outline: none;
+        }
+        .slick-slide img{
+        height: 300px ;
+        }
+        .gutter-remove{
+        margin-left: -16px;
+        }
+        .multiple-items{
+        width: 1500px;
+        margin-left: 3%;
+        height: auto;
+        }
+        .articleTitle{
+        color: #515457;
+        font-size: 30px;
+        margin-top: 10px;
+        }
+        .articleDesc{
+        margin-top: 8px;
+        line-height: 28px;
+        color: black;
+        font-size: 24px;
+        margin-bottom: 12px;
+        padding-right: 10px;
+        }
+        #articlePara1 iframe{
+        width:100%;
+        }
+        .articleDetails a{
+        color: #bb9490;
+        font-size: 28px;
+        cursor: pointer;
+        }
+        #articlePara1 a{
+            color: #A7756E !important;
+            cursor: pointer;
+        	text-decoration: none !important;
+        }
+        #articlePara1 a:hover {
+            color: #A7756E !important;
+            text-decoration: underline !important;
+        }
+        .centerAllign{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+        #welcomeSectionArticle #welcomeSectionHead{
+        padding-bottom: 50px;
+        }
+        .articleDetails{
+        padding-right: 25px;
+        }
+        .slick-prev, .slick-next{
+        top: 27%;
+        }
+        .slick-prev{
+        left: -30px;
+        }
+        .slick-next{
+        right: 16px;
+        }
+        .slick-prev:before{
+        content: ' \003C';
+        }
+        .slick-next:before{
+        content: '>';
+        }
+        .slick-prev:before, .slick-next:before{
+        color:black;
+        font-size: 28px;
+        font-weight: 900;
+        }
+        .container-readmore{
+        margin-bottom: 50px;
+        }
+        #articleSubPara{
+        	height:auto;
+        	background: #FADBD3 0% 0% no-repeat padding-box;
+        }
+        /* ---------------------- Content Section ends ------------------------- */
+        
+        /* laptop specific styles */
+        @media screen and (min-width: 2010px){
+           
+        }
+        @media screen and (max-width: 1590px) and (min-width: 1418px) {
+        #welcomeSectionArticle #welcomeSectionHead{
+        font-size:40px;
+        }
+        }
+        @media screen and (max-width: 1417px) and (min-width: 1366px) {
+        #articlesFooter {
+        margin-top: 100px;
+        }
+         #welcomeSectionArticle #welcomeSectionHead{
+        font-size:40px;
+        padding-left:60px;
+        }
+        .articleParaEnd{
+        margin-left:60px;
+        }
+        #bulletContainer{
+        margin-bottom: 50px;
+        }
+        #welcomeSectionHead{
+        font-size: 45px;
+        }
+        #welcomeSectionHead,#welcomeSectionContent{
+        padding-left: 45px;
+        }
+        #para2Head {
+        font-size: 35px;
+        padding: 90px 20px 70px 0px;
+        }
+        #viewResource{
+        margin-left: 45px;
+        }
+        #welcomeSection{
+        margin-left: -16px;
+        }
+        .articleDesc {
+        font-size: 22px;
+        }
+        #articleSecHead,#articlePara #articlePara1 h2 {
+        font-size: 42px;
+        }
+        #articlePara {
+        margin-top: 30px;
+        margin-left: 60px;
+        }
+        #articlePara1 {
+        font-size: 18px;
+        }
+        #usefulSec {
+        margin-top: 50px;
+        margin-bottom: 40px;
+        }
+        #articleSecHead {
+        padding-left: 76px;
+        }
+        #articlePara1 .secPara {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        }
+        #articlePara1 {
+        padding-right: 70px;
+        }
+        #bulletHead{
+        font-size: 42px;
+        }
+        #number {
+        font-size: 42px;
+        }
+        #bulletSection {
+        padding-top: 100px;
+        padding-left:90px;
+        }
+        #bulletDetails{
+        margin-bottom: 0px;
+        }
+        .slick-slide img {
+        height: 300px;
+        width: 386px;
+        }
+        .firstWidth {
+        width: 439px !important;
+        }
+        .multiple-items {
+        width: 1190px;
+        }
+        .slick-next {
+        right: -26px;
+        }
+        }
+        @media screen and (max-width: 1365px) and (min-width: 992px){
+        #articlesFooter {
+        margin-top: 100px;
+        }
+        #welcomeSectionArticle #welcomeSectionHead{
+        font: normal normal 300 28px/60px Beatrice-light;
+        padding-left: 38px;
+        }
+        button.owl-next span {
+            right: -0.8% !important;
+        }
+        #bulletContainer{
+        margin-bottom: 50px;
+        }
+        #welcomeSectionHead{
+        font-size: 45px;
+        }
+        #welcomeSectionHead,#welcomeSectionContent{
+        padding-left: 45px;
+        }
+        #para2Head {
+        font-size: 35px;
+        padding: 90px 52px 70px 22px;
+        }
+        #viewResource{
+        margin-left: 45px;
+        }
+        #welcomeSection{
+        margin-left: -16px;
+        }
+        .articleDesc {
+        font-size: 22px;
+        }
+        #articlePara {
+        margin-top: 30px;
+        margin-left: 60px;
+        }
+        #articlePara1 {
+        font-size: 18px !important;
+        padding-right:50px;
+        }
+        #usefulSec {
+        margin-top: 50px;
+        margin-bottom: 40px;
+        }
+        #articleSecHead {
+        padding-left: 70px;
+        }
+        #usefulBtnContainer button{
+        padding: 10px 0px;
+        width: 42%;
+        }
+        #articlePara1 .secPara {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        }
+        #articlePara1 {
+        padding-right: 50px;
+        }
+        #bulletDesc{
+        padding-right:50px;
+        max-width: 85%;
+        font-size:18px;
+        margin-left: 6%;
+        }
+        #bulletHead{
+        font-size: 42px;
+        }
+        #number {
+        font-size: 30px;
+        max-width:10%;
+        } 
+        .articleParaEnd{
+        margin-left:60px;
+        }
+        #bulletSection {
+        padding-top: 100px;
+        padding-left:90px;
+        padding-right:70px;
+        }
+        #bulletDetails{
+        margin-bottom: 0px;
+        }
+        #articleSecHead,#para2Head,#bulletHead,#articlePara #articlePara1 h2 {
+        font-size: 28px;
+        }
+        .slick-slide img {
+        height: 300px;
+        width: 386px;
+        }
+        .firstWidth {
+        width: 439px !important;
+        }
+        .multiple-items {
+        width: 1190px;
+        }
+        .slick-next {
+        right: -26px;
+        }
+        #articleSecHead{
+        padding-right: 80px;
+        }
+        }
+        @media screen and (max-width: 991px) and (min-width: 767px){
+        #articleSecHead{
+        font: normal normal 300 35px/42px Beatrice-light;
+        letter-spacing: 0px;
+        color: #A7756E;
+        padding-top: 35px;
+        padding-left:55px;
+        }
+        #articlePara #articlePara1 h2{
+            font: normal normal 300 35px/42px Beatrice-light;
+            letter-spacing: 0px;
+            color: #A7756E;
+        }
+        #para2Head{
+        background:#FADBD3 0% 0% no-repeat padding-box
+        }
+        #articlePara2,#articleSubPara{
+        background-color:white;
+        }
+        #imageConainer{
+        height:auto;
+        }
+        #articlePara{
+        margin-left:0px;
+         margin-top: 20px;
+        }
+        #articlePara1{
+        text-align: left;
+        margin-left: 45px;
+        margin-bottom: 60px;
+        font: normal normal 300 16px/25px Neue_Haas_Unica_Pro-light !important;
+        letter-spacing: 0px;
+        color: #000000;
+        padding-right: 110px;
+        }
+        #para2Head{
+        text-align: left;
+        font: normal normal 300 35px/42px Beatrice-light;
+        letter-spacing: 0px;
+        color: #000000;
+        padding: 70px 38px 70px 51px;
+        }
+        #bulletSection {
+        padding-top: 51px;
+        padding-left: 51px;
+        padding-right: 50px;
+        background: #FADBD3 0% 0% no-repeat padding-box;
+        }
+        #bulletHead{
+        font: normal normal 300 35px/47px Beatrice-light;
+        color:black;
+        }
+        #number{
+        font: normal normal 300 28px/37px Beatrice-light;
+        }
+        #bulletDesc{
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+        }
+        #bulletContainer{
+        margin-bottom:50px;
+        }
+        #bulletContainer:last-child{
+        margin-bottom: 0px;
+        padding-bottom: 50px;
+        }
+        #bulletDetails {
+        margin-bottom: 0px;
+        }
+        #articlesFooter {
+        margin-top: 50px;
+        text-align: center;
+        }
+        #usefulSec p {
+        text-align: left;
+        margin-left: 30%;
+        }
+        .articleParaEnd{
+        display: flex;
+        width: 87%;
+        margin: 0px auto; 
+        }
+        #welcomeSectionArticle #welcomeSectionHead {
+        font: normal normal 300 30px/42px Beatrice-light !important;
+        padding-left :0px;
+        }
+        .articleTitle {
+        font: normal normal 300 26px/35px Neue_Haas_Unica_Pro-light !important;
+        }
+        .articleDetails a {
+        font: normal normal normal 18px/24px Beatrice-light !important;
+        }
+        .firstWidth img, .repeating-content .firstWidth img {
+        height: 300px !important;
+        width: 100% !important;
+        }
+        .articleDetails {
+        padding-right: 0px !important;
+        width: 100% !important;
+        }
+        }
+        
+        @media screen and (max-width: 766px) and (min-width: 576px){
+        #articleSecHead{
+        font: normal normal 300 35px/42px Beatrice-light;
+        letter-spacing: 0px;
+        color: #A7756E;
+        padding-top: 35px;
+        padding-left:58px;
+        }
+        #articlePara #articlePara1 h2{
+         font: normal normal 300 35px/42px Beatrice-light;
+        letter-spacing: 0px;
+        color: #A7756E;
+        }
+        #para2Head{
+        background:#FADBD3 0% 0% no-repeat padding-box
+        }
+        #articlePara2,#articleSubPara{
+        background-color:white;
+        }
+        #imageConainer{
+        height:auto;
+        }
+        #articlePara{
+        margin-left:0px;
+         margin-top: 20px;
+        }
+        #articlePara1{
+        text-align: left;
+        margin-left: 45px;
+        margin-bottom: 60px;
+        font: normal normal 300 16px/25px Neue_Haas_Unica_Pro-light !important;
+        letter-spacing: 0px;
+        color: #000000;
+        padding-right: 110px;
+        }
+        #para2Head{
+        text-align: left;
+        font: normal normal 300 35px/42px Beatrice-light;
+        letter-spacing: 0px;
+        color: #000000;
+        padding: 70px 38px 70px 51px;
+        }
+        #bulletSection {
+        padding-top: 51px;
+        padding-left: 51px;
+        padding-right: 50px;
+        background: #FADBD3 0% 0% no-repeat padding-box;
+        }
+        #bulletHead{
+        font: normal normal 300 35px/47px Beatrice-light;
+        color:black;
+        }
+        #number{
+        font: normal normal 300 28px/37px Beatrice-light;
+        }
+        #bulletDesc{
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+        }
+        #bulletContainer{
+        margin-bottom:50px;
+        }
+        #bulletContainer:last-child{
+        margin-bottom: 0px;
+        padding-bottom: 50px;
+        }
+        #bulletDetails {
+        margin-bottom: 0px;
+        }
+        #articlesFooter {
+        margin-top: 50px;
+        text-align: center;
+        }
+        #usefulSec p {
+        text-align: left;
+        margin-left: 30%;
+        }
+        .articleParaEnd{
+        display: flex;
+        width: 87%;
+        margin: 0px auto; 
+        }
+        #welcomeSectionArticle #welcomeSectionHead {
+        font: normal normal 300 35px/42px Beatrice-light;
+        padding-left :0px;
+        }
+        .articleTitle {
+        font: normal normal 300 26px/35px Neue_Haas_Unica_Pro-light !important;
+        text-align: left !important;
+        }
+        .articleDetails a {
+        font: normal normal normal 18px/24px Beatrice-light !important;
+        }
+        .firstWidth img, .repeating-content .firstWidth img {
+        height: 300px !important;
+        width: 100% !important;
+        }
+        .articleDetails {
+        padding-right: 0px !important;
+        width: 100% !important;
+        }
+        }
+        
+        
+        @media screen and (max-width: 575px) and (min-width: 320px){
+        #articleSecHead{
+        font: normal normal 300 30px/42px Beatrice-light;
+        letter-spacing: 0px;
+        color: #A7756E;
+        padding-top: 35px;
+        padding-left:40px;
+        padding-right:55px;
+        }
+        #articlePara #articlePara1 h2{
+         font: normal normal 300 30px/42px Beatrice-light;
+        letter-spacing: 0px;
+        color: #A7756E;
+        }
+        #para2Head{
+        background:#FADBD3 0% 0% no-repeat padding-box
+        }
+        #articlePara2,#articleSubPara{
+        background-color:white;
+        }
+        #imageConainer{
+        height:auto;
+        }
+        #articlePara{
+        margin-left:0px;
+        margin-top:20px;
+        }
+        #articlePara1{
+        text-align: left;
+        margin-left: 28px;
+        margin-bottom: 60px;
+        font: normal normal 300 16px/25px Neue_Haas_Unica_Pro-light !important;
+        letter-spacing: 0px;
+        color: #000000;
+        padding-right: 45px;
+        }
+        #para2Head{
+        text-align: left;
+        font: normal normal 300 30px/42px Beatrice-light;
+        letter-spacing: 0px;
+        color: #000000;
+        padding: 70px 38px 70px 35px;
+        }
+        #bulletSection {
+        padding-top: 51px;
+        padding-left: 35px;
+        padding-right: 20px;
+        background: #FADBD3 0% 0% no-repeat padding-box;
+        }
+        #bulletHead{
+        font: normal normal 300 30px/47px Beatrice-light;
+        color:black;
+        }
+        #number{
+        font: normal normal 300 26px/37px Beatrice-light;
+        width:6%;
+        }
+        #bulletDesc{
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light;
+        width:82%;
+        padding-right: 30px;
+        margin-left: 7%;
+        }
+        #bulletContainer{
+        margin-bottom:50px;
+        }
+        #bulletContainer:last-child{
+        margin-bottom: 0px;
+        padding-bottom: 50px;
+        }
+        #bulletDetails {
+        margin-bottom: 0px;
+        }
+        #articlesFooter {
+        margin-top: 50px;
+        text-align: left;
+        }
+        #usefulSec p {
+        text-align: left;
+        margin-left: 12%;
+        letter-spacing: 0px;
+        }
+        #yes {
+        margin-right: 10px;
+        }
+        #usefulBtnContainer {
+        margin-left: 10%;
+        }
+        #usefulBtnContainer button{
+        width: 43%;
+        }
+        .articleParaEnd{
+        display: flex;
+        width: 87%;
+        margin: 0px auto; 
+        }
+        .container-readmore{
+        position: relative;
+        }
+        #usefulSec {
+        margin-bottom: 50px;
+        }
+        #welcomeSectionArticle{
+        text-align: center;
+        }
+        #welcomeSectionArticle #welcomeSectionHead {
+        font: normal normal 300 30px/42px Beatrice-light;
+        padding-left :0px;
+        }
+        .articleTitle {
+        font: normal normal 300 16px/20px Neue_Haas_Unica_Pro-light !important;
+        margin-left: 20%;
+        width:300px !important;
+        min-height: 15px !important;
+        text-align: left !important;
+        }
+        .articleDetails a {
+        font: normal normal normal 16px/24px Beatrice-light !important;
+        letter-spacing:0px;
+        position: absolute;
+        left: 100px;
+        }
+        .firstWidth{
+        width: 300px !important;
+        }
+        .firstWidth img, .repeating-content .firstWidth img {
+        height: 200px !important;
+        width: 300px !important;
+        }
+        .articleDetails {
+        padding-right: 0px !important;
+        width: auto !important;
+        }
+        }
+    </aura:html>    
+    <div class="open_article">
+        <div class="loaderHolder">
+            <div aura:id="siteSpinner" class="hideEl siteforceSpinnerManager siteforcePanelsContainer"  data-aura-class="siteforceSpinnerManager siteforcePanelsContainer">
+                <div class="mask" ></div>
+                <div class="loadingCon global siteforceLoadingBalls"  data-aura-class="siteforceLoadingBalls">
+                    <span class="loadingBall first" ></span>
+                    <span class="loadingBall second" ></span>
+                    <span class="loadingBall third" ></span>
+                    <span class="assistiveText" >Loading</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <div class="known_body_content_left">
+            <div class="known_body_container">
+                <div class="open_intro" style="{!'background:url(' + if(v.backGroundImage==null,$Resource.AGN_SPARK_default_banner_image,v.backGroundImage) +'); 
+                                               background-repeat: no-repeat; background-position: 0px 0px; position:relative;'}">
+                    <div class="known-content_txt"><h3><ui:outputRichText aura:id="outputRT" value="{!v.article.Title}" /> </h3>
+                    </div>
+                </div>
+                <div class="asthetic_detail">
+                    <aura:if isTrue="{!!empty(v.article.Summary)}">
+                        <p class="astetic_blue">{!v.article.Summary}</p>
+                    </aura:if>
+                    <div class="astetic_gray">
+                        <aura:unescapedHtml value="{!v.article.Body_AGN__c}"/>
+                    </div>
+                    <p class="astetic_blue_quest">{!$Label.c.AGN_SPARK_Knowledge_Helpfull}</p>
+                    <div class="asteic_choiceyes">
+                        <lightning:button class="{!if(v.vote =='Up','patient edit_categoryyes vote','patient edit_categoryyes')}" variant="base" label="Yes" onclick="{! c.positiveValue }" />                        
+                        <div class="line yes_line_no"></div>
+                        <lightning:button class="{!if(v.vote =='Down','patient edit_categoryyes vote','patient edit_categoryyes')}" variant="base" label="No" onclick="{! c.negativeValue }" />                        
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        
+        <div id="content" class="">
+            <div id="welcomeSection" class="row">
+                <div id="articleSecHead" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    {!v.article.Title}
+                </div>
+            </div>
+            <div id="articlePara" class="row">
+                <div id="articlePara1" class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 pl-0">
+                    <aura:unescapedHtml value="{!v.article.Body_AGN__c}"/>
+                    <div id="articlesFooter" class="d-xl-block d-lg-block d-md-none d-sm-none d-xs-none">
+                        <div id="usefulSec">
+                            <p>Was this article useful?</p>
+                            <div id="usefulBtnContainer">
+                                <button id="yes" class="{!if(v.vote =='Up','vote','')}" onclick="{!c.positiveValue}">Yes</button>
+                                <button id="no" class="{!if(v.vote =='Down','vote','')}" onclick="{!c.negativeValue}">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="articlePara2" class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 px-0">
+                    <div id="articleSubPara">
+                        <div id="para2Head">
+                           <!-- {!v.articleType}-->
+                            {!v.article.AGN_SPARK_Sub_Title__c}
+                        </div>
+                        <div id="" class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 p-0">
+                                <img id="img1" src="{!v.articleSettings[0].ImagePath__c}" class="responsive p-0" alt="image1"/>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 pr-0 pl-0">
+                                <img id="img2" src="{!v.articleSettings[1].ImagePath__c}" class="responsive p-0" alt="image2"/>
+                            </div>
+                        </div>
+                        <div id="bulletSection">
+                            <div id="bulletHead">
+                                Bullet Points
+                            </div>
+                            <div id="bulletDetails">
+                                <div id="bulletContainer" class="row">
+                                    <span id="number" class="col-sm-2"> 01</span>
+                                    <span id="bulletDesc" class="col-sm-10">{!v.article.AGN_SPARK_KH_Bullet_Point_1__c}</span>
+                                </div>
+                                <hr/>
+                                <div id="bulletContainer" class="row">
+                                    <span id="number" class="col-sm-2"> 02</span>
+                                    <span id="bulletDesc" class="col-sm-10">{!v.article.AGN_SPARK_KH_Bullet_Point_2__c}</span>
+                                </div>
+                                <hr/>
+                                <div id="bulletContainer" class="row">
+                                    <span id="number" class="col-sm-2"> 03</span>
+                                    <span id="bulletDesc" class="col-sm-10">{!v.article.AGN_SPARK_KH_Bullet_Point_3__c}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="">
+                            <img id="img3" src="{!v.articleSettings[2].ImagePath__c}" class="p-0" alt="image3"/>
+                        </div>
+                        <div id="articlesFooter" class="d-xl-none d-lg-none d-md-block d-sm-block d-xs-block">
+                        <div id="usefulSec">
+                            <p>Was this article useful?</p>
+                            <div id="usefulBtnContainer">
+                                <button id="yes" class="{!if(v.vote =='Up','vote','')}" onclick="{!c.positiveValue}">Yes</button>
+                                <button id="no" class="{!if(v.vote =='Down','vote','')}" onclick="{!c.negativeValue}">No</button>
+                            </div>
+                        </div>
+                    </div>
+                	</div>
+                </div>
+            </div>
+            <hr class="articleParaEnd"/>
+        </div> 
+        
+        
+        
+    </div>
+    
+</aura:component>

@@ -1,0 +1,136 @@
+<!-- **** AGN_ICL_AddPractitionerDetails ****-->
+<aura:component controller="AGN_ICL_AddPractitionerDetailsController" implements="forceCommunity:availableForAllPageTypes" access="global">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap.css'}" rel="stylesheet" id="bootstrap-css"/>
+	<link rel="stylesheet" href="{!$Resource.AGN_ICL_CSS+'/ICL/css/bootstrap-select.min.css'}"/>
+	<link href="{!$Resource.AGN_ICL_CSS+'/ICL/css/mystyle.css'}" rel="stylesheet"/>
+	<ltng:require styles="{!$Resource.AGN_ICL_SLDS_270 +'/styles/salesforce-lightning-design-system.min.css'}"/>
+	<ltng:require scripts="{!$Resource.AGN_ICL_CSS + '/ICL/js/jquery11.js'}"/>
+	<aura:attribute name="practitioner" type="Practitioner_Listing_AGN__c" default="{ 'sObjectType': 'Practitioner_Listing_AGN__c',
+                        'Name': '',
+                        'Salutation_AGN__c' :'',
+                        'First_Name_AGN__c':'',
+                        'Last_Name_AGN__c':'',
+                        'Type_AGN__c':'',                        
+                        'Gender_AGN__c': '',
+                        'Brand_AGN__c':'',
+                        'Qualification_AGN__c' :'',
+                        'Email_AGN__c': '',                        
+                        'Years_of_Experience_AGN__c': 0,                       
+                        'Type_Of_Physician_AGN__c': '' }"/>
+	<!--<aura:attribute name="CountryWiseFields" type="AGN_ICL_Practitioner_Layout__mdt" />
+    <aura:attribute name="CountryWiseFieldList" type="AGN_ICL_Practitioner_Layout__mdt[]" />-->
+	<aura:attribute name="CountryWiseFields" type="AGN_ICL_Layout_Field__mdt"/>
+	<aura:attribute name="CountryWiseFieldList" type="AGN_ICL_Layout_Field__mdt[]"/>
+	<aura:attribute name="CountryWiseFieldsMap" type="Map"/>
+	<aura:attribute name="RequiredFieldMissing" type="Boolean" default="true"/>
+	<aura:attribute name="Salutationlist" type="List"/>
+	<!--<aura:attribute name="practitionerTypeList" type="List"/>-->
+	<aura:attribute name="Salutation" type="String"/>
+	<aura:attribute name="practitionerType" type="String"/>
+	<aura:attribute name="Locator_Listing" type="Locator_Listing_AGN__c"/>
+	<aura:attribute name="spinner" type="Boolean" default="false"/>
+	<aura:attribute name="BrandValues1" type="List"/>
+    <aura:attribute name="brandSize" type="Integer" default="false"/>
+	<aura:attribute name="selectedBrandvalues" type="List" default=""/>
+	<aura:attribute name="LocatorListingId" type="String"/>
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:registerEvent name="ClosePopup" type="c:AGN_ICL_CloseModel"/>
+	<aura:registerEvent name="AGN_ICL_AddPractitioners" type="c:AGN_ICL_AddPractitioners"/>
+    <!--GTM-->
+    <aura:registerEvent name="sharePractionsersDetailsGTM" type="c:AGN_ICL_GTM_AddPractitionersEVT"/>
+    <!--GTM-->
+    <!--<aura:registerEvent name="appEvent" type="c:AGN_ICL_AddPractitioners"/>-->
+	<!--AWS-->
+    <!--Canada Changes-->
+    <aura:attribute name="customCountryCode" type="String" access="public"/>
+    <aura:attribute name="twoLayerLayout" type="Boolean" access="public"/>
+    <!--Canada Changes-->
+    <!-- Duallist Box Logic added for Brand -->
+    <aura:attribute name="showMultiselect" type="Boolean" default="false"/>
+    <!-- Duallist Box Logic added for Brand -->
+	<aura:attribute name="fileName" type="String" default="No File choosen"/>
+	<aura:attribute name="imageurl" type="String"/>
+	<aura:attribute name="showLoadingSpinner" type="boolean" default="false"/>
+	<aura:attribute name="parentId" type="Object"/>
+	<!--AWS-->
+	<div class="demo-only" style="height: 640px;">
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+			<aura:if isTrue="{!v.spinner == true}">
+				<div class="spinnerLoad">
+					<lightning:spinner alternativeText="Loading" size="medium"/>
+				</div>
+			</aura:if>
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="{!$Label.c.AGN_ICL_Close}">
+						<span class="slds-assistive-text">{!$Label.c.AGN_ICL_Close}</span>
+					</button>
+					<h4 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.AGN_ICL_Practitioner_s_Details}</h4>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+					<form id="formId">
+						<div class="row-practitioner">
+							<div class="columns columns-profileimg">
+								<div id='img_contain1'>
+									<!--<img id="clinic_image1" class="clinic_image_file" align='middle' src="{!$Resource.AGN_ICL_CSS+'/ICL/images/upload.jpg'}" />-->
+									<!--AWS-->
+									<aura:if isTrue="{!(v.imageurl==undefined)}">
+										<img id="clinic_image" class="clinic_image_file" align='middle' src="{!$Resource.AGN_ICL_CSS+'/ICL/images/upload.jpg'}"/>
+										<aura:set attribute="else">
+											<img id="clinic_image" class="clinic_image_file" align='middle' src="{!v.imageurl}"/>
+										</aura:set>
+									</aura:if>
+									<input type="file" id="clinic_upload" name="file" aura:id="fileId" multiple="false" onchange="{!c.handleFilesChange}"/>
+									<label class="custom-file-label" for="clinic_upload">
+										<span class="edit-txt">{!$Label.c.AGN_ICL_Upload_picture}</span>
+									</label>
+									<!--AWS-->
+									<p style="text-align: left;font-size: 10px; width:200px;">{!$Label.c.AGN_ICL_fileextensions}</p>
+								</div>
+								<!-- <c:AGN_ICL_ImageUploader parentId="v.practitioner.Id"/> -->
+							</div>
+                         <!-- Duallist Box Logic added for Brand -->
+                            <div class="columns columns-checkboxgroup">
+                                    <aura:if isTrue="{!v.showMultiselect}">
+                                    <lightning:dualListbox aura:id="mygroup" name="checkboxGroup" label="{!$Label.c.AGN_ICL_Brand}" sourceLabel="{!$Label.c.AGN_ICL_AvailableBrands}" selectedLabel="{!$Label.c.AGN_ICL_SelectedBrands}" options="{!v.BrandValues1 }" value="{!v.selectedBrandvalues}" onchange="{!c.handleBrandChange }"/>
+                                    <aura:set attribute="else">
+                                        <lightning:checkboxGroup aura:id="mygroup" name="checkboxGroup" label="{!$Label.c.AGN_ICL_Brand}" options="{!v.BrandValues1 }" value="{!v.selectedBrandvalues }" onchange="{!c.handleBrandChange }"/>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        <!-- Duallist Box Logic added for Brand -->
+							<aura:iteration items="{!v.CountryWiseFieldList}" var="fieldList">
+								<c:AGN_ICL_AddPractionerInputFields aura:id="fieldId" sobjectName="{!fieldList.Field_Sobject_API_Name_AGN__c}" twoLayerLayout = "{!v.twoLayerLayout}" fieldName="{!fieldList.Field_API_Name_AGN__c}" displayType="{!fieldList.Field_Type_AGN__c}" isPicklist="{!fieldList.IsPicklist_AGN__c}" required="{!fieldList.Required_AGN__c}" customLabel="{!fieldList.Field_Label_AGN__c}" fieldRegex="{!fieldList.Field_Regex_AGN__c}"/>
+							</aura:iteration>
+						</div>
+						<div class="row-practitioner">
+							<div class="columns columns-helptxt">
+								<p class="helptxt">
+									*{!$Label.c.AGN_ICL_AddHCP_Disclaimer} 
+								</p>
+							</div>
+						</div>
+					</form>
+				</div>
+				<footer class="slds-modal__footer">
+					<lightning:button class="slds-button slds-button_neutral" label="{!$Label.c.AGN_ICL_Cancel}" onclick="{!c.cancelPractitioner}"/>
+					<lightning:button class="slds-button slds-button_neutral" label="{!$Label.c.AGN_ICL_Save}" onclick="{!c.addPractitioner}"/>
+				</footer>
+				<!--AWS-->
+				<aura:if isTrue="{!v.showLoadingSpinner}">
+					<div class="slds-text-body_small slds-text-color_error">Uploading...
+						<img src="/auraFW/resources/aura/images/spinner.gif" class="spinner-img" alt="Loading"/>'
+					</div>
+				</aura:if>
+				<!--AWS-->
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"/>
+	</div>
+	<div>
+		<!--  <c:AGN_ICL_AllPractitioners aura:id="allPractId"/> -->
+	</div>
+</aura:component>

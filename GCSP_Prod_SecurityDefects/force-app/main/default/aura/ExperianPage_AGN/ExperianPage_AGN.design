@@ -1,0 +1,4 @@
+<design:component>
+	<design:attribute name="pageKey" label="Page Key" description="URL Key of the Page" />
+    <design:attribute name="langCode" label="Language Code of the Page" />
+</design:component>

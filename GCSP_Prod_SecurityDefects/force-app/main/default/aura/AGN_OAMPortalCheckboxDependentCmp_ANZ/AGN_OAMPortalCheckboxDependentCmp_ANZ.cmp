@@ -1,0 +1,45 @@
+<aura:component >
+    <aura:attribute name="checkBoxLabel" type="String" />
+    <aura:attribute name="displayRequiredInput" type="Boolean" default="false" access="public" />
+    <aura:attribute name="fieldList" type="List" />
+    
+    <!-- AGN_CommunityInputFieldCmp attributes -->
+    <aura:attribute name="sobjectName" type="String" required="true" />
+    <aura:attribute name="fieldName" type="String" required="true" />
+    <aura:attribute name="record" type="SObject" required="true" />
+    <aura:attribute name="displayType" type="String" />
+    <aura:attribute name="picklistOptions" type="Object[]" />
+    <aura:attribute name="variant" type="String" default="form" description="Options: form (default) and bare" />
+    <aura:attribute name="render" type="Boolean" default="true" />
+    <aura:attribute name="disabled" type="Boolean" />
+    <aura:attribute name="required" type="Boolean" default="false" />
+    <aura:attribute name="addRequiredCSS" type="Boolean" default="false"/>
+    <aura:attribute name="fieldValueMissing" type="Boolean" default="false"/>
+    <aura:attribute name="currencyIsoCode" type="String" />
+    <aura:attribute name="customLabel" type="String" />
+    <aura:attribute name="isFormatValid" type="Boolean" default="true" />
+    <aura:attribute name="fieldRegex" type="String" />
+    <aura:attribute name="fieldMetadata" type="Object" access="private" />
+    <aura:attribute name="fieldValue" type="Object" access="public" />
+    <aura:attribute name="customLabelName" type="String" access="public"/>
+    <aura:attribute name="customCountryCode" type="String" access="public"/>
+    <aura:attribute name="cmpHelpText" type="String" access="public" default=''/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+          <c:AGN_CommunityInputFieldCmp
+                                                              sobjectName="{!v.sobjectName}" 
+                                                              record="{!v.record}" 
+                                                              fieldName="{!v.fieldName}"
+                                                              customLabel="{!v.customLabel}"
+                                                              required="{!v.required}"
+                                                              fieldRegex="{!v.fieldRegex}"
+                                                              customCountryCode = "{!v.customCountryCode}"
+                                                              cmpHelpText = "{!v.cmpHelpText}"
+                                                              fieldValue = "{!v.fieldValue}" 
+                                                              isFormatValid = "{!v.isFormatValid}"  
+                                                              fieldValueMissing = "{!v.fieldValueMissing}"
+                                                              />
+                                      
+   
+	
+</aura:component>
